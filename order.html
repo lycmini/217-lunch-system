@@ -9,7 +9,7 @@
             font-family: '微軟正黑體', Arial, sans-serif;
             background-color: #f4f7f6;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
         }
         .container {
             max-width: 500px;
@@ -17,13 +17,31 @@
         }
         .card {
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
         h1 {
             color: #333;
             text-align: center;
+            font-size: 24px;
+        }
+        /* 查詢區塊的設計 */
+        .status-box {
+            background-color: #e3f2fd;
+            border-left: 5px solid #2196f3;
+        }
+        .status-box input {
+            width: 65%;
+            display: inline-block;
+            margin-right: 2%;
+        }
+        .status-box button {
+            width: 30%;
+            display: inline-block;
+            background-color: #2196f3;
+            margin-top: 0;
         }
         .restaurant-info {
             background-color: #e8f5e9;
@@ -49,7 +67,7 @@
             border-radius: 6px;
             font-size: 16px;
         }
-        button {
+        .submit-btn {
             background-color: #ff9800;
             color: white;
             width: 100%;
@@ -61,22 +79,40 @@
             font-size: 18px;
             font-weight: bold;
         }
-        button:hover {
-            background-color: #e68a00;
+        /* 結帳明細收據的設計 (預設先隱藏) */
+        .receipt-box {
+            display: none; 
+            background: #fff3e0; 
+            border: 2px dashed #ff9800; 
+            text-align: center;
         }
-        .note-hint {
-            font-size: 13px;
-            color: #888;
-            margin-top: 4px;
+        .price-text {
+            color: #d32f2f;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .cash-warning {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🍱 今日午餐點餐</h1>
+    <h1>🍱 217班 午餐點餐系統</h1>
+
+    <!-- 區塊一：查詢繳費狀態 -->
+    <div class="card status-box">
+        <label for="checkId" style="margin-top:0;">🔍 查詢我的訂單與繳費狀態：</label>
+        <input type="number" id="checkId" min="1" max="28" placeholder="輸入座號">
+        <button onclick="checkStatus()">查詢</button>
+    </div>
     
-    <div class="card">
+    <!-- 區塊二：點餐表單 -->
+    <div class="card" id="orderFormArea">
         <div class="restaurant-info">
             📢 今日餐廳：麵朝 (新竹食品店)
         </div>
@@ -85,30 +121,89 @@
         <input type="number" id="studentId" min="1" max="28" placeholder="請輸入座號">
 
         <label for="mealSelect">🍜 選擇餐點：</label>
+        <!-- 注意：我偷偷在選項裡加了 data-price 來記錄價格 -->
         <select id="mealSelect">
-            <option value="">-- 請選擇 --</option>
-            <!-- 這裡先預設放麵朝的菜單讓你看效果 -->
+            <option value="" data-price="0">-- 請選擇 --</option>
             <optgroup label="拌麵類">
-                <option value="鮮蝦雲吞拌麵">鮮蝦雲吞拌麵 $110</option>
-                <option value="椒麻雞絲拌麵">椒麻雞絲拌麵 $85</option>
+                <option value="鮮蝦雲吞拌麵" data-price="110">鮮蝦雲吞拌麵 $110</option>
+                <option value="椒麻雞絲拌麵" data-price="85">椒麻雞絲拌麵 $85</option>
             </optgroup>
             <optgroup label="湯麵類">
-                <option value="羅宋蔬菜湯麵">羅宋蔬菜湯麵 $75</option>
-                <option value="剝皮辣椒雞湯麵">剝皮辣椒雞湯麵 $140</option>
+                <option value="羅宋蔬菜湯麵" data-price="75">羅宋蔬菜湯麵 $75</option>
+                <option value="剝皮辣椒雞湯麵" data-price="140">剝皮辣椒雞湯麵 $140</option>
             </optgroup>
             <optgroup label="湯品與小點">
-                <option value="新竹貢丸湯">新竹貢丸湯 $40</option>
-                <option value="紅油鮮蝦抄手">紅油鮮蝦抄手 $100</option>
+                <option value="新竹貢丸湯" data-price="40">新竹貢丸湯 $40</option>
+                <option value="紅油鮮蝦抄手" data-price="100">紅油鮮蝦抄手 $100</option>
             </optgroup>
         </select>
 
         <label for="orderNote">📝 備註 (選填)：</label>
-        <input type="text" id="orderNote" placeholder="例如：加麵、不要蔥、改豬肉片...">
-        <div class="note-hint">*麵朝可+15元加麵，+30元加舒肥雞</div>
+        <input type="text" id="orderNote" placeholder="例如：加麵、不要蔥...">
+        <div style="font-size: 13px; color: #888; margin-top: 4px;">*麵朝可+15元加麵，+30元加舒肥雞</div>
 
-        <button onclick="alert('之後會將你的訂單傳送到負責人的後台！')">確認送出訂單</button>
+        <button class="submit-btn" onclick="submitOrder()">確認送出訂單</button>
+    </div>
+
+    <!-- 區塊三：電子收據 (送出後才會顯示) -->
+    <div class="card receipt-box" id="receiptArea">
+        <h2>✅ 訂單已送出！</h2>
+        <hr>
+        <p>座號：<strong id="r_id"></strong></p>
+        <p>餐點：<strong id="r_meal"></strong></p>
+        <p>備註：<strong id="r_note"></strong></p>
+        
+        <div class="price-text">應付總額：$<span id="r_price"></span></div>
+        
+        <p class="cash-warning">⚠️ 請務必於今日中午前<br>將「現金」交給負責人！</p>
+        <p style="font-size: 14px; color: #555;">(繳費後，可於上方輸入座號查詢是否已成功登記)</p>
+        
+        <button class="submit-btn" style="background-color: #757575;" onclick="location.reload()">返回重整</button>
     </div>
 </div>
+
+<script>
+    // 假裝查詢狀態的程式
+    function checkStatus() {
+        const id = document.getElementById('checkId').value;
+        if(!id) {
+            alert("請先輸入座號！");
+            return;
+        }
+        alert("【預覽模式】\n未來接上資料庫後，這裡會真實顯示 " + id + " 號同學是否已經付錢。");
+    }
+
+    // 點餐送出後，計算金額並顯示收據的程式
+    function submitOrder() {
+        const studentId = document.getElementById('studentId').value;
+        const mealSelect = document.getElementById('mealSelect');
+        const mealName = mealSelect.options[mealSelect.selectedIndex].text;
+        const mealPrice = mealSelect.options[mealSelect.selectedIndex].getAttribute('data-price');
+        const note = document.getElementById('orderNote').value;
+
+        // 防呆：檢查有沒有填座號跟選餐
+        if(!studentId || mealPrice == "0") {
+            alert("請確實填寫座號並選擇餐點！");
+            return;
+        }
+
+        // 把表單隱藏，把收據顯示出來
+        document.getElementById('orderFormArea').style.display = 'none';
+        document.getElementById('receiptArea').style.display = 'block';
+
+        // 把資料填進收據裡
+        document.getElementById('r_id').innerText = studentId;
+        document.getElementById('r_meal').innerText = mealName;
+        document.getElementById('r_note').innerText = note ? note : '無'; // 如果沒填備註就顯示"無"
+        
+        // 自動算錢：如果你在備註寫了加麵或加舒肥雞，程式會自動幫你加上去！
+        let finalPrice = parseInt(mealPrice);
+        if(note.includes('加麵')) finalPrice += 15;
+        if(note.includes('舒肥雞')) finalPrice += 30;
+        
+        document.getElementById('r_price').innerText = finalPrice;
+    }
+</script>
 
 </body>
 </html>
