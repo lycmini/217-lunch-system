@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>217班 - 午餐點餐系統</title>
+    <style>
+        body {
+            font-family: '微軟正黑體', Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .restaurant-info {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input[type="number"], input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #ff9800;
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 25px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #e68a00;
+        }
+        .note-hint {
+            font-size: 13px;
+            color: #888;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🍱 今日午餐點餐</h1>
+    
+    <div class="card">
+        <div class="restaurant-info">
+            📢 今日餐廳：麵朝 (新竹食品店)
+        </div>
+
+        <label for="studentId">👤 你的座號 (1-28)：</label>
+        <input type="number" id="studentId" min="1" max="28" placeholder="請輸入座號">
+
+        <label for="mealSelect">🍜 選擇餐點：</label>
+        <select id="mealSelect">
+            <option value="">-- 請選擇 --</option>
+            <!-- 這裡先預設放麵朝的菜單讓你看效果 -->
+            <optgroup label="拌麵類">
+                <option value="鮮蝦雲吞拌麵">鮮蝦雲吞拌麵 $110</option>
+                <option value="椒麻雞絲拌麵">椒麻雞絲拌麵 $85</option>
+            </optgroup>
+            <optgroup label="湯麵類">
+                <option value="羅宋蔬菜湯麵">羅宋蔬菜湯麵 $75</option>
+                <option value="剝皮辣椒雞湯麵">剝皮辣椒雞湯麵 $140</option>
+            </optgroup>
+            <optgroup label="湯品與小點">
+                <option value="新竹貢丸湯">新竹貢丸湯 $40</option>
+                <option value="紅油鮮蝦抄手">紅油鮮蝦抄手 $100</option>
+            </optgroup>
+        </select>
+
+        <label for="orderNote">📝 備註 (選填)：</label>
+        <input type="text" id="orderNote" placeholder="例如：加麵、不要蔥、改豬肉片...">
+        <div class="note-hint">*麵朝可+15元加麵，+30元加舒肥雞</div>
+
+        <button onclick="alert('之後會將你的訂單傳送到負責人的後台！')">確認送出訂單</button>
+    </div>
+</div>
+
+</body>
+</html>
