@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>午餐訂單管理後台</title>
+    <title>午餐管理後台</title>
     <style>
         body { font-family: '微軟正黑體', Arial, sans-serif; background-color: #f4f7f6; padding: 20px; }
         .container { max-width: 900px; margin: 0 auto; }
         .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1, h2 { color: #333; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
         th { background-color: #4CAF50; color: white; }
@@ -15,6 +17,13 @@
         .paid { background-color: #e8f5e9; }
         .notify-badge { background-color: #ff9800; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        
+        .btn { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; margin-top:10px; }
+        .btn-primary { background-color: #2196f3; }
+        .btn-danger { background-color: #f44336; width: 100%; }
+        
+        input[type="date"], input[type="text"], input[type="number"] { padding: 8px; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
+        .planB-box { background-color: #fff3e0; border: 2px dashed #ff9800; padding: 15px; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -23,29 +32,47 @@
     <h1>👑 負責人專屬後台</h1>
     
     <div class="card">
-        <h2>💰 今日訂單即時看板</h2>
-        <p>目前總訂購人數：<strong id="totalCount" style="color:red; font-size: 20px;">0</strong> 人</p>
+        <h2>📅 選擇查看日期</h2>
+        <input type="date" id="adminDate">
+        <p style="color:#888; font-size: 14px;">切換日期後，下方的訂單會自動更新。</p>
+    </div>
+
+    <!-- 危機處理 Plan B -->
+    <div class="card planB-box">
+        <h2 style="color: #e65100;">🚨 危機處理：啟動備案機制</h2>
+        <p>若店家沒開，輸入備案餐點與價格，系統會<strong style="color:red;">自動計算每個同學的補退差價</strong>，並發送廣播給全班！</p>
+        <input type="text" id="planBMeal" placeholder="全班統一改訂餐點 (例：八方雲集鍋貼)">
+        <input type="number" id="planBPrice" placeholder="統一價格 (例：70)">
+        <button class="btn btn-danger" onclick="executePlanB()">啟動備案並廣播給全班！</button>
+    </div>
+    
+    <div class="card">
+        <h2>💰 訂單即時看板</h2>
+        <p>總訂購人數：<strong id="totalCount" style="color:red; font-size: 20px;">0</strong> 人</p>
         
         <table>
             <thead>
                 <tr>
                     <th>座號</th>
                     <th>餐點</th>
-                    <th>備註</th>
+                    <th>備註 (含補差價提示)</th>
                     <th>金額</th>
-                    <th>繳費狀態 (勾選即確認)</th>
+                    <th>繳費狀態</th>
                 </tr>
             </thead>
             <tbody id="orderTableBody">
                 <tr><td colspan="5">連線讀取中...</td></tr>
             </tbody>
         </table>
+        
+        <hr style="margin: 30px 0;">
+        <button class="btn btn-danger" onclick="clearTodayOrders()" style="background-color: #b71c1c;">⚠️ 完全清除所選日期的所有訂單 ⚠️</button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, collection, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, updateDoc, onSnapshot, query, where, getDocs, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAQ3nCfS7eNB_hRQ2AQVBFARPn2YeJXl3c",
@@ -61,50 +88,136 @@
 
     const tbody = document.getElementById('orderTableBody');
     const totalCount = document.getElementById('totalCount');
+    const adminDateInput = document.getElementById('adminDate');
 
-    // 監聽即時訂單
-    onSnapshot(collection(db, "orders"), (snapshot) => {
-        let orders = [];
-        snapshot.forEach((docSnap) => orders.push(docSnap.data()));
-        orders.sort((a, b) => a.studentId - b.studentId);
-        
-        totalCount.innerText = orders.length;
+    // 預設日期為今天
+    const d = new Date();
+    const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
+    adminDateInput.value = todayStr;
 
-        if (orders.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" style="color: #888;">目前還沒有同學點餐喔！</td></tr>`;
-            return;
-        }
+    let currentUnsubscribe = null; // 用來取消舊的監聽
 
-        let html = '';
-        orders.forEach(order => {
-            let rowClass = order.isPaid ? 'paid' : 'unpaid';
-            let checkedAttr = order.isPaid ? 'checked' : '';
+    // 監聽特定日期的訂單
+    function listenToOrders(dateStr) {
+        if(currentUnsubscribe) currentUnsubscribe(); // 切換日期時先關閉上一個監聽
+
+        const q = query(collection(db, "orders"), where("date", "==", dateStr));
+        currentUnsubscribe = onSnapshot(q, (snapshot) => {
+            let orders = [];
+            snapshot.forEach((docSnap) => orders.push(docSnap.data()));
+            orders.sort((a, b) => a.studentId - b.studentId);
             
-            // 功能 2：如果同學按了「我已繳費」，而且你還沒打勾，就顯示明顯的橘色 Badge 提示你
-            let notifyUI = (order.notifiedPaid && !order.isPaid) ? `<br><span class="notify-badge">🙋‍♂️ 說他交錢了</span>` : '';
+            totalCount.innerText = orders.length;
 
-            html += `
-                <tr class="${rowClass}">
-                    <td><strong>${order.studentId}</strong> 號</td>
-                    <td>${order.meal}</td>
-                    <td>${order.note}</td>
-                    <td>$${order.price}</td>
-                    <td>
-                        <input type="checkbox" ${checkedAttr} onclick="togglePaid('${order.studentId}', this.checked)" style="width:20px; height:20px;">
-                        ${notifyUI}
-                    </td>
-                </tr>
-            `;
+            if (orders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="color: #888;">這天沒有訂單紀錄。</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            orders.forEach(order => {
+                let rowClass = order.isPaid ? 'paid' : 'unpaid';
+                let checkedAttr = order.isPaid ? 'checked' : '';
+                let notifyUI = (order.notifiedPaid && !order.isPaid) ? `<br><span class="notify-badge">🙋‍♂️ 說他交錢了</span>` : '';
+
+                html += `
+                    <tr class="${rowClass}">
+                        <td><strong>${order.studentId}</strong> 號</td>
+                        <td style="color:#1565c0; font-weight:bold;">${order.meal}</td>
+                        <td style="font-size: 13px;">${order.note}</td>
+                        <td>$${order.price}</td>
+                        <td>
+                            <input type="checkbox" ${checkedAttr} onclick="togglePaid('${order.date}_${order.studentId}', this.checked)" style="width:20px; height:20px;">
+                            ${notifyUI}
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
         });
-        tbody.innerHTML = html;
+    }
+
+    // 初次載入
+    listenToOrders(todayStr);
+
+    // 當日期選擇器改變時，重新監聽
+    adminDateInput.addEventListener('change', (e) => {
+        listenToOrders(e.target.value);
     });
 
     // 切換已繳費
-    window.togglePaid = async function(studentId, isPaid) {
-        try {
-            await updateDoc(doc(db, "orders", "student_" + studentId), { isPaid: isPaid });
-        } catch (error) { alert("更新失敗！"); }
+    window.togglePaid = async function(docId, isPaid) {
+        try { await updateDoc(doc(db, "orders", docId), { isPaid: isPaid, notifiedPaid: false }); } 
+        catch (error) { alert("更新失敗！"); }
     };
+
+    // 清除當日所有訂單
+    window.clearTodayOrders = async function() {
+        const targetDate = adminDateInput.value;
+        if(confirm(`⚠️ 警告：你確定要完全清除 ${targetDate} 的所有訂單嗎？\n(清除後將無法復原)`)) {
+            const q = query(collection(db, "orders"), where("date", "==", targetDate));
+            const snapshot = await getDocs(q);
+            snapshot.forEach(async (docSnap) => {
+                await deleteDoc(doc(db, "orders", docSnap.id));
+            });
+            alert("訂單已全部清除！");
+        }
+    }
+
+    // 核心模組：執行 Plan B
+    window.executePlanB = async function() {
+        const newMeal = document.getElementById('planBMeal').value;
+        const newPrice = parseInt(document.getElementById('planBPrice').value);
+        const targetDate = adminDateInput.value;
+
+        if(!newMeal || isNaN(newPrice)) return alert("請輸入完整的備案餐點與價格！");
+        if(!confirm(`確定啟動備案？\n將把 ${targetDate} 的所有訂單改為「${newMeal}」($${newPrice})，並廣播給全班！`)) return;
+
+        // 1. 發布系統公告 (前台會抓到並顯示)
+        const now = new Date();
+        const timeStr = `${now.getMonth()+1}月${now.getDate()}日 ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        
+        await setDoc(doc(db, "system", "announcement"), {
+            date: targetDate,
+            time: timeStr,
+            message: `因原店家未營業，已啟動備案機制！全班統一改訂「${newMeal}」(${newPrice}元)。\n請至下方【查詢】確認最新的應補/退款金額！`
+        });
+
+        // 2. 修改當日所有訂單並計算差價
+        const q = query(collection(db, "orders"), where("date", "==", targetDate));
+        const snapshot = await getDocs(q);
+        
+        snapshot.forEach(async (docSnap) => {
+            let order = docSnap.data();
+            let diff = newPrice - order.price; // 新價 - 舊價
+            let diffMsg = "";
+            let newIsPaid = order.isPaid;
+
+            // 結算邏輯
+            if(order.isPaid) {
+                if(diff > 0) {
+                    diffMsg = `🚨 備案：需再補繳 $${diff}`;
+                    newIsPaid = false; // 需要補錢，把他的已繳費勾勾取消！
+                } else if (diff < 0) {
+                    diffMsg = `🚨 備案：負責人需退你 $${Math.abs(diff)}`;
+                } else {
+                    diffMsg = `🚨 備案：金額相同，無須補退`;
+                }
+            } else {
+                diffMsg = `🚨 備案：總額改為 $${newPrice}`;
+            }
+
+            await updateDoc(doc(db, "orders", docSnap.id), {
+                meal: newMeal,
+                price: newPrice,
+                note: order.note + " | " + diffMsg,
+                isPaid: newIsPaid, // 更新付款狀態
+                notifiedPaid: false // 清除舊的通知狀態
+            });
+        });
+
+        alert("✅ 備案啟動成功！訂單已全部重新計算，並發出系統廣播！");
+    }
 </script>
 </body>
 </html>
