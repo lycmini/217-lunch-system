@@ -5,98 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>午餐訂單管理後台</title>
     <style>
-        body {
-            font-family: '微軟正黑體', Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
-        input[type="text"], select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 15px;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .unpaid {
-            background-color: #ffebee;
-        }
-        .paid {
-            background-color: #e8f5e9;
-        }
+        body { font-family: '微軟正黑體', Arial, sans-serif; background-color: #f4f7f6; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background-color: #4CAF50; color: white; }
+        .unpaid { background-color: #ffebee; }
+        .paid { background-color: #e8f5e9; }
+        .notify-badge { background-color: #ff9800; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>👑 負責人專屬：午餐管理後台</h1>
-
-    <!-- 區塊一：設定今日餐廳與菜單 -->
+    <h1>👑 負責人專屬後台</h1>
+    
     <div class="card">
-        <h2>🍽️ 步驟一：設定今日餐廳與發布菜單</h2>
-        
-        <label for="restaurantSelector">選擇常用餐廳：</label>
-        <select id="restaurantSelector" onchange="autoFillMenu()">
-            <option value="麵朝 (新竹食品店)">麵朝 (新竹食品店)</option>
-        </select>
-
-        <label for="menuItems">今日菜單品項 (可手動修改，請用逗號隔開)：</label>
-        <input type="text" id="menuItems" value="鮮蝦雲吞拌麵, 青醬雲吞拌麵, 椒麻雲吞拌麵, 蔥油雲吞拌麵, 香滷雲吞拌麵, XO醬雲吞拌麵, 港式水餃拌麵, 青醬水餃拌麵, 椒麻水餃拌麵, 蔥油水餃拌麵, 香滷水餃拌麵, XO醬水餃拌麵, 京醬肉絲拌麵, 椒麻雞絲拌麵, 青醬雞絲拌麵, 蔥油雞絲拌麵, 香滷雞絲拌麵, XO醬雞絲拌麵, 羅宋蔬菜湯麵, 鮮蝦雲吞湯麵, 羅宋蔬菜雞湯麵, 養生清燉雞湯麵, 剝皮辣椒雞湯麵, 漢方肉骨茶雞湯麵, 大推烏梅汁, 季節燙青菜, 新竹貢丸湯, 寶島魚丸湯, 手工餛飩湯, 羅宋蔬菜湯, 鮮蝦雲吞湯, 羅宋雲吞湯, 養生清燉雞湯, 剝皮辣椒雞湯, 漢方肉骨茶雞湯, 蒜泥五花肉, 椒麻五花肉, 蔥油舒肥雞, 青醬舒肥雞, 紅油鮮蝦抄手, 白油鮮蝦抄手, 港式翠玉水餃10粒">
-
-        <button onclick="publishMenu()">發布今日菜單到雲端</button>
-    </div>
-
-    <!-- 區塊二：即時訂單統計與收錢 -->
-    <div class="card">
-        <h2>💰 步驟二：今日訂單統計與繳費狀況</h2>
+        <h2>💰 今日訂單即時看板</h2>
         <p>目前總訂購人數：<strong id="totalCount" style="color:red; font-size: 20px;">0</strong> 人</p>
         
         <table>
@@ -106,71 +33,45 @@
                     <th>餐點</th>
                     <th>備註</th>
                     <th>金額</th>
-                    <th>繳費確認 (點擊即時存檔)</th>
+                    <th>繳費狀態 (勾選即確認)</th>
                 </tr>
             </thead>
             <tbody id="orderTableBody">
-                <tr>
-                    <td colspan="5" style="color: #888;">正在連線讀取雲端訂單...</td>
-                </tr>
+                <tr><td colspan="5">連線讀取中...</td></tr>
             </tbody>
         </table>
     </div>
 </div>
 
-<!-- Firebase 雲端資料庫連線與邏輯 -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-    // 你的專屬 Firebase 金鑰
     const firebaseConfig = {
         apiKey: "AIzaSyAQ3nCfS7eNB_hRQ2AQVBFARPn2YeJXl3c",
         authDomain: "lunch-system-cc413.firebaseapp.com",
         projectId: "lunch-system-cc413",
         storageBucket: "lunch-system-cc413.firebasestorage.app",
         messagingSenderId: "620598610406",
-        appId: "1:620598610406:web:bd5e7db2b568c48d1d2e27",
-        measurementId: "G-FFPSM04FM9"
+        appId: "1:620598610406:web:bd5e7db2b568c48d1d2e27"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // 發布菜單到雲端
-    window.publishMenu = async function() {
-        const restaurant = document.getElementById('restaurantSelector').value;
-        const menu = document.getElementById('menuItems').value;
-
-        try {
-            await setDoc(doc(db, "config", "todayMenu"), {
-                restaurant: restaurant,
-                menu: menu
-            });
-            alert("✅ 今日菜單已成功發布到雲端！同學重新整理網學就能看到囉！");
-        } catch (error) {
-            console.error("發布失敗: ", error);
-            alert("發布失敗，請查看主控台錯誤訊息。");
-        }
-    };
-
-    // 即時監聽雲端的訂單資料
     const tbody = document.getElementById('orderTableBody');
     const totalCount = document.getElementById('totalCount');
 
+    // 監聽即時訂單
     onSnapshot(collection(db, "orders"), (snapshot) => {
         let orders = [];
-        snapshot.forEach((docSnap) => {
-            orders.push(docSnap.data());
-        });
-
-        // 依照座號大小排序 (1 到 28)
+        snapshot.forEach((docSnap) => orders.push(docSnap.data()));
         orders.sort((a, b) => a.studentId - b.studentId);
-
+        
         totalCount.innerText = orders.length;
 
         if (orders.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" style="color: #888;">目前還沒有同學送出訂單喔！</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" style="color: #888;">目前還沒有同學點餐喔！</td></tr>`;
             return;
         }
 
@@ -178,7 +79,9 @@
         orders.forEach(order => {
             let rowClass = order.isPaid ? 'paid' : 'unpaid';
             let checkedAttr = order.isPaid ? 'checked' : '';
-            let paidText = order.isPaid ? '已繳款' : '尚未繳款';
+            
+            // 功能 2：如果同學按了「我已繳費」，而且你還沒打勾，就顯示明顯的橘色 Badge 提示你
+            let notifyUI = (order.notifiedPaid && !order.isPaid) ? `<br><span class="notify-badge">🙋‍♂️ 說他交錢了</span>` : '';
 
             html += `
                 <tr class="${rowClass}">
@@ -187,8 +90,8 @@
                     <td>${order.note}</td>
                     <td>$${order.price}</td>
                     <td>
-                        <input type="checkbox" ${checkedAttr} onclick="togglePaid('${order.studentId}', this.checked)" style="width:20px; height:20px; vertical-align:middle;"> 
-                        <span id="status_text_${order.studentId}">${paidText}</span>
+                        <input type="checkbox" ${checkedAttr} onclick="togglePaid('${order.studentId}', this.checked)" style="width:20px; height:20px;">
+                        ${notifyUI}
                     </td>
                 </tr>
             `;
@@ -196,20 +99,12 @@
         tbody.innerHTML = html;
     });
 
-    // 切換已繳費狀態並寫回雲端
+    // 切換已繳費
     window.togglePaid = async function(studentId, isPaid) {
         try {
-            const orderRef = doc(db, "orders", "student_" + studentId);
-            await updateDoc(orderRef, {
-                isPaid: isPaid
-            });
-            console.log(`座號 ${studentId} 繳費狀態更新為: ${isPaid}`);
-        } catch (error) {
-            console.error("更新狀態失敗: ", error);
-            alert("更新失敗！");
-        }
+            await updateDoc(doc(db, "orders", "student_" + studentId), { isPaid: isPaid });
+        } catch (error) { alert("更新失敗！"); }
     };
 </script>
-
 </body>
 </html>
