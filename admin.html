@@ -18,7 +18,9 @@
         
         .btn { padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; margin-top:10px; }
         .btn-primary { background-color: #2196f3; }
-        .btn-danger { background-color: #f44336; width: 100%; }
+        .btn-danger { background-color: #f44336; }
+        .btn-secondary { background-color: #9e9e9e; }
+        .btn-full { width: 100%; }
         
         input[type="date"], input[type="text"], input[type="number"] { padding: 8px; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
         .planB-box { background-color: #fff3e0; border: 2px dashed #ff9800; padding: 15px; border-radius: 8px; }
@@ -29,7 +31,6 @@
         .btn-confirm { background-color: #4CAF50; }
         .btn-dismiss { background-color: #9e9e9e; }
 
-        /* 新增：統計報表專屬設計 */
         .stats-grid { display: flex; gap: 15px; margin-top: 15px; }
         .stat-box { flex: 1; background: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
         .stat-value { font-size: 24px; font-weight: bold; margin-top: 5px; }
@@ -58,38 +59,19 @@
         <input type="date" id="adminDate">
     </div>
 
-    <!-- 新增功能：統計報表與帳務中心 -->
+    <!-- 統計報表與帳務中心 -->
     <div class="card">
         <h2>📊 統計報表與帳務中心</h2>
-        
-        <!-- 餐點品項統計 -->
         <div class="item-list">
             <h3 style="margin-top: 0; color: #1565c0;">📞 點餐總表 (給餐廳看這個)</h3>
-            <ul id="statItemCounts">
-                <li>計算中...</li>
-            </ul>
+            <ul id="statItemCounts"><li>計算中...</li></ul>
         </div>
-
-        <!-- 財務統計 -->
         <div class="stats-grid">
-            <div class="stat-box">
-                <div>應收總額</div>
-                <div class="stat-value text-blue">$<span id="statTotalAmount">0</span></div>
-            </div>
-            <div class="stat-box">
-                <div>目前已收</div>
-                <div class="stat-value text-green">$<span id="statCollected">0</span></div>
-            </div>
-            <div class="stat-box">
-                <div>尚未收取</div>
-                <div class="stat-value text-red">$<span id="statUnpaidAmount">0</span></div>
-            </div>
+            <div class="stat-box"><div>應收總額</div><div class="stat-value text-blue">$<span id="statTotalAmount">0</span></div></div>
+            <div class="stat-box"><div>目前已收</div><div class="stat-value text-green">$<span id="statCollected">0</span></div></div>
+            <div class="stat-box"><div>尚未收取</div><div class="stat-value text-red">$<span id="statUnpaidAmount">0</span></div></div>
         </div>
-
-        <!-- 未繳錢同學名單 -->
-        <div class="unpaid-list">
-            ⚠️ 尚未繳錢座號：<span id="statUnpaidStudents">無</span>
-        </div>
+        <div class="unpaid-list">⚠️ 尚未繳錢座號：<span id="statUnpaidStudents">無</span></div>
     </div>
 
     <!-- 危機處理 Plan B -->
@@ -97,14 +79,18 @@
         <h2 style="color: #e65100;">🚨 危機處理：啟動備案機制</h2>
         <input type="text" id="planBMeal" placeholder="全班統一改訂餐點 (例：八方雲集鍋貼)">
         <input type="number" id="planBPrice" placeholder="統一價格 (例：70)">
-        <button class="btn btn-danger" onclick="executePlanB()">啟動備案並廣播給全班！</button>
+        
+        <!-- 新增：撤回按鈕並排 -->
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-danger" style="flex: 2;" onclick="executePlanB()">啟動備案並廣播給全班！</button>
+            <button class="btn btn-secondary" style="flex: 1;" onclick="clearAnnouncement()">解除廣播</button>
+        </div>
     </div>
     
     <!-- 訂單明細 -->
     <div class="card">
         <h2>📋 訂單即時看板</h2>
         <p>總訂購人數：<strong id="totalCount" style="color:red; font-size: 20px;">0</strong> 人</p>
-        
         <table>
             <thead>
                 <tr>
@@ -119,9 +105,8 @@
                 <tr><td colspan="5">連線讀取中...</td></tr>
             </tbody>
         </table>
-        
         <hr style="margin: 30px 0;">
-        <button class="btn btn-danger" onclick="clearTodayOrders()" style="background-color: #b71c1c;">⚠️ 完全清除所選日期的所有訂單 ⚠️</button>
+        <button class="btn btn-danger btn-full" onclick="clearTodayOrders()" style="background-color: #b71c1c;">⚠️ 完全清除所選日期的所有訂單 ⚠️</button>
     </div>
 </div>
 
@@ -149,23 +134,14 @@
     const d = new Date();
     const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
     adminDateInput.value = todayStr;
-
     let currentUnsubscribe = null; 
 
     function listenToOrders(dateStr) {
         if(currentUnsubscribe) currentUnsubscribe();
-
         const q = query(collection(db, "orders"), where("date", "==", dateStr));
         currentUnsubscribe = onSnapshot(q, (snapshot) => {
-            let activeOrders = [];
-            let canceledAlerts = [];
-            let paidAlerts = [];
-
-            // 統計用的變數
-            let totalAmount = 0;
-            let collectedAmount = 0;
-            let itemCounts = {};
-            let unpaidStudents = [];
+            let activeOrders = [], canceledAlerts = [], paidAlerts = [];
+            let totalAmount = 0, collectedAmount = 0, itemCounts = {}, unpaidStudents = [];
 
             snapshot.forEach((docSnap) => {
                 let order = docSnap.data();
@@ -173,32 +149,20 @@
                     canceledAlerts.push(order);
                 } else {
                     activeOrders.push(order);
-                    if (order.notifiedPaid && !order.isPaid) {
-                        paidAlerts.push(order);
-                    }
+                    if (order.notifiedPaid && !order.isPaid) paidAlerts.push(order);
 
-                    // --- 開始進行統計計算 ---
                     totalAmount += order.price;
-                    if (order.isPaid) {
-                        collectedAmount += order.price;
-                    } else {
-                        unpaidStudents.push(order.studentId);
-                    }
+                    if (order.isPaid) { collectedAmount += order.price; } 
+                    else { unpaidStudents.push(order.studentId); }
 
-                    // 整理餐點名稱 (把餐點與備註綁在一起統計，過濾掉備案的系統提示)
-                    let cleanNote = order.note.split(" | ")[0]; // 去除備案提示
+                    let cleanNote = order.note.split(" | ")[0]; 
                     let itemKey = order.meal;
-                    if (cleanNote && cleanNote !== "無") {
-                        itemKey += ` (${cleanNote})`;
-                    }
+                    if (cleanNote && cleanNote !== "無") itemKey += ` (${cleanNote})`;
                     itemCounts[itemKey] = (itemCounts[itemKey] || 0) + 1;
                 }
             });
 
-            // 1. 渲染系統通知中心
             renderNotifications(canceledAlerts, paidAlerts);
-
-            // 2. 渲染下方表格
             activeOrders.sort((a, b) => a.studentId - b.studentId);
             totalCount.innerText = activeOrders.length;
 
@@ -212,7 +176,6 @@
                 return;
             }
 
-            // 3. 渲染統計報表
             document.getElementById('statTotalAmount').innerText = totalAmount;
             document.getElementById('statCollected').innerText = collectedAmount;
             document.getElementById('statUnpaidAmount').innerText = totalAmount - collectedAmount;
@@ -221,12 +184,9 @@
             document.getElementById('statUnpaidStudents').innerText = unpaidStudents.length > 0 ? unpaidStudents.join(", ") + " 號" : "全班皆已繳清！🎉";
 
             let itemsHtml = '';
-            for (let [item, count] of Object.entries(itemCounts)) {
-                itemsHtml += `<li>${item}：<strong>${count}</strong> 份</li>`;
-            }
+            for (let [item, count] of Object.entries(itemCounts)) itemsHtml += `<li>${item}：<strong>${count}</strong> 份</li>`;
             document.getElementById('statItemCounts').innerHTML = itemsHtml;
 
-            // 4. 產生表格 HTML
             let html = '';
             activeOrders.forEach(order => {
                 let rowClass = order.isPaid ? 'paid' : 'unpaid';
@@ -237,9 +197,7 @@
                         <td style="color:#1565c0; font-weight:bold;">${order.meal}</td>
                         <td style="font-size: 13px;">${order.note}</td>
                         <td>$${order.price}</td>
-                        <td>
-                            <input type="checkbox" ${checkedAttr} onclick="togglePaid('${order.date}_${order.studentId}', this.checked)" style="width:20px; height:20px;">
-                        </td>
+                        <td><input type="checkbox" ${checkedAttr} onclick="togglePaid('${order.date}_${order.studentId}', this.checked)" style="width:20px; height:20px;"></td>
                     </tr>
                 `;
             });
@@ -249,109 +207,87 @@
 
     function renderNotifications(canceledAlerts, paidAlerts) {
         if(canceledAlerts.length === 0 && paidAlerts.length === 0) {
-            notifCenter.style.display = 'none';
-            return;
+            notifCenter.style.display = 'none'; return;
         }
         notifCenter.style.display = 'block';
-
         let cancelHtml = '';
         if(canceledAlerts.length > 0) {
             cancelHtml += `<strong style="color:#d32f2f;">❌ 以下同學剛剛取消了訂單：</strong><br>`;
-            canceledAlerts.forEach(o => {
-                cancelHtml += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button class="btn-dismiss" onclick="dismissCancel('${o.date}_${o.studentId}')">清除通知</button></div>`;
-            });
+            canceledAlerts.forEach(o => { cancelHtml += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button class="btn-dismiss" onclick="dismissCancel('${o.date}_${o.studentId}')">清除通知</button></div>`; });
         }
         document.getElementById('cancelNotifs').innerHTML = cancelHtml;
 
         let paidHtml = '';
         if(paidAlerts.length > 0) {
             paidHtml += `<strong style="color:#2e7d32;">💰 以下同學發出「已繳費」通知：</strong><br>`;
-            paidAlerts.forEach(o => {
-                paidHtml += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button class="btn-confirm" onclick="togglePaid('${o.date}_${o.studentId}', true)">確認收款</button></div>`;
-            });
+            paidAlerts.forEach(o => { paidHtml += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button class="btn-confirm" onclick="togglePaid('${o.date}_${o.studentId}', true)">確認收款</button></div>`; });
         }
         document.getElementById('paidNotifs').innerHTML = paidHtml;
     }
 
     listenToOrders(todayStr);
-
-    adminDateInput.addEventListener('change', (e) => {
-        listenToOrders(e.target.value);
-    });
+    adminDateInput.addEventListener('change', (e) => { listenToOrders(e.target.value); });
 
     window.togglePaid = async function(docId, isPaid) {
-        try { await updateDoc(doc(db, "orders", docId), { isPaid: isPaid, notifiedPaid: false }); } 
-        catch (error) { alert("更新失敗！"); }
+        try { await updateDoc(doc(db, "orders", docId), { isPaid: isPaid, notifiedPaid: false }); } catch (error) { alert("更新失敗！"); }
     };
-
     window.dismissCancel = async function(docId) {
-        try { await deleteDoc(doc(db, "orders", docId)); }
-        catch (e) { alert("清除失敗"); }
+        try { await deleteDoc(doc(db, "orders", docId)); } catch (e) { alert("清除失敗"); }
     };
-
     window.clearTodayOrders = async function() {
         const targetDate = adminDateInput.value;
         if(confirm(`⚠️ 警告：你確定要完全清除 ${targetDate} 的所有訂單嗎？\n(清除後將無法復原)`)) {
             const q = query(collection(db, "orders"), where("date", "==", targetDate));
             const snapshot = await getDocs(q);
-            snapshot.forEach(async (docSnap) => {
-                await deleteDoc(doc(db, "orders", docSnap.id));
-            });
+            snapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "orders", docSnap.id)); });
             alert("訂單已全部清除！");
         }
     }
-
+    
     window.executePlanB = async function() {
         const newMeal = document.getElementById('planBMeal').value;
         const newPrice = parseInt(document.getElementById('planBPrice').value);
         const targetDate = adminDateInput.value;
-
         if(!newMeal || isNaN(newPrice)) return alert("請輸入完整的備案餐點與價格！");
         if(!confirm(`確定啟動備案？\n將把 ${targetDate} 的所有訂單改為「${newMeal}」($${newPrice})，並廣播給全班！`)) return;
 
         const now = new Date();
         const timeStr = `${now.getMonth()+1}月${now.getDate()}日 ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-        
         await setDoc(doc(db, "system", "announcement"), {
-            date: targetDate,
-            time: timeStr,
+            date: targetDate, time: timeStr,
             message: `因原店家未營業，已啟動備案機制！全班統一改訂「${newMeal}」(${newPrice}元)。\n請至下方【查詢】確認最新的應補/退款金額！`
         });
 
         const q = query(collection(db, "orders"), where("date", "==", targetDate));
         const snapshot = await getDocs(q);
-        
         snapshot.forEach(async (docSnap) => {
             let order = docSnap.data();
             if(order.isCancelled) return; 
-
             let diff = newPrice - order.price;
             let diffMsg = "";
             let newIsPaid = order.isPaid;
 
             if(order.isPaid) {
-                if(diff > 0) {
-                    diffMsg = `🚨 備案：需再補繳 $${diff}`;
-                    newIsPaid = false; 
-                } else if (diff < 0) {
-                    diffMsg = `🚨 備案：負責人需退你 $${Math.abs(diff)}`;
-                } else {
-                    diffMsg = `🚨 備案：金額相同，無須補退`;
-                }
-            } else {
-                diffMsg = `🚨 備案：總額改為 $${newPrice}`;
-            }
+                if(diff > 0) { diffMsg = `🚨 備案：需再補繳 $${diff}`; newIsPaid = false; } 
+                else if (diff < 0) { diffMsg = `🚨 備案：負責人需退你 $${Math.abs(diff)}`; } 
+                else { diffMsg = `🚨 備案：金額相同，無須補退`; }
+            } else { diffMsg = `🚨 備案：總額改為 $${newPrice}`; }
 
             await updateDoc(doc(db, "orders", docSnap.id), {
-                meal: newMeal,
-                price: newPrice,
-                note: order.note + " | " + diffMsg,
-                isPaid: newIsPaid, 
-                notifiedPaid: false 
+                meal: newMeal, price: newPrice, note: order.note + " | " + diffMsg, isPaid: newIsPaid, notifiedPaid: false 
             });
         });
-
         alert("✅ 備案啟動成功！訂單已全部重新計算，並發出系統廣播！");
+    }
+
+    // 新增：撤回廣播功能
+    window.clearAnnouncement = async function() {
+        if(confirm("確定要解除目前的緊急廣播嗎？\n(前台同學的紅色警告框會立刻消失)")) {
+            try {
+                await deleteDoc(doc(db, "system", "announcement"));
+                alert("✅ 廣播已成功撤回！");
+            } catch(e) { alert("撤回失敗"); }
+        }
     }
 </script>
 </body>
