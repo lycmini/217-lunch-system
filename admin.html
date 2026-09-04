@@ -31,12 +31,13 @@
             margin-top: 10px;
             margin-bottom: 5px;
         }
-        input[type="text"] {
+        input[type="text"], select {
             width: 100%;
             padding: 8px;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
+            font-size: 16px;
         }
         button {
             background-color: #4CAF50;
@@ -78,13 +79,18 @@
     <!-- 區塊一：決定今天吃哪家 -->
     <div class="card">
         <h2>🍽️ 步驟一：設定今日餐廳</h2>
-        <label for="restaurantName">餐廳名稱：</label>
-        <input type="text" id="restaurantName" placeholder="例如：八方雲集">
+        
+        <label for="restaurantSelector">選擇常用餐廳：</label>
+        <select id="restaurantSelector" onchange="autoFillMenu()">
+            <option value="">-- 請選擇餐廳 --</option>
+            <option value="mianchao">麵朝 (新竹食品店)</option>
+            <option value="custom">✨ 其他 (手動輸入)</option>
+        </select>
 
-        <label for="menuItems">輸入菜單品項 (請用逗號隔開)：</label>
-        <input type="text" id="menuItems" placeholder="例如：招牌鍋貼, 韭菜水餃, 玉米濃湯">
+        <label for="menuItems">今日菜單品項 (可手動修改，請用逗號隔開)：</label>
+        <input type="text" id="menuItems" placeholder="選擇餐廳後會自動帶入菜單，或在此手動輸入">
 
-        <button onclick="alert('之後會將設定存入資料庫！')">發布今日菜單</button>
+        <button onclick="alert('之後會將這份菜單發布給同學！')">發布今日菜單</button>
     </div>
 
     <!-- 區塊二：看訂單與收錢 -->
@@ -102,16 +108,16 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- 這裡先放兩筆假資料當作預覽 -->
+                <!-- 這裡先放假資料當作預覽 -->
                 <tr class="unpaid">
                     <td>1</td>
-                    <td>招牌鍋貼</td>
-                    <td>不要醬油</td>
+                    <td>鮮蝦雲吞拌麵</td>
+                    <td>加麵</td>
                     <td><input type="checkbox"> 尚未繳款</td>
                 </tr>
                 <tr>
                     <td>2</td>
-                    <td>韭菜水餃</td>
+                    <td>羅宋蔬菜湯麵</td>
                     <td>無</td>
                     <td><input type="checkbox" checked> 已繳款</td>
                 </tr>
@@ -119,6 +125,27 @@
         </table>
     </div>
 </div>
+
+<script>
+    // 這裡就是我們的「常用餐廳資料庫」
+    const restaurantDB = {
+        // 麵朝的所有品項
+        'mianchao': '鮮蝦雲吞拌麵, 青醬雲吞拌麵, 椒麻雲吞拌麵, 蔥油雲吞拌麵, 香滷雲吞拌麵, XO醬雲吞拌麵, 港式水餃拌麵, 青醬水餃拌麵, 椒麻水餃拌麵, 蔥油水餃拌麵, 香滷水餃拌麵, XO醬水餃拌麵, 京醬肉絲拌麵, 椒麻雞絲拌麵, 青醬雞絲拌麵, 蔥油雞絲拌麵, 香滷雞絲拌麵, XO醬雞絲拌麵, 羅宋蔬菜湯麵, 鮮蝦雲吞湯麵, 羅宋蔬菜雞湯麵, 養生清燉雞湯麵, 剝皮辣椒雞湯麵, 漢方肉骨茶雞湯麵, 大推烏梅汁, 季節燙青菜, 新竹貢丸湯, 寶島魚丸湯, 手工餛飩湯, 羅宋蔬菜湯, 鮮蝦雲吞湯, 羅宋雲吞湯, 養生清燉雞湯, 剝皮辣椒雞湯, 漢方肉骨茶雞湯, 蒜泥五花肉, 椒麻五花肉, 蔥油舒肥雞, 青醬舒肥雞, 紅油鮮蝦抄手, 白油鮮蝦抄手, 港式翠玉水餃10粒'
+    };
+
+    // 當下拉選單改變時，自動把菜單填入輸入框的程式邏輯
+    function autoFillMenu() {
+        const selector = document.getElementById('restaurantSelector');
+        const menuInput = document.getElementById('menuItems');
+        const selectedValue = selector.value;
+
+        if (selectedValue === 'custom' || selectedValue === '') {
+            menuInput.value = ''; // 如果選其他，就清空讓你自己打
+        } else {
+            menuInput.value = restaurantDB[selectedValue]; // 自動帶入預設菜單
+        }
+    }
+</script>
 
 </body>
 </html>
