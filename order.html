@@ -66,7 +66,6 @@
             border-radius: 6px;
             font-size: 16px;
         }
-        /* 升級：選項式備註的排版 */
         .checkbox-group {
             display: flex;
             flex-direction: column;
@@ -99,6 +98,10 @@
             font-size: 18px;
             font-weight: bold;
         }
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
         .receipt-box {
             display: none; 
             background: #fff3e0; 
@@ -126,7 +129,7 @@
     <div class="card status-box">
         <label for="checkId" class="section-title" style="margin-top:0;">🔍 查詢我的訂單與繳費狀態：</label>
         <input type="number" id="checkId" min="1" max="28" placeholder="輸入座號">
-        <button onclick="checkStatus()">查詢</button>
+        <button id="checkBtn" onclick="checkStatus()">查詢</button>
     </div>
     
     <div class="card" id="orderFormArea">
@@ -154,28 +157,21 @@
             </optgroup>
         </select>
 
-        <!-- 升級：變成選項式的備註欄 -->
         <label class="section-title">📝 客製化選項 (可複選)：</label>
         <div class="checkbox-group">
-            <label class="checkbox-item">
-                <input type="checkbox" id="optNoodle"> +15元 享加麵服務
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" id="optChicken"> +30元 拌麵類加舒肥雞
-            </label>
-            <label class="checkbox-item">
-                <input type="checkbox" id="optPork"> 湯麵雞腿 改豬肉片 (免費)
-            </label>
+            <label class="checkbox-item"><input type="checkbox" id="optNoodle"> +15元 享加麵服務</label>
+            <label class="checkbox-item"><input type="checkbox" id="optChicken"> +30元 拌麵類加舒肥雞</label>
+            <label class="checkbox-item"><input type="checkbox" id="optPork"> 湯麵雞腿 改豬肉片 (免費)</label>
         </div>
 
         <label for="orderNote" class="section-title">💡 其他不影響價格的需求：</label>
         <input type="text" id="orderNote" placeholder="例如：不要蔥、不要香菜...">
 
-        <button class="submit-btn" onclick="submitOrder()">確認送出訂單</button>
+        <button class="submit-btn" id="submitBtn" onclick="submitOrder()">確認送出訂單</button>
     </div>
 
     <div class="card receipt-box" id="receiptArea">
-        <h2>✅ 訂單已送出！</h2>
+        <h2>✅ 訂單已成功送出！</h2>
         <hr>
         <p>座號：<strong id="r_id"></strong></p>
         <p>餐點：<strong id="r_meal"></strong></p>
@@ -190,62 +186,109 @@
     </div>
 </div>
 
-<script>
-    function checkStatus() {
+<!-- Firebase 雲端資料庫連線與邏輯 -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+    // 你的專屬 Firebase 金鑰
+    const firebaseConfig = {
+        apiKey: "AIzaSyAQ3nCfS7eNB_hRQ2AQVBFARPn2YeJXl3c",
+        authDomain: "lunch-system-cc413.firebaseapp.com",
+        projectId: "lunch-system-cc413",
+        storageBucket: "lunch-system-cc413.firebasestorage.app",
+        messagingSenderId: "620598610406",
+        appId: "1:620598610406:web:bd5e7db2b568c48d1d2e27",
+        measurementId: "G-FFPSM04FM9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 查詢繳費狀態功能
+    window.checkStatus = async function() {
         const id = document.getElementById('checkId').value;
+        const btn = document.getElementById('checkBtn');
+        
         if(!id) {
             alert("請先輸入座號！");
             return;
         }
-        alert("【預覽模式】\n未來接上資料庫後，這裡會真實顯示 " + id + " 號同學是否已經付錢。");
+
+        btn.innerText = "查詢中...";
+        try {
+            const docRef = doc(db, "orders", "student_" + id);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (data.isPaid) {
+                    alert(`✅ 座號 ${id}：你已經完成繳費囉！放心等著吃午餐吧！`);
+                } else {
+                    alert(`⚠️ 座號 ${id}：你有點餐（${data.meal}），但負責人【尚未確認收款】。\n請記得盡快將 $${data.price} 現金交給負責人喔！`);
+                }
+            } else {
+                alert(`🔍 座號 ${id}：目前系統裡沒有你的訂單，你今天是不是還沒點餐？`);
+            }
+        } catch (error) {
+            console.error(error);
+            alert("查詢失敗，請檢查網路連線。");
+        }
+        btn.innerText = "查詢";
     }
 
-    function submitOrder() {
+    // 點餐送出功能
+    window.submitOrder = async function() {
         const studentId = document.getElementById('studentId').value;
         const mealSelect = document.getElementById('mealSelect');
         const mealName = mealSelect.options[mealSelect.selectedIndex].text;
         const mealPrice = mealSelect.options[mealSelect.selectedIndex].getAttribute('data-price');
         
-        // 防呆
         if(!studentId || mealPrice == "0") {
             alert("請確實填寫座號並選擇餐點！");
             return;
         }
 
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "訂單傳送中...";
+        btn.disabled = true;
+
         let finalPrice = parseInt(mealPrice);
-        let notesArray = []; // 用來收集所有的備註
+        let notesArray = [];
 
-        // 檢查勾選了哪些選項，並自動算錢
-        if(document.getElementById('optNoodle').checked) {
-            finalPrice += 15;
-            notesArray.push("加麵");
-        }
-        if(document.getElementById('optChicken').checked) {
-            finalPrice += 30;
-            notesArray.push("加舒肥雞");
-        }
-        if(document.getElementById('optPork').checked) {
-            notesArray.push("改豬肉片");
-        }
-
-        // 把手動輸入的特殊需求也加進來
+        if(document.getElementById('optNoodle').checked) { finalPrice += 15; notesArray.push("加麵"); }
+        if(document.getElementById('optChicken').checked) { finalPrice += 30; notesArray.push("加舒肥雞"); }
+        if(document.getElementById('optPork').checked) { notesArray.push("改豬肉片"); }
+        
         const customNote = document.getElementById('orderNote').value;
-        if(customNote.trim() !== '') {
-            notesArray.push(customNote);
-        }
-
-        // 如果陣列有東西，就用逗號串接起來；如果沒東西，就寫「無」
+        if(customNote.trim() !== '') { notesArray.push(customNote.trim()); }
+        
         const finalNoteString = notesArray.length > 0 ? notesArray.join(", ") : "無";
 
-        // 切換畫面
-        document.getElementById('orderFormArea').style.display = 'none';
-        document.getElementById('receiptArea').style.display = 'block';
+        try {
+            // 正式把資料寫入雲端 Firebase
+            await setDoc(doc(db, "orders", "student_" + studentId), {
+                studentId: parseInt(studentId),
+                meal: mealName,
+                note: finalNoteString,
+                price: finalPrice,
+                isPaid: false // 剛點完餐，預設為未繳費
+            });
 
-        // 填寫收據資料
-        document.getElementById('r_id').innerText = studentId;
-        document.getElementById('r_meal').innerText = mealName;
-        document.getElementById('r_note').innerText = finalNoteString;
-        document.getElementById('r_price').innerText = finalPrice;
+            // 成功後顯示收據
+            document.getElementById('orderFormArea').style.display = 'none';
+            document.getElementById('receiptArea').style.display = 'block';
+            document.getElementById('r_id').innerText = studentId;
+            document.getElementById('r_meal').innerText = mealName;
+            document.getElementById('r_note').innerText = finalNoteString;
+            document.getElementById('r_price').innerText = finalPrice;
+            
+        } catch (error) {
+            console.error(error);
+            alert("送出失敗！請檢查網路連線。");
+            btn.innerText = "確認送出訂單";
+            btn.disabled = false;
+        }
     }
 </script>
 
