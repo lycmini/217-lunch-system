@@ -1,124 +1,34 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>217班 - 午餐點餐系統</title>
     <style>
-        body {
-            font-family: '微軟正黑體', Arial, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 15px;
-        }
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            font-size: 24px;
-        }
-        .status-box {
-            background-color: #e3f2fd;
-            border-left: 5px solid #2196f3;
-        }
-        .status-box input {
-            width: 65%;
-            display: inline-block;
-            margin-right: 2%;
-        }
-        .status-box button {
-            width: 30%;
-            display: inline-block;
-            background-color: #2196f3;
-            margin-top: 0;
-        }
-        .restaurant-info {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            padding: 10px;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        label.section-title {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 8px;
-            color: #555;
-        }
-        input[type="number"], input[type="text"], select {
-            width: 100%;
-            padding: 12px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            background-color: #f9f9f9;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #eee;
-            cursor: pointer;
-        }
-        .checkbox-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-        }
-        .submit-btn {
-            background-color: #ff9800;
-            color: white;
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 25px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .submit-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        .receipt-box {
-            display: none; 
-            background: #fff3e0; 
-            border: 2px dashed #ff9800; 
-            text-align: center;
-        }
-        .price-text {
-            color: #d32f2f;
-            font-size: 28px;
-            font-weight: bold;
-            margin: 15px 0;
-        }
-        .cash-warning {
-            color: #d32f2f;
-            font-weight: bold;
-            font-size: 18px;
-        }
+        body { font-family: '微軟正黑體', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 15px; }
+        .container { max-width: 500px; margin: 0 auto; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1 { color: #333; text-align: center; font-size: 24px; }
+        .status-box { background-color: #e3f2fd; border-left: 5px solid #2196f3; }
+        .status-box input { width: 65%; display: inline-block; margin-right: 2%; }
+        .status-box button { width: 30%; display: inline-block; background-color: #2196f3; margin-top: 0; }
+        .restaurant-info { background-color: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 6px; text-align: center; font-weight: bold; margin-bottom: 20px; }
+        label.section-title { font-weight: bold; display: block; margin-top: 15px; margin-bottom: 8px; color: #555; }
+        input[type="number"], input[type="text"], select { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
+        .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .checkbox-item { display: flex; align-items: center; background-color: #f9f9f9; padding: 12px; border-radius: 6px; border: 1px solid #eee; cursor: pointer; }
+        .checkbox-item input[type="checkbox"] { width: 20px; height: 20px; margin-right: 10px; }
+        .btn { color: white; width: 100%; padding: 15px; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; font-size: 18px; font-weight: bold; }
+        .btn-primary { background-color: #ff9800; }
+        .btn-secondary { background-color: #757575; }
+        .btn-danger { background-color: #f44336; }
+        .btn-success { background-color: #4CAF50; }
+        .btn:disabled { background-color: #ccc; cursor: not-allowed; }
+        
+        /* 隱藏區塊 */
+        #reviewArea, #receiptArea { display: none; }
+        .price-text { color: #d32f2f; font-size: 28px; font-weight: bold; margin: 15px 0; }
+        .review-box { background: #fffde7; border: 2px dashed #fbc02d; padding: 15px; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -127,16 +37,14 @@
     <h1>🍱 217班 午餐點餐系統</h1>
 
     <div class="card status-box">
-        <label for="checkId" class="section-title" style="margin-top:0;">🔍 查詢我的訂單與繳費狀態：</label>
+        <label for="checkId" class="section-title" style="margin-top:0;">🔍 查詢我的訂單狀態：</label>
         <input type="number" id="checkId" min="1" max="28" placeholder="輸入座號">
         <button id="checkBtn" onclick="checkStatus()">查詢</button>
     </div>
     
+    <!-- 1. 填寫訂單區塊 -->
     <div class="card" id="orderFormArea">
-        <div class="restaurant-info">
-            📢 今日餐廳：麵朝 (新竹食品店)
-        </div>
-
+        <div class="restaurant-info">📢 今日餐廳：麵朝 (新竹食品店)</div>
         <label for="studentId" class="section-title">👤 你的座號 (1-28)：</label>
         <input type="number" id="studentId" min="1" max="28" placeholder="請輸入座號">
 
@@ -151,10 +59,6 @@
                 <option value="羅宋蔬菜湯麵" data-price="75">羅宋蔬菜湯麵 $75</option>
                 <option value="剝皮辣椒雞湯麵" data-price="140">剝皮辣椒雞湯麵 $140</option>
             </optgroup>
-            <optgroup label="湯品與小點">
-                <option value="新竹貢丸湯" data-price="40">新竹貢丸湯 $40</option>
-                <option value="紅油鮮蝦抄手" data-price="100">紅油鮮蝦抄手 $100</option>
-            </optgroup>
         </select>
 
         <label class="section-title">📝 客製化選項 (可複選)：</label>
@@ -164,133 +68,174 @@
             <label class="checkbox-item"><input type="checkbox" id="optPork"> 湯麵雞腿 改豬肉片 (免費)</label>
         </div>
 
-        <label for="orderNote" class="section-title">💡 其他不影響價格的需求：</label>
-        <input type="text" id="orderNote" placeholder="例如：不要蔥、不要香菜...">
+        <label for="orderNote" class="section-title">💡 其他特殊需求：</label>
+        <input type="text" id="orderNote" placeholder="例如：不要蔥...">
 
-        <button class="submit-btn" id="submitBtn" onclick="submitOrder()">確認送出訂單</button>
+        <button class="btn btn-primary" onclick="previewOrder()">預覽訂單</button>
     </div>
 
-    <div class="card receipt-box" id="receiptArea">
-        <h2>✅ 訂單已成功送出！</h2>
+    <!-- 2. 預覽確認區塊 (功能 3) -->
+    <div class="card" id="reviewArea">
+        <h2>⚠️ 請確認價格與餐點內容</h2>
+        <div class="review-box">
+            <p>座號：<strong id="v_id"></strong></p>
+            <p>餐點：<strong id="v_meal"></strong></p>
+            <p>備註：<strong id="v_note"></strong></p>
+            <div class="price-text">總額：$<span id="v_price"></span></div>
+        </div>
+        <button class="btn btn-secondary" onclick="backToEdit()">返回修改</button>
+        <button class="btn btn-primary" id="submitBtn" onclick="confirmSubmit()">確認無誤，送出訂單</button>
+    </div>
+
+    <!-- 3. 收據與互動區塊 -->
+    <div class="card" id="receiptArea">
+        <h2>✅ 訂單狀態：已成立</h2>
         <hr>
         <p>座號：<strong id="r_id"></strong></p>
         <p>餐點：<strong id="r_meal"></strong></p>
-        <p>備註：<strong id="r_note"></strong></p>
+        <div class="price-text">應付：$<span id="r_price"></span></div>
         
-        <div class="price-text">應付總額：$<span id="r_price"></span></div>
+        <div id="paymentActions">
+            <p style="color:red; font-weight:bold;">⚠️ 請將現金交給負責人，並點擊下方按鈕通知他：</p>
+            <!-- 功能 2：通知已繳費按鈕 -->
+            <button class="btn btn-success" id="notifyBtn" onclick="notifyAdminPaid()">我已繳費了！發送通知</button>
+        </div>
         
-        <p class="cash-warning">⚠️ 請務必於今日中午前<br>將「現金」交給負責人！</p>
-        <p style="font-size: 14px; color: #555;">(繳費後，可於上方輸入座號查詢是否已成功登記)</p>
-        
-        <button class="submit-btn" style="background-color: #757575;" onclick="location.reload()">返回重整</button>
+        <div style="margin-top: 20px;">
+            <!-- 功能 4：取消訂單按鈕 -->
+            <button class="btn btn-danger" onclick="cancelOrder()">取消今日訂單</button>
+            <button class="btn btn-secondary" onclick="location.reload()">回首頁</button>
+        </div>
     </div>
 </div>
 
-<!-- Firebase 雲端資料庫連線與邏輯 -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-    // 你的專屬 Firebase 金鑰
     const firebaseConfig = {
         apiKey: "AIzaSyAQ3nCfS7eNB_hRQ2AQVBFARPn2YeJXl3c",
         authDomain: "lunch-system-cc413.firebaseapp.com",
         projectId: "lunch-system-cc413",
         storageBucket: "lunch-system-cc413.firebasestorage.app",
         messagingSenderId: "620598610406",
-        appId: "1:620598610406:web:bd5e7db2b568c48d1d2e27",
-        measurementId: "G-FFPSM04FM9"
+        appId: "1:620598610406:web:bd5e7db2b568c48d1d2e27"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    let pendingOrder = {}; // 暫存要送出的訂單資料
 
-    // 查詢繳費狀態功能
+    // 查詢狀態 (結合防重複)
     window.checkStatus = async function() {
         const id = document.getElementById('checkId').value;
-        const btn = document.getElementById('checkBtn');
+        if(!id) return alert("請輸入座號！");
         
-        if(!id) {
-            alert("請先輸入座號！");
-            return;
+        const docSnap = await getDoc(doc(db, "orders", "student_" + id));
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            showReceipt(data.studentId, data.meal, data.price, data.isPaid, data.notifiedPaid);
+            alert(`查到你的訂單了！你點的是：${data.meal}`);
+        } else {
+            alert(`座號 ${id} 目前沒有訂單記錄喔！`);
         }
-
-        btn.innerText = "查詢中...";
-        try {
-            const docRef = doc(db, "orders", "student_" + id);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                if (data.isPaid) {
-                    alert(`✅ 座號 ${id}：你已經完成繳費囉！放心等著吃午餐吧！`);
-                } else {
-                    alert(`⚠️ 座號 ${id}：你有點餐（${data.meal}），但負責人【尚未確認收款】。\n請記得盡快將 $${data.price} 現金交給負責人喔！`);
-                }
-            } else {
-                alert(`🔍 座號 ${id}：目前系統裡沒有你的訂單，你今天是不是還沒點餐？`);
-            }
-        } catch (error) {
-            console.error(error);
-            alert("查詢失敗，請檢查網路連線。");
-        }
-        btn.innerText = "查詢";
     }
 
-    // 點餐送出功能
-    window.submitOrder = async function() {
-        const studentId = document.getElementById('studentId').value;
+    // 進入預覽畫面 (功能 3 & 5防重複)
+    window.previewOrder = async function() {
+        const id = document.getElementById('studentId').value;
         const mealSelect = document.getElementById('mealSelect');
-        const mealName = mealSelect.options[mealSelect.selectedIndex].text;
-        const mealPrice = mealSelect.options[mealSelect.selectedIndex].getAttribute('data-price');
+        const price = parseInt(mealSelect.options[mealSelect.selectedIndex].getAttribute('data-price') || 0);
         
-        if(!studentId || mealPrice == "0") {
-            alert("請確實填寫座號並選擇餐點！");
+        if(!id || price === 0) return alert("請填寫座號並選擇餐點！");
+
+        // 功能 5：偵測是否已經點過餐
+        const docSnap = await getDoc(doc(db, "orders", "student_" + id));
+        if (docSnap.exists()) {
+            alert("⚠️ 系統偵測到你今天已經送出過訂單囉！\n如果想重選，請先到上方查詢訂單並點擊「取消訂單」。");
             return;
         }
 
+        let finalPrice = price;
+        let notes = [];
+        if(document.getElementById('optNoodle').checked) { finalPrice += 15; notes.push("加麵"); }
+        if(document.getElementById('optChicken').checked) { finalPrice += 30; notes.push("加舒肥雞"); }
+        if(document.getElementById('optPork').checked) { notes.push("改豬肉片"); }
+        if(document.getElementById('orderNote').value) { notes.push(document.getElementById('orderNote').value.trim()); }
+        const finalNote = notes.length > 0 ? notes.join(", ") : "無";
+
+        pendingOrder = { studentId: parseInt(id), meal: mealSelect.options[mealSelect.selectedIndex].text, note: finalNote, price: finalPrice, isPaid: false, notifiedPaid: false };
+
+        document.getElementById('v_id').innerText = id;
+        document.getElementById('v_meal').innerText = pendingOrder.meal;
+        document.getElementById('v_note').innerText = finalNote;
+        document.getElementById('v_price').innerText = finalPrice;
+        
+        document.getElementById('orderFormArea').style.display = 'none';
+        document.getElementById('reviewArea').style.display = 'block';
+    }
+
+    window.backToEdit = function() {
+        document.getElementById('reviewArea').style.display = 'none';
+        document.getElementById('orderFormArea').style.display = 'block';
+    }
+
+    // 確認送出寫入雲端
+    window.confirmSubmit = async function() {
         const btn = document.getElementById('submitBtn');
-        btn.innerText = "訂單傳送中...";
-        btn.disabled = true;
-
-        let finalPrice = parseInt(mealPrice);
-        let notesArray = [];
-
-        if(document.getElementById('optNoodle').checked) { finalPrice += 15; notesArray.push("加麵"); }
-        if(document.getElementById('optChicken').checked) { finalPrice += 30; notesArray.push("加舒肥雞"); }
-        if(document.getElementById('optPork').checked) { notesArray.push("改豬肉片"); }
-        
-        const customNote = document.getElementById('orderNote').value;
-        if(customNote.trim() !== '') { notesArray.push(customNote.trim()); }
-        
-        const finalNoteString = notesArray.length > 0 ? notesArray.join(", ") : "無";
-
+        btn.innerText = "處理中..."; btn.disabled = true;
         try {
-            // 正式把資料寫入雲端 Firebase
-            await setDoc(doc(db, "orders", "student_" + studentId), {
-                studentId: parseInt(studentId),
-                meal: mealName,
-                note: finalNoteString,
-                price: finalPrice,
-                isPaid: false // 剛點完餐，預設為未繳費
-            });
-
-            // 成功後顯示收據
-            document.getElementById('orderFormArea').style.display = 'none';
-            document.getElementById('receiptArea').style.display = 'block';
-            document.getElementById('r_id').innerText = studentId;
-            document.getElementById('r_meal').innerText = mealName;
-            document.getElementById('r_note').innerText = finalNoteString;
-            document.getElementById('r_price').innerText = finalPrice;
-            
+            await setDoc(doc(db, "orders", "student_" + pendingOrder.studentId), pendingOrder);
+            showReceipt(pendingOrder.studentId, pendingOrder.meal, pendingOrder.price, false, false);
         } catch (error) {
-            console.error(error);
-            alert("送出失敗！請檢查網路連線。");
-            btn.innerText = "確認送出訂單";
-            btn.disabled = false;
+            alert("錯誤！請檢查網路連線。");
+        }
+    }
+
+    // 顯示收據介面
+    function showReceipt(id, meal, price, isPaid, notifiedPaid) {
+        document.getElementById('orderFormArea').style.display = 'none';
+        document.getElementById('reviewArea').style.display = 'none';
+        document.getElementById('receiptArea').style.display = 'block';
+        
+        document.getElementById('r_id').innerText = id;
+        document.getElementById('r_meal').innerText = meal;
+        document.getElementById('r_price').innerText = price;
+        
+        // 處理繳費狀態按鈕顯示
+        const paymentArea = document.getElementById('paymentActions');
+        if (isPaid) {
+            paymentArea.innerHTML = `<h3 style="color:#4CAF50;">🎉 負責人已確認收到你的款項！</h3>`;
+        } else if (notifiedPaid) {
+            paymentArea.innerHTML = `<h3 style="color:#ff9800;">⏳ 已發送通知，等待負責人確認收款中...</h3>`;
+        } else {
+            document.getElementById('notifyBtn').onclick = () => notifyAdminPaid(id);
+        }
+        
+        // 把取消按鈕綁定這個 ID
+        window.currentViewingId = id; 
+    }
+
+    // 功能 2：通知已繳費
+    window.notifyAdminPaid = async function(id) {
+        if(!id) id = window.currentViewingId;
+        try {
+            await updateDoc(doc(db, "orders", "student_" + id), { notifiedPaid: true });
+            alert("已通知負責人！");
+            location.reload(); // 重整看新狀態
+        } catch(e) { alert("通知失敗"); }
+    }
+
+    // 功能 4：取消訂單
+    window.cancelOrder = async function() {
+        if(confirm("真的要取消這筆訂單嗎？（若已繳費請親自向負責人退款）")) {
+            try {
+                await deleteDoc(doc(db, "orders", "student_" + window.currentViewingId));
+                alert("訂單已成功取消！");
+                location.reload();
+            } catch(e) { alert("取消失敗"); }
         }
     }
 </script>
-
 </body>
 </html>
