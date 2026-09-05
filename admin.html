@@ -94,11 +94,13 @@
         <li><a href="javascript:void(0)" onclick="switchPage('page-dashboard'); toggleMenu();"><span style="font-size:18px;">👑</span> 系統主控台</a></li>
         <li><a href="javascript:void(0)" onclick="switchPage('page-ledger'); toggleMenu();"><span style="font-size:18px;">💰</span> 班級付款總情形</a></li>
         <li><a href="javascript:void(0)" onclick="switchPage('page-student-records'); loadStudentRecords('all'); toggleMenu();"><span style="font-size:18px;">🔍</span> 查詢狀態與紀錄</a></li>
+        <!-- 🚀 意見反應與評分站 -->
         <li><a href="javascript:void(0)" onclick="switchPage('page-reviews'); toggleMenu();"><span style="font-size:18px;">⭐</span> 餐點評分接收站</a></li>
+        <li><a href="javascript:void(0)" onclick="switchPage('page-feedbacks'); toggleMenu();"><span style="font-size:18px;">💌</span> 意見反應&許願池接收站</a></li>
+        
         <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span style="font-size:18px;">📝</span> 修改歷史紀錄</a></li>
         <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span style="font-size:18px;">🕵️</span> 網頁活動稽核</a></li>
         
-        <!-- 🚀 更新：合併校規與午餐規定，獨立出關於本站 -->
         <li><a href="javascript:void(0)" onclick="showInfoPage('關於本站', '本系統由 217 班負責人開發，專為簡化午餐點餐、防呆與對帳流程所設計。<br><br>我們結合了 Firebase 雲端資料庫技術與現代前端框架概念，提供同學最順暢的點餐體驗。'); toggleMenu();"><span style="font-size:18px;">📖</span> 關於本站</a></li>
         <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span style="font-size:18px;">⚖️</span> 相關校規 & 服務條款</a></li>
         
@@ -120,16 +122,13 @@
     <p><strong>第三條（履約義務與損害賠償）</strong><br>契約一經成立，除不可抗力外，訂購人不得無故拒絕受領或拒付價金。惡意棄單者應負損害賠償責任。</p>
     <p><strong>第四條（免責事由與帳務確認）</strong><br>因設備故障致資料滅失，開發人及負責人不負賠償責任。帳務結算概以負責人實際收受現金為唯一認定標準。</p>
     <p><strong>第五條（緊急處置權）</strong><br>遇店家無法履約時，負責人得逕行啟動備案或撤銷訂單，價金差額依多退少補處理，訂購人不得異議。</p>
-    <!-- 🚀 新增：合併學校午餐規定 -->
     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
     <p><strong>📜 學校午餐規定</strong><br>詳見校網公告：<br><a href="https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754" target="_blank" style="color: #2196f3; word-break: break-all;">https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754</a></p>
-    
     <p style="text-align:right; font-weight:bold; color:#f44336; margin-top:20px;">網頁開發人：羅亦承</p>
 </div>
 
 <div class="container">
 
-    <!-- 獨立資訊分頁 -->
     <div class="card" id="infoCard">
         <h2 id="infoTitle" style="color: #1976d2; border-bottom: 2px solid #bbdefb; font-size: 22px;">標題</h2>
         <div id="infoContent">內容</div>
@@ -274,6 +273,21 @@
         </div>
     </div>
 
+    <!-- 🚀 頁面：意見反應&許願池接收站 -->
+    <div id="page-feedbacks" class="admin-page">
+        <div class="card">
+            <h2 style="color:#9c27b0;">💌 意見反應&許願池接收站</h2>
+            <p style="color:#555;">這裡是同學偷偷許願或反應系統問題的地方！</p>
+            <button class="btn btn-primary" style="background-color:#9c27b0;" onclick="loadFeedbacks()">🔄 讀取最新意見</button>
+            <div class="table-responsive">
+                <table style="font-size:14px;">
+                    <thead><tr><th>時間</th><th>座號 (可能匿名)</th><th>內容</th></tr></thead>
+                    <tbody id="feedbackTableBody"><tr><td colspan="3">點擊讀取載入...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <!-- 頁面：歷史紀錄編輯器 -->
     <div id="page-historyEdit" class="admin-page">
         <div class="card">
@@ -340,7 +354,6 @@
         document.getElementById('overlay').classList.toggle('active');
     }
 
-    // 🚀 後台資訊專頁切換函數
     window.showInfoPage = function(title, content) {
         document.querySelectorAll('.admin-page').forEach(page => page.classList.remove('active'));
         document.getElementById('infoTitle').innerText = title;
@@ -363,6 +376,7 @@
         if(pageId === 'page-ledger') window.loadLedger();
         if(pageId === 'page-activity') window.loadActivityLog();
         if(pageId === 'page-reviews') window.loadReviews();
+        if(pageId === 'page-feedbacks') window.loadFeedbacks(); // 載入意見
     }
 
     async function loadSettings() {
@@ -603,6 +617,26 @@
             document.getElementById('avgS1').innerText = c1 > 0 ? (s1/c1).toFixed(1) : '-'; document.getElementById('avgS2').innerText = c2 > 0 ? (s2/c2).toFixed(1) : '-';
             document.getElementById('avgS3').innerText = c3 > 0 ? (s3/c3).toFixed(1) : '-'; document.getElementById('avgS4').innerText = c4 > 0 ? (s4/c4).toFixed(1) : '-';
         } catch(e) { document.getElementById('reviewTableBody').innerHTML = `<tr><td colspan="5">讀取失敗</td></tr>`; }
+    }
+
+    // 🚀 新增：載入意見反應&許願池資料
+    window.loadFeedbacks = async function() {
+        document.getElementById('feedbackTableBody').innerHTML = `<tr><td colspan="3">載入中...</td></tr>`;
+        try {
+            const querySnapshot = await getDocs(collection(db, "feedbacks"));
+            let feedbacks = []; querySnapshot.forEach(doc => feedbacks.push(doc.data()));
+            feedbacks.sort((a,b) => b.timestamp - a.timestamp); // 新的在上面
+
+            let html = "";
+            feedbacks.forEach(f => {
+                html += `<tr>
+                            <td>${f.timeString.split(' ')[0]}<br>${f.timeString.split(' ')[1]}</td>
+                            <td style="color:#9c27b0;"><strong>${f.studentId}</strong></td>
+                            <td style="text-align:left; line-height:1.4;">${f.content}</td>
+                         </tr>`;
+            });
+            document.getElementById('feedbackTableBody').innerHTML = html || `<tr><td colspan="3">尚無意見反應</td></tr>`;
+        } catch(e) { document.getElementById('feedbackTableBody').innerHTML = `<tr><td colspan="3">讀取失敗</td></tr>`; }
     }
 
     window.loadActivityLog = async function() {
