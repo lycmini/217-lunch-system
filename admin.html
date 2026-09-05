@@ -105,19 +105,20 @@
 
         /* 🚀 獨立登入頁面 IG 風格 */
         #loginPage { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
-        .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; }
+        .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
         .ig-title { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 24px; color: #111; letter-spacing: 1px;}
-        .ig-input { width: 100%; padding: 14px 16px; border: 1px solid #dbdbdb; border-radius: 12px; font-size: 14px; background-color: #fafafa; outline: none; box-sizing: border-box; font-family: inherit;}
-        .ig-input:focus { border-color: #a8a8a8; }
-        .ig-btn { width: 100%; padding: 14px; background-color: #9cb2ed; color: white; border: none; border-radius: 24px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 4px; font-family: inherit;}
-        .ig-forgot { text-align: center; margin-top: 20px; font-size: 14px; color: #111; cursor: pointer; font-weight: 500; }
+        .ig-input { width: 100%; padding: 14px 16px; border: 1px solid #e5e5ea; border-radius: 12px; font-size: 14px; background-color: #fafafa; outline: none; box-sizing: border-box; font-family: inherit;}
+        .ig-input:focus { border-color: #111; background-color: #fff; }
+        .ig-btn { width: 100%; padding: 14px; background-color: #111; color: white; border: none; border-radius: 24px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 4px; font-family: inherit; transition: 0.2s;}
+        .ig-btn:hover { background-color: #333; }
+        .ig-forgot { text-align: center; margin-top: 20px; font-size: 14px; color: #555; cursor: pointer; font-weight: 500; transition: 0.2s; }
+        .ig-forgot:hover { color: #111; }
         
         #mainApp { display: none; }
     </style>
 </head>
 <body>
 
-<!-- 🚀 獨立登入頁面 -->
 <div id="loginPage">
     <div class="ig-form">
         <div class="ig-title">217午餐後台管理</div>
@@ -199,7 +200,6 @@
                         <input type="date" id="scheduleDate">
                         <select id="scheduleRestaurant">
                             <option value="麵朝 (新竹食品店)">麵朝 (新竹食品店)</option>
-                            <option value="八方雲集">八方雲集</option>
                         </select>
                         <button class="btn btn-primary" style="width:100%;" onclick="saveDailyMenu()">儲存排程</button>
                     </div>
@@ -409,7 +409,7 @@
         } else {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
-            listenToOrders(todayStr); // 登入成功後才開始監聽資料
+            listenToOrders(todayStr); 
         }
     };
 
@@ -417,6 +417,7 @@
         const acc = document.getElementById('loginAccount').value.trim();
         const pass = document.getElementById('loginPassword').value.trim();
         
+        // 🚀 設定後台帳號密碼
         if (acc === '217admin' && pass === 'lunchadmin') {
             localStorage.setItem('adminLoggedIn_217', 'true');
             document.getElementById('loginPage').style.display = 'none';
@@ -457,7 +458,7 @@
             <p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p>
             <p><b>🚀 核心功能特色</b><br>
             1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>
-            2. <b>班內大數據推薦</b>：即時顯示「班內熱門排行榜」。<br>
+            2. <b>大數據推薦</b>：即時顯示「熱門排行榜」。<br>
             3. <b>透明化帳務</b>：支援部分付款與自動差額計算。<br>
             4. <b>Plan B 危機應變</b>：店家沒開時自動計算補退款。<br>
             5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p>
@@ -858,10 +859,17 @@
     
     window.copyForSchoolForm = function() {
         let data = window.currentReportData; if(!data || Object.keys(data.items).length === 0) return alert("目前沒有訂單資料可以複製！");
-        let text = `商家名稱：${data.restaurant}\n訂購品項：\n`; let totalQty = 0;
-        for(let [item, count] of Object.entries(data.items)) { text += `- ${item} x${count}\n`; totalQty += count; }
-        text += `\n總數量：${totalQty} 份\n總金額：$${data.totalAmount}`;
-        navigator.clipboard.writeText(text).then(() => { if(confirm("✅ 已成功複製！\n\n前往填寫表單？")) window.open("https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform", "_blank"); }).catch(err => { alert("複製失敗"); });
+        let text = `商家名稱：${data.restaurant}
+訂購品項：
+`; let totalQty = 0;
+        for(let [item, count] of Object.entries(data.items)) { text += `- ${item} x${count}
+`; totalQty += count; }
+        text += `
+總數量：${totalQty} 份
+總金額：$${data.totalAmount}`;
+        navigator.clipboard.writeText(text).then(() => { if(confirm("✅ 已成功複製！
+
+前往填寫表單？")) window.open("https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform", "_blank"); }).catch(err => { alert("複製失敗"); });
     }
 
     listenToOrders(todayStr);
