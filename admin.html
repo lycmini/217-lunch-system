@@ -16,18 +16,21 @@
         .sidebar-header { background: #d32f2f; color: white; padding: 20px; font-size: 20px; font-weight: bold; }
         .sidebar-menu { list-style: none; padding: 0; margin: 0; }
         .sidebar-menu li { border-bottom: 1px solid #eee; }
-        .sidebar-menu a { display: block; padding: 15px 20px; color: #333; text-decoration: none; font-size: 16px; }
+        .sidebar-menu a { display: block; padding: 15px 20px; color: #333; text-decoration: none; font-size: 16px; display: flex; align-items: center; gap: 10px; }
         .sidebar-menu a:hover { background: #f5f5f5; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 999; }
         .overlay.active { display: block; }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 15px; }
         .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h1, h2 { color: #333; margin-top:0; }
         h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        
+        /* 🚀 響應式表格 */
+        .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        th { background-color: #4CAF50; color: white; }
+        th { background-color: #4CAF50; color: white; white-space: nowrap; }
         .unpaid { background-color: #ffebee; }
         .paid { background-color: #e8f5e9; }
         
@@ -38,7 +41,6 @@
         .btn-success { background-color: #4CAF50; }
         .btn-outline { background-color: white; color: #ff9800; border: 2px solid #ff9800; }
         .btn-school { background-color: #fff; color: #1976d2; border: 2px solid #1976d2; margin-top:0; padding: 6px 12px; font-size:14px; }
-        .btn-school:hover { background-color: #e3f2fd; }
         
         input[type="date"], input[type="text"], input[type="number"], input[type="time"], select { padding: 8px; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
         .planB-box { background-color: #fff3e0; border: 2px dashed #ff9800; padding: 15px; border-radius: 8px; }
@@ -47,23 +49,24 @@
         .notif-badge { display: inline-block; background: white; border: 1px solid #ccc; padding: 6px 12px; border-radius: 20px; margin: 5px; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .notif-badge button { margin-left: 8px; cursor: pointer; border: none; border-radius: 4px; padding: 4px 8px; font-weight: bold; color: white; }
         
-        .stats-grid { display: flex; gap: 15px; margin-top: 15px; }
-        .stat-box { flex: 1; background: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
+        .stats-grid { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+        .stat-box { flex: 1; min-width: 120px; background: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
         .stat-value { font-size: 24px; font-weight: bold; margin-top: 5px; }
         .text-green { color: #4CAF50; }
         .text-red { color: #f44336; }
         .text-blue { color: #2196f3; }
-        .unpaid-list { background: #ffebee; padding: 10px; border-radius: 6px; color: #d32f2f; font-weight: bold; margin-top: 15px; }
-        .item-list { background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        
         .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
+        @media (max-width: 600px) { .settings-grid { grid-template-columns: 1fr; } }
+        
         .inline-badge { background-color: #ff9800; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-top: 5px; display: inline-block; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
 
-        #historyModal { display: none; position: fixed; top:10%; left:50%; transform:translate(-50%,0); width: 90%; max-width:500px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 1000; border: 2px solid #ff9800; max-height:80vh; overflow-y:auto; }
-        .rank-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ccc; }
-        .rank-num { font-weight: bold; color: #ff9800; width: 30px; }
-        #modalOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
+        /* SPA 頁面切換控制 */
+        .admin-page { display: none; }
+        .admin-page.active { display: block; }
+        
+        .time-label { font-size: 12px; color: #888; display: block; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -78,109 +81,138 @@
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">系統管理選單</div>
     <ul class="sidebar-menu">
-        <li><a href="#" onclick="showHistoryRank(); toggleMenu();">🏆 歷代熱門排行榜</a></li>
-        <li><a href="#" onclick="alert('本系統由 217 班負責人開發，用於簡化午餐點餐與對帳流程。'); toggleMenu();">📖 關於本站</a></li>
-        <li><a href="#" onclick="alert('法規條文：\n1. 依學校規定，未依規定處理廚餘者記警告乙次。\n2. 擅自拿取他人餐點者依校規竊盜罪處分。'); toggleMenu();">⚖️ 相關校規&法規</a></li>
-        <li><a href="#" onclick="alert('規定：\n1. 每日請於系統開放時間內點餐\n2. 餐點送達後憑繳費確認取餐\n3. 惡意棄單將取消點餐資格'); toggleMenu();">📜 學校午餐規定</a></li>
-        <li><a href="#" onclick="alert('目前合作店家：\n- 麵朝\n- 八方雲集\n(詳細菜單會依負責人每日開放為主)'); toggleMenu();">🍽️ 所有菜單總覽</a></li>
-        <li><a href="#" onclick="alert('Q: 我點錯了怎麼辦？\nA: 請在送出訂單後的收據畫面點擊「取消訂單」，再重新點一次即可。'); toggleMenu();">❓ 常見問題 (FAQ)</a></li>
-        <li><a href="https://forms.gle/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()">📝 校方外食登記表單</a></li>
+        <li><a href="javascript:void(0)" onclick="switchPage('page-dashboard'); toggleMenu();"><span style="font-size:18px;">👑</span> 系統主控台</a></li>
+        <li><a href="javascript:void(0)" onclick="switchPage('page-ledger'); toggleMenu();"><span style="font-size:18px;">💰</span> 班級付款總情形</a></li>
+        <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span style="font-size:18px;">📝</span> 修改歷史紀錄</a></li>
+        <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span style="font-size:18px;">🕵️</span> 網頁活動稽核</a></li>
+        <li><a href="https://forms.gle/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span style="font-size:18px;">📋</span> 校方外食登記表單</a></li>
     </ul>
 </div>
 
-<div id="modalOverlay" onclick="document.getElementById('historyModal').style.display='none'; this.style.display='none';"></div>
-<div id="historyModal">
-    <h2 style="color:#ff9800; border-bottom: 2px solid #ffe082;">🏆 歷代排行榜 (總計)</h2>
-    <div id="historyRankContent">載入中...</div>
-    <button class="btn btn-secondary" style="width:100%;" onclick="document.getElementById('historyModal').style.display='none'; document.getElementById('modalOverlay').style.display='none';">關閉</button>
-</div>
-
 <div class="container">
-    <div class="card" style="border-top: 5px solid #2196f3;">
-        <h2>⚙️ 系統核心設定</h2>
-        <div class="settings-grid">
-            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
-                <h3 style="margin-top:0; color:#1976d2;">🗓️ 預排指定日期餐廳</h3>
-                <label>選擇日期：</label>
-                <input type="date" id="scheduleDate">
-                <label>選擇當天餐廳：</label>
-                <select id="scheduleRestaurant">
-                    <option value="麵朝 (新竹食品店)">麵朝 (新竹食品店)</option>
-                    <option value="八方雲集">八方雲集</option>
-                </select>
-                <button class="btn btn-primary" style="width:100%;" onclick="saveDailyMenu()">儲存排程</button>
-            </div>
-            
-            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
-                <h3 style="margin-top:0; color:#1976d2;">⏱️ 開放點餐時間區間</h3>
-                <label>開始時間：</label>
-                <input type="time" id="sysStartTime" value="06:00" lang="en-GB">
-                <label>截止時間：</label>
-                <input type="time" id="sysEndTime" value="11:00" lang="en-GB">
-                <button class="btn btn-success" style="width:100%;" onclick="saveTimeSettings()">更新時間</button>
+    
+    <!-- 🚀 頁面 1：主控台 -->
+    <div id="page-dashboard" class="admin-page active">
+        <div class="card" style="border-top: 5px solid #2196f3;">
+            <h2>⚙️ 系統核心設定</h2>
+            <div class="settings-grid">
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                    <h3 style="margin-top:0; color:#1976d2;">🗓️ 預排指定日期餐廳</h3>
+                    <input type="date" id="scheduleDate">
+                    <select id="scheduleRestaurant">
+                        <option value="麵朝 (新竹食品店)">麵朝 (新竹食品店)</option>
+                        <option value="八方雲集">八方雲集</option>
+                    </select>
+                    <button class="btn btn-primary" style="width:100%;" onclick="saveDailyMenu()">儲存排程</button>
+                </div>
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                    <h3 style="margin-top:0; color:#1976d2;">⏱️ 開放點餐時間區間</h3>
+                    <input type="time" id="sysStartTime" value="06:00" lang="en-GB">
+                    <input type="time" id="sysEndTime" value="11:00" lang="en-GB">
+                    <button class="btn btn-success" style="width:100%;" onclick="saveTimeSettings()">更新時間</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="card" id="notificationCenter">
-        <h2 style="color: #ff8f00;">🔔 系統通知中心</h2>
-        <div id="cancelNotifs"></div>
-        <div id="paidNotifs" style="margin-top: 15px;"></div>
-    </div>
-    
-    <div class="card">
-        <h2>📅 選擇查看訂單日期</h2>
-        <input type="date" id="adminDate">
-    </div>
-
-    <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2>📊 統計報表與帳務中心</h2>
-            <button class="btn btn-outline" style="margin-top:0; padding:8px 15px;" onclick="showHistoryRank()">🏆 歷代排行榜</button>
+        <div class="card" id="notificationCenter">
+            <h2 style="color: #ff8f00;">🔔 系統通知中心</h2>
+            <div id="cancelNotifs"></div>
+            <div id="paidNotifs" style="margin-top: 15px;"></div>
         </div>
         
-        <div class="item-list">
-            <!-- 🚀 新增：複製校方表單專用按鈕 -->
+        <div class="card">
+            <h2>📅 選擇查看訂單日期</h2>
+            <input type="date" id="adminDate">
+        </div>
+
+        <div class="card">
+            <h2>📊 統計報表與帳務中心</h2>
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #bbdefb; padding-bottom:10px; margin-bottom:10px;">
                 <h3 style="margin: 0; color: #1565c0;">📞 點餐總表</h3>
                 <button class="btn btn-school" onclick="copyForSchoolForm()">📋 複製校方表單格式</button>
             </div>
             <ul id="statItemCounts" style="margin:0; padding-left:20px; font-size:16px;"><li>計算中...</li></ul>
+
+            <div class="stats-grid">
+                <div class="stat-box"><div>應收總額</div><div class="stat-value text-blue">$<span id="statTotalAmount">0</span></div></div>
+                <div class="stat-box"><div>目前已收</div><div class="stat-value text-green">$<span id="statCollected">0</span></div></div>
+                <div class="stat-box"><div>尚未收取</div><div class="stat-value text-red">$<span id="statUnpaidAmount">0</span></div></div>
+            </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-box"><div>應收總額</div><div class="stat-value text-blue">$<span id="statTotalAmount">0</span></div></div>
-            <div class="stat-box"><div>目前已收</div><div class="stat-value text-green">$<span id="statCollected">0</span></div></div>
-            <div class="stat-box"><div>尚未收取</div><div class="stat-value text-red">$<span id="statUnpaidAmount">0</span></div></div>
+        <div class="card planB-box">
+            <h2 style="color: #e65100;">🚨 危機處理：啟動備案機制</h2>
+            <input type="text" id="planBMeal" placeholder="全班改訂餐點 (例：八方鍋貼)">
+            <input type="number" id="planBPrice" placeholder="統一價格 (例：70)">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-danger" style="flex: 2;" onclick="executePlanB()">啟動備案並鎖定前台！</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="clearAnnouncement()">解除廣播</button>
+            </div>
         </div>
-        <div class="unpaid-list">⚠️ 尚未繳錢座號：<span id="statUnpaidStudents">無</span></div>
+        
+        <div class="card">
+            <h2>📋 訂單即時看板</h2>
+            <p>有效訂單人數：<strong id="totalCount" style="color:red; font-size: 20px;">0</strong> 人</p>
+            <div class="table-responsive">
+                <table>
+                    <thead><tr><th>座號</th><th>餐點</th><th>備註</th><th>金額</th><th>繳費狀態</th></tr></thead>
+                    <tbody id="orderTableBody"><tr><td colspan="5">連線讀取中...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <div class="card planB-box">
-        <h2 style="color: #e65100;">🚨 危機處理：啟動備案機制</h2>
-        <input type="text" id="planBMeal" placeholder="全班改訂餐點 (例：八方鍋貼)">
-        <input type="number" id="planBPrice" placeholder="統一價格 (例：70)">
-        <div style="display: flex; gap: 10px;">
-            <button class="btn btn-danger" style="flex: 2;" onclick="executePlanB()">啟動備案並鎖定前台！</button>
-            <button class="btn btn-secondary" style="flex: 1;" onclick="clearAnnouncement()">解除廣播</button>
+    <!-- 🚀 頁面 2：班級付款情形 (Ledger) -->
+    <div id="page-ledger" class="admin-page">
+        <div class="card">
+            <h2 style="color:#2e7d32;">💰 班級付款總情形</h2>
+            <p style="color:#555;">自動統計所有有效訂單，徹底算出 1~28 號誰還欠你錢，或者你該退給誰！<br><span style="font-size:13px; color:#888;">(正數 = 同學欠負責人 / 負數 = 負責人應退錢給同學)</span></p>
+            <button class="btn btn-primary" onclick="loadLedger()">🔄 重新整理帳務</button>
+            <div class="table-responsive">
+                <table>
+                    <thead><tr><th>座號</th><th>未繳總額 (欠款)</th><th>應退差額 (溢繳)</th><th>💸 最終結算狀態</th></tr></thead>
+                    <tbody id="ledgerTableBody"><tr><td colspan="4">點擊重新整理載入...</td></tr></tbody>
+                </table>
+            </div>
         </div>
     </div>
-    
-    <div class="card">
-        <h2>📋 訂單即時看板</h2>
-        <p>總人數：<strong id="totalCount" style="color:red; font-size: 20px;">0</strong> 人</p>
-        <table>
-            <thead><tr><th>座號</th><th>餐點</th><th>備註</th><th>金額</th><th>繳費狀態</th></tr></thead>
-            <tbody id="orderTableBody"><tr><td colspan="5">連線讀取中...</td></tr></tbody>
-        </table>
-        <hr style="margin: 30px 0;">
-        <button class="btn btn-danger" style="width:100%; background-color: #b71c1c;" onclick="clearTodayOrders()">⚠️ 完全清除所選日期的所有訂單 ⚠️</button>
+
+    <!-- 🚀 頁面 3：歷史紀錄編輯器 -->
+    <div id="page-historyEdit" class="admin-page">
+        <div class="card">
+            <h2 style="color:#9c27b0;">📝 歷史紀錄編輯器</h2>
+            <p style="color:#555;">在此處修改的紀錄，會直接影響前台的「歷代熱門排行榜」。</p>
+            <input type="date" id="editHistoryDate">
+            <button class="btn btn-primary" onclick="loadHistoryForEdit()">讀取當日訂單</button>
+            <div class="table-responsive">
+                <table>
+                    <thead><tr><th>座號</th><th>餐點 (直接修改)</th><th>金額 (修改)</th><th>取消作廢</th><th>儲存</th></tr></thead>
+                    <tbody id="editTableBody"><tr><td colspan="5">請先選擇日期並讀取...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+    <!-- 🚀 頁面 4：網頁活動稽核紀錄 -->
+    <div id="page-activity" class="admin-page">
+        <div class="card">
+            <h2 style="color:#f44336;">🕵️ 網頁活動稽核紀錄</h2>
+            <p style="color:#555;">即時監控前台所有同學的動作，連取消訂單都逃不過你的法眼！</p>
+            <button class="btn btn-primary" onclick="loadActivityLog()">🔄 重新整理稽核表</button>
+            <div class="table-responsive">
+                <table>
+                    <thead><tr><th>精準時間戳</th><th>座號</th><th>動作</th><th>詳細內容</th></tr></thead>
+                    <tbody id="activityTableBody"><tr><td colspan="4">點擊重新整理載入...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, collection, doc, updateDoc, onSnapshot, query, where, getDocs, deleteDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, updateDoc, onSnapshot, query, where, getDocs, deleteDoc, setDoc, getDoc, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAQ3nCfS7eNB_hRQ2AQVBFARPn2YeJXl3c",
@@ -198,13 +230,21 @@
     const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
     document.getElementById('adminDate').value = todayStr;
     document.getElementById('scheduleDate').value = todayStr;
+    document.getElementById('editHistoryDate').value = todayStr;
 
-    // 💡 全域變數：用來暫存要複製給學校表單的資料
     window.currentReportData = { restaurant: "未知餐廳", items: {}, totalAmount: 0 };
 
     window.toggleMenu = function() {
         document.getElementById('sidebar').classList.toggle('active');
         document.getElementById('overlay').classList.toggle('active');
+    }
+
+    window.switchPage = function(pageId) {
+        document.querySelectorAll('.admin-page').forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if(pageId === 'page-ledger') window.loadLedger();
+        if(pageId === 'page-activity') window.loadActivityLog();
     }
 
     async function loadSettings() {
@@ -216,43 +256,20 @@
     }
     loadSettings();
 
-    window.showHistoryRank = async function() {
-        const modal = document.getElementById('historyModal');
-        const overlay = document.getElementById('modalOverlay');
-        const content = document.getElementById('historyRankContent');
-        
-        modal.style.display = 'block'; overlay.style.display = 'block'; content.innerHTML = "載入中...";
-        
-        const statSnap = await getDoc(doc(db, "stats", "historical"));
-        if (statSnap.exists()) {
-            let statsData = statSnap.data(); let ranks = [];
-            for(let key in statsData) {
-                let parts = key.split('_');
-                if(parts.length >= 2) ranks.push({ rest: parts[0], item: parts[1], count: statsData[key] });
-            }
-            ranks.sort((a,b) => b.count - a.count);
-            
-            let html = "";
-            ranks.forEach((r, idx) => { html += `<div class="rank-row"><div><span class="rank-num">#${idx+1}</span> ${r.item} <span style="font-size:12px; color:#888;">(${r.rest})</span></div><div style="color:#2196f3; font-weight:bold;">${r.count} 次</div></div>`; });
-            content.innerHTML = html || "<p>尚無紀錄</p>";
-        } else { content.innerHTML = "<p>尚無任何歷史點餐紀錄。</p>"; }
-    }
-
     window.saveTimeSettings = async function() {
         const st = document.getElementById('sysStartTime').value, et = document.getElementById('sysEndTime').value;
-        try { await setDoc(doc(db, "system", "settings"), { orderStartTime: st, orderEndTime: et }, { merge: true }); alert("✅ 點餐時間限制已更新！"); } catch(e) { alert("儲存失敗"); }
+        try { await setDoc(doc(db, "system", "settings"), { orderStartTime: st, orderEndTime: et }, { merge: true }); alert("✅ 時間更新成功！"); } catch(e) { alert("儲存失敗"); }
     }
 
     window.saveDailyMenu = async function() {
         const targetDate = document.getElementById('scheduleDate').value, rest = document.getElementById('scheduleRestaurant').value;
-        try { await setDoc(doc(db, "dailyMenus", targetDate), { restaurant: rest }); alert(`✅ 成功設定 ${targetDate} 的餐廳為：${rest}`); } catch(e) { alert("儲存失敗"); }
+        try { await setDoc(doc(db, "dailyMenus", targetDate), { restaurant: rest }); alert(`✅ 設定成功！`); } catch(e) { alert("儲存失敗"); }
     }
 
     let currentUnsubscribe = null; 
     async function listenToOrders(dateStr) {
         if(currentUnsubscribe) currentUnsubscribe();
         
-        // 抓取正在查詢的日期所對應的餐廳名稱
         let restName = "未知餐廳";
         try {
             const menuSnap = await getDoc(doc(db, "dailyMenus", dateStr));
@@ -262,7 +279,7 @@
         const q = query(collection(db, "orders"), where("date", "==", dateStr));
         currentUnsubscribe = onSnapshot(q, (snapshot) => {
             let activeOrders = [], canceledAlerts = [], paidAlerts = [];
-            let totalAmount = 0, collectedAmount = 0, itemCounts = {}, unpaidStudents = [];
+            let totalAmount = 0, collectedAmount = 0, itemCounts = {};
 
             snapshot.forEach((docSnap) => {
                 let order = docSnap.data();
@@ -277,7 +294,6 @@
 
                     totalAmount += safePrice;
                     if (order.isPaid) collectedAmount += safePrice; 
-                    else unpaidStudents.push(order.studentId);
 
                     let cleanNote = safeNote.split(" | 🚨")[0]; 
                     let mealParts = safeMeal.split(", "); 
@@ -286,7 +302,6 @@
                         let name = m; let qty = 1;
                         let match = m.match(/(.*) x(\d+)$/); 
                         if(match) { name = match[1]; qty = parseInt(match[2]); }
-                        
                         let itemKey = name;
                         if (cleanNote && cleanNote !== "無") itemKey += ` (${cleanNote})`;
                         itemCounts[itemKey] = (itemCounts[itemKey] || 0) + qty;
@@ -294,42 +309,34 @@
                 }
             });
 
-            // 💡 更新準備給校方表單用的全域資料
             window.currentReportData = { restaurant: restName, items: itemCounts, totalAmount: totalAmount };
-
             renderNotifications(canceledAlerts, paidAlerts);
             activeOrders.sort((a, b) => a.studentId - b.studentId);
             document.getElementById('totalCount').innerText = activeOrders.length;
 
-            if (activeOrders.length === 0) {
-                document.getElementById('orderTableBody').innerHTML = `<tr><td colspan="5" style="color:#888;">這天沒有紀錄。</td></tr>`;
-                document.getElementById('statTotalAmount').innerText = "0"; document.getElementById('statCollected').innerText = "0"; document.getElementById('statUnpaidAmount').innerText = "0"; document.getElementById('statUnpaidStudents').innerText = "無"; document.getElementById('statItemCounts').innerHTML = "<li>無資料</li>";
-                return;
-            }
-
-            document.getElementById('statTotalAmount').innerText = totalAmount; document.getElementById('statCollected').innerText = collectedAmount; document.getElementById('statUnpaidAmount').innerText = totalAmount - collectedAmount;
-            
-            unpaidStudents.sort((a,b) => a - b);
-            document.getElementById('statUnpaidStudents').innerText = unpaidStudents.length > 0 ? unpaidStudents.join(", ") + " 號" : "全班皆已繳清！🎉";
+            document.getElementById('statTotalAmount').innerText = totalAmount; 
+            document.getElementById('statCollected').innerText = collectedAmount; 
+            document.getElementById('statUnpaidAmount').innerText = totalAmount - collectedAmount;
 
             let itemsHtml = '';
             for (let [item, count] of Object.entries(itemCounts)) itemsHtml += `<li>${item}：<strong>${count}</strong> 份</li>`;
-            document.getElementById('statItemCounts').innerHTML = itemsHtml;
+            document.getElementById('statItemCounts').innerHTML = itemsHtml || "<li>無資料</li>";
 
             let html = '';
             activeOrders.forEach(order => {
                 let inlineBadge = (order.notifiedPaid && !order.isPaid) ? `<br><span class="inline-badge">🙋‍♂️ 說他交錢了</span>` : '';
-                let safeMeal = (order.meal || "未知餐點").replace(/, /g, '<br>');
+                let safeMeal = (order.meal || "未知").replace(/, /g, '<br>');
+                let timeStr = order.timeString ? `<span class="time-label">${order.timeString.split(' ')[1]} 送出</span>` : '';
                 html += `
                     <tr class="${order.isPaid ? 'paid' : 'unpaid'}">
-                        <td><strong>${order.studentId}</strong> 號</td>
+                        <td><strong>${order.studentId}</strong> 號<br>${timeStr}</td>
                         <td style="color:#1565c0; font-weight:bold;">${safeMeal}</td>
                         <td style="font-size: 13px;">${order.note || "無"}</td>
                         <td>$${order.price || 0}</td>
                         <td><input type="checkbox" ${order.isPaid ? 'checked' : ''} onclick="togglePaid('${order.date}_${order.studentId}', this.checked)" style="width:20px;height:20px;">${inlineBadge}</td>
                     </tr>`;
             });
-            document.getElementById('orderTableBody').innerHTML = html;
+            document.getElementById('orderTableBody').innerHTML = html || `<tr><td colspan="5" style="color:#888;">這天沒有紀錄。</td></tr>`;
         });
     }
 
@@ -345,7 +352,128 @@
         document.getElementById('paidNotifs').innerHTML = ph;
     }
 
-    // 🚀 新增：複製校方表單格式並自動開啟網頁
+    listenToOrders(todayStr);
+    document.getElementById('adminDate').addEventListener('change', (e) => listenToOrders(e.target.value));
+
+    window.togglePaid = async function(docId, isPaid) { await updateDoc(doc(db, "orders", docId), { isPaid, notifiedPaid: false }); };
+    window.dismissCancel = async function(docId) { await deleteDoc(doc(db, "orders", docId)); };
+    
+    // 🚀 Ledger: 付款情形運算
+    window.loadLedger = async function() {
+        document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="4">計算中...</td></tr>`;
+        try {
+            const querySnapshot = await getDocs(collection(db, "orders"));
+            let ledger = Array.from({length: 28}, (_, i) => ({ debt: 0, refund: 0 })); // index 0 = 1號
+            
+            querySnapshot.forEach(doc => {
+                let o = doc.data();
+                if(o.isCancelled) return;
+                
+                let sIdx = parseInt(o.studentId) - 1;
+                if(sIdx >= 0 && sIdx < 28) {
+                    if(!o.isPaid) {
+                        ledger[sIdx].debt += (o.price || 0);
+                    } else if (o.note) {
+                        let refMatch = o.note.match(/應退款\$(\d+)/);
+                        if(refMatch) ledger[sIdx].refund += parseInt(refMatch[1]);
+                    }
+                }
+            });
+
+            let html = "";
+            ledger.forEach((s, idx) => {
+                let id = idx + 1;
+                let balance = s.debt - s.refund; // >0 欠錢, <0 該退錢
+                let finalStatus = "";
+                if(balance > 0) finalStatus = `<span style="color:red; font-weight:bold;">催繳 $${balance}</span>`;
+                else if(balance < 0) finalStatus = `<span style="color:#2196f3; font-weight:bold;">應退給他 $${Math.abs(balance)}</span>`;
+                else finalStatus = `<span style="color:green;">✅ 結清</span>`;
+
+                html += `<tr><td><strong>${id}</strong></td><td style="color:red;">$${s.debt}</td><td style="color:#2196f3;">$${s.refund}</td><td>${finalStatus}</td></tr>`;
+            });
+            document.getElementById('ledgerTableBody').innerHTML = html;
+        } catch(e) { document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="4">計算失敗</td></tr>`; }
+    }
+
+    // 🚀 Activity: 稽核表
+    window.loadActivityLog = async function() {
+        document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="4">載入中...</td></tr>`;
+        try {
+            // Firebase 預設沒有複合索引時，用全抓再到前端排序比較穩 (適合小型資料)
+            const querySnapshot = await getDocs(collection(db, "activities"));
+            let acts = [];
+            querySnapshot.forEach(doc => acts.push(doc.data()));
+            acts.sort((a,b) => b.timestamp - a.timestamp); // 新的在上面
+
+            let html = "";
+            acts.slice(0, 100).forEach(a => { // 只顯示最新100筆防卡頓
+                html += `<tr><td>${a.timeString}</td><td><strong>${a.studentId}</strong></td><td><span style="background:#e0e0e0; padding:3px 8px; border-radius:10px;">${a.action}</span></td><td>${a.details}</td></tr>`;
+            });
+            document.getElementById('activityTableBody').innerHTML = html || `<tr><td colspan="4">尚無活動紀錄</td></tr>`;
+        } catch(e) { document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="4">讀取失敗</td></tr>`; }
+    }
+
+    // 🚀 History Edit: 修改訂單
+    window.loadHistoryForEdit = async function() {
+        const dateVal = document.getElementById('editHistoryDate').value;
+        document.getElementById('editTableBody').innerHTML = `<tr><td colspan="5">讀取中...</td></tr>`;
+        try {
+            const querySnapshot = await getDocs(query(collection(db, "orders"), where("date", "==", dateVal)));
+            let arr = []; querySnapshot.forEach(doc => arr.push(doc.data()));
+            arr.sort((a,b) => a.studentId - b.studentId);
+            
+            let html = "";
+            arr.forEach(o => {
+                let checked = o.isCancelled ? 'checked' : '';
+                html += `<tr>
+                    <td><strong>${o.studentId}</strong></td>
+                    <td><input type="text" id="editMeal_${o.studentId}" value="${o.meal}"></td>
+                    <td><input type="number" id="editPrice_${o.studentId}" value="${o.price}" style="width:70px;"></td>
+                    <td><input type="checkbox" id="editCancel_${o.studentId}" ${checked} style="width:20px;height:20px;">作廢</td>
+                    <td><button class="btn btn-primary" style="margin:0; padding:6px 12px;" onclick="saveHistoryEdit('${dateVal}', ${o.studentId})">💾 儲存</button></td>
+                </tr>`;
+            });
+            document.getElementById('editTableBody').innerHTML = html || `<tr><td colspan="5">無資料</td></tr>`;
+        } catch(e) { alert("讀取失敗"); }
+    }
+
+    window.saveHistoryEdit = async function(dateVal, studentId) {
+        const meal = document.getElementById(`editMeal_${studentId}`).value;
+        const price = parseInt(document.getElementById(`editPrice_${studentId}`).value);
+        const isCancelled = document.getElementById(`editCancel_${studentId}`).checked;
+        try {
+            await updateDoc(doc(db, "orders", dateVal + "_" + studentId), { meal, price, isCancelled });
+            alert("修改成功！動態排行榜已自動更新。");
+        } catch(e) { alert("儲存失敗"); }
+    }
+
+    window.executePlanB = async function() {
+        const newMeal = document.getElementById('planBMeal').value, newPrice = parseInt(document.getElementById('planBPrice').value), targetDate = document.getElementById('adminDate').value;
+        if(!newMeal || isNaN(newPrice)) return alert("請輸入完整資料");
+        if(!confirm(`確定將 ${targetDate} 訂單改為 ${newMeal}？`)) return;
+        
+        const now = new Date();
+        await setDoc(doc(db, "system", "announcement"), { date: targetDate, time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`, message: `因原店家未營業，已啟動備案！全班統一改訂「${newMeal}」(${newPrice}元)！請見下方最新名單。`, isPlanB: true, planBMeal: newMeal, planBPrice: newPrice });
+        
+        const snapshot = await getDocs(query(collection(db, "orders"), where("date", "==", targetDate)));
+        snapshot.forEach(async (docSnap) => {
+            let order = docSnap.data(); if(order.isCancelled) return; 
+            let diff = newPrice - (order.price || 0), diffMsg = order.isPaid ? (diff > 0 ? `需再補繳$${diff}` : (diff < 0 ? `應退款$${Math.abs(diff)}` : `無須補退`)) : `改為$${newPrice}`;
+            await updateDoc(doc(db, "orders", docSnap.id), { meal: newMeal, price: newPrice, note: (order.note || "無") + " | 🚨" + diffMsg, isPaid: order.isPaid && diff <= 0, notifiedPaid: false });
+        });
+        alert("備案啟動成功！");
+    }
+
+    window.clearAnnouncement = async function() { await deleteDoc(doc(db, "system", "announcement")); alert("廣播已解除！"); }
+    window.clearTodayOrders = async function() {
+        const targetDate = document.getElementById('adminDate').value;
+        if(confirm(`⚠️ 警告：確定要清除 ${targetDate} 的所有訂單？`)) {
+            const snapshot = await getDocs(query(collection(db, "orders"), where("date", "==", targetDate)));
+            snapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "orders", docSnap.id)); });
+            alert("訂單已清除！");
+        }
+    }
+    
     window.copyForSchoolForm = function() {
         let data = window.currentReportData;
         if(!data || Object.keys(data.items).length === 0) return alert("目前沒有訂單資料可以複製！");
@@ -366,39 +494,6 @@
         }).catch(err => {
             alert("複製失敗，請手動框選複製");
         });
-    }
-
-    listenToOrders(todayStr);
-    document.getElementById('adminDate').addEventListener('change', (e) => listenToOrders(e.target.value));
-
-    window.togglePaid = async function(docId, isPaid) { await updateDoc(doc(db, "orders", docId), { isPaid, notifiedPaid: false }); };
-    window.dismissCancel = async function(docId) { await deleteDoc(doc(db, "orders", docId)); };
-    
-    window.executePlanB = async function() {
-        const newMeal = document.getElementById('planBMeal').value, newPrice = parseInt(document.getElementById('planBPrice').value), targetDate = document.getElementById('adminDate').value;
-        if(!newMeal || isNaN(newPrice)) return alert("請輸入完整資料");
-        if(!confirm(`確定將 ${targetDate} 訂單改為 ${newMeal}？`)) return;
-        
-        const now = new Date();
-        await setDoc(doc(db, "system", "announcement"), { date: targetDate, time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`, message: `因原店家未營業，已啟動備案！全班統一改訂「${newMeal}」(${newPrice}元)！請見下方最新名單。`, isPlanB: true, planBMeal: newMeal, planBPrice: newPrice });
-        
-        const snapshot = await getDocs(query(collection(db, "orders"), where("date", "==", targetDate)));
-        snapshot.forEach(async (docSnap) => {
-            let order = docSnap.data(); if(order.isCancelled) return; 
-            let diff = newPrice - (order.price || 0), diffMsg = order.isPaid ? (diff > 0 ? `需再補繳$${diff}` : (diff < 0 ? `應退款$${Math.abs(diff)}` : `無須補退`)) : `改為$${newPrice}`;
-            await updateDoc(doc(db, "orders", docSnap.id), { meal: newMeal, price: newPrice, note: (order.note || "無") + " | 🚨" + diffMsg, isPaid: order.isPaid && diff <= 0, notifiedPaid: false });
-        });
-        alert("備案啟動成功！前台已轉換為公開面板模式！");
-    }
-
-    window.clearAnnouncement = async function() { await deleteDoc(doc(db, "system", "announcement")); alert("廣播已解除！"); }
-    window.clearTodayOrders = async function() {
-        const targetDate = document.getElementById('adminDate').value;
-        if(confirm(`⚠️ 警告：確定要清除 ${targetDate} 的所有訂單？`)) {
-            const snapshot = await getDocs(query(collection(db, "orders"), where("date", "==", targetDate)));
-            snapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "orders", docSnap.id)); });
-            alert("訂單已清除！");
-        }
     }
 </script>
 </body>
