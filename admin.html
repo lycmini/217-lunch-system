@@ -56,8 +56,7 @@
         .text-green { color: #4CAF50; }
         .text-red { color: #f44336; }
         .text-blue { color: #2196f3; }
-        .unpaid-list { background: #ffebee; padding: 10px; border-radius: 6px; color: #d32f2f; font-weight: bold; margin-top: 15px; }
-        .item-list { background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        
         .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media (max-width: 600px) { .settings-grid { grid-template-columns: 1fr; } }
         
@@ -76,7 +75,7 @@
         #modalOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; }
         
         #infoCard { display: none; }
-        #infoContent { font-size: 16px; line-height: 1.8; color: #333; }
+        #infoContent { font-size: 15px; line-height: 1.8; color: #333; }
     </style>
 </head>
 <body>
@@ -94,17 +93,19 @@
         <li><a href="javascript:void(0)" onclick="switchPage('page-dashboard'); toggleMenu();"><span style="font-size:18px;">👑</span> 系統主控台</a></li>
         <li><a href="javascript:void(0)" onclick="switchPage('page-ledger'); toggleMenu();"><span style="font-size:18px;">💰</span> 班級付款總情形</a></li>
         <li><a href="javascript:void(0)" onclick="switchPage('page-student-records'); loadStudentRecords('all'); toggleMenu();"><span style="font-size:18px;">🔍</span> 查詢狀態與紀錄</a></li>
-        <!-- 🚀 意見反應與評分站 -->
         <li><a href="javascript:void(0)" onclick="switchPage('page-reviews'); toggleMenu();"><span style="font-size:18px;">⭐</span> 餐點評分接收站</a></li>
         <li><a href="javascript:void(0)" onclick="switchPage('page-feedbacks'); toggleMenu();"><span style="font-size:18px;">💌</span> 意見反應&許願池接收站</a></li>
         
         <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span style="font-size:18px;">📝</span> 修改歷史紀錄</a></li>
         <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span style="font-size:18px;">🕵️</span> 網頁活動稽核</a></li>
         
-        <li><a href="javascript:void(0)" onclick="showInfoPage('關於本站', '本系統由 217 班負責人開發，專為簡化午餐點餐、防呆與對帳流程所設計。<br><br>我們結合了 Firebase 雲端資料庫技術與現代前端框架概念，提供同學最順暢的點餐體驗。'); toggleMenu();"><span style="font-size:18px;">📖</span> 關於本站</a></li>
+        <!-- 🚀 同步的資訊分頁 -->
+        <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span style="font-size:18px;">❓</span> 常見問題 (FAQ)</a></li>
+        <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span style="font-size:18px;">📖</span> 關於本站</a></li>
         <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span style="font-size:18px;">⚖️</span> 相關校規 & 服務條款</a></li>
         
-        <li><a href="https://forms.gle/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span style="font-size:18px;">📋</span> 校方外食登記表單</a></li>
+        <!-- 🚀 補上 Google Forms 連結 -->
+        <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span style="font-size:18px;">📋</span> 校方外食登記表單</a></li>
     </ul>
 </div>
 
@@ -124,11 +125,11 @@
     <p><strong>第五條（緊急處置權）</strong><br>遇店家無法履約時，負責人得逕行啟動備案或撤銷訂單，價金差額依多退少補處理，訂購人不得異議。</p>
     <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
     <p><strong>📜 學校午餐規定</strong><br>詳見校網公告：<br><a href="https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754" target="_blank" style="color: #2196f3; word-break: break-all;">https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754</a></p>
-    <p style="text-align:right; font-weight:bold; color:#f44336; margin-top:20px;">網頁開發人：羅亦承</p>
 </div>
 
 <div class="container">
 
+    <!-- 獨立資訊分頁 -->
     <div class="card" id="infoCard">
         <h2 id="infoTitle" style="color: #1976d2; border-bottom: 2px solid #bbdefb; font-size: 22px;">標題</h2>
         <div id="infoContent">內容</div>
@@ -227,6 +228,10 @@
                     <tbody id="ledgerTableBody"><tr><td colspan="4">點擊重新整理載入...</td></tr></tbody>
                 </table>
             </div>
+            
+            <!-- 🚀 新增：一鍵清除所有歷史帳務與訂單 -->
+            <hr style="margin: 30px 0;">
+            <button class="btn btn-danger" style="width:100%; background-color: #d32f2f;" onclick="clearAllOrdersAndLedger()">⚠️ 一鍵清除所有歷史帳務與訂單紀錄 ⚠️</button>
         </div>
     </div>
 
@@ -273,7 +278,7 @@
         </div>
     </div>
 
-    <!-- 🚀 頁面：意見反應&許願池接收站 -->
+    <!-- 頁面：意見反應&許願池接收站 -->
     <div id="page-feedbacks" class="admin-page">
         <div class="card">
             <h2 style="color:#9c27b0;">💌 意見反應&許願池接收站</h2>
@@ -354,6 +359,47 @@
         document.getElementById('overlay').classList.toggle('active');
     }
 
+    // 🚀 同步的資訊專頁切換函數
+    window.showAboutPage = function() {
+        const aboutContent = `
+            <h3>🍱 關於 217班午餐系統</h3>
+            <p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+            <p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p>
+            <p><b>🚀 核心功能特色</b><br>
+            1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>
+            2. <b>班內大數據推薦</b>：即時顯示「班內熱門排行榜」。<br>
+            3. <b>透明化帳務</b>：支援部分付款與自動差額計算。<br>
+            4. <b>Plan B 危機應變</b>：店家沒開時自動計算補退款。<br>
+            5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+            <p style="text-align:right; font-weight:bold;">網頁開發與系統架構設計：羅亦承</p>
+        `;
+        showInfoPage('關於本站', aboutContent);
+    };
+
+    window.showFaqPage = function() {
+        const faqContent = `
+            <h3>❓ 常見問題 (FAQ)</h3>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+            <p><b>⏰ 關於點餐時間與權限</b><br>
+            <b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。超過 11:00 系統會自動上鎖。<br>
+            <b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p>
+            <p><b>🛒 關於點餐與修改</b><br>
+            <b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁輸入座號點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。<br>
+            <b>Q4：我可以幫別人點餐嗎？</b><br>A：不行，請務必使用本人真實座號登入。</p>
+            <p><b>💰 關於金錢與繳費</b><br>
+            <b>Q5：現金要交給誰？如果沒繳齊怎麼辦？</b><br>A：交給班級負責人。後台支援「部分付款」，系統會自動計算欠款或溢繳金額。<br>
+            <b>Q6：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p>
+            <p><b>🚨 關於突發狀況 (Plan B)</b><br>
+            <b>Q7：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會啟動「Plan B 備案」，前台會顯示補退款金額，你也可以選擇取消訂單。</p>
+            <p><b>📱 關於歷史與回饋</b><br>
+            <b>Q8：去哪裡看我以前點過什麼？</b><br>A：在首頁輸入座號點擊「歷史紀錄」即可查詢。<br>
+            <b>Q9：如何給予評分或提出建議？</b><br>A：可透過左上角選單的「餐點評分」與「意見反應&許願池」隨時提交。</p>
+        `;
+        showInfoPage('常見問題 (FAQ)', faqContent);
+    };
+
     window.showInfoPage = function(title, content) {
         document.querySelectorAll('.admin-page').forEach(page => page.classList.remove('active'));
         document.getElementById('infoTitle').innerText = title;
@@ -376,7 +422,7 @@
         if(pageId === 'page-ledger') window.loadLedger();
         if(pageId === 'page-activity') window.loadActivityLog();
         if(pageId === 'page-reviews') window.loadReviews();
-        if(pageId === 'page-feedbacks') window.loadFeedbacks(); // 載入意見
+        if(pageId === 'page-feedbacks') window.loadFeedbacks(); 
     }
 
     async function loadSettings() {
@@ -519,6 +565,29 @@
 
     window.dismissCancel = async function(docId) { await deleteDoc(doc(db, "orders", docId)); };
     
+    // 🚀 一鍵清除所有帳務與歷史紀錄
+    window.clearAllOrdersAndLedger = async function() {
+        if(!confirm("⚠️ 警告：這將會刪除【所有日期】的訂單紀錄，並將班級帳務完全歸零！\n\n確定要繼續嗎？")) return;
+        if(!confirm("再次確認：資料刪除後將無法復原，真的要清除嗎？")) return;
+        
+        try {
+            const snapshot = await getDocs(collection(db, "orders"));
+            let count = 0;
+            snapshot.forEach(async (docSnap) => {
+                await deleteDoc(doc(db, "orders", docSnap.id));
+                count++;
+            });
+            alert(`✅ 已成功刪除 ${count} 筆歷史紀錄！帳務與歷史紀錄已歸零。`);
+            
+            // 重新載入畫面資料
+            if (document.getElementById('page-ledger').classList.contains('active')) {
+                loadLedger(); 
+            }
+        } catch(e) {
+            alert("清除失敗，請檢查網路連線。");
+        }
+    }
+
     window.loadLedger = async function() {
         document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="4">計算中...</td></tr>`;
         try {
@@ -619,13 +688,12 @@
         } catch(e) { document.getElementById('reviewTableBody').innerHTML = `<tr><td colspan="5">讀取失敗</td></tr>`; }
     }
 
-    // 🚀 新增：載入意見反應&許願池資料
     window.loadFeedbacks = async function() {
         document.getElementById('feedbackTableBody').innerHTML = `<tr><td colspan="3">載入中...</td></tr>`;
         try {
             const querySnapshot = await getDocs(collection(db, "feedbacks"));
             let feedbacks = []; querySnapshot.forEach(doc => feedbacks.push(doc.data()));
-            feedbacks.sort((a,b) => b.timestamp - a.timestamp); // 新的在上面
+            feedbacks.sort((a,b) => b.timestamp - a.timestamp); 
 
             let html = "";
             feedbacks.forEach(f => {
