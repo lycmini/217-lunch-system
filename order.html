@@ -97,14 +97,12 @@
     <div class="sidebar-header">系統選單</div>
     <ul class="sidebar-menu">
         <li><a href="javascript:void(0)" onclick="resumeOrderFlow(); toggleMenu();"><span style="font-size:18px;">🍽️</span> 進行點餐 / 首頁</a></li>
-        <!-- 🚀 更新選項名稱與新增許願池 -->
         <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span style="font-size:18px;">⭐</span> 餐點評分</a></li>
         <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span style="font-size:18px;">💌</span> 意見反應&許願池</a></li>
         <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span style="font-size:18px;">🏆</span> 歷代熱門排行榜</a></li>
-        <li><a href="javascript:void(0)" onclick="showInfoPage('關於本站', '本系統由 217 班負責人開發，專為簡化午餐點餐、防呆與對帳流程所設計。<br><br>我們結合了 Firebase 雲端資料庫技術與現代前端框架概念，提供同學最順暢的點餐體驗。'); toggleMenu();"><span style="font-size:18px;">📖</span> 關於本站</a></li>
+        <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span style="font-size:18px;">❓</span> 常見問題 (FAQ)</a></li>
+        <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span style="font-size:18px;">📖</span> 關於本站</a></li>
         <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span style="font-size:18px;">⚖️</span> 相關校規 & 服務條款</a></li>
-        <li><a href="javascript:void(0)" onclick="showInfoPage('所有菜單總覽', '<b>目前合作店家：</b><br>- 麵朝 (新竹食品店)<br>- 八方雲集<br><br><span style=\'color:#888; font-size:14px;\'>* 本系統已內建各家完整菜單，每日實際開放之選項，將依負責人後台排程設定為主。</span>'); toggleMenu();"><span style="font-size:18px;">🍽️</span> 所有菜單總覽</a></li>
-        <li><a href="javascript:void(0)" onclick="showInfoPage('常見問題 (FAQ)', '<b>Q: 我點錯了怎麼辦？</b><br>A: 請在系統開放時間內，於送出訂單後的「收據畫面」點擊下方的「取消今日訂單」，系統將會把訂單作廢，您再重新點選即可。<br><br><b>Q: 我忘記帶錢怎麼辦？</b><br>A: 系統雖然會記錄您的訂單，但餐點的領取與核銷一律以「負責人收到現金」為準，請盡速補交以免影響信用。'); toggleMenu();"><span style="font-size:18px;">❓</span> 常見問題 (FAQ)</a></li>
     </ul>
 </div>
 
@@ -115,11 +113,10 @@
         <p><strong>第一條（同意條款與契約成立）</strong><br>使用者於本系統點擊「確認送出訂單」之同時，即推定已審閱、瞭解並同意遵守本條款，約定委任關係生效。</p>
         <p><strong>第二條（真實身分與冒用之法律責任）</strong><br>使用者應以本人真實座號登入。倘有未經授權冒用他人座號點餐、取消或輸入不實電磁紀錄致生損害者，負責人得逕行保全存取紀錄移請學務處查處；情節重大者，依法追究刑事責任。</p>
         <p><strong>第三條（履約義務與損害賠償）</strong><br>契約一經成立，除不可抗力外，訂購人不得無故拒絕受領或拒付價金。惡意棄單者應負損害賠償責任。</p>
-        <p><strong>第四條（免責事由與帳務確認）</strong><br>因設備故障致資料滅失，開發人及負責人不負賠償責任。帳務結算概以負責人實際收受現金為唯一認定標準。</p>
+        <p><strong>第四條（免責事由與帳務確認）</strong><br>因設備故障致資料滅失，負責人不負賠償責任。帳務結算概以負責人實際收受現金為唯一認定標準。</p>
         <p><strong>第五條（緊急處置權）</strong><br>遇店家無法履約時，負責人得逕行啟動備案或撤銷訂單，價金差額依多退少補處理，訂購人不得異議。</p>
         <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
         <p><strong>📜 學校午餐規定</strong><br>詳見校網公告：<br><a href="https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754" target="_blank" style="color: #2196f3; word-break: break-all;">https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754</a></p>
-        <p style="text-align:right; font-weight:bold; color:#f44336; margin-top:20px;">網頁開發人：羅亦承</p>
     </div>
     <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="agreeToS()">我已詳閱並同意</button>
 </div>
@@ -134,14 +131,14 @@
     <!-- 獨立資訊分頁 -->
     <div class="card" id="infoCard">
         <h2 id="infoTitle" style="color: #1976d2; border-bottom: 2px solid #bbdefb; font-size: 22px;">標題</h2>
-        <div id="infoContent" style="font-size: 16px; line-height: 1.8; color: #333;">內容</div>
+        <div id="infoContent" style="font-size: 15px; line-height: 1.8; color: #333;">內容</div>
         <button class="btn btn-primary" style="margin-top: 25px;" onclick="resumeOrderFlow()">🔙 返回首頁</button>
     </div>
 
-    <!-- 🚀 新增：意見反應&許願池專區 -->
+    <!-- 意見反應&許願池專區 -->
     <div class="card" id="feedbackPageArea">
         <h2 style="color:#9c27b0; border-bottom: 2px solid #e1bee7;">💌 意見反應&許願池</h2>
-        <p style="color:#555; font-size:14px; line-height:1.6;">想增加或改善甚麼功能？想推薦哪家超讚的新餐廳？一起優化這個網站吧！</p>
+        <p style="color:#555; font-size:14px; line-height:1.6;">想增加或改善甚麼功能？一起優化這個網站吧！</p>
         
         <label class="review-label">你的座號 (選填)：</label>
         <input type="number" id="fbStudentId" placeholder="輸入座號 (1-28)">
@@ -156,12 +153,15 @@
     <!-- 評分專區 -->
     <div class="card" id="reviewPageArea">
         <h2 style="color:#ff9800; border-bottom: 2px solid #ffe082;">⭐ 餐點評分</h2>
-        <p style="color:#555; font-size:14px;">請輸入座號查詢最近 7 天內的餐點，並給予評價 (皆為選填)。你的回饋將幫助我們篩選優質店家！</p>
+        <p style="color:#555; font-size:14px;">請輸入座號查詢最近 7 天內的餐點，並給予評價 (皆為選填)。每個座號一天只能評論一次！</p>
         <input type="number" id="rvStudentId" placeholder="輸入座號 (1-28)">
         <button class="btn btn-outline" style="margin-top:10px;" onclick="fetchOrdersForReview()">🔍 查詢近期餐點</button>
         
+        <!-- 已評分紀錄顯示區 -->
+        <div id="reviewedOrdersLog"></div>
+
         <div id="reviewFormBlock" style="display:none; margin-top:20px; border-top:1px dashed #ccc; padding-top:10px;">
-            <label class="review-label">1. 選擇要評分的歷史餐點：</label>
+            <label class="review-label">1. 選擇尚未評分的歷史餐點：</label>
             <select id="rvOrderSelect"></select>
             <label class="review-label">2. 餐點滿意度 (好不好吃) <span class="review-hint">(1~10分)</span>：</label>
             <input type="number" id="rvScore1" min="1" max="10" placeholder="留空不計分">
@@ -198,7 +198,7 @@
         </div>
     </div>
 
-    <!-- 🚀 鎖定畫面更新：加入引導按鈕 -->
+    <!-- 非點餐時段鎖定畫面 -->
     <div id="lockedScreen" class="card" style="border: 2px dashed #ff9800; background: #fff3e0;">
         <h2 style="color:#e65100; text-align:center; border:none;">🔒 目前無法點餐</h2>
         <p id="lockedReason" style="font-weight:bold; margin-top:15px; text-align:center; color:#e65100;"></p>
@@ -231,14 +231,14 @@
         <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">🔙 返回首頁</button>
     </div>
 
-    <!-- 登入與查詢區 -->
+    <!-- 🚀 登入與查詢區：上下區塊已加大間距 -->
     <div class="card login-box" id="authArea">
-        <div style="border-bottom: 2px dashed #eee; padding-bottom: 20px; margin-bottom: 20px;">
+        <div style="border-bottom: 2px dashed #e0e0e0; padding-bottom: 25px; margin-bottom: 25px;">
             <h2 style="border:none; font-size:22px; color:#ff9800; margin-bottom:15px;">🍽️ 我要點餐</h2>
             <input type="number" id="orderStudentId" placeholder="輸入座號 (1 ~ 28)" min="1" max="28">
             <button class="btn btn-primary" onclick="verifyStudent()">進入菜單 ➔</button>
         </div>
-        <div>
+        <div style="margin-top: 10px;">
             <h2 style="border:none; font-size:22px; color:#2196f3; margin-bottom:15px;">🔍 查詢狀態與紀錄</h2>
             <input type="number" id="queryStudentId" placeholder="輸入座號 (1 ~ 28)" min="1" max="28">
             <div style="display:flex; gap:10px;">
@@ -312,6 +312,7 @@
             <button class="btn btn-success" id="notifyBtn" onclick="notifyAdminPaid()" style="margin-top:10px;">我已繳費了！發送通知</button>
         </div>
         
+        <button class="btn btn-primary" style="margin-top:10px; background-color: #ff9800;" onclick="goToReviewFromReceipt()">⭐ 前往評分剛才點的餐點</button>
         <button class="btn btn-danger" onclick="cancelOrder()" style="margin-top:10px;">取消今日訂單</button>
         <button class="btn btn-secondary" onclick="location.reload()" style="margin-top:10px;">回首頁</button>
     </div>
@@ -400,6 +401,54 @@
     window.showReviewPage = function() { hideAllSections(); document.getElementById('reviewPageArea').style.display = 'block'; }
     window.showFeedbackPage = function() { hideAllSections(); document.getElementById('feedbackPageArea').style.display = 'block'; }
 
+    window.goToReviewFromReceipt = async function() {
+        const studentId = window.currentViewingId;
+        hideAllSections();
+        document.getElementById('reviewPageArea').style.display = 'block';
+        document.getElementById('rvStudentId').value = studentId;
+        await window.fetchOrdersForReview();
+    };
+
+    window.showAboutPage = function() {
+        const aboutContent = `
+            <h3>🍱 關於 217班午餐系統</h3>
+            <p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+            <p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p>
+            <p><b>🚀 核心功能特色</b><br>
+            1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>
+            2. <b>班內大數據推薦</b>：即時顯示「班內熱門排行榜」。<br>
+            3. <b>透明化帳務</b>：支援部分付款與自動差額計算。<br>
+            4. <b>Plan B 危機應變</b>：店家沒開時自動計算補退款。<br>
+            5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+            <p style="text-align:right; font-weight:bold;">網頁開發與系統架構設計：羅亦承</p>
+        `;
+        showInfoPage('關於本站', aboutContent);
+    };
+
+    window.showFaqPage = function() {
+        const faqContent = `
+            <h3>❓ 常見問題 (FAQ)</h3>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+            <p><b>⏰ 關於點餐時間與權限</b><br>
+            <b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。超過 11:00 系統會自動上鎖。<br>
+            <b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p>
+            <p><b>🛒 關於點餐與修改</b><br>
+            <b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁輸入座號點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。<br>
+            <b>Q4：我可以幫別人點餐嗎？</b><br>A：不行，請務必使用本人真實座號登入。</p>
+            <p><b>💰 關於金錢與繳費</b><br>
+            <b>Q5：現金要交給誰？如果沒繳齊怎麼辦？</b><br>A：交給班級負責人。後台支援「部分付款」，系統會自動計算欠款或溢繳金額。<br>
+            <b>Q6：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p>
+            <p><b>🚨 關於突發狀況 (Plan B)</b><br>
+            <b>Q7：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會啟動「Plan B 備案」，前台會顯示補退款金額，你也可以選擇取消訂單。</p>
+            <p><b>📱 關於歷史與回饋</b><br>
+            <b>Q8：去哪裡看我以前點過什麼？</b><br>A：在首頁輸入座號點擊「歷史紀錄」即可查詢。<br>
+            <b>Q9：如何給予評分或提出建議？</b><br>A：可透過左上角選單的「餐點評分」與「意見反應&許願池」隨時提交。</p>
+        `;
+        showInfoPage('常見問題 (FAQ)', faqContent);
+    };
+
     window.showInfoPage = function(title, content) {
         hideAllSections(); 
         document.getElementById('infoTitle').innerText = title; 
@@ -447,7 +496,6 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    // 🚀 提交許願池表單
     window.submitFeedback = async function() {
         const idStr = document.getElementById('fbStudentId').value;
         const content = document.getElementById('fbContent').value.trim();
@@ -467,38 +515,104 @@
         } catch(e) { alert("傳送失敗，請檢查網路。"); }
     }
 
+    // 🚀 核心升級：過濾已評分餐點，並顯示已評分紀錄與時間
     let recentOrdersForReview = [];
     window.fetchOrdersForReview = async function() {
         const id = parseInt(document.getElementById('rvStudentId').value);
         if(!id || id < 1 || id > 28) return alert("請輸入座號！");
+        
         try {
-            const q = query(collection(db, "orders"), where("studentId", "==", id));
-            const querySnapshot = await getDocs(q);
-            recentOrdersForReview = [];
+            // 1. 抓取該學生 7 天內的有效訂單
+            const qOrders = query(collection(db, "orders"), where("studentId", "==", id));
+            const querySnapshotOrders = await getDocs(qOrders);
+            let allOrders = [];
             const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
             const limitDateStr = sevenDaysAgo.getFullYear() + "-" + String(sevenDaysAgo.getMonth()+1).padStart(2, '0') + "-" + String(sevenDaysAgo.getDate()).padStart(2, '0');
 
-            querySnapshot.forEach(doc => { let o = doc.data(); if(!o.isCancelled && o.date >= limitDateStr) recentOrdersForReview.push(o); });
-            recentOrdersForReview.sort((a,b) => b.date.localeCompare(a.date));
+            querySnapshotOrders.forEach(doc => { 
+                let o = doc.data(); 
+                if(!o.isCancelled && o.date >= limitDateStr) allOrders.push(o); 
+            });
+            allOrders.sort((a,b) => b.date.localeCompare(a.date));
 
-            if(recentOrdersForReview.length === 0) { alert("查無最近 7 天內的有效訂單喔！"); document.getElementById('reviewFormBlock').style.display = 'none'; return; }
-            let selHtml = ""; recentOrdersForReview.forEach((o, i) => { selHtml += `<option value="${i}">${o.date} - ${o.meal}</option>`; });
-            document.getElementById('rvOrderSelect').innerHTML = selHtml; document.getElementById('reviewFormBlock').style.display = 'block';
+            // 2. 抓取該學生已經寫過的評分
+            const qReviews = query(collection(db, "reviews"), where("studentId", "==", id));
+            const querySnapshotReviews = await getDocs(qReviews);
+            let reviewedMap = {}; 
+            querySnapshotReviews.forEach(doc => {
+                let r = doc.data();
+                reviewedMap[r.orderDate] = r.timeString; // key: 訂單日期, value: 評分時間
+            });
+
+            // 3. 分離尚未評分與已評分
+            recentOrdersForReview = [];
+            let reviewedListHtml = "";
+
+            allOrders.forEach(o => {
+                if (reviewedMap[o.date]) {
+                    reviewedListHtml += `<div style="font-size:13px; color:#666; margin:4px 0;">✔️ <b>${o.date}</b> (${o.meal}) - 已於 ${reviewedMap[o.date]} 評過分</div>`;
+                } else {
+                    recentOrdersForReview.push(o);
+                }
+            });
+
+            // 顯示已評分清單
+            const logContainer = document.getElementById('reviewedOrdersLog');
+            if (logContainer) {
+                logContainer.innerHTML = reviewedListHtml ? `<div style="margin-top:15px; padding:10px; background:#f9f9f9; border-radius:6px; border:1px solid #eee;"><div style="font-weight:bold; color:#555; margin-bottom:5px; font-size:13px;">📌 已完成評分的歷史餐點：</div>${reviewedListHtml}</div>` : "";
+            }
+
+            if(recentOrdersForReview.length === 0) {
+                alert("你最近 7 天內的餐點都已經評過分囉！感謝你的熱情參與。");
+                document.getElementById('reviewFormBlock').style.display = 'none';
+                return;
+            }
+
+            let selHtml = ""; 
+            recentOrdersForReview.forEach((o, i) => { 
+                selHtml += `<option value="${i}">${o.date} - ${o.meal}</option>`; 
+            });
+            document.getElementById('rvOrderSelect').innerHTML = selHtml; 
+            document.getElementById('reviewFormBlock').style.display = 'block';
+
         } catch(e) { alert("讀取失敗"); }
-    }
+    };
 
     window.submitMealReview = async function() {
-        const orderIdx = document.getElementById('rvOrderSelect').value; const targetOrder = recentOrdersForReview[orderIdx];
+        const orderIdx = document.getElementById('rvOrderSelect').value; 
+        const targetOrder = recentOrdersForReview[orderIdx];
         if(!targetOrder) return alert("請選擇餐點！");
+        
         let restaurantName = "合作餐廳"; 
         const score1 = document.getElementById('rvScore1').value, score2 = document.getElementById('rvScore2').value, score3 = document.getElementById('rvScore3').value, score4 = document.getElementById('rvScore4').value, comment = document.getElementById('rvComment').value;
         if(!score1 && !score2 && !score3 && !score4 && !comment.trim()) return alert("你沒有填寫任何評分或建議喔！");
-        const now = new Date(); const timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+        
+        const now = new Date(); 
+        const timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
         
         try {
-            await setDoc(doc(db, "reviews", now.getTime().toString() + "_" + targetOrder.studentId), { studentId: targetOrder.studentId, orderDate: targetOrder.date, meal: targetOrder.meal, restaurant: restaurantName, score1: score1 ? parseInt(score1) : null, score2: score2 ? parseInt(score2) : null, score3: score3 ? parseInt(score3) : null, score4: score4 ? parseInt(score4) : null, comment: comment.trim(), timestamp: now.getTime(), timeString: timeString });
-            await logActivity(targetOrder.studentId, "送出餐點評分", "已回饋"); alert("✅ 感謝你的回饋！評分已傳送至後台。"); resumeOrderFlow();
+            // 以「日期_座號」作為文件ID，確保一天只能評論一次！
+            const reviewDocId = `${targetOrder.date}_${targetOrder.studentId}`;
+            await setDoc(doc(db, "reviews", reviewDocId), { 
+                studentId: targetOrder.studentId, 
+                orderDate: targetOrder.date, 
+                meal: targetOrder.meal, 
+                restaurant: restaurantName, 
+                score1: score1 ? parseInt(score1) : null, 
+                score2: score2 ? parseInt(score2) : null, 
+                score3: score3 ? parseInt(score3) : null, 
+                score4: score4 ? parseInt(score4) : null, 
+                comment: comment.trim(), 
+                timestamp: now.getTime(), 
+                timeString: timeString 
+            });
+            
+            await logActivity(targetOrder.studentId, "送出餐點評分", `${targetOrder.date} 已回饋`); 
+            alert("✅ 感謝你的回饋！評分已傳送至後台。"); 
+            resumeOrderFlow();
+            
             document.getElementById('rvScore1').value = ""; document.getElementById('rvScore2').value = ""; document.getElementById('rvScore3').value = ""; document.getElementById('rvScore4').value = ""; document.getElementById('rvComment').value = ""; document.getElementById('reviewFormBlock').style.display = 'none';
+            document.getElementById('reviewedOrdersLog').innerHTML = "";
         } catch(e) { alert("傳送失敗，請檢查網路。"); }
     }
 
