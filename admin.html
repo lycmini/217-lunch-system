@@ -1,14 +1,12 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>午餐管理後台</title>
-    <!-- 導入字體與 Google Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <style>
-        /* 極簡黑白風核心設定 */
         body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background-color: #f5f5f7; color: #1d1d1f; margin: 0; padding: 0; }
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
@@ -31,7 +29,6 @@
         h1, h2 { color: #111; margin-top:0; font-weight: 700; display:flex; align-items:center; }
         h2 { border-bottom: 1px solid #e5e5ea; padding-bottom: 12px; font-size: 18px; }
         
-        /* 響應式極簡表格 */
         .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 15px; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 14px; }
         th, td { border-bottom: 1px solid #e5e5ea; padding: 12px 10px; text-align: center; }
@@ -40,7 +37,6 @@
         .paid { background-color: #fafafa; }
         .partial { background-color: #fff; }
         
-        /* 高質感按鈕 */
         .btn { padding: 12px 16px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; color: white; margin-top:10px; font-family: inherit; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-primary { background-color: #111; color: #fff; }
         .btn-primary:hover { background-color: #333; }
@@ -87,10 +83,15 @@
         #infoCard { display: none; }
         #infoContent { font-size: 15px; line-height: 1.8; color: #333; }
         
-        /* 修正文字狀態顏色，以灰階或粗體表示 */
         .status-paid { font-weight: 600; color: #111; display:flex; align-items:center; justify-content:center; gap:4px; }
         .status-unpaid { font-weight: 600; color: #555; display:flex; align-items:center; justify-content:center; gap:4px; }
         .status-partial { font-weight: 600; color: #333; display:flex; align-items:center; justify-content:center; gap:4px; }
+        
+        /* 快速付清按鈕樣式 */
+        .btn-quick-pay { background:#111; color:#fff; border:none; border-radius:6px; padding:6px 12px; font-size:13px; cursor:pointer; font-weight:600; font-family:inherit; transition:0.2s; white-space:nowrap; }
+        .btn-quick-pay:hover { background:#333; }
+        .btn-quick-reset { background:#f5f5f7; color:#888; border:1px solid #d2d2d7; border-radius:6px; padding:5px 11px; font-size:13px; cursor:pointer; font-weight:600; font-family:inherit; transition:0.2s; white-space:nowrap; }
+        .btn-quick-reset:hover { border-color:#111; color:#111; }
     </style>
 </head>
 <body>
@@ -106,7 +107,6 @@
     <div class="sidebar-header">系統管理選單</div>
     <ul class="sidebar-menu">
         <li><a href="javascript:void(0)" onclick="switchPage('page-dashboard'); toggleMenu();"><span class="material-symbols-outlined">admin_panel_settings</span> 系統主控台</a></li>
-        <!-- 🚀 調整後的側邊選單順序 -->
         <li><a href="javascript:void(0)" onclick="scrollToSection('adminDateSection'); toggleMenu();"><span class="material-symbols-outlined">event</span> 選擇查看訂單日期</a></li>
         <li><a href="javascript:void(0)" onclick="scrollToSection('orderBoardSection'); toggleMenu();"><span class="material-symbols-outlined">table_chart</span> 訂單即時看板</a></li>
         <li><a href="javascript:void(0)" onclick="scrollToSection('statsSection'); toggleMenu();"><span class="material-symbols-outlined">bar_chart</span> 統計報表與帳務中心</a></li>
@@ -140,10 +140,10 @@
     <p><strong>第一條（同意條款與契約成立）</strong><br>使用者於本系統點擊「確認送出訂單」之同時，即推定已審閱、瞭解並同意遵守本條款，約定委任關係生效。</p>
     <p><strong>第二條（真實身分與冒用之法律責任）</strong><br>使用者應以本人真實座號登入。倘有未經授權冒用他人座號點餐、取消或輸入不實電磁紀錄致生損害者，負責人得逕行保全存取紀錄移請學務處查處；情節重大者，依法追究刑事責任。</p>
     <p><strong>第三條（履約義務與損害賠償）</strong><br>契約一經成立，除不可抗力外，訂購人不得無故拒絕受領或拒付價金。惡意棄單者應負損害賠償責任。</p>
-    <p><strong>第四條（免責事由與帳務確認）</strong><br>因設備故障致資料滅失，開發人及負責人不負賠償責任。帳務結算概以負責人實際收受現金為唯一認定標準。</p>
+    <p><strong>第四條（免責事由與帳務確認）</strong><br>因設備故障致資料滅失，負責人不負賠償責任。帳務結算概以負責人實際收受現金為唯一認定標準。</p>
     <p><strong>第五條（緊急處置權）</strong><br>遇店家無法履約時，負責人得逕行啟動備案或撤銷訂單，價金差額依多退少補處理，訂購人不得異議。</p>
     <hr style="border: 0; border-top: 1px solid #e5e5ea; margin: 15px 0;">
-    <p><strong><span class="material-symbols-outlined">assignment</span> 學校午餐規定</strong><br>詳見校網公告：<br><a href="https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754" target="_blank" style="color: #111; word-break: break-all; font-weight:600;">點擊前往新竹高中校網查看</a></p>
+    <p><strong><span class="material-symbols-outlined" style="font-size:16px;">assignment</span> 學校午餐規定</strong><br>詳見校網公告：<br><a href="https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754" target="_blank" style="color: #111; word-break: break-all; font-weight:600;">點擊前往新竹高中校網查看</a></p>
 </div>
 
 <div class="container">
@@ -183,7 +183,6 @@
             <div id="paidNotifs" style="margin-top: 15px;"></div>
         </div>
         
-        <!-- 🚀 調整後的區塊順序 -->
         <div class="card" id="adminDateSection">
             <h2><span class="material-symbols-outlined">event</span> 選擇查看訂單日期</h2>
             <input type="date" id="adminDate">
@@ -555,13 +554,21 @@
                 let safeMeal = (order.meal || "未知").replace(/, /g, '<br>');
                 let timeStr = order.timeString ? `<span class="time-label">${order.timeString.split(' ')[1]}</span>` : '';
                 
+                // 🚀 核心升級：加入「付清/歸零」快速鍵
+                let quickPayBtn = paidAmt < safePrice 
+                    ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${order.date}_${order.studentId}', ${safePrice}, ${safePrice})">付清</button>` 
+                    : `<button class="btn-quick-reset" onclick="updatePaidAmount('${order.date}_${order.studentId}', 0, ${safePrice})">歸零</button>`;
+
                 html += `
                     <tr class="${rowClass}">
                         <td><strong>${order.studentId}</strong><br>${timeStr}</td>
                         <td style="font-weight:600;">${safeMeal}<div style="font-size:12px; color:#555; font-weight:normal; margin-top:4px;">${order.note || "無備註"}</div></td>
                         <td>$${safePrice}</td>
-                        <td style="min-width:120px;">
-                            <div style="display:flex; align-items:center; justify-content:center; gap:4px; margin-bottom:8px;">$<input type="number" value="${paidAmt}" style="width:60px; padding:6px; margin:0;" onchange="updatePaidAmount('${order.date}_${order.studentId}', this.value, ${safePrice})"></div>
+                        <td style="min-width:160px;">
+                            <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
+                                $<input type="number" value="${paidAmt}" style="width:65px; padding:6px; margin:0; text-align:center;" onchange="updatePaidAmount('${order.date}_${order.studentId}', this.value, ${safePrice})">
+                                ${quickPayBtn}
+                            </div>
                             ${statusText}
                             ${inlineBadge}
                         </td>
