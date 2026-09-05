@@ -7,7 +7,6 @@
     <style>
         body { font-family: '微軟正黑體', Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0; }
         
-        /* 導覽列與側邊欄 */
         .header { background-color: #2196f3; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .menu-btn { font-size: 26px; background: none; border: none; color: white; cursor: pointer; padding: 0 10px; }
         .header-title { font-size: 20px; font-weight: bold; flex-grow: 1; text-align: center; }
@@ -40,17 +39,15 @@
         .login-box { text-align: center; padding: 30px 10px; }
         .login-box input { width: 80%; padding: 15px; font-size: 20px; text-align: center; border: 2px solid #ccc; border-radius: 8px; margin-bottom: 15px; }
         
-        /* 🚀 仿 Uber Eats 頂部切換選單 (取代下拉) */
         .category-nav { display: flex; overflow-x: auto; white-space: nowrap; gap: 20px; padding: 10px 15px 0 15px; background: white; position: sticky; top: 60px; z-index: 90; border-bottom: 1px solid #e0e0e0; margin: -15px -15px 20px -15px; scroll-behavior: smooth; }
-        .category-nav::-webkit-scrollbar { display: none; } /* 隱藏滾動條 */
+        .category-nav::-webkit-scrollbar { display: none; } 
         .cat-tab { color: #757575; cursor: pointer; font-weight: bold; font-size: 16px; padding-bottom: 12px; position: relative; transition: color 0.2s; }
         .cat-tab:hover { color: #333; }
         .cat-tab.active { color: black; }
-        .cat-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px; background-color: black; } /* Uber Eats 經典黑底線 */
+        .cat-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px; background-color: black; } 
         
-        /* 🚀 分類區塊大標題 (取代藍色方塊) */
         .menu-category { font-size: 22px; font-weight: bold; color: black; margin: 30px 0 15px 0; padding-bottom: 5px; }
-        .menu-section { scroll-margin-top: 115px; } /* 為錨點滾動預留頂部空間，避免被導航列擋住 */
+        .menu-section { scroll-margin-top: 115px; } 
         
         .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fff; border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .item-name { font-size: 16px; font-weight: bold; color: #333; }
@@ -60,7 +57,6 @@
         .qty-btn.plus { background: #ff9800; color: white; }
         .qty-display { font-weight: bold; font-size: 16px; min-width: 20px; text-align: center; }
 
-        /* 右下角懸浮結帳按鈕 (FAB) */
         .cart-fab { position: fixed; bottom: 20px; right: 20px; background: #f44336; color: white; padding: 15px 25px; border-radius: 30px; font-size: 18px; font-weight: bold; box-shadow: 0 4px 15px rgba(244,67,54,0.4); cursor: pointer; z-index: 1000; display: none; align-items: center; gap: 15px; transition: transform 0.2s; }
         .cart-fab:active { transform: scale(0.95); }
 
@@ -75,6 +71,14 @@
         .modal-content { background: white; padding: 20px; border-radius: 12px; max-height: 80vh; overflow-y: auto; }
         .rank-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ccc; }
         .rank-num { font-weight: bold; color: #ff9800; width: 30px; }
+        
+        /* 🚀 新增：法律條款 Modal 的專屬設計 */
+        #tosModal { display: none; position: fixed; top: 5%; left: 50%; transform: translate(-50%, 0); width: 90%; max-width: 500px; background: white; padding: 25px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 2000; border: 3px solid #1976d2; max-height: 85vh; overflow-y: auto; }
+        .tos-title { color: #1976d2; border-bottom: 2px solid #bbdefb; padding-bottom: 10px; margin-top: 0; text-align: center; }
+        .tos-text { font-size: 14px; line-height: 1.6; color: #444; }
+        .tos-text p { margin-bottom: 12px; }
+        .tos-text strong { color: #000; }
+        #tosOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1999; }
     </style>
 </head>
 <body>
@@ -85,18 +89,36 @@
     <div style="width: 44px;"></div>
 </div>
 
+<!-- 左上角選單 -->
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">系統選單</div>
     <ul class="sidebar-menu">
         <li><a href="#" onclick="showHistoryRank(); toggleMenu();">🏆 歷代熱門排行榜</a></li>
         <li><a href="#" onclick="alert('本系統由 217 班負責人開發，用於簡化午餐點餐與對帳流程。'); toggleMenu();">📖 關於本站</a></li>
-        <li><a href="#" onclick="alert('法規條文：\n1. 依學校規定，未依規定處理廚餘者記警告乙次。\n2. 擅自拿取他人餐點者依校規竊盜罪處分。'); toggleMenu();">⚖️ 相關校規&法規</a></li>
+        <!-- 💡 更新：點擊這裡會跳出精美的合約 Modal，不再是醜醜的 alert -->
+        <li><a href="#" onclick="showToS(); toggleMenu();">⚖️ 相關校規 & 服務條款</a></li>
         <li><a href="#" onclick="alert('規定：\n1. 每日請於系統開放時間內點餐\n2. 餐點送達後憑繳費確認取餐\n3. 惡意棄單將取消點餐資格'); toggleMenu();">📜 學校午餐規定</a></li>
         <li><a href="#" onclick="alert('目前合作店家：\n- 麵朝\n- 八方雲集\n(詳細菜單會依負責人每日開放為主)'); toggleMenu();">🍽️ 所有菜單總覽</a></li>
         <li><a href="#" onclick="alert('Q: 我點錯了怎麼辦？\nA: 請在送出訂單後的收據畫面點擊「取消訂單」，再重新點一次即可。'); toggleMenu();">❓ 常見問題 (FAQ)</a></li>
         <li><a href="https://forms.gle/your-form-link" target="_blank" onclick="toggleMenu()">💌 意見反應與許願池</a></li>
     </ul>
+</div>
+
+<!-- 🚀 新增：服務條款與免責聲明 Modal -->
+<div id="tosOverlay"></div>
+<div id="tosModal">
+    <h2 class="tos-title">⚖️ 服務條款與免責聲明</h2>
+    <div class="tos-text">
+        <p><strong>第一條（同意條款與契約成立）</strong><br>使用者於本系統點擊「確認送出訂單」之同時，即推定已審閱、瞭解並同意遵守本條款，約定委任關係生效。</p>
+        <p><strong>第二條（真實身分與冒用之法律責任）</strong><br>使用者應以本人真實座號登入。倘有未經授權冒用他人座號點餐、取消或輸入不實電磁紀錄致生損害者，開發人及負責人得逕行保全存取紀錄(含IP位址)移請學務處查處；情節重大者，將依法追究《刑法》第210條偽造文書、第355條間接毀損及第359條妨害電腦使用等責任。</p>
+        <p><strong>第三條（履約義務與損害賠償）</strong><br>契約一經成立，除不可抗力外，訂購人不得無故拒絕受領或拒付價金。惡意棄單者應負損害賠償責任，全額給付代價。</p>
+        <p><strong>第四條（免責事由與帳務確認）</strong><br>本系統為無償輔助工具。因設備故障或遭惡意攻擊致資料滅失，開發人及負責人不負賠償責任。帳務結算概以負責人實際收受現金為唯一認定標準。</p>
+        <p><strong>第五條（緊急處置權）</strong><br>遇店家無法履約時，負責人得逕行啟動備案或撤銷訂單，價金差額依多退少補處理，訂購人不得異議。</p>
+        <p><strong>第六條（個資聲明）</strong><br>本系統依《個資法》蒐集座號與飲食偏好，僅限當日核對使用，絕不作他用。</p>
+        <p style="text-align:right; font-weight:bold; color:#f44336; margin-top:20px;">網頁開發人：羅亦承</p>
+    </div>
+    <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="agreeToS()">我已詳閱並同意</button>
 </div>
 
 <div class="container">
@@ -106,7 +128,7 @@
         <div style="font-size: 12px; color: #888; text-align: right; margin-top: 5px;" id="announcementTime"></div>
     </div>
 
-    <!-- 備案公開面板 (隱藏) -->
+    <!-- 備案公開面板 -->
     <div class="card" id="planBDashboard" style="border: 3px solid #f44336; background: #fff5f5; display:none;">
         <h2 style="color: #f44336; text-align:center; border:none;">🚨 統一備案名單與補退款</h2>
         <div style="text-align:center; margin-bottom:15px; font-size:16px;">今日改訂：<strong id="pbMealDisplay"></strong> ($<strong id="pbPriceDisplay"></strong>)</div>
@@ -146,27 +168,19 @@
         <button class="btn btn-outline" onclick="checkStatusQuick()">🔍 直接查詢今日訂單狀態</button>
     </div>
 
-    <!-- 步驟 2：選擇餐點 (UberEats 風格選單) -->
+    <!-- 步驟 2：選擇餐點 -->
     <div id="menuArea" style="padding-bottom: 80px;">
-        
-        <!-- 🚀 頂部快捷導航 (動態產生) -->
         <div id="categoryNav" class="category-nav"></div>
-
         <div style="background-color: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 6px; text-align: center; font-weight: bold; margin-bottom: 15px;">
             📢 今日餐廳：<span id="displayRestaurant">載入中...</span>
         </div>
-        
-        <!-- 熱門推薦區 -->
         <div class="hot-section menu-section" id="hotSection">
             <div class="hot-title">🔥 班內熱門推薦 (Top 3)</div>
             <div id="hotItemsContainer">載入中...</div>
         </div>
-
-        <!-- 完整菜單區 (不再折疊) -->
         <div id="fullMenuContainer"></div>
     </div>
 
-    <!-- 右下角懸浮結帳按鈕 (FAB) -->
     <div id="cartFab" class="cart-fab" onclick="goToCustomize()">
         <div>🛒 $<span id="cartTotal">0</span></div>
         <div>完成選擇 ➔</div>
@@ -181,11 +195,9 @@
             <hr style="border:0; border-top:1px dashed #90caf9; margin:10px 0;">
             基本價格：$<span id="c_basePrice" style="font-weight:bold; color:#d32f2f;"></span>
         </div>
-        
         <div class="checkbox-group" id="dynamicOptions"></div>
         <label style="font-weight:bold; color:#555; display:block; margin-bottom:5px;">📝 備註 (不要蔥、不要香菜...)：</label>
         <input type="text" id="orderNote" placeholder="輸入特殊需求...">
-        
         <div style="display:flex; gap:10px; margin-top:20px;">
             <button class="btn btn-secondary" onclick="backToMenu()">返回加點</button>
             <button class="btn btn-primary" onclick="goToReview()">下一步 (預覽訂單)</button>
@@ -244,7 +256,6 @@
     let currentRestaurant = "";
     let statsData = {}; 
 
-    // 超完整菜單建檔
     const restaurantDB = {
         "麵朝 (新竹食品店)": {
             menu: [
@@ -266,6 +277,31 @@
 
     const d = new Date();
     const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
+
+    // 🚀 新增：首登合約檢查邏輯
+    window.onload = function() {
+        if (!localStorage.getItem('tosAgreed_217')) {
+            document.getElementById('tosModal').style.display = 'block';
+            document.getElementById('tosOverlay').style.display = 'block';
+            // 在同意合約前，隱藏登入區避免被亂按
+            document.getElementById('authArea').style.visibility = 'hidden'; 
+        } else {
+            initSystem();
+        }
+    };
+
+    window.agreeToS = function() {
+        localStorage.setItem('tosAgreed_217', 'true');
+        document.getElementById('tosModal').style.display = 'none';
+        document.getElementById('tosOverlay').style.display = 'none';
+        document.getElementById('authArea').style.visibility = 'visible';
+        initSystem();
+    };
+
+    window.showToS = function() {
+        document.getElementById('tosModal').style.display = 'block';
+        document.getElementById('tosOverlay').style.display = 'block';
+    };
 
     window.toggleMenu = function() {
         document.getElementById('sidebar').classList.toggle('active');
@@ -365,7 +401,6 @@
         document.getElementById('orderFormArea').style.display = 'none';
     }
 
-    // 🚀 核心更新：建構 Uber Eats 風格菜單
     function buildMenuForm(restName) {
         document.getElementById('displayRestaurant').innerText = restName;
         const restData = restaurantDB[restName] || { menu: [], options: "" };
@@ -394,18 +429,16 @@
             }
         } else { 
             hotHtml = "<p style='color:#888; font-size:14px; margin:0;'>大家還沒點過這家，快來搶頭香！</p>"; 
-            document.getElementById('hotSection').style.display = 'none'; // 沒資料就隱藏熱門區塊
+            document.getElementById('hotSection').style.display = 'none'; 
         }
         document.getElementById('hotItemsContainer').innerHTML = hotHtml;
 
         let menuHtml = "";
         restData.menu.forEach((group, idx) => {
             let catId = `cat-${idx}`;
-            // 產生頂部導航
             let isActive = (restStats.length === 0 && idx === 0) ? 'active' : '';
             navHtml += `<div class="cat-tab ${isActive}" data-target="${catId}" onclick="scrollToCategory('${catId}')">${group.category}</div>`;
             
-            // 產生區塊 (移除原本的 display:none 折疊邏輯，全部攤平)
             menuHtml += `<div id="${catId}" class="menu-section">
                             <div class="menu-category">${group.category}</div>`;
             
@@ -431,16 +464,14 @@
         document.getElementById('menuArea').style.display = 'block';
     }
 
-    // 🚀 點擊頂部快捷列自動滾動
     window.scrollToCategory = function(catId) {
         const el = document.getElementById(catId);
-        const headerOffset = 120; // 扣除藍色 Navbar + 導航 Navbar 的高度
+        const headerOffset = 120; 
         const elementPosition = el.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
         window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
 
-    // 🚀 滑動聯動 (Scroll Spy)：滑動頁面時，頂部 Navbar 的黑線會自動切換
     window.addEventListener('scroll', () => {
         if(document.getElementById('menuArea').style.display !== 'block') return;
         let current = "";
@@ -449,16 +480,13 @@
         
         sections.forEach(sec => {
             const sectionTop = sec.offsetTop;
-            if (pageYOffset >= sectionTop - headerOffset) {
-                current = sec.getAttribute('id');
-            }
+            if (pageYOffset >= sectionTop - headerOffset) { current = sec.getAttribute('id'); }
         });
 
         document.querySelectorAll('.cat-tab').forEach(tab => {
             tab.classList.remove('active');
             if(tab.getAttribute('data-target') === current) {
                 tab.classList.add('active');
-                // 讓導航列自動滾動到視野內
                 tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
             }
         });
@@ -472,72 +500,49 @@
         document.querySelectorAll(`[data-qty-name="${name}"]`).forEach(el => el.innerText = cart[name].qty);
         
         let totalQty = 0; let totalPrice = 0;
-        for(let k in cart) {
-            totalQty += cart[k].qty;
-            totalPrice += cart[k].qty * cart[k].price;
-        }
+        for(let k in cart) { totalQty += cart[k].qty; totalPrice += cart[k].qty * cart[k].price; }
         
         const fab = document.getElementById('cartFab');
-        if(totalQty > 0) {
-            fab.style.display = 'flex';
-            document.getElementById('cartTotal').innerText = totalPrice;
-        } else {
-            fab.style.display = 'none';
-        }
+        if(totalQty > 0) { fab.style.display = 'flex'; document.getElementById('cartTotal').innerText = totalPrice; } 
+        else { fab.style.display = 'none'; }
     }
 
     window.goToCustomize = function() {
-        let meals = [];
-        let basePrice = 0;
+        let meals = []; let basePrice = 0;
         for(let name in cart) {
-            if(cart[name].qty > 0) {
-                meals.push(`${name} x${cart[name].qty}`); 
-                basePrice += cart[name].price * cart[name].qty;
-            }
+            if(cart[name].qty > 0) { meals.push(`${name} x${cart[name].qty}`); basePrice += cart[name].price * cart[name].qty; }
         }
-        pendingOrder.meal = meals.join(", ");
-        pendingOrder.basePrice = basePrice;
+        pendingOrder.meal = meals.join(", "); pendingOrder.basePrice = basePrice;
         
         document.getElementById('c_mealName').innerHTML = meals.join("<br>");
         document.getElementById('c_basePrice').innerText = basePrice;
         
-        document.getElementById('menuArea').style.display = 'none';
-        document.getElementById('cartFab').style.display = 'none';
-        document.getElementById('customizeArea').style.display = 'block';
+        document.getElementById('menuArea').style.display = 'none'; document.getElementById('cartFab').style.display = 'none'; document.getElementById('customizeArea').style.display = 'block';
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     window.backToMenu = function() {
-        document.getElementById('customizeArea').style.display = 'none';
-        document.getElementById('menuArea').style.display = 'block';
-        document.getElementById('cartFab').style.display = 'flex';
+        document.getElementById('customizeArea').style.display = 'none'; document.getElementById('menuArea').style.display = 'block'; document.getElementById('cartFab').style.display = 'flex';
     }
 
     window.goToReview = function() {
-        let finalPrice = pendingOrder.basePrice;
-        let notes = [];
+        let finalPrice = pendingOrder.basePrice; let notes = [];
         const checkboxes = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(cb => { if(cb.checked) { finalPrice += parseInt(cb.getAttribute('data-price')); notes.push(cb.value); } });
         if(document.getElementById('orderNote').value) notes.push(document.getElementById('orderNote').value.trim());
         
-        pendingOrder.note = notes.length > 0 ? notes.join(", ") : "無";
-        pendingOrder.price = finalPrice;
-        pendingOrder.date = todayStr;
-        pendingOrder.isPaid = false; 
-        pendingOrder.notifiedPaid = false;
+        pendingOrder.note = notes.length > 0 ? notes.join(", ") : "無"; pendingOrder.price = finalPrice; pendingOrder.date = todayStr; pendingOrder.isPaid = false; pendingOrder.notifiedPaid = false;
 
         document.getElementById('v_id').innerText = pendingOrder.studentId; 
         document.getElementById('v_meal').innerHTML = pendingOrder.meal.replace(/, /g, '<br>'); 
         document.getElementById('v_note').innerText = pendingOrder.note; 
         document.getElementById('v_price').innerText = pendingOrder.price;
         
-        document.getElementById('customizeArea').style.display = 'none';
-        document.getElementById('reviewArea').style.display = 'block';
+        document.getElementById('customizeArea').style.display = 'none'; document.getElementById('reviewArea').style.display = 'block';
     }
 
     window.backToCustomize = function() {
-        document.getElementById('reviewArea').style.display = 'none';
-        document.getElementById('customizeArea').style.display = 'block';
+        document.getElementById('reviewArea').style.display = 'none'; document.getElementById('customizeArea').style.display = 'block';
     }
 
     window.confirmSubmit = async function() {
@@ -555,13 +560,8 @@
     }
 
     function showReceipt(id, meal, note, price, isPaid, notifiedPaid) {
-        document.getElementById('reviewArea').style.display = 'none';
-        document.getElementById('authArea').style.display = 'none';
-        document.getElementById('receiptArea').style.display = 'block';
-        document.getElementById('r_id').innerText = id; 
-        document.getElementById('r_meal').innerHTML = meal.replace(/, /g, '<br>'); 
-        document.getElementById('r_note').innerText = note; 
-        document.getElementById('r_price').innerText = price;
+        document.getElementById('reviewArea').style.display = 'none'; document.getElementById('authArea').style.display = 'none'; document.getElementById('receiptArea').style.display = 'block';
+        document.getElementById('r_id').innerText = id; document.getElementById('r_meal').innerHTML = meal.replace(/, /g, '<br>'); document.getElementById('r_note').innerText = note; document.getElementById('r_price').innerText = price;
         
         const paymentArea = document.getElementById('paymentActions');
         if (isPaid) paymentArea.innerHTML = `<h3 style="color:#4CAF50;">🎉 負責人已確認收款！</h3>`;
@@ -580,22 +580,18 @@
         }
     }
 
-    // 備案與廣播邏輯 (不變)
     onSnapshot(doc(db, "system", "announcement"), (docSnap) => {
         const banner = document.getElementById('announcementBanner');
         const planBBoard = document.getElementById('planBDashboard');
         
         if (docSnap.exists() && docSnap.data().date === todayStr) {
             const data = docSnap.data();
-            banner.style.display = 'block';
-            document.getElementById('announcementMsg').innerText = data.message;
-            document.getElementById('announcementTime').innerText = data.time;
+            banner.style.display = 'block'; document.getElementById('announcementMsg').innerText = data.message; document.getElementById('announcementTime').innerText = data.time;
 
             if (data.isPlanB) {
                 document.getElementById('authArea').style.display = 'none'; document.getElementById('menuArea').style.display = 'none'; document.getElementById('customizeArea').style.display = 'none';
                 document.getElementById('reviewArea').style.display = 'none'; document.getElementById('lockedScreen').style.display = 'none'; document.getElementById('receiptArea').style.display = 'none';
-                document.getElementById('cartFab').style.display = 'none';
-                planBBoard.style.display = 'block';
+                document.getElementById('cartFab').style.display = 'none'; planBBoard.style.display = 'block';
                 document.getElementById('pbMealDisplay').innerText = data.planBMeal; document.getElementById('pbPriceDisplay').innerText = data.planBPrice;
 
                 const q = query(collection(db, "orders"), where("date", "==", todayStr));
@@ -608,13 +604,13 @@
                         let diffText = diffMatch ? `<br><span style="color:#e65100; font-size:13px; font-weight:bold;">🚨 ${diffMatch[1].trim()}</span>` : '';
                         html += `<tr><td><strong>${o.studentId}</strong></td><td>${status}${diffText}</td></tr>`;
                     });
-                    if(arr.length === 0) html = `<tr><td colspan="2">目前無人訂餐</td></tr>`;
-                    document.getElementById('pbTableBody').innerHTML = html;
+                    if(arr.length === 0) html = `<tr><td colspan="2">目前無人訂餐</td></tr>`; document.getElementById('pbTableBody').innerHTML = html;
                 });
             }
         } else {
             banner.style.display = 'none'; planBBoard.style.display = 'none';
-            initSystem(); 
+            // 只有在合約已同意的情況下，廣播解除後才恢復載入系統
+            if (localStorage.getItem('tosAgreed_217')) { initSystem(); }
         }
     });
 
@@ -637,9 +633,6 @@
         if(!docSnap.exists() || docSnap.data().isCancelled) return alert('找不到訂單！');
         await updateDoc(docRef, { notifiedPaid: true }); alert('✅ 已通知負責人！');
     }
-    
-    // 啟動系統
-    initSystem();
 </script>
 </body>
 </html>
