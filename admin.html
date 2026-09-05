@@ -9,7 +9,7 @@
         .container { max-width: 900px; margin: 0 auto; }
         .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h1, h2 { color: #333; }
-        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top:0; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
         th { background-color: #4CAF50; color: white; }
@@ -20,17 +20,15 @@
         .btn-primary { background-color: #2196f3; }
         .btn-danger { background-color: #f44336; }
         .btn-secondary { background-color: #9e9e9e; }
-        .btn-full { width: 100%; }
+        .btn-success { background-color: #4CAF50; }
         
-        input[type="date"], input[type="text"], input[type="number"] { padding: 8px; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
+        input[type="date"], input[type="text"], input[type="number"], input[type="time"], select { padding: 8px; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
         .planB-box { background-color: #fff3e0; border: 2px dashed #ff9800; padding: 15px; border-radius: 8px; }
         
         #notificationCenter { display: none; background-color: #fff8e1; border-left: 6px solid #ffb300; }
         .notif-badge { display: inline-block; background: white; border: 1px solid #ccc; padding: 6px 12px; border-radius: 20px; margin: 5px; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .notif-badge button { margin-left: 8px; cursor: pointer; border: none; border-radius: 4px; padding: 4px 8px; font-weight: bold; color: white; }
-        .btn-confirm { background-color: #4CAF50; }
-        .btn-dismiss { background-color: #9e9e9e; }
-
+        
         .stats-grid { display: flex; gap: 15px; margin-top: 15px; }
         .stat-box { flex: 1; background: #f9f9f9; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #eee; }
         .stat-value { font-size: 24px; font-weight: bold; margin-top: 5px; }
@@ -39,7 +37,9 @@
         .text-blue { color: #2196f3; }
         .unpaid-list { background: #ffebee; padding: 10px; border-radius: 6px; color: #d32f2f; font-weight: bold; margin-top: 15px; }
         .item-list { background: #e3f2fd; padding: 15px; border-radius: 8px; margin-top: 15px; }
-        .item-list ul { margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.6; }
+        
+        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        label { font-weight: bold; color: #555; display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -47,24 +47,55 @@
 <div class="container">
     <h1>👑 負責人專屬後台</h1>
 
-    <!-- 系統通知中心 -->
+    <!-- 系統設定：排程與時間 -->
+    <div class="card" style="border-top: 5px solid #2196f3;">
+        <h2>⚙️ 系統核心設定</h2>
+        <div class="settings-grid">
+            <!-- 區塊一：預先排定未來餐廳 -->
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                <h3 style="margin-top:0; color:#1976d2;">🗓️ 預排指定日期餐廳</h3>
+                <label>選擇日期：</label>
+                <input type="date" id="scheduleDate">
+                <label>選擇當天餐廳：</label>
+                <select id="scheduleRestaurant">
+                    <option value="麵朝 (新竹食品店)">麵朝 (新竹食品店)</option>
+                    <option value="八方雲集">八方雲集</option>
+                </select>
+                <button class="btn btn-primary" style="width:100%;" onclick="saveDailyMenu()">儲存當日排程</button>
+            </div>
+            
+            <!-- 區塊二：點餐時間鎖定設定 -->
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #ddd;">
+                <h3 style="margin-top:0; color:#1976d2;">⏱️ 開放點餐時間區間</h3>
+                <p style="font-size:13px; color:#666; margin-top:-10px;">(前台同學只在此時間內可送出訂單)</p>
+                <label>開始時間：</label>
+                <input type="time" id="sysStartTime" value="06:00">
+                <label>截止時間：</label>
+                <input type="time" id="sysEndTime" value="11:00">
+                <button class="btn btn-success" style="width:100%;" onclick="saveTimeSettings()">更新時間限制</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知中心 -->
     <div class="card" id="notificationCenter">
-        <h2 style="color: #ff8f00; margin-top:0; border-bottom: 2px solid #ffe082;">🔔 系統通知中心</h2>
+        <h2 style="color: #ff8f00;">🔔 系統通知中心</h2>
         <div id="cancelNotifs"></div>
         <div id="paidNotifs" style="margin-top: 15px;"></div>
     </div>
     
+    <!-- 查看訂單日期 -->
     <div class="card">
-        <h2>📅 選擇查看日期</h2>
+        <h2>📅 選擇查看訂單日期</h2>
         <input type="date" id="adminDate">
     </div>
 
-    <!-- 統計報表與帳務中心 -->
+    <!-- 報表中心 -->
     <div class="card">
         <h2>📊 統計報表與帳務中心</h2>
         <div class="item-list">
-            <h3 style="margin-top: 0; color: #1565c0;">📞 點餐總表 (給餐廳看這個)</h3>
-            <ul id="statItemCounts"><li>計算中...</li></ul>
+            <h3 style="margin-top: 0; color: #1565c0;">📞 點餐總表 (報給餐廳)</h3>
+            <ul id="statItemCounts" style="margin:0; padding-left:20px; font-size:16px;"><li>計算中...</li></ul>
         </div>
         <div class="stats-grid">
             <div class="stat-box"><div>應收總額</div><div class="stat-value text-blue">$<span id="statTotalAmount">0</span></div></div>
@@ -74,45 +105,31 @@
         <div class="unpaid-list">⚠️ 尚未繳錢座號：<span id="statUnpaidStudents">無</span></div>
     </div>
 
-    <!-- 危機處理 Plan B -->
+    <!-- 危機處理 -->
     <div class="card planB-box">
         <h2 style="color: #e65100;">🚨 危機處理：啟動備案機制</h2>
-        <input type="text" id="planBMeal" placeholder="全班統一改訂餐點 (例：八方雲集鍋貼)">
+        <input type="text" id="planBMeal" placeholder="全班改訂餐點 (例：八方鍋貼)">
         <input type="number" id="planBPrice" placeholder="統一價格 (例：70)">
-        
-        <!-- 新增：撤回按鈕並排 -->
         <div style="display: flex; gap: 10px;">
             <button class="btn btn-danger" style="flex: 2;" onclick="executePlanB()">啟動備案並廣播給全班！</button>
             <button class="btn btn-secondary" style="flex: 1;" onclick="clearAnnouncement()">解除廣播</button>
         </div>
     </div>
     
-    <!-- 訂單明細 -->
+    <!-- 訂單看板 -->
     <div class="card">
         <h2>📋 訂單即時看板</h2>
-        <p>總訂購人數：<strong id="totalCount" style="color:red; font-size: 20px;">0</strong> 人</p>
+        <p>總人數：<strong id="totalCount" style="color:red; font-size: 20px;">0</strong> 人</p>
         <table>
-            <thead>
-                <tr>
-                    <th>座號</th>
-                    <th>餐點</th>
-                    <th>備註</th>
-                    <th>金額</th>
-                    <th>繳費狀態</th>
-                </tr>
-            </thead>
-            <tbody id="orderTableBody">
-                <tr><td colspan="5">連線讀取中...</td></tr>
-            </tbody>
+            <thead><tr><th>座號</th><th>餐點</th><th>備註</th><th>金額</th><th>繳費狀態</th></tr></thead>
+            <tbody id="orderTableBody"><tr><td colspan="5">連線讀取中...</td></tr></tbody>
         </table>
-        <hr style="margin: 30px 0;">
-        <button class="btn btn-danger btn-full" onclick="clearTodayOrders()" style="background-color: #b71c1c;">⚠️ 完全清除所選日期的所有訂單 ⚠️</button>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, collection, doc, updateDoc, onSnapshot, query, where, getDocs, deleteDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, updateDoc, onSnapshot, query, where, getDocs, deleteDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAQ3nCfS7eNB_hRQ2AQVBFARPn2YeJXl3c",
@@ -126,16 +143,42 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const tbody = document.getElementById('orderTableBody');
-    const totalCount = document.getElementById('totalCount');
-    const adminDateInput = document.getElementById('adminDate');
-    const notifCenter = document.getElementById('notificationCenter');
-
     const d = new Date();
     const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
-    adminDateInput.value = todayStr;
-    let currentUnsubscribe = null; 
+    document.getElementById('adminDate').value = todayStr;
+    document.getElementById('scheduleDate').value = todayStr;
 
+    // 讀取初始設定
+    async function loadSettings() {
+        const configSnap = await getDoc(doc(db, "system", "settings"));
+        if (configSnap.exists()) {
+            document.getElementById('sysStartTime').value = configSnap.data().orderStartTime;
+            document.getElementById('sysEndTime').value = configSnap.data().orderEndTime;
+        }
+    }
+    loadSettings();
+
+    // 儲存時間設定
+    window.saveTimeSettings = async function() {
+        const st = document.getElementById('sysStartTime').value;
+        const et = document.getElementById('sysEndTime').value;
+        try {
+            await setDoc(doc(db, "system", "settings"), { orderStartTime: st, orderEndTime: et }, { merge: true });
+            alert("✅ 點餐時間限制已更新！前台已生效。");
+        } catch(e) { alert("儲存失敗"); }
+    }
+
+    // 儲存每日排程
+    window.saveDailyMenu = async function() {
+        const targetDate = document.getElementById('scheduleDate').value;
+        const rest = document.getElementById('scheduleRestaurant').value;
+        try {
+            await setDoc(doc(db, "dailyMenus", targetDate), { restaurant: rest });
+            alert(`✅ 成功設定 ${targetDate} 的餐廳為：${rest}`);
+        } catch(e) { alert("儲存失敗"); }
+    }
+
+    let currentUnsubscribe = null; 
     function listenToOrders(dateStr) {
         if(currentUnsubscribe) currentUnsubscribe();
         const q = query(collection(db, "orders"), where("date", "==", dateStr));
@@ -145,15 +188,13 @@
 
             snapshot.forEach((docSnap) => {
                 let order = docSnap.data();
-                if (order.isCancelled) {
-                    canceledAlerts.push(order);
-                } else {
+                if (order.isCancelled) { canceledAlerts.push(order); } 
+                else {
                     activeOrders.push(order);
                     if (order.notifiedPaid && !order.isPaid) paidAlerts.push(order);
-
                     totalAmount += order.price;
-                    if (order.isPaid) { collectedAmount += order.price; } 
-                    else { unpaidStudents.push(order.studentId); }
+                    if (order.isPaid) collectedAmount += order.price; 
+                    else unpaidStudents.push(order.studentId);
 
                     let cleanNote = order.note.split(" | ")[0]; 
                     let itemKey = order.meal;
@@ -164,15 +205,15 @@
 
             renderNotifications(canceledAlerts, paidAlerts);
             activeOrders.sort((a, b) => a.studentId - b.studentId);
-            totalCount.innerText = activeOrders.length;
+            document.getElementById('totalCount').innerText = activeOrders.length;
 
             if (activeOrders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="color: #888;">這天沒有有效訂單紀錄。</td></tr>`;
+                document.getElementById('orderTableBody').innerHTML = `<tr><td colspan="5" style="color:#888;">這天沒有紀錄。</td></tr>`;
                 document.getElementById('statTotalAmount').innerText = "0";
                 document.getElementById('statCollected').innerText = "0";
                 document.getElementById('statUnpaidAmount').innerText = "0";
                 document.getElementById('statUnpaidStudents').innerText = "無";
-                document.getElementById('statItemCounts').innerHTML = "<li>尚未有訂單</li>";
+                document.getElementById('statItemCounts').innerHTML = "<li>無資料</li>";
                 return;
             }
 
@@ -189,106 +230,58 @@
 
             let html = '';
             activeOrders.forEach(order => {
-                let rowClass = order.isPaid ? 'paid' : 'unpaid';
-                let checkedAttr = order.isPaid ? 'checked' : '';
                 html += `
-                    <tr class="${rowClass}">
+                    <tr class="${order.isPaid ? 'paid' : 'unpaid'}">
                         <td><strong>${order.studentId}</strong> 號</td>
                         <td style="color:#1565c0; font-weight:bold;">${order.meal}</td>
                         <td style="font-size: 13px;">${order.note}</td>
                         <td>$${order.price}</td>
-                        <td><input type="checkbox" ${checkedAttr} onclick="togglePaid('${order.date}_${order.studentId}', this.checked)" style="width:20px; height:20px;"></td>
+                        <td><input type="checkbox" ${order.isPaid ? 'checked' : ''} onclick="togglePaid('${order.date}_${order.studentId}', this.checked)" style="width:20px;height:20px;"></td>
                     </tr>
                 `;
             });
-            tbody.innerHTML = html;
+            document.getElementById('orderTableBody').innerHTML = html;
         });
     }
 
-    function renderNotifications(canceledAlerts, paidAlerts) {
-        if(canceledAlerts.length === 0 && paidAlerts.length === 0) {
-            notifCenter.style.display = 'none'; return;
-        }
-        notifCenter.style.display = 'block';
-        let cancelHtml = '';
-        if(canceledAlerts.length > 0) {
-            cancelHtml += `<strong style="color:#d32f2f;">❌ 以下同學剛剛取消了訂單：</strong><br>`;
-            canceledAlerts.forEach(o => { cancelHtml += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button class="btn-dismiss" onclick="dismissCancel('${o.date}_${o.studentId}')">清除通知</button></div>`; });
-        }
-        document.getElementById('cancelNotifs').innerHTML = cancelHtml;
+    function renderNotifications(c, p) {
+        const nc = document.getElementById('notificationCenter');
+        if(c.length === 0 && p.length === 0) { nc.style.display = 'none'; return; }
+        nc.style.display = 'block';
+        
+        let ch = c.length > 0 ? `<strong style="color:#d32f2f;">❌ 取消訂單：</strong><br>` : '';
+        c.forEach(o => ch += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button class="btn-dismiss" onclick="dismissCancel('${o.date}_${o.studentId}')">清除通知</button></div>`);
+        document.getElementById('cancelNotifs').innerHTML = ch;
 
-        let paidHtml = '';
-        if(paidAlerts.length > 0) {
-            paidHtml += `<strong style="color:#2e7d32;">💰 以下同學發出「已繳費」通知：</strong><br>`;
-            paidAlerts.forEach(o => { paidHtml += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button class="btn-confirm" onclick="togglePaid('${o.date}_${o.studentId}', true)">確認收款</button></div>`; });
-        }
-        document.getElementById('paidNotifs').innerHTML = paidHtml;
+        let ph = p.length > 0 ? `<strong style="color:#2e7d32;">💰 繳費通知：</strong><br>` : '';
+        p.forEach(o => ph += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button class="btn-confirm" onclick="togglePaid('${o.date}_${o.studentId}', true)">確認收款</button></div>`);
+        document.getElementById('paidNotifs').innerHTML = ph;
     }
 
     listenToOrders(todayStr);
-    adminDateInput.addEventListener('change', (e) => { listenToOrders(e.target.value); });
+    document.getElementById('adminDate').addEventListener('change', (e) => listenToOrders(e.target.value));
 
-    window.togglePaid = async function(docId, isPaid) {
-        try { await updateDoc(doc(db, "orders", docId), { isPaid: isPaid, notifiedPaid: false }); } catch (error) { alert("更新失敗！"); }
-    };
-    window.dismissCancel = async function(docId) {
-        try { await deleteDoc(doc(db, "orders", docId)); } catch (e) { alert("清除失敗"); }
-    };
-    window.clearTodayOrders = async function() {
-        const targetDate = adminDateInput.value;
-        if(confirm(`⚠️ 警告：你確定要完全清除 ${targetDate} 的所有訂單嗎？\n(清除後將無法復原)`)) {
-            const q = query(collection(db, "orders"), where("date", "==", targetDate));
-            const snapshot = await getDocs(q);
-            snapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "orders", docSnap.id)); });
-            alert("訂單已全部清除！");
-        }
-    }
+    window.togglePaid = async function(docId, isPaid) { await updateDoc(doc(db, "orders", docId), { isPaid, notifiedPaid: false }); };
+    window.dismissCancel = async function(docId) { await deleteDoc(doc(db, "orders", docId)); };
     
     window.executePlanB = async function() {
-        const newMeal = document.getElementById('planBMeal').value;
-        const newPrice = parseInt(document.getElementById('planBPrice').value);
-        const targetDate = adminDateInput.value;
-        if(!newMeal || isNaN(newPrice)) return alert("請輸入完整的備案餐點與價格！");
-        if(!confirm(`確定啟動備案？\n將把 ${targetDate} 的所有訂單改為「${newMeal}」($${newPrice})，並廣播給全班！`)) return;
-
+        const newMeal = document.getElementById('planBMeal').value, newPrice = parseInt(document.getElementById('planBPrice').value), targetDate = document.getElementById('adminDate').value;
+        if(!newMeal || isNaN(newPrice)) return alert("請輸入完整資料");
+        if(!confirm(`確定將 ${targetDate} 訂單改為 ${newMeal}？`)) return;
+        
         const now = new Date();
-        const timeStr = `${now.getMonth()+1}月${now.getDate()}日 ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-        await setDoc(doc(db, "system", "announcement"), {
-            date: targetDate, time: timeStr,
-            message: `因原店家未營業，已啟動備案機制！全班統一改訂「${newMeal}」(${newPrice}元)。\n請至下方【查詢】確認最新的應補/退款金額！`
-        });
-
-        const q = query(collection(db, "orders"), where("date", "==", targetDate));
-        const snapshot = await getDocs(q);
+        await setDoc(doc(db, "system", "announcement"), { date: targetDate, time: `${now.getHours()}:${now.getMinutes()}`, message: `啟動備案！全班改訂「${newMeal}」(${newPrice}元)，請查詢應補退金額！` });
+        
+        const snapshot = await getDocs(query(collection(db, "orders"), where("date", "==", targetDate)));
         snapshot.forEach(async (docSnap) => {
             let order = docSnap.data();
             if(order.isCancelled) return; 
-            let diff = newPrice - order.price;
-            let diffMsg = "";
-            let newIsPaid = order.isPaid;
-
-            if(order.isPaid) {
-                if(diff > 0) { diffMsg = `🚨 備案：需再補繳 $${diff}`; newIsPaid = false; } 
-                else if (diff < 0) { diffMsg = `🚨 備案：負責人需退你 $${Math.abs(diff)}`; } 
-                else { diffMsg = `🚨 備案：金額相同，無須補退`; }
-            } else { diffMsg = `🚨 備案：總額改為 $${newPrice}`; }
-
-            await updateDoc(doc(db, "orders", docSnap.id), {
-                meal: newMeal, price: newPrice, note: order.note + " | " + diffMsg, isPaid: newIsPaid, notifiedPaid: false 
-            });
+            let diff = newPrice - order.price, diffMsg = order.isPaid ? (diff > 0 ? `需補繳$${diff}` : (diff < 0 ? `退款$${Math.abs(diff)}` : `無須補退`)) : `改為$${newPrice}`;
+            await updateDoc(doc(db, "orders", docSnap.id), { meal: newMeal, price: newPrice, note: order.note + " | 🚨" + diffMsg, isPaid: order.isPaid && diff <= 0, notifiedPaid: false });
         });
-        alert("✅ 備案啟動成功！訂單已全部重新計算，並發出系統廣播！");
+        alert("備案啟動成功！");
     }
-
-    // 新增：撤回廣播功能
-    window.clearAnnouncement = async function() {
-        if(confirm("確定要解除目前的緊急廣播嗎？\n(前台同學的紅色警告框會立刻消失)")) {
-            try {
-                await deleteDoc(doc(db, "system", "announcement"));
-                alert("✅ 廣播已成功撤回！");
-            } catch(e) { alert("撤回失敗"); }
-        }
-    }
+    window.clearAnnouncement = async function() { await deleteDoc(doc(db, "system", "announcement")); alert("廣播已解除！"); }
 </script>
 </body>
 </html>
