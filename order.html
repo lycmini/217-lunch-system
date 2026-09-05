@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <style>
-        /* 🚀 極淡的透亮紫色背景 (超清爽版) */
-        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #f7f6fc 0%, #fcfbfe 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
+        /* 🚀 完美平衡：明顯但柔和的莫蘭迪藍紫漸層 */
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
         .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -76,7 +76,7 @@
         .hot-title { color: #111; font-weight: 700; margin-bottom: 12px; display:flex; align-items:center; }
         
         .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .checkbox-item { display: flex; align-items: center; background-color: #fafafa; padding: 14px; border-radius: 8px; border: 1px solid #e5e5ea; cursor: pointer; font-size:15px; }
+        .checkbox-item { display: flex; align-items: center; background: #fafafa; padding: 14px; border-radius: 8px; border: 1px solid #e5e5ea; cursor: pointer; font-size:15px; }
         .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; margin-right: 12px; accent-color: #111; }
         input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 14px; box-sizing: border-box; border: 1px solid #d2d2d7; border-radius: 8px; font-size: 15px; font-family: inherit; outline: none; transition: 0.2s;}
         input:focus, select:focus, textarea:focus { border-color: #111; }
@@ -114,7 +114,7 @@
 </head>
 <body>
 
-<!-- 🚀 獨立登入頁面 -->
+<!-- 獨立登入頁面 -->
 <div id="loginPage">
     <div class="ig-form">
         <div class="ig-title">217午餐訂購系統</div>
@@ -371,6 +371,7 @@
     
     window.currentUserId = null;
 
+    // 🚀 只保留麵朝 (已移除八方雲集)
     const restaurantDB = {
         "麵朝 (新竹食品店)": {
             menu: [
@@ -453,7 +454,7 @@
     };
 
     function hideAllSections() {
-        ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'reviewPageArea', 'feedbackPageArea'].forEach(id => {
+        ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'historyModal', 'reviewPageArea', 'feedbackPageArea'].forEach(id => {
             if(document.getElementById(id)) document.getElementById(id).style.display = 'none';
         });
     }
@@ -637,7 +638,7 @@
 
             const logContainer = document.getElementById('reviewedOrdersLog');
             if (logContainer) {
-                logContainer.innerHTML = reviewedListHtml ? `<div style="margin-top:15px; padding:10px; background:#f9f9f9; border-radius:6px; border:1px solid #e5e5ea;"><div style="font-weight:bold; color:#555; margin-bottom:5px; font-size:13px;">📌 已完成評分的歷史餐點：</div>${reviewedListHtml}</div>` : "";
+                logContainer.innerHTML = reviewedListHtml ? `<div style="margin-top:15px; padding:10px; background:#f9f9f9; border-radius:6px; border:1px solid #eee;"><div style="font-weight:bold; color:#555; margin-bottom:5px; font-size:13px;">📌 已完成評分的歷史餐點：</div>${reviewedListHtml}</div>` : "";
             }
 
             if(recentOrdersForReview.length === 0) {
