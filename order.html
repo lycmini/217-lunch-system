@@ -7,119 +7,127 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <style>
-        /* 🚀 極淡的透亮紫色背景 */
-        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #ede9f6 0%, #fbf9ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
+        /* 🚀 核心設定：明顯的藍紫色漸層背景 */
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #8ec5fc 0%, #e0c3fc 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
-        .header { background-color: #2196f3; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .menu-btn { font-size: 26px; background: none; border: none; color: white; cursor: pointer; padding: 0 10px; }
-        .header-title { font-size: 20px; font-weight: bold; flex-grow: 1; text-align: center; }
+        .header-title { font-size: 18px; font-weight: 700; flex-grow: 1; text-align: center; letter-spacing: 0.5px; }
         
-        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.2); transition: left 0.3s ease; z-index: 1000; display: flex; flex-direction: column; overflow-y: auto;}
+        .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #fff; border-right: 1px solid #e5e5ea; transition: left 0.3s ease; z-index: 1000; display: flex; flex-direction: column; overflow-y: auto; }
         .sidebar.active { left: 0; }
-        .sidebar-header { background: #1976d2; color: white; padding: 20px; font-size: 20px; font-weight: bold; }
+        .sidebar-header { background: #fafafa; color: #111; padding: 20px; font-size: 18px; font-weight: 700; border-bottom: 1px solid #e5e5ea; }
         
-        .account-status { background: #e3f2fd; padding: 15px 20px; font-size: 15px; font-weight: 600; color: #1976d2; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #bbdefb; }
-        .btn-logout { background: transparent; border: 1px solid #1976d2; color: #1976d2; padding: 4px 10px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; transition: 0.2s; font-family: inherit;}
-        .btn-logout:hover { background: #1976d2; color: #fff; }
+        .account-status { background: #f5f5f7; padding: 15px 20px; font-size: 15px; font-weight: 600; color: #111; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e5ea; }
+        .btn-logout { background: transparent; border: 1px solid #111; color: #111; padding: 4px 10px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; transition: 0.2s; font-family: inherit;}
+        .btn-logout:hover { background: #111; color: #fff; }
 
         .sidebar-menu { list-style: none; padding: 0; margin: 0; }
-        .sidebar-menu li { border-bottom: 1px solid #eee; }
-        .sidebar-menu a { display: block; padding: 15px 20px; color: #333; text-decoration: none; font-size: 16px; display: flex; align-items: center; gap: 10px; }
-        .sidebar-menu a:hover { background: #f5f5f5; }
+        .sidebar-menu li { border-bottom: 1px solid #f2f2f7; }
+        .sidebar-menu a { display: block; padding: 15px 20px; color: #333; text-decoration: none; font-size: 15px; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .sidebar-menu a:hover { background: #f5f5f7; color: #000; }
         
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 999; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); display: none; z-index: 999; }
         .overlay.active { display: block; }
 
         .container { max-width: 500px; margin: 0 auto; padding: 15px; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h2 { font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top:0; }
+        .card { background: white; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 8px 30px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        h2 { color: #111; font-size: 18px; border-bottom: 1px solid #e5e5ea; padding-bottom: 12px; margin-top:0; font-weight: 700; display: flex; align-items: center;}
         
-        .btn { color: white; width: 100%; padding: 12px; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 16px; font-weight: bold; }
-        .btn-primary { background-color: #ff9800; }
-        .btn-secondary { background-color: #757575; }
-        .btn-danger { background-color: #f44336; }
-        .btn-success { background-color: #4CAF50; }
-        .btn-outline { background-color: white; color: #2196f3; border: 2px solid #2196f3; }
-        .btn-outline-purple { background-color: white; color: #9c27b0; border: 2px solid #9c27b0; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; font-size: 15px; font-weight: 600; font-family: inherit; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-primary { background-color: #111; color: #fff; }
+        .btn-primary:hover { background-color: #333; }
+        .btn-secondary { background-color: #f5f5f7; color: #111; border: 1px solid #d2d2d7; }
+        .btn-secondary:hover { background-color: #ebebf0; }
+        .btn-danger { background-color: #fff; color: #111; border: 1px solid #111; }
+        .btn-danger:hover { background-color: #f5f5f7; }
+        .btn-success { background-color: #111; color: #fff; }
+        .btn-outline { background-color: transparent; color: #111; border: 1px solid #d2d2d7; }
+        .btn-outline:hover { border-color: #111; background: #fafafa; }
         
         #menuArea, #customizeArea, #reviewArea, #receiptArea, #planBDashboard, #lockedScreen, #historyModal, #infoCard, #personalHistoryArea, #reviewPageArea, #feedbackPageArea { display: none; }
-        .price-text { color: #d32f2f; font-size: 28px; font-weight: bold; margin: 15px 0; }
-        #announcementBanner { display: none; background: #ffebee; border: 2px solid #f44336; padding: 15px; border-radius: 8px; margin-bottom: 20px; color: #d32f2f; }
+        .price-text { color: #111; font-size: 28px; font-weight: 700; margin: 15px 0; }
+        #announcementBanner { display: none; background: #fafafa; border: 1px solid #111; padding: 15px; border-radius: 8px; margin-bottom: 20px; color: #111; }
         
-        .category-nav { display: flex; overflow-x: auto; white-space: nowrap; gap: 20px; padding: 10px 15px 0 15px; background: white; position: sticky; top: 60px; z-index: 90; border-bottom: 1px solid #e0e0e0; margin: -15px -15px 20px -15px; scroll-behavior: smooth; }
+        .category-nav { display: flex; overflow-x: auto; white-space: nowrap; gap: 20px; padding: 10px 15px 0 15px; background: #f5f5f7; position: sticky; top: 60px; z-index: 90; border-bottom: 1px solid #e5e5ea; margin: -15px -15px 20px -15px; scroll-behavior: smooth; }
         .category-nav::-webkit-scrollbar { display: none; } 
-        .cat-tab { color: #757575; cursor: pointer; font-weight: bold; font-size: 16px; padding-bottom: 12px; position: relative; transition: color 0.2s; }
-        .cat-tab.active { color: black; }
-        .cat-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px; background-color: black; } 
+        .cat-tab { color: #888; cursor: pointer; font-weight: 600; font-size: 15px; padding-bottom: 12px; position: relative; transition: color 0.2s; }
+        .cat-tab.active { color: #111; }
+        .cat-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background-color: #111; } 
         
-        .menu-category { font-size: 22px; font-weight: bold; color: black; margin: 30px 0 15px 0; padding-bottom: 5px; }
+        .menu-category { font-size: 20px; font-weight: 700; color: #111; margin: 30px 0 15px 0; padding-bottom: 5px; }
         .menu-section { scroll-margin-top: 115px; } 
         
-        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #fff; border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .item-name { font-size: 16px; font-weight: bold; color: #333; }
-        .item-price { color: #d32f2f; font-weight: bold; margin-top: 5px;}
-        .qty-controls { display: flex; align-items: center; gap: 10px; }
-        .qty-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: #e0e0e0; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;}
-        .qty-btn.plus { background: #ff9800; color: white; }
-        .qty-display { font-weight: bold; font-size: 16px; min-width: 20px; text-align: center; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); transition: border-color 0.2s; }
+        .menu-item:hover { border-color: #111; }
+        .item-name { font-size: 15px; font-weight: 600; color: #111; }
+        .item-price { color: #555; font-weight: 500; margin-top: 4px; font-size: 14px;}
+        .qty-controls { display: flex; align-items: center; gap: 12px; }
+        .qty-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid #d2d2d7; background: #fafafa; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #111; transition: 0.2s;}
+        .qty-btn:hover { background: #eee; }
+        .qty-btn.plus { background: #111; color: #fff; border-color: #111; }
+        .qty-btn.plus:hover { background: #333; }
+        .qty-display { font-weight: 600; font-size: 15px; min-width: 20px; text-align: center; }
 
-        .cart-fab { position: fixed; bottom: 20px; right: 20px; background: #f44336; color: white; padding: 15px 25px; border-radius: 30px; font-size: 18px; font-weight: bold; box-shadow: 0 4px 15px rgba(244,67,54,0.4); cursor: pointer; z-index: 1000; display: none; align-items: center; gap: 15px; transition: transform 0.2s; }
+        .cart-fab { position: fixed; bottom: 24px; right: 24px; background: #111; color: white; padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; display: none; align-items: center; gap: 12px; transition: transform 0.2s; }
         
-        .hot-section { background: #fff8e1; padding: 15px; border-radius: 8px; border: 1px solid #ffe082; margin-bottom: 20px; }
-        .hot-title { color: #ff8f00; font-weight: bold; margin-bottom: 10px; }
+        .hot-section { background: #fafafa; padding: 16px; border-radius: 12px; border: 1px solid #e5e5ea; margin-bottom: 24px; }
+        .hot-title { color: #111; font-weight: 700; margin-bottom: 12px; display:flex; align-items:center; }
         
         .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
-        .checkbox-item { display: flex; align-items: center; background-color: #f9f9f9; padding: 12px; border-radius: 6px; border: 1px solid #eee; cursor: pointer; }
-        .checkbox-item input[type="checkbox"] { width: 20px; height: 20px; margin-right: 10px; }
-        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; font-family: inherit;}
+        .checkbox-item { display: flex; align-items: center; background-color: #fafafa; padding: 14px; border-radius: 8px; border: 1px solid #e5e5ea; cursor: pointer; font-size:15px; }
+        .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; margin-right: 12px; accent-color: #111; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 14px; box-sizing: border-box; border: 1px solid #d2d2d7; border-radius: 8px; font-size: 15px; font-family: inherit; outline: none; transition: 0.2s;}
+        input:focus, select:focus, textarea:focus { border-color: #111; }
         
-        #tosModal { display: none; position: fixed; top: 5%; left: 50%; transform: translate(-50%, 0); width: 90%; max-width: 500px; background: white; padding: 25px 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 2000; border: 3px solid #1976d2; max-height: 85vh; overflow-y: auto; }
-        .tos-title { color: #1976d2; border-bottom: 2px solid #bbdefb; padding-bottom: 10px; margin-top: 0; text-align: center; }
+        #tosModal { display: none; position: fixed; top: 5%; left: 50%; transform: translate(-50%, 0); width: 90%; max-width: 500px; background: white; padding: 25px 24px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); z-index: 2000; border: 1px solid #e5e5ea; max-height: 85vh; overflow-y: auto; }
+        .tos-title { color: #111; border-bottom: 1px solid #e5e5ea; padding-bottom: 12px; margin-top: 0; font-weight: 700; text-align: center; }
         .tos-text { font-size: 14px; line-height: 1.6; color: #444; }
-        #systemOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1999; }
+        #systemOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); z-index: 1999; }
         
-        .rank-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ccc; }
-        .rank-num { font-weight: bold; color: #ff9800; width: 30px; }
+        .rank-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f2f2f7; font-size:15px; }
+        .rank-num { font-weight: 700; color: #111; width: 30px; display:inline-block; }
         .table-responsive { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; white-space: nowrap; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-        th { background-color: #eee; }
+        th, td { border: 1px solid #e5e5ea; padding: 10px; text-align: center; }
+        th { background-color: #fafafa; color: #111; font-weight: 600; }
         
-        .review-label { font-weight:bold; color:#555; display:block; margin: 15px 0 5px 0; }
+        .review-label { font-weight:600; color:#111; display:block; margin: 16px 0 6px 0; font-size:15px;}
         .review-hint { font-size:12px; color:#888; font-weight:normal; }
-        .user-badge { display:inline-block; background:#ff9800; color:white; padding:2px 10px; border-radius:12px; font-size:18px; font-weight:bold; margin:0 5px; }
+        
+        .user-badge { display:inline-block; background:#111; color:white; padding:4px 10px; border-radius:12px; font-size:15px; font-weight:600; margin:0 5px; }
 
         /* 🚀 獨立登入頁面 IG 風格 */
-        #loginPage { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
-        .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; }
+        #loginPage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
+        .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
         .ig-title { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 24px; color: #111; letter-spacing: 1px;}
-        .ig-input { width: 100%; padding: 14px 16px; border: 1px solid #dbdbdb; border-radius: 12px; font-size: 14px; background-color: #fafafa; outline: none; box-sizing: border-box; font-family: inherit;}
-        .ig-input:focus { border-color: #a8a8a8; }
-        .ig-btn { width: 100%; padding: 14px; background-color: #9cb2ed; color: white; border: none; border-radius: 24px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 4px; font-family: inherit;}
-        .ig-forgot { text-align: center; margin-top: 20px; font-size: 14px; color: #111; cursor: pointer; font-weight: 500; }
+        .ig-input { width: 100%; padding: 14px 16px; border: 1px solid #e5e5ea; border-radius: 12px; font-size: 14px; background-color: #fafafa; outline: none; box-sizing: border-box; font-family: inherit;}
+        .ig-input:focus { border-color: #111; background-color: #fff; }
+        .ig-btn { width: 100%; padding: 14px; background-color: #111; color: white; border: none; border-radius: 24px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 4px; font-family: inherit; transition: 0.2s;}
+        .ig-btn:hover { background-color: #333; }
+        .ig-forgot { text-align: center; margin-top: 20px; font-size: 14px; color: #555; cursor: pointer; font-weight: 500; transition: 0.2s; }
+        .ig-forgot:hover { color: #111; }
         
-        /* 隱藏主應用區塊 */
         #mainApp { display: none; }
     </style>
 </head>
 <body>
 
-<!-- 🚀 獨立登入頁面 (IG 風格) -->
+<!-- 🚀 獨立登入頁面 -->
 <div id="loginPage">
     <div class="ig-form">
         <div class="ig-title">217午餐訂購系統</div>
-        <input type="text" id="loginAccount" class="ig-input" placeholder="帳號">
+        <input type="text" id="loginAccount" class="ig-input" placeholder="帳號 (例如: 21701)">
         <input type="password" id="loginPassword" class="ig-input" placeholder="密碼">
         <button class="ig-btn" onclick="doLogin()">登入</button>
-        <div class="ig-forgot" onclick="alert('請聯絡負責人')">忘記密碼？</div>
+        <div class="ig-forgot" onclick="alert('忘記密碼？請直接聯絡負責人處理！')">忘記密碼？</div>
     </div>
 </div>
 
-<!-- 主應用區塊 (登入後才會顯示) -->
 <div id="mainApp">
     <div class="header">
-        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <button class="menu-btn" onclick="toggleMenu()"><span class="material-symbols-outlined" style="font-size:28px; margin:0;">menu</span></button>
         <div class="header-title">217午餐訂購系統</div>
         <div style="width: 44px;"></div>
     </div>
@@ -132,64 +140,64 @@
             <button class="btn-logout" onclick="logout()">登出</button>
         </div>
         <ul class="sidebar-menu">
-            <li><a href="javascript:void(0)" onclick="resumeOrderFlow(); toggleMenu();"><span style="font-size:18px;">🍽️</span> 進行點餐 / 首頁</a></li>
-            <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span style="font-size:18px;">⭐</span> 餐點評分</a></li>
-            <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span style="font-size:18px;">💌</span> 意見反應&許願池</a></li>
-            <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span style="font-size:18px;">🏆</span> 歷代熱門排行榜</a></li>
-            <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span style="font-size:18px;">❓</span> 常見問題 (FAQ)</a></li>
-            <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span style="font-size:18px;">📖</span> 關於本站</a></li>
-            <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span style="font-size:18px;">⚖️</span> 相關校規 & 服務條款</a></li>
+            <li><a href="javascript:void(0)" onclick="resumeOrderFlow(); toggleMenu();"><span class="material-symbols-outlined">restaurant_menu</span> 進行點餐 / 首頁</a></li>
+            <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
+            <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
+            <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
+            <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
+            <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span class="material-symbols-outlined">info</span> 關於本站</a></li>
+            <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
         </ul>
     </div>
 
     <div id="systemOverlay"></div>
 
     <div id="tosModal">
-        <h2 class="tos-title">⚖️ 相關校規 & 服務條款</h2>
+        <h2 class="tos-title"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</h2>
         <div class="tos-text" id="tosTextContent">
             <p><strong>第一條（同意條款與契約成立）</strong><br>使用者於本系統點擊「確認送出訂單」之同時，即推定已審閱、瞭解並同意遵守本條款，約定委任關係生效。</p>
             <p><strong>第二條（真實身分與冒用之法律責任）</strong><br>使用者應以本人真實座號登入。倘有無經授權冒用他人座號點餐、取消或輸入不實電磁紀錄致生損害者，負責人得逕行保全存取紀錄移請學務處查處；情節重大者，依法追究刑事責任。</p>
             <p><strong>第三條（履約義務與損害賠償）</strong><br>契約一經成立，除不可抗力外，訂購人不得無故拒絕受領或拒付價金。惡意棄單者應負損害賠償責任。</p>
             <p><strong>第四條（免責事由與帳務確認）</strong><br>因設備故障致資料滅失，負責人不負賠償責任。帳務結算概以負責人實際收受現金為唯一認定標準。</p>
             <p><strong>第五條（緊急處置權）</strong><br>遇店家無法履約時，負責人得逕行啟動備案或撤銷訂單，價金差額依多退少補處理，訂購人不得異議。</p>
-            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 15px 0;">
-            <p><strong>📜 學校午餐規定</strong><br>詳見校網公告：<br><a href="https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754" target="_blank" style="color: #2196f3; word-break: break-all;">https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754</a></p>
+            <hr style="border: 0; border-top: 1px solid #e5e5ea; margin: 15px 0;">
+            <p><strong><span class="material-symbols-outlined">assignment</span> 學校午餐規定</strong><br>詳見校網公告：<br><a href="https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754" target="_blank" style="color: #111; word-break: break-all; font-weight:600;">點擊前往新竹高中校網查看</a></p>
         </div>
         <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="agreeToS()">我已詳閱並同意</button>
     </div>
 
     <div class="container">
         <div id="announcementBanner">
-            <h3 style="margin-top:0;">🚨 負責人緊急廣播</h3>
-            <p id="announcementMsg" style="font-weight:bold;"></p>
-            <div style="font-size: 12px; color: #888; text-align: right; margin-top: 5px;" id="announcementTime"></div>
+            <h3 style="margin-top:0; display:flex; align-items:center;"><span class="material-symbols-outlined">campaign</span> 負責人緊急廣播</h3>
+            <p id="announcementMsg" style="font-weight:600;"></p>
+            <div style="font-size: 12px; color: #555; text-align: right; margin-top: 5px;" id="announcementTime"></div>
         </div>
 
         <div class="card" id="infoCard">
-            <h2 id="infoTitle" style="color: #1976d2; border-bottom: 2px solid #bbdefb; font-size: 22px;">標題</h2>
+            <h2 id="infoTitle">標題</h2>
             <div id="infoContent" style="font-size: 15px; line-height: 1.8; color: #333;">內容</div>
-            <button class="btn btn-primary" style="margin-top: 25px;" onclick="resumeOrderFlow()">🔙 返回首頁</button>
+            <button class="btn btn-primary" style="margin-top: 25px;" onclick="resumeOrderFlow()"><span class="material-symbols-outlined">arrow_back</span> 返回首頁</button>
         </div>
 
         <div class="card" id="feedbackPageArea">
-            <h2 style="color:#9c27b0; border-bottom: 2px solid #e1bee7;">💌 意見反應&許願池</h2>
+            <h2><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</h2>
             <p style="color:#555; font-size:14px; line-height:1.6;">想增加或改善甚麼功能？一起優化這個網站吧！</p>
-            <div style="font-size:16px; font-weight:bold; color:#555; margin:15px 0;">目前登入座號：<span class="display-user-id user-badge"></span></div>
+            <div style="font-size:15px; font-weight:600; color:#111; margin:15px 0;">目前登入座號：<span class="display-user-id user-badge"></span></div>
             <label class="review-label">你的意見或願望：</label>
             <textarea id="fbContent" rows="4" placeholder="請輸入任何想法..."></textarea>
-            <button class="btn btn-primary" style="margin-top:20px; background-color:#9c27b0;" onclick="submitFeedback()">送出意見</button>
-            <button class="btn btn-secondary" style="margin-top:10px;" onclick="resumeOrderFlow()">🔙 返回首頁</button>
+            <button class="btn btn-primary" style="margin-top:20px;" onclick="submitFeedback()">送出意見</button>
+            <button class="btn btn-secondary" style="margin-top:10px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
         <div class="card" id="reviewPageArea">
-            <h2 style="color:#ff9800; border-bottom: 2px solid #ffe082;">⭐ 餐點評分</h2>
+            <h2><span class="material-symbols-outlined">star</span> 餐點評分</h2>
             <p style="color:#555; font-size:14px;">請查詢最近 7 天內的餐點，並給予評價。每個座號一天只能評論一次！</p>
-            <div style="font-size:16px; font-weight:bold; color:#555; margin:15px 0;">目前登入座號：<span class="display-user-id user-badge"></span></div>
-            <button class="btn btn-outline" style="margin-top:5px;" onclick="fetchOrdersForReview()">🔍 查詢我的近期餐點</button>
+            <div style="font-size:15px; font-weight:600; color:#111; margin:15px 0;">目前登入座號：<span class="display-user-id user-badge"></span></div>
+            <button class="btn btn-outline" style="margin-top:5px;" onclick="fetchOrdersForReview()"><span class="material-symbols-outlined">search</span> 查詢我的近期餐點</button>
             
             <div id="reviewedOrdersLog"></div>
 
-            <div id="reviewFormBlock" style="display:none; margin-top:20px; border-top:1px dashed #ccc; padding-top:10px;">
+            <div id="reviewFormBlock" style="display:none; margin-top:20px; border-top:1px solid #e5e5ea; padding-top:15px;">
                 <label class="review-label">1. 選擇尚未評分的歷史餐點：</label>
                 <select id="rvOrderSelect"></select>
                 <label class="review-label">2. 餐點滿意度 (好不好吃) <span class="review-hint">(1~10分)</span>：</label>
@@ -204,47 +212,48 @@
                 <textarea id="rvComment" rows="3" placeholder="例如：麵條太軟、湯太鹹..."></textarea>
                 <button class="btn btn-primary" style="margin-top:20px;" onclick="submitMealReview()">送出評分</button>
             </div>
-            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">🔙 返回首頁</button>
+            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
-        <div class="card" id="planBDashboard" style="border: 3px solid #f44336; background: #fff5f5;">
-            <h2 style="color: #f44336; text-align:center; border:none;">🚨 統一備案名單與補退款</h2>
+        <div class="card" id="planBDashboard" style="border: 2px solid #111; background: #fafafa;">
+            <h2 style="justify-content:center; border:none; margin-bottom:0;"><span class="material-symbols-outlined">emergency</span> 統一備案名單與補退款</h2>
             <div style="text-align:center; margin-bottom:15px; font-size:16px;">今日改訂：<strong id="pbMealDisplay"></strong> ($<strong id="pbPriceDisplay"></strong>)</div>
             <div class="table-responsive">
-                <table style="width:100%; border-collapse:collapse; text-align:center; background:white;">
-                    <thead><tr style="background:#f44336; color:white;"><th>座號</th><th>狀態 & 補退款指示</th></tr></thead>
+                <table style="width:100%; text-align:center; background:white;">
+                    <thead><tr><th>座號</th><th>狀態 & 補退款指示</th></tr></thead>
                     <tbody id="pbTableBody"><tr><td colspan="2">載入中...</td></tr></tbody>
                 </table>
             </div>
-            <hr style="margin:20px 0;">
-            <h3 style="color:#d32f2f; margin-top:0;">👉 操作區：</h3>
-            <div style="font-size:16px; font-weight:bold; color:#555; margin-bottom:15px;">身分認證：<span class="display-user-id user-badge"></span> 號</div>
-            <div style="display:flex; flex-direction:column; gap:5px;">
-                <button class="btn btn-success" onclick="pbNotifyPaid()">🙋‍♂️ 已補差額/繳費，通知負責人</button>
-                <button class="btn btn-primary" onclick="pbOptIn()">➕ 額外加入統一定餐</button>
-                <button class="btn btn-danger" onclick="pbOptOut()">❌ 取消我的訂單</button>
+            <hr style="margin:20px 0; border:0; border-top:1px solid #e5e5ea;">
+            <h3 style="margin-top:0; font-size:15px;">操作區：</h3>
+            <div style="font-size:15px; font-weight:600; color:#111; margin-bottom:15px;">身分認證：<span class="display-user-id user-badge"></span></div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <button class="btn btn-primary" onclick="pbNotifyPaid()"><span class="material-symbols-outlined">front_hand</span> 已補差額/繳費，通知負責人</button>
+                <button class="btn btn-outline" onclick="pbOptIn()"><span class="material-symbols-outlined">add</span> 額外加入統一定餐</button>
+                <button class="btn btn-danger" onclick="pbOptOut()"><span class="material-symbols-outlined">close</span> 取消我的訂單</button>
             </div>
         </div>
 
-        <div id="lockedScreen" class="card" style="border: 2px dashed #ff9800; background: #fff3e0;">
-            <h2 style="color:#e65100; text-align:center; border:none;">🔒 目前無法點餐</h2>
-            <p id="lockedReason" style="font-weight:bold; margin-top:15px; text-align:center; color:#e65100;"></p>
-            <hr style="margin:25px 0 15px 0; border:0; border-top:1px dashed #ccc;">
-            <p style="color:#555; font-size:15px; text-align:center; margin-bottom:15px; font-weight:bold;">等待開放的同時，你可以：</p>
+        <div id="lockedScreen" class="card" style="text-align:center; padding: 40px 20px;">
+            <span class="material-symbols-outlined" style="font-size:48px; color:#111; margin-bottom:10px; display:block;">lock</span>
+            <h2 style="justify-content:center; border:none; margin-bottom:5px;">目前無法點餐</h2>
+            <p id="lockedReason" style="font-weight:600; color:#555; margin-top:0;"></p>
+            <hr style="margin:30px 0 20px 0; border:0; border-top:1px solid #e5e5ea;">
+            <p style="color:#888; font-size:14px; margin-bottom:15px;">等待開放的同時，你可以：</p>
             <div style="display:flex; gap:10px;">
-                <button class="btn btn-outline" style="flex:1; margin-top:0;" onclick="showReviewPage()">⭐ 填寫餐點評分</button>
-                <button class="btn btn-outline-purple" style="flex:1; margin-top:0;" onclick="showFeedbackPage()">💌 意見反應&許願池</button>
+                <button class="btn btn-outline" style="flex:1; margin-top:0;" onclick="showReviewPage()"><span class="material-symbols-outlined">star</span> 填寫評分</button>
+                <button class="btn btn-outline" style="flex:1; margin-top:0;" onclick="showFeedbackPage()"><span class="material-symbols-outlined">forum</span> 意見反應</button>
             </div>
         </div>
 
-        <div class="card" id="historyModal" style="border: 2px solid #ff9800;">
-            <h2 style="color:#ff9800; border-bottom: 2px solid #ffe082;">🏆 歷代排行榜 (總計)</h2>
+        <div class="card" id="historyModal">
+            <h2><span class="material-symbols-outlined">leaderboard</span> 歷代排行榜 (總計)</h2>
             <div id="historyRankContent">載入中...</div>
-            <button class="btn btn-secondary" onclick="resumeOrderFlow()">🔙 返回首頁</button>
+            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
         <div class="card" id="personalHistoryArea">
-            <h2 style="color:#9c27b0; border-bottom: 2px solid #e1bee7;">📜 我的歷史訂單紀錄</h2>
+            <h2><span class="material-symbols-outlined">history</span> 我的歷史訂單紀錄</h2>
             <p>座號：<strong id="ph_studentId" style="font-size:18px;"></strong> 號</p>
             <div class="table-responsive">
                 <table>
@@ -252,85 +261,87 @@
                     <tbody id="ph_tableBody"><tr><td colspan="3">讀取中...</td></tr></tbody>
                 </table>
             </div>
-            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">🔙 返回首頁</button>
+            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
         <div class="card login-box" id="authArea">
-            <div style="border-bottom: 2px dashed #e0e0e0; padding-bottom: 25px; margin-bottom: 25px;">
-                <h2 style="border:none; font-size:22px; color:#ff9800; margin-bottom:5px;">🍽️ 我要點餐</h2>
-                <div style="font-size:16px; font-weight:bold; color:#555; margin-bottom:15px;">身分認證：<span class="display-user-id user-badge"></span> 號</div>
-                <button class="btn btn-primary" onclick="verifyStudent()">點此進入菜單 ➔</button>
+            <div style="border-bottom: 1px solid #e5e5ea; padding-bottom: 25px; margin-bottom: 25px;">
+                <h2 style="border:none; justify-content:center; margin-bottom:15px;"><span class="material-symbols-outlined">restaurant</span> 我要點餐</h2>
+                <div style="font-size:15px; font-weight:600; color:#111; margin-bottom:15px;">身分認證：<span class="display-user-id user-badge"></span></div>
+                <button class="btn btn-primary" onclick="verifyStudent()">點此進入菜單 <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span></button>
             </div>
             <div>
-                <h2 style="border:none; font-size:22px; color:#2196f3; margin-bottom:15px;">🔍 查詢狀態與紀錄</h2>
+                <h2 style="border:none; justify-content:center; margin-bottom:15px;"><span class="material-symbols-outlined">search</span> 查詢狀態與紀錄</h2>
                 <div style="display:flex; gap:10px;">
                     <button class="btn btn-outline" style="flex:1;" onclick="checkStatusQuick()">當日狀態</button>
-                    <button class="btn btn-outline-purple" style="flex:1;" onclick="showMyHistory()">歷史紀錄</button>
+                    <button class="btn btn-outline" style="flex:1;" onclick="showMyHistory()">歷史紀錄</button>
                 </div>
             </div>
         </div>
 
         <div id="menuArea" style="padding-bottom: 80px;">
             <div id="categoryNav" class="category-nav"></div>
-            <div style="background-color: #e8f5e9; color: #2e7d32; padding: 10px; border-radius: 6px; text-align: center; font-weight: bold; margin-bottom: 15px;">
-                📢 今日餐廳：<span id="displayRestaurant">載入中...</span>
+            <div style="background-color: #111; color: #fff; padding: 12px; border-radius: 8px; text-align: center; font-weight: 600; margin-bottom: 20px; font-size:15px;">
+                今日餐廳：<span id="displayRestaurant">載入中...</span>
             </div>
             <div class="hot-section menu-section" id="hotSection">
-                <div class="hot-title">🔥 班內熱門推薦 (Top 3)</div>
+                <div class="hot-title"><span class="material-symbols-outlined">local_fire_department</span> 班內熱門推薦 (Top 3)</div>
                 <div id="hotItemsContainer">載入中...</div>
             </div>
             <div id="fullMenuContainer"></div>
         </div>
 
         <div id="cartFab" class="cart-fab" onclick="goToCustomize()">
-            <div>🛒 $<span id="cartTotal">0</span></div>
-            <div>完成選擇 ➔</div>
+            <div style="display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined">shopping_cart</span> $<span id="cartTotal">0</span></div>
+            <div style="display:flex; align-items:center; gap:4px;">完成選擇 <span class="material-symbols-outlined" style="font-size:18px; margin:0;">arrow_forward</span></div>
         </div>
 
         <div class="card" id="customizeArea">
-            <h2>🍽️ 選擇客製化選項</h2>
-            <div style="background:#e3f2fd; padding:15px; border-radius:8px; margin-bottom:15px;">
-                <div style="color:#555; font-weight:bold; margin-bottom:5px;">已選擇餐點：</div>
-                <div id="c_mealName" style="font-size:16px; font-weight:bold; color:#1565c0; line-height:1.5;"></div>
-                <hr style="border:0; border-top:1px dashed #90caf9; margin:10px 0;">
-                基本價格：$<span id="c_basePrice" style="font-weight:bold; color:#d32f2f;"></span>
+            <h2><span class="material-symbols-outlined">tune</span> 選擇客製化選項</h2>
+            <div style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e5e5ea; margin-bottom:20px;">
+                <div style="color:#555; font-weight:600; margin-bottom:8px; font-size:14px;">已選擇餐點：</div>
+                <div id="c_mealName" style="font-size:15px; font-weight:700; color:#111; line-height:1.6;"></div>
+                <hr style="border:0; border-top:1px solid #e5e5ea; margin:12px 0;">
+                <div style="font-size:14px; font-weight:600;">基本價格：<span id="c_basePrice" style="font-weight:700; font-size:16px;"></span></div>
             </div>
             <div class="checkbox-group" id="dynamicOptions"></div>
-            <label style="font-weight:bold; color:#555; display:block; margin-bottom:5px;">📝 備註 (不要蔥、不要香菜...)：</label>
+            <label style="font-weight:600; color:#111; display:block; margin:20px 0 8px 0; font-size:15px;">📝 備註 (不要蔥、不要香菜...)：</label>
             <input type="text" id="orderNote" placeholder="輸入特殊需求...">
-            <div style="display:flex; gap:10px; margin-top:20px;">
+            <div style="display:flex; gap:10px; margin-top:25px;">
                 <button class="btn btn-secondary" onclick="backToMenu()">返回加點</button>
-                <button class="btn btn-primary" onclick="goToReview()">下一步 (預覽訂單)</button>
+                <button class="btn btn-primary" onclick="goToReview()">下一步</button>
             </div>
         </div>
 
         <div class="card" id="reviewArea">
-            <h2>⚠️ 請確認價格與餐點內容</h2>
-            <div style="background: #fffde7; padding: 15px; border-radius: 8px;">
-                <p>座號：<strong class="display-user-id"></strong></p>
-                <p>餐點：<strong id="v_meal"></strong></p>
-                <p>備註：<strong id="v_note"></strong></p>
-                <div class="price-text">總額：$<span id="v_price"></span></div>
+            <h2><span class="material-symbols-outlined">fact_check</span> 請確認餐點內容</h2>
+            <div style="background: #fafafa; padding: 16px; border-radius: 8px; border:1px solid #e5e5ea; line-height:1.8; font-size:15px;">
+                <div>座號：<strong class="display-user-id"></strong></div>
+                <div>餐點：<strong id="v_meal"></strong></div>
+                <div>備註：<strong id="v_note"></strong></div>
+                <div class="price-text" style="margin-top:15px; padding-top:15px; border-top:1px solid #e5e5ea;">總額：$<span id="v_price"></span></div>
             </div>
             <div style="display:flex; gap:10px; margin-top:20px;">
                 <button class="btn btn-secondary" onclick="backToCustomize()">返回修改</button>
-                <button class="btn btn-primary" id="submitBtn" onclick="confirmSubmit()">確認無誤，送出訂單</button>
+                <button class="btn btn-primary" id="submitBtn" onclick="confirmSubmit()">確認送出訂單</button>
             </div>
         </div>
 
         <div class="card" id="receiptArea">
-            <h2>✅ 訂單狀態</h2>
-            <p style="font-size:12px; color:#888;">送出時間：<span id="r_time"></span></p>
-            <p>座號：<strong id="r_id"></strong></p>
-            <p>餐點：<strong id="r_meal"></strong></p>
-            <div class="price-text">總額：$<span id="r_price"></span></div>
-            
-            <div id="paymentActions" style="background:#f9f9f9; padding:15px; border-radius:8px; border:1px solid #eee; margin:15px 0;">
-                <div id="paymentStatusUI">狀態讀取中...</div>
-                <button class="btn btn-success" id="notifyBtn" onclick="notifyAdminPaid()" style="margin-top:10px;">我已繳費了！發送通知</button>
+            <h2><span class="material-symbols-outlined">receipt_long</span> 訂單狀態</h2>
+            <p style="font-size:13px; color:#888; margin-top:0;">送出時間：<span id="r_time"></span></p>
+            <div style="font-size:15px; line-height:1.8;">
+                <div>座號：<strong id="r_id"></strong></div>
+                <div>餐點：<strong id="r_meal"></strong></div>
+                <div class="price-text" style="margin:10px 0;">總額：$<span id="r_price"></span></div>
             </div>
             
-            <button class="btn btn-primary" style="margin-top:10px; background-color: #ff9800;" onclick="goToReviewFromReceipt()">⭐ 前往評分剛才點的餐點</button>
+            <div id="paymentActions" style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e5e5ea; margin:20px 0;">
+                <div id="paymentStatusUI">狀態讀取中...</div>
+                <button class="btn btn-primary" id="notifyBtn" onclick="notifyAdminPaid()" style="margin-top:15px; width:100%;">我已繳費了！發送通知</button>
+            </div>
+            
+            <button class="btn btn-outline" style="margin-top:10px;" onclick="goToReviewFromReceipt()"><span class="material-symbols-outlined">star</span> 前往評分剛才的餐點</button>
             <button class="btn btn-danger" onclick="cancelOrder()" style="margin-top:10px;">取消今日訂單</button>
             <button class="btn btn-secondary" onclick="location.reload()" style="margin-top:10px;">回首頁</button>
         </div>
@@ -360,6 +371,7 @@
     
     window.currentUserId = null;
 
+    // 🚀 移除八方雲集
     const restaurantDB = {
         "麵朝 (新竹食品店)": {
             menu: [
@@ -372,10 +384,6 @@
             ],
             options: `<label class="checkbox-item"><input type="checkbox" value="加麵" data-price="15"> +15元 享加麵服務</label>
                       <label class="checkbox-item"><input type="checkbox" value="加舒肥雞" data-price="30"> +30元 拌麵類加舒肥雞</label>`
-        },
-        "八方雲集": {
-            menu: [{ category: "鍋貼", items: [{name: "招牌鍋貼10顆", price: 65}, {name: "韭菜鍋貼10顆", price: 65}] }],
-            options: `<label class="checkbox-item"><input type="checkbox" value="醬油膏" data-price="0"> 需要醬油膏</label>`
         }
     };
 
@@ -400,13 +408,13 @@
         const pass = document.getElementById('loginPassword').value.trim();
         
         const match = acc.match(/^217(0[1-9]|[1-2][0-8])$/);
-        if (!match) return alert("❌ 帳號錯誤！");
+        if (!match) return alert("❌ 帳號格式錯誤！請輸入 217 加上兩碼座號 (01~28)。\n例如 1 號請輸入：21701");
         
         const id = parseInt(match[1], 10);
         let expectedPass = "lunch" + (410576 + id);
         if (id === 21) expectedPass = "lunch410605";
         
-        if (pass !== expectedPass) return alert("❌ 密碼錯誤！");
+        if (pass !== expectedPass) return alert("❌ 密碼錯誤！請重新輸入。");
         
         localStorage.setItem('loggedInUser_217', id);
         document.getElementById('loginPage').style.display = 'none';
@@ -477,7 +485,7 @@
                 }
             });
             let ranks = []; for(let key in itemCounts) ranks.push({ item: key, count: itemCounts[key] }); ranks.sort((a,b) => b.count - a.count);
-            let html = ""; ranks.slice(0, 10).forEach((r, idx) => { html += `<div class="rank-row"><div><span class="rank-num">#${idx+1}</span> ${r.item}</div><div style="color:#2196f3; font-weight:bold;">${r.count} 次</div></div>`; });
+            let html = ""; ranks.slice(0, 10).forEach((r, idx) => { html += `<div class="rank-row"><div><span class="rank-num">#${idx+1}</span> ${r.item}</div><div style="font-weight:700;">${r.count} 次</div></div>`; });
             document.getElementById('historyRankContent').innerHTML = html || "<p>目前尚無足夠的歷史資料。</p>";
         } catch(e) { document.getElementById('historyRankContent').innerHTML = "讀取失敗"; }
     }
@@ -493,47 +501,44 @@
 
     window.showAboutPage = function() {
         const aboutContent = `
-            <h3>🍱 關於 217午餐訂購系統</h3>
             <p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p>
-            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+            <hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;">
             <p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p>
             <p><b>🚀 核心功能特色</b><br>
             1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>
-            2. <b>班內大數據推薦</b>：即時顯示「班內熱門排行榜」。<br>
+            2. <b>大數據推薦</b>：即時顯示「熱門排行榜」。<br>
             3. <b>透明化帳務</b>：支援部分付款與自動差額計算。<br>
             4. <b>Plan B 危機應變</b>：店家沒開時自動計算補退款。<br>
             5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p>
-            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-            <p style="text-align:right; font-weight:bold;">網頁開發與系統架構設計：羅亦承</p>
+            <hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;">
+            <p style="text-align:right; font-weight:700;">網頁開發與系統架構設計：羅亦承</p>
         `;
-        showInfoPage('關於本站', aboutContent);
+        showInfoPage('<span class="material-symbols-outlined">info</span> 關於本站', aboutContent);
     };
 
     window.showFaqPage = function() {
         const faqContent = `
-            <h3>❓ 常見問題 (FAQ)</h3>
-            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-            <p><b>⏰ 關於點餐時間與權限</b><br>
+            <p><b><span class="material-symbols-outlined" style="font-size:18px;">schedule</span> 關於點餐時間與權限</b><br>
             <b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。超過 11:00 系統會自動上鎖。<br>
             <b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p>
-            <p><b>🛒 關於點餐與修改</b><br>
+            <p><b><span class="material-symbols-outlined" style="font-size:18px;">shopping_cart</span> 關於點餐與修改</b><br>
             <b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。<br>
             <b>Q4：我可以幫別人點餐嗎？</b><br>A：不行，系統有專屬帳號驗證，無法代點。</p>
-            <p><b>💰 關於金錢與繳費</b><br>
+            <p><b><span class="material-symbols-outlined" style="font-size:18px;">payments</span> 關於金錢與繳費</b><br>
             <b>Q5：現金要交給誰？如果沒繳齊怎麼辦？</b><br>A：交給班級負責人。後台支援「部分付款」，系統會自動計算欠款或溢繳金額。<br>
             <b>Q6：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p>
-            <p><b>🚨 關於突發狀況 (Plan B)</b><br>
+            <p><b><span class="material-symbols-outlined" style="font-size:18px;">emergency</span> 關於突發狀況 (Plan B)</b><br>
             <b>Q7：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會啟動「Plan B 備案」，前台會顯示補退款金額，你也可以選擇取消訂單。</p>
-            <p><b>📱 關於歷史與回饋</b><br>
+            <p><b><span class="material-symbols-outlined" style="font-size:18px;">forum</span> 關於歷史與回饋</b><br>
             <b>Q8：去哪裡看我以前點過什麼？</b><br>A：在首頁點擊「歷史紀錄」即可查詢。<br>
             <b>Q9：如何給予評分或提出建議？</b><br>A：可透過左上角選單的「餐點評分」與「意見反應&許願池」隨時提交。</p>
         `;
-        showInfoPage('常見問題 (FAQ)', faqContent);
+        showInfoPage('<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)', faqContent);
     };
 
     window.showInfoPage = function(title, content) {
         hideAllSections(); 
-        document.getElementById('infoTitle').innerText = title; 
+        document.getElementById('infoTitle').innerHTML = title; 
         document.getElementById('infoContent').innerHTML = content; 
         document.getElementById('infoCard').style.display = 'block'; 
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -558,11 +563,11 @@
             let html = "";
             orders.forEach(o => {
                 let status = ""; let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? o.price : 0);
-                if(o.isCancelled) status = `<span style="color:#888;">已取消</span>`;
-                else if(paidAmt >= o.price) status = `<span style="color:green;">✅ 已結清</span>`;
-                else if(paidAmt > 0) status = `<span style="color:#ff9800;">⚠️ 已付$${paidAmt}</span>`;
-                else status = `<span style="color:red;">❌ 未繳費</span>`;
-                html += `<tr><td>${o.date}</td><td>${o.meal.replace(/, /g, '<br>')}</td><td>${status}</td></tr>`;
+                if(o.isCancelled) status = `<span style="color:#888;"><span class="material-symbols-outlined" style="font-size:16px;">cancel</span>已取消</span>`;
+                else if(paidAmt >= o.price) status = `<span><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 已結清</span>`;
+                else if(paidAmt > 0) status = `<span><span class="material-symbols-outlined" style="font-size:16px;">warning</span> 已付$${paidAmt}</span>`;
+                else status = `<span><span class="material-symbols-outlined" style="font-size:16px;">cancel</span> 未繳費</span>`;
+                html += `<tr><td>${o.date}</td><td>${o.meal.replace(/, /g, '<br>')}</td><td style="font-weight:600;">${status}</td></tr>`;
             });
             document.getElementById('ph_tableBody').innerHTML = html;
         } catch(e) { document.getElementById('ph_tableBody').innerHTML = '<tr><td colspan="3">讀取失敗</td></tr>'; }
@@ -625,7 +630,7 @@
 
             allOrders.forEach(o => {
                 if (reviewedMap[o.date]) {
-                    reviewedListHtml += `<div style="font-size:13px; color:#666; margin:4px 0;">✔️ <b>${o.date}</b> (${o.meal}) - 已於 ${reviewedMap[o.date]} 評過分</div>`;
+                    reviewedListHtml += `<div style="font-size:13px; color:#666; margin:4px 0; display:flex; align-items:flex-start;"><span class="material-symbols-outlined" style="font-size:16px; margin-top:2px;">check</span> <span style="flex:1;"><b>${o.date}</b> (${o.meal})<br><span style="color:#888;">評分時間：${reviewedMap[o.date]}</span></span></div>`;
                 } else {
                     recentOrdersForReview.push(o);
                 }
@@ -689,15 +694,15 @@
 
             const now = new Date(); const currentTime = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
             if (currentTime < startTime || currentTime > endTime) {
-                currentOrderStep = 'lockedScreen'; return showLocked(`目前非點餐時間。<br><span style="font-size:14px; font-weight:normal; color:#555;">開放時間為：${startTime} ~ ${endTime}</span>`);
+                currentOrderStep = 'lockedScreen'; return showLocked(`目前非點餐時段<br><span style="font-size:14px; font-weight:normal; color:#555;">開放時間為：${startTime} ~ ${endTime}</span>`);
             }
 
             const menuSnap = await getDoc(doc(db, "dailyMenus", todayStr));
-            if (!menuSnap.exists()) { currentOrderStep = 'lockedScreen'; return showLocked("負責人尚未設定今日午餐。"); }
+            if (!menuSnap.exists()) { currentOrderStep = 'lockedScreen'; return showLocked("負責人尚未設定今日午餐"); }
             
             currentOrderStep = 'authArea'; document.getElementById('authArea').style.display = 'block';
             currentRestaurant = menuSnap.data().restaurant;
-        } catch (error) { currentOrderStep = 'lockedScreen'; showLocked("系統連線異常。"); }
+        } catch (error) { currentOrderStep = 'lockedScreen'; showLocked("系統連線異常"); }
     }
 
     window.verifyStudent = async function() {
@@ -732,7 +737,7 @@
             group.items.forEach(item => {
                 menuHtml += `<div class="menu-item">
                                 <div><div class="item-name">${item.name}</div><div class="item-price">$${item.price}</div></div>
-                                <div class="qty-controls"><button class="qty-btn" onclick="updateCart('${item.name}', ${item.price}, -1)">-</button><span class="qty-display" data-qty-name="${item.name}">0</span><button class="qty-btn plus" onclick="updateCart('${item.name}', ${item.price}, 1)">+</button></div>
+                                <div class="qty-controls"><button class="qty-btn" onclick="updateCart('${item.name}', ${item.price}, -1)"><span class="material-symbols-outlined" style="margin:0;">remove</span></button><span class="qty-display" data-qty-name="${item.name}">0</span><button class="qty-btn plus" onclick="updateCart('${item.name}', ${item.price}, 1)"><span class="material-symbols-outlined" style="margin:0;">add</span></button></div>
                              </div>`;
             });
             menuHtml += `</div>`;
@@ -784,12 +789,12 @@
     window.backToCustomize = function() { document.getElementById('reviewArea').style.display = 'none'; document.getElementById('customizeArea').style.display = 'block'; currentOrderStep = 'customizeArea'; }
 
     window.confirmSubmit = async function() {
-        const btn = document.getElementById('submitBtn'); btn.innerText = "處理中..."; btn.disabled = true;
+        const btn = document.getElementById('submitBtn'); btn.innerHTML = '<span class="material-symbols-outlined">sync</span> 處理中...'; btn.disabled = true;
         try {
             await setDoc(doc(db, "orders", todayStr + "_" + pendingOrder.studentId), pendingOrder);
             await logActivity(pendingOrder.studentId, "送出訂單", `總額 $${pendingOrder.price}`);
             showReceipt(pendingOrder.studentId, pendingOrder.meal, pendingOrder.note, pendingOrder.price, false, false, pendingOrder.timeString, 0);
-        } catch (error) { alert("錯誤！請檢查網路。"); btn.innerText = "確認無誤，送出訂單"; btn.disabled = false; }
+        } catch (error) { alert("錯誤！請檢查網路。"); btn.innerText = "確認送出訂單"; btn.disabled = false; }
     }
 
     function showReceipt(id, meal, note, price, isPaid, notifiedPaid, timeString, paidAmount) {
@@ -798,10 +803,10 @@
         let actualPaid = paidAmount !== undefined ? paidAmount : (isPaid ? price : 0);
         const paymentArea = document.getElementById('paymentStatusUI'); const notifyBtn = document.getElementById('notifyBtn');
 
-        if (actualPaid >= price) { paymentArea.innerHTML = `<h3 style="color:#4CAF50; margin:0;">🎉 已結清 (付 $${actualPaid})</h3>`; notifyBtn.style.display = 'none'; } 
-        else if (actualPaid > 0) { paymentArea.innerHTML = `<h3 style="color:#ff9800; margin:0;">⚠️ 已付 $${actualPaid}，尚欠 $${price - actualPaid}</h3>`; notifyBtn.style.display = 'block'; } 
-        else if (notifiedPaid) { paymentArea.innerHTML = `<h3 style="color:#2196f3; margin:0;">⏳ 已通知負責人對帳中...</h3>`; notifyBtn.style.display = 'none'; } 
-        else { paymentArea.innerHTML = `<h3 style="color:#f44336; margin:0;">❌ 尚未繳費 ($0)</h3>`; notifyBtn.style.display = 'block'; }
+        if (actualPaid >= price) { paymentArea.innerHTML = `<h3 style="color:#111; margin:0; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="font-size:24px;">check_circle</span> 已結清 (付 $${actualPaid})</h3>`; notifyBtn.style.display = 'none'; } 
+        else if (actualPaid > 0) { paymentArea.innerHTML = `<h3 style="color:#111; margin:0; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="font-size:24px;">warning</span> 已付 $${actualPaid} (尚欠 $${price - actualPaid})</h3>`; notifyBtn.style.display = 'block'; } 
+        else if (notifiedPaid) { paymentArea.innerHTML = `<h3 style="color:#111; margin:0; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="font-size:24px;">hourglass_empty</span> 已通知負責人對帳中</h3>`; notifyBtn.style.display = 'none'; } 
+        else { paymentArea.innerHTML = `<h3 style="color:#111; margin:0; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="font-size:24px;">cancel</span> 尚未繳費 ($0)</h3>`; notifyBtn.style.display = 'block'; }
         window.currentViewingId = id; currentOrderStep = 'receiptArea';
     }
 
@@ -828,8 +833,8 @@
                     let html = '';
                     arr.forEach(o => {
                         let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? o.price : 0);
-                        let status = paidAmt >= o.price ? `<span style="color:green; font-weight:bold;">✅已結清</span>` : `<span style="color:red; font-weight:bold;">❌差 $${o.price - paidAmt}</span>`;
-                        let diffMatch = o.note.match(/🚨([^|]+)/); let diffText = diffMatch ? `<br><span style="color:#e65100; font-size:13px; font-weight:bold;">🚨 ${diffMatch[1].trim()}</span>` : '';
+                        let status = paidAmt >= o.price ? `<span style="font-weight:700;"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 已結清</span>` : `<span style="font-weight:700;"><span class="material-symbols-outlined" style="font-size:16px;">warning</span> 差 $${o.price - paidAmt}</span>`;
+                        let diffMatch = o.note.match(/🚨([^|]+)/); let diffText = diffMatch ? `<br><span style="font-size:13px; font-weight:600;">${diffMatch[1].trim()}</span>` : '';
                         html += `<tr><td><strong>${o.studentId}</strong></td><td>${status}${diffText}</td></tr>`;
                     });
                     if(arr.length === 0) html = `<tr><td colspan="2">目前無人訂餐</td></tr>`; document.getElementById('pbTableBody').innerHTML = html;
