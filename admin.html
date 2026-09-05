@@ -7,8 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <style>
-        /* 🚀 極淡的透亮紫色背景 */
-        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #ede9f6 0%, #fbf9ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
+        /* 🚀 極淡的透亮紫色背景 (超清爽版) */
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #f7f6fc 0%, #fcfbfe 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
         .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -104,7 +104,7 @@
         .btn-quick-reset:hover { border-color:#111; color:#111; }
 
         /* 🚀 獨立登入頁面 IG 風格 */
-        #loginPage { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
+        #loginPage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
         .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
         .ig-title { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 24px; color: #111; letter-spacing: 1px;}
         .ig-input { width: 100%; padding: 14px 16px; border: 1px solid #e5e5ea; border-radius: 12px; font-size: 14px; background-color: #fafafa; outline: none; box-sizing: border-box; font-family: inherit;}
@@ -401,7 +401,6 @@
     for(let i=1; i<=28; i++) filterHtml += `<option value="${i}">查詢 ${i} 號歷史紀錄</option>`;
     document.getElementById('recordStudentFilter').innerHTML = filterHtml;
 
-    // 🚀 後台登入機制
     window.onload = function() {
         if (!localStorage.getItem('adminLoggedIn_217')) {
             document.getElementById('loginPage').style.display = 'flex';
@@ -417,7 +416,6 @@
         const acc = document.getElementById('loginAccount').value.trim();
         const pass = document.getElementById('loginPassword').value.trim();
         
-        // 🚀 設定後台帳號密碼
         if (acc === '217admin' && pass === 'lunchadmin') {
             localStorage.setItem('adminLoggedIn_217', 'true');
             document.getElementById('loginPage').style.display = 'none';
@@ -660,6 +658,7 @@
 
     window.dismissCancel = async function(docId) { await deleteDoc(doc(db, "orders", docId)); };
     
+    // 🚀 已修復此處的 SyntaxError
     window.clearAllOrdersAndLedger = async function() {
         if(!confirm("⚠️ 警告：這將會刪除【所有日期】的訂單紀錄，並將班級帳務完全歸零！\n\n確定要繼續嗎？")) return;
         if(!confirm("再次確認：資料刪除後將無法復原，真的要清除嗎？")) return;
@@ -857,19 +856,13 @@
         }
     }
     
+    // 🚀 已修復此處的 SyntaxError
     window.copyForSchoolForm = function() {
         let data = window.currentReportData; if(!data || Object.keys(data.items).length === 0) return alert("目前沒有訂單資料可以複製！");
-        let text = `商家名稱：${data.restaurant}
-訂購品項：
-`; let totalQty = 0;
-        for(let [item, count] of Object.entries(data.items)) { text += `- ${item} x${count}
-`; totalQty += count; }
-        text += `
-總數量：${totalQty} 份
-總金額：$${data.totalAmount}`;
-        navigator.clipboard.writeText(text).then(() => { if(confirm("✅ 已成功複製！
-
-前往填寫表單？")) window.open("https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform", "_blank"); }).catch(err => { alert("複製失敗"); });
+        let text = `商家名稱：${data.restaurant}\n訂購品項：\n`; let totalQty = 0;
+        for(let [item, count] of Object.entries(data.items)) { text += `- ${item} x${count}\n`; totalQty += count; }
+        text += `\n總數量：${totalQty} 份\n總金額：$${data.totalAmount}`;
+        navigator.clipboard.writeText(text).then(() => { if(confirm("✅ 已成功複製！\n\n前往填寫表單？")) window.open("https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform", "_blank"); }).catch(err => { alert("複製失敗"); });
     }
 
     listenToOrders(todayStr);
