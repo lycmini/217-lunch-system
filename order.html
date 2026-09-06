@@ -830,18 +830,41 @@
         }
     }
 
-    window.goToCustomize = function() {
+   window.goToCustomize = function() {
         let meals = []; let bp = 0; let ch = "";
         const restData = window.cloudRestaurantDB[currentRestaurant] || {options:""};
         
         for(let n in cart) { 
             if(cart[n].q > 0) { 
                 meals.push(`${n} x${cart[n].q}`); bp += cart[n].p * cart[n].q; 
+                
+                // 🚀 智慧關鍵字過濾機制
+                let tempDiv = document.createElement('div');
+                tempDiv.innerHTML = restData.options || "";
+                
+                let matchBlocks = tempDiv.querySelectorAll('[data-match]');
+                matchBlocks.forEach(block => {
+                    let keywords = block.getAttribute('data-match').split(',');
+                    // 只要「餐點名稱 (n)」包含設定的關鍵字，才保留選項
+                    let isMatch = keywords.some(kw => n.includes(kw.trim()));
+                    if(!isMatch) {
+                        block.remove(); // 條件不符，把這個客製化區塊隱藏刪除
+                    }
+                });
+                
+                let filteredOptions = tempDiv.innerHTML;
+
                 for(let i=0; i<cart[n].q; i++) {
                     ch += `<div style="margin-bottom:12px; padding:16px; background:#fff; border:1px solid #e5e5ea; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">`;
                     ch += `<div style="font-weight:700; color:#111; margin-bottom:10px; font-size:15px; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="color:#d32f2f; font-size:18px;">restaurant</span> ${n} <span style="font-size:13px; color:#555; font-weight:600; background:#f5f5f7; padding:2px 8px; border-radius:12px;">第 ${i+1} 份</span></div>`;
-                    let optHtml = (restData.options || "").replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${n}" data-idx="${i}"`).replace(/<input type="radio"/g, `<input type="radio" data-meal="${n}" data-idx="${i}"`).replace(/\{idx\}/g, i);
-                    ch += `<div class="checkbox-group" style="margin-top:0;">${optHtml}</div></div>`;
+                    
+                    let optHtml = filteredOptions.replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${n}" data-idx="${i}"`).replace(/<input type="radio"/g, `<input type="radio" data-meal="${n}" data-idx="${i}"`).replace(/\{idx\}/g, i);
+                    
+                    if(optHtml.trim() === "") {
+                        ch += `<div style="color:#888; font-size:13px;">此餐點無特殊客製化選項</div></div>`;
+                    } else {
+                        ch += `<div class="checkbox-group" style="margin-top:0;">${optHtml}</div></div>`;
+                    }
                 }
             } 
         }
