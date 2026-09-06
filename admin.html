@@ -111,8 +111,8 @@
         .btn-quick-reset { background:#f5f5f7; color:#888; border:1px solid #d2d2d7; border-radius:6px; padding:5px 11px; font-size:13px; cursor:pointer; font-weight:600; font-family:inherit; transition:0.2s; white-space:nowrap; }
         .btn-quick-reset:hover { border-color:#111; color:#111; }
 
-        .cat-box { background: #fafafa; border: 1px solid #e5e5ea; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
-        .item-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: center; }
+        .cat-box { background: #fafafa; border: 1px solid #e5e5ea; border-radius: 8px; padding: 15px; margin-bottom: 15px; transition: 0.3s; }
+        .item-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: center; transition: 0.3s; }
 
         #loginPage { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
         .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
@@ -167,7 +167,7 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.3</span></a></li>
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.4</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
         </ul>
     </div>
@@ -288,7 +288,6 @@
             </div>
         </div>
 
-        <!-- 🚀 v2.4.3 優化：退補款原因聯動選單 -->
         <div id="page-adjustment" class="admin-page">
             <div class="card" style="max-width: 600px; margin: 0 auto;">
                 <h2><span class="material-symbols-outlined">payments</span> 事後退補款項處理</h2>
@@ -346,7 +345,7 @@
         <div id="page-menu-editor" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">restaurant</span> 雲端菜單管理庫</h2>
-                <p style="color:#555; font-size:14px; margin-top:0;">系統已全面升級為雲端菜單架構！未來所有店家的價格修改、品項增刪、甚至新增店家，皆可在此直接完成，並即時同步至前台。</p>
+                <p style="color:#555; font-size:14px; margin-top:0;">系統已全面升級為雲端菜單架構！未來所有店家的價格修改、品項與分類排序，皆可在此直接完成，並即時同步至前台。</p>
                 <button class="btn btn-warning" style="width:100%; margin-bottom: 25px; padding: 16px; font-size:16px;" onclick="seedCloudMenu()">
                     <span class="material-symbols-outlined">cloud_upload</span> 🚀 [初次升級必按] 一鍵將內建 13 家餐廳上傳至雲端
                 </button>
@@ -446,14 +445,23 @@
             <div class="card">
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
-                    
+
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.4.3 智能退補選單與無條件進位 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.4.4 菜單全自訂排序按鈕 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
-                        <li>💡 <strong>退補原因聯動選單：</strong> 事後退補功能新增常用原因下拉選單，選擇「補收」或「退款」時會自動切換對應的快捷選項，並支援帶入後手動補充文字，操作更快更準！</li>
-                        <li>🧮 <strong>小數點無條件進位：</strong> 全系統金額輸入與計算（含事後退補、歷史編輯）皆套用 `Math.ceil()` 處理，確保遇到小數點時自動無條件進位，絕不虧錢。</li>
+                        <li>🔃 <strong>解決手機拖曳失效問題：</strong> 將菜單管理庫中無效的「點點拖曳圖示」全面升級為「實體上移 / 下移按鈕」，保證在手機與平板上操作 100% 順暢。</li>
+                        <li>🗂️ <strong>分類與品項皆可排序：</strong> 現在不僅可以調整餐點品項的順序，連「整個分類板塊」都可以自由上下調換位置，幫助你將最熱門的分類排在最上方！</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.3 智能退補選單與無條件進位</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>💡 <strong>退補原因聯動選單：</strong> 新增常用原因下拉選單，並支援帶入後手動補充文字，操作更快更準！</li>
+                        <li>🧮 <strong>小數點無條件進位：</strong> 全系統金額輸入與計算皆套用 `Math.ceil()` 處理，遇到小數點自動無條件進位。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -461,19 +469,9 @@
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>💳 <strong>事後退補款項實裝：</strong> 全新加入獨立事後退補系統，支援補收（增加欠款）與退還現金（抵銷已付），並完美寫入前台歷史明細。</li>
-                        <li>📊 <strong>帳務合計結算：</strong> 班級付款情形底部加回「全班合計」大寫報表，總帳一清二楚。</li>
-                        <li>🧭 <strong>選單介面縮排：</strong> 將查詢與退補相關功能附屬於班級付款總情形，使左側導覽更直覺。</li>
-                        <li>📱 <strong>維持完美排版：</strong> 基於最穩定的 v2.3.1，完美保留手機專用「卡片式即時看板」與「自適應垂直表格」。</li>
-                    </ul>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.3.1 手機自適應與報表篩選</h3>
-                        <span style="font-size:13px; color:#888;">2026-09</span>
-                    </div>
-                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>📱 <strong>全站手機排版：</strong> 廢除不易閱讀的橫向表格，訂單看板改為「卡片網格」，表格轉換為垂直列表。</li>
-                        <li>📅 <strong>歷史報表查詢：</strong> 統計看板可自由切換指定日期。</li>
+                        <li>💳 <strong>事後退補款項實裝：</strong> 支援補收與退還現金，並完美寫入前台歷史明細。</li>
+                        <li>📊 <strong>帳務合計結算：</strong> 班級付款情形底部加回「全班合計」大寫報表。</li>
+                        <li>📱 <strong>維持完美排版：</strong> 基於最穩定的 v2.3.1，完美保留手機專用卡片式看板。</li>
                     </ul>
 
                 </div>
@@ -567,12 +565,10 @@
             loadSettings();
             listenToAnnouncements();
             
-            // 🚀 初始化退補選項
             updateAdjPresets();
         }
     };
 
-    // 🚀 v2.4.3: 智慧聯動備註選單
     window.updateAdjPresets = function() {
         const type = document.getElementById('adjType').value;
         const presetSelect = document.getElementById('adjNotePreset');
@@ -713,6 +709,25 @@
         renderMenuEditorUI();
     };
 
+    // 🚀 v2.4.4: 菜單分類與品項上移下移按鈕實作
+    window.moveCat = function(cIdx, dir) {
+        let menu = window.editingRest.menu;
+        if(cIdx + dir < 0 || cIdx + dir >= menu.length) return;
+        let temp = menu[cIdx]; 
+        menu[cIdx] = menu[cIdx + dir]; 
+        menu[cIdx + dir] = temp;
+        renderMenuEditorUI();
+    };
+
+    window.moveItem = function(cIdx, iIdx, dir) {
+        let items = window.editingRest.menu[cIdx].items;
+        if(iIdx + dir < 0 || iIdx + dir >= items.length) return;
+        let temp = items[iIdx]; 
+        items[iIdx] = items[iIdx + dir]; 
+        items[iIdx + dir] = temp;
+        renderMenuEditorUI();
+    };
+
     window.renderMenuEditorUI = function() {
         if(!window.editingRest) return;
         let r = window.editingRest;
@@ -725,13 +740,20 @@
         `;
         r.menu.forEach((cat, cIdx) => {
             html += `<div class="cat-box">
-                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                <div style="display:flex; gap:10px; margin-bottom:15px; align-items:center;">
+                    <div style="display:flex; flex-direction:column; background:#e5e5ea; border-radius:6px; overflow:hidden; border:1px solid #d2d2d7;">
+                        <div style="cursor:pointer; padding:2px 4px; border-bottom:1px solid #d2d2d7; background:#fafafa;" onclick="moveCat(${cIdx}, -1)"><span class="material-symbols-outlined" style="font-size:16px; margin:0; display:block; color:#555;">expand_less</span></div>
+                        <div style="cursor:pointer; padding:2px 4px; background:#fafafa;" onclick="moveCat(${cIdx}, 1)"><span class="material-symbols-outlined" style="font-size:16px; margin:0; display:block; color:#555;">expand_more</span></div>
+                    </div>
                     <input type="text" value="${cat.category}" onchange="window.editingRest.menu[${cIdx}].category=this.value" placeholder="分類名稱" style="font-weight:bold; flex:1; margin:0;">
                     <button class="btn-danger" style="margin:0; padding:10px;" onclick="window.editingRest.menu.splice(${cIdx}, 1); renderMenuEditorUI()">刪除分類</button>
                 </div>`;
             cat.items.forEach((item, iIdx) => {
                 html += `<div class="item-row">
-                    <span class="material-symbols-outlined" style="color:#ccc;">drag_indicator</span>
+                    <div style="display:flex; flex-direction:column; background:#e5e5ea; border-radius:6px; overflow:hidden; border:1px solid #d2d2d7;">
+                        <div style="cursor:pointer; padding:2px 4px; border-bottom:1px solid #d2d2d7; background:#fafafa;" onclick="moveItem(${cIdx}, ${iIdx}, -1)"><span class="material-symbols-outlined" style="font-size:16px; margin:0; display:block; color:#555;">expand_less</span></div>
+                        <div style="cursor:pointer; padding:2px 4px; background:#fafafa;" onclick="moveItem(${cIdx}, ${iIdx}, 1)"><span class="material-symbols-outlined" style="font-size:16px; margin:0; display:block; color:#555;">expand_more</span></div>
+                    </div>
                     <input type="text" value="${item.name}" onchange="window.editingRest.menu[${cIdx}].items[${iIdx}].name=this.value" placeholder="品項名稱" style="margin:0; flex:2;">
                     <input type="number" value="${item.price}" onchange="window.editingRest.menu[${cIdx}].items[${iIdx}].price=parseInt(this.value)" placeholder="價格" style="margin:0; flex:1;">
                     <button class="btn-outline" style="margin:0; padding:10px; border-color:#d32f2f; color:#d32f2f;" onclick="window.editingRest.menu[${cIdx}].items.splice(${iIdx}, 1); renderMenuEditorUI()"><span class="material-symbols-outlined" style="margin:0;">delete</span></button>
@@ -986,7 +1008,7 @@
     }
 
     window.loadLedger = async function() {
-        document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="5">計算中...</td></tr>`;
+        document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">計算中...</td></tr>`;
         try {
             const querySnapshot = await getDocs(collection(db, "orders"));
             let ledger = Array.from({length: 28}, (_, i) => ({ debt: 0, paid: 0 })); 
