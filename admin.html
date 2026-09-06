@@ -145,8 +145,8 @@
             
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
-            <!-- 🚀 升級：網頁更新紀錄 v2.2.0 -->
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.2.0</span></a></li>
+            <!-- 🚀 升級：網頁更新紀錄 v2.2.1 -->
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.2.1</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
         </ul>
     </div>
@@ -154,6 +154,19 @@
     <div class="container">
         
         <div id="page-dashboard" class="admin-page active">
+            
+            <!-- 🚀 v2.2.1: 正在廣播的警告面板 -->
+            <div class="card" id="activeBroadcastSection" style="display: none; border: 2px solid #d32f2f; background: #fff5f5; box-shadow: 0 4px 15px rgba(211, 47, 47, 0.2);">
+                <h2 style="color: #d32f2f; border-bottom: 1px solid #ffcdd2; margin-bottom: 15px; display:flex; align-items:center;">
+                    <span class="material-symbols-outlined" style="margin-right:8px; font-size:24px;">campaign</span> 正在向全班廣播中！
+                </h2>
+                <p id="activeBroadcastMsg" style="font-weight: 600; font-size: 15px; color: #111; line-height:1.6;"></p>
+                <p style="font-size:13px; color:#d32f2f; margin-bottom:15px;">全班同學在前台都會看見此則橫幅公告。如果狀況已解除，請點擊下方按鈕撤除通知。</p>
+                <button class="btn btn-danger" style="width: 100%; border-color:#d32f2f; color:#d32f2f;" onclick="clearAnnouncement()">
+                    <span class="material-symbols-outlined">cancel</span> 撤除此廣播
+                </button>
+            </div>
+
             <div class="card" style="border-top: 4px solid #111;">
                 <h2><span class="material-symbols-outlined">settings</span> 系統核心設定</h2>
                 <div class="settings-grid">
@@ -218,7 +231,6 @@
                 </div>
             </div>
 
-            <!-- 🚀 v2.2.0 升級：Plan B 下拉式選單防呆 -->
             <div class="card planB-box" id="planBSection">
                 <h2 style="border:none; margin-bottom:5px;"><span class="material-symbols-outlined">emergency</span> 危機處理：啟動備案機制</h2>
                 <p style="color:#555; font-size:14px; margin-top:0;">啟動後系統會根據每人原本「已繳交的金額」自動算出差額，並鎖定全班訂單為統一餐點。</p>
@@ -233,10 +245,7 @@
                     系統帶入單價：$<span id="planBPriceDisplay">0</span>
                 </div>
 
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-primary" style="flex: 2;" onclick="executePlanB()">啟動備案並鎖定前台！</button>
-                    <button class="btn btn-secondary" style="flex: 1;" onclick="clearAnnouncement()">解除廣播</button>
-                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="executePlanB()">啟動備案並鎖定前台！</button>
             </div>
         </div>
 
@@ -358,16 +367,25 @@
             </div>
         </div>
 
-        <!-- 🚀 升級：網頁更新紀錄 v2.2.0 -->
+        <!-- 🚀 升級：網頁更新紀錄 v2.2.1 -->
         <div id="page-updateLog" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.2.0 系統全面升級與備案聯動 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.2.1 首頁鎖定穿透修正與廣播管理面板 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
+                        <li>🐛 <strong>修復前台鎖定狀態穿透 Bug：</strong> 修復在非點餐時段，透過「菜單總覽」點擊「返回首頁」會繞過鎖定畫面直接進入點餐狀態的漏洞。現在系統能嚴格守住開放時間與排程限制。</li>
+                        <li>📢 <strong>後台專屬「廣播管理儀表板」：</strong> 現在後台主畫面最上方將即時顯示當前正在推送給全班的「緊急廣播內容」，並配有巨大的「撤除此廣播」紅色按鈕，解決過去負責人不知道有沒有發送成功、無法明確撤除的痛點。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.2.0 系統全面升級與備案聯動</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                         <li>💰 <strong>個人帳戶與明細優化 (前台)：</strong> 歷史紀錄新增「個人總帳戶餘額（多退少補）」大字顯示，並將交易狀態標示改版，付費與欠款狀況一目瞭然。</li>
                         <li>🔄 <strong>動態換店同步 (前台)：</strong> 修復臨時換店後前台菜單未更新的 Bug，現在更換後同學可立刻看到新店家的菜單並重新下單。</li>
                         <li>🚨 <strong>Plan B 備案選單化 (後台)：</strong> 備案系統淘汰手動輸入，改為「13 家餐廳聯動下拉選單」，直接從內建菜單挑選統一餐點，價格自動帶入，實現 100% 防呆。</li>
@@ -381,7 +399,7 @@
                         <li>🚨 <strong>動態換店重置機制：</strong> 支援在當日點餐時段內更換餐廳，系統將自動作廢所有已訂購餐點並啟動預繳退費。</li>
                         <li>📢 <strong>即時廣播通知：</strong> 換店後前台將自動跳出緊急通知，提醒同學重新下單。</li>
                         <li>💵 <strong>退費帳本連動：</strong> 升級帳務演算法，作廢訂單若有預繳金額將自動列入「應退款」狀態。</li>
-                        <li>🔍 <strong>活動稽核紀錄升級：</strong> 獨立出全新的 `prod_activities` 資料庫！分離前台與後台紀錄，支援精準篩選追蹤。</li>
+                        <li>🔍 <strong>活動稽核紀錄升級：</strong> 獨立出全新的 `prod_activities` 資料庫！分離前台與後台紀錄，支援依來源、日期、座號精準篩選追蹤。</li>
                     </ul>
                 </div>
             </div>
@@ -466,6 +484,9 @@
             listenToOrders(todayStr); 
             loadScheduledMenus();
             loadSettings();
+            
+            // 🚀 v2.2.1: 新增後台廣播狀態監聽儀表板
+            listenToAnnouncements();
         }
     };
 
@@ -566,6 +587,7 @@
             if(!confirm(`⚠️ 嚴重警告 ⚠️\n\n現在正處於點餐開放時段 (${st}~${et})！\n若您現在將餐廳更換為「${rest}」，系統將自動執行：\n\n1. 作廢今天所有已送出的訂單\n2. 啟動已預繳費同學的自動退費機制\n3. 前台廣播通知全班重新點餐\n\n您確定要強制更換嗎？`)) {
                 return;
             }
+
             try {
                 await setDoc(doc(db, "dailyMenus", targetDate), { restaurant: rest });
                 const q = query(collection(db, "orders"), where("date", "==", targetDate));
@@ -837,9 +859,11 @@
         } catch(e) { }
     }
 
+    // 🚀 升級版：網頁活動稽核紀錄讀取與篩選
     window.loadActivityLog = async function() {
         document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="5">載入中...</td></tr>`;
         try {
+            // 從全新的 prod_activities 讀取，避免與舊版 beta 混淆
             const querySnapshot = await getDocs(collection(db, "prod_activities"));
             let acts = []; 
             querySnapshot.forEach(doc => acts.push(doc.data()));
@@ -975,10 +999,23 @@
         alert("備案啟動成功！");
     }
 
+    // 🚀 v2.2.1 廣播儀表板監聽
+    window.listenToAnnouncements = function() {
+        onSnapshot(doc(db, "system", "announcement"), (docSnap) => {
+            const broadcastSec = document.getElementById('activeBroadcastSection');
+            if (docSnap.exists() && docSnap.data().date === todayStr) {
+                broadcastSec.style.display = 'block';
+                document.getElementById('activeBroadcastMsg').innerText = docSnap.data().message;
+            } else {
+                broadcastSec.style.display = 'none';
+            }
+        });
+    }
+
     window.clearAnnouncement = async function() { 
         await deleteDoc(doc(db, "system", "announcement")); 
-        logAdminAction("解除廣播", "解除了前台的緊急廣播狀態");
-        alert("廣播已解除！"); 
+        logAdminAction("撤除廣播", "負責人手動撤除了前台的緊急廣播狀態");
+        alert("廣播已成功撤除！"); 
     }
 
     window.clearTodayOrders = async function() {
