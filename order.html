@@ -6,14 +6,27 @@
     <title>217午餐訂購系統</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+    <!-- 引入 Chart.js 圖表庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* 🚀 柔和的莫蘭迪藍紫漸層 */
         body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
-        .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        
+        .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); height: 60px; box-sizing: border-box; }
         .menu-btn { font-size: 26px; background: none; border: none; color: white; cursor: pointer; padding: 0 10px; }
         .header-title { font-size: 18px; font-weight: 700; flex-grow: 1; text-align: center; letter-spacing: 0.5px; }
         
+        /* 🚀 麵包屑導覽列樣式 (完美還原附圖風格) */
+        .breadcrumb { background-color: #eaf4fc; padding: 10px 15px; font-size: 14px; display: flex; align-items: center; border-bottom: 1px solid #bce0fd; position: sticky; top: 60px; z-index: 90; overflow-x: auto; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .breadcrumb::-webkit-scrollbar { display: none; }
+        .breadcrumb-back { background: none; border: none; color: #0078d4; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 2px; padding: 0; font-size: 14px; font-family: inherit; }
+        .breadcrumb-back:hover { text-decoration: underline; }
+        .breadcrumb a { color: #0078d4; text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 4px; font-weight: 500; transition: 0.2s; }
+        .breadcrumb a:hover { text-decoration: underline; color: #005a9e; }
+        .breadcrumb .separator { color: #888; font-size: 16px; font-family: sans-serif; margin: 0 6px; }
+        .breadcrumb .current { color: #666; display: flex; align-items: center; gap: 4px; font-weight: 500;}
+
         .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #fff; border-right: 1px solid #e5e5ea; transition: left 0.3s ease; z-index: 1000; display: flex; flex-direction: column; overflow-y: auto; }
         .sidebar.active { left: 0; }
         .sidebar-header { background: #fafafa; color: #111; padding: 20px; font-size: 18px; font-weight: 700; border-bottom: 1px solid #e5e5ea; }
@@ -25,7 +38,6 @@
         .sidebar-menu li { border-bottom: 1px solid #f2f2f7; }
         .sidebar-menu a { display: block; padding: 15px 20px; color: #333; text-decoration: none; font-size: 15px; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
         .sidebar-menu a:hover { background: #f5f5f7; color: #000; }
-        
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); display: none; z-index: 999; }
         .overlay.active { display: block; }
 
@@ -44,13 +56,13 @@
         .price-text { color: #111; font-size: 28px; font-weight: 700; margin: 15px 0; }
         #announcementBanner { display: none; background: #fafafa; border: 1px solid #111; padding: 15px; border-radius: 8px; margin-bottom: 20px; color: #111; }
         
-        .category-nav { display: flex; overflow-x: auto; white-space: nowrap; gap: 20px; padding: 10px 15px 0 15px; background: transparent; position: sticky; top: 60px; z-index: 90; border-bottom: 1px solid #e5e5ea; margin: -15px -15px 20px -15px; scroll-behavior: smooth; }
+        .category-nav { display: flex; overflow-x: auto; white-space: nowrap; gap: 20px; padding: 10px 15px 0 15px; background: transparent; position: sticky; top: 105px; z-index: 80; border-bottom: 1px solid #e5e5ea; margin: -15px -15px 20px -15px; scroll-behavior: smooth; }
         .category-nav::-webkit-scrollbar { display: none; } 
         .cat-tab { color: #888; cursor: pointer; font-weight: 600; font-size: 15px; padding-bottom: 12px; position: relative; transition: color 0.2s; }
         .cat-tab.active { color: #111; } .cat-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background-color: #111; } 
         
         .menu-category { font-size: 20px; font-weight: 700; color: #111; margin: 30px 0 15px 0; padding-bottom: 5px; }
-        .menu-section { scroll-margin-top: 115px; } 
+        .menu-section { scroll-margin-top: 150px; } 
         
         .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); transition: border-color 0.2s; }
         .menu-item:hover { border-color: #111; }
@@ -80,6 +92,11 @@
         
         .review-label { font-weight:600; color:#111; display:block; margin: 16px 0 6px 0; font-size:15px;}
         .user-badge { display:inline-block; background:#111; color:white; padding:4px 10px; border-radius:12px; font-size:15px; font-weight:600; margin:0 5px; }
+
+        /* Dashboard 專用樣式 */
+        .stats-grid { display: flex; gap: 10px; }
+        .stat-box { flex: 1; background: #fafafa; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #e5e5ea; box-shadow: 0 2px 5px rgba(0,0,0,0.02);}
+        .stat-value { font-size: 22px; font-weight: 700; margin-top: 6px; color: #111; }
 
         /* 獨立登入頁面 IG 風格 */
         #loginPage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
@@ -113,6 +130,13 @@
         <div style="width: 44px;"></div>
     </div>
 
+    <!-- 🚀 全新麵包屑導覽列 (Breadcrumb) -->
+    <div id="breadcrumbBar" class="breadcrumb" style="display:none;">
+        <button class="breadcrumb-back" onclick="goBackStep()"><span class="material-symbols-outlined" style="font-size: 16px;">arrow_back_ios_new</span> 返回</button>
+        <div style="border-left: 2px solid #bce0fd; height: 18px; margin: 0 10px;"></div>
+        <div id="breadcrumbLinks" style="display:flex; align-items:center;"></div>
+    </div>
+
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">系統選單</div>
@@ -121,7 +145,6 @@
             <button class="btn-logout" onclick="logout()">登出</button>
         </div>
         
-        <!-- 🚀 嚴格按照要求重新排序選單 -->
         <ul class="sidebar-menu">
             <li><a href="javascript:void(0)" onclick="resumeOrderFlow(); toggleMenu();"><span class="material-symbols-outlined">restaurant_menu</span> 進行點餐 / 首頁</a></li>
             <li><a href="javascript:void(0)" onclick="showMenuOverview(); toggleMenu();"><span class="material-symbols-outlined">menu_book</span> 菜單總覽</a></li>
@@ -157,22 +180,20 @@
             <div style="font-size: 12px; color: #555; text-align: right; margin-top: 5px;" id="announcementTime"></div>
         </div>
 
-        <!-- 🚀 菜單總覽頁面 -->
         <div class="card" id="menuOverviewArea">
             <h2><span class="material-symbols-outlined">menu_book</span> 菜單總覽 (檢視模式)</h2>
             <p style="color:#555; font-size:14px;">在非點餐時段，也可以在這裡預覽各家餐廳的完整菜單喔！</p>
             <select id="mo_restaurantSelect" onchange="renderMenuOverview(this.value)" style="margin-bottom:15px;"></select>
             <div id="mo_menuContainer" style="background:#fafafa; border:1px solid #e5e5ea; border-radius:12px; padding:15px; font-size:15px; line-height:1.8;"></div>
-            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
+            <button class="btn btn-secondary" style="margin-top:20px;" onclick="gotoHome()">返回首頁</button>
         </div>
 
         <div class="card" id="infoCard">
             <h2 id="infoTitle">標題</h2>
             <div id="infoContent" style="font-size: 15px; line-height: 1.8; color: #333;">內容</div>
-            <button class="btn btn-primary" style="margin-top: 25px;" onclick="resumeOrderFlow()"><span class="material-symbols-outlined">arrow_back</span> 返回首頁</button>
+            <button class="btn btn-primary" style="margin-top: 25px;" onclick="gotoHome()"><span class="material-symbols-outlined">arrow_back</span> 返回首頁</button>
         </div>
 
-        <!-- 🚀 許願池與意見反應升級 -->
         <div class="card" id="feedbackPageArea">
             <h2><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</h2>
             
@@ -192,7 +213,7 @@
                 <button class="btn btn-outline" style="margin-top:15px;" onclick="submitFeedback()">傳送意見</button>
             </div>
             
-            <button class="btn btn-secondary" style="margin-top:15px;" onclick="resumeOrderFlow()">返回首頁</button>
+            <button class="btn btn-secondary" style="margin-top:15px;" onclick="gotoHome()">返回首頁</button>
         </div>
 
         <div class="card" id="reviewPageArea">
@@ -218,7 +239,7 @@
                 <textarea id="rvComment" rows="3" placeholder="例如：麵條太軟、湯太鹹..."></textarea>
                 <button class="btn btn-primary" style="margin-top:20px;" onclick="submitMealReview()">送出評分</button>
             </div>
-            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
+            <button class="btn btn-secondary" style="margin-top:20px;" onclick="gotoHome()">返回首頁</button>
         </div>
 
         <div class="card" id="planBDashboard" style="border: 2px solid #111; background: #fafafa;">
@@ -247,12 +268,11 @@
             <hr style="margin:30px 0 20px 0; border:0; border-top:1px solid #e5e5ea;">
             <p style="color:#888; font-size:14px; margin-bottom:15px;">等待開放的同時，你可以：</p>
             <div style="display:flex; gap:10px;">
-                <button class="btn btn-outline" style="flex:1; margin-top:0;" onclick="showMenuOverview()"><span class="material-symbols-outlined">menu_book</span> 預覽菜單</button>
-                <button class="btn btn-outline" style="flex:1; margin-top:0;" onclick="showReviewPage()"><span class="material-symbols-outlined">star</span> 填寫評分</button>
+                <button class="btn btn-outline" style="flex:1; margin-top:0;" onclick="setView('menuOverviewArea')"><span class="material-symbols-outlined">menu_book</span> 預覽菜單</button>
+                <button class="btn btn-outline" style="flex:1; margin-top:0;" onclick="setView('reviewPageArea')"><span class="material-symbols-outlined">star</span> 填寫評分</button>
             </div>
         </div>
 
-        <!-- 🚀 排行榜升級：雙重榜單 -->
         <div class="card" id="historyModal">
             <h2><span class="material-symbols-outlined">leaderboard</span> 歷代排行榜總計</h2>
             
@@ -264,19 +284,52 @@
             <div id="rankItemsContent">載入中...</div>
             <div id="rankRestsContent" style="display:none;">載入中...</div>
             
-            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
+            <button class="btn btn-secondary" style="margin-top:20px;" onclick="gotoHome()">返回首頁</button>
         </div>
 
+        <!-- 🚀 大幅升級：個人歷史消費分析 Dashboard -->
         <div class="card" id="personalHistoryArea">
-            <h2><span class="material-symbols-outlined">history</span> 我的歷史訂單紀錄</h2>
-            <p>座號：<strong id="ph_studentId" style="font-size:18px;"></strong> 號</p>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="border:none; margin:0;"><span class="material-symbols-outlined">history</span> 歷史紀錄與分析</h2>
+                <p style="margin:0; font-weight:600;">座號：<strong id="ph_studentId" style="font-size:18px;"></strong></p>
+            </div>
+            
+            <div id="analyticsDashboard" style="display:none; margin-top:15px;">
+                <div class="stats-grid" style="margin-bottom:20px;">
+                    <div class="stat-box">
+                        <div style="font-size:13px; color:#555; font-weight:600;">本月累積花費</div>
+                        <div class="stat-value" id="monthlyTotalSpent">$0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size:13px; color:#555; font-weight:600;">平均每餐花費</div>
+                        <div class="stat-value" id="avgMealCost">$0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size:13px; color:#555; font-weight:600;">最愛吃的一家</div>
+                        <div class="stat-value" id="favoriteRest" style="font-size:16px;">-</div>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-wrap:wrap; gap:15px; margin-bottom:25px;">
+                    <div style="flex:1; min-width:200px; background:#fafafa; padding:15px; border-radius:12px; border:1px solid #e5e5ea;">
+                        <h3 style="font-size:14px; margin-top:0; text-align:center;">各家餐廳點餐比例</h3>
+                        <canvas id="restaurantPieChart" style="max-height: 200px;"></canvas>
+                    </div>
+                    <div style="flex:1; min-width:200px; background:#fafafa; padding:15px; border-radius:12px; border:1px solid #e5e5ea;">
+                        <h3 style="font-size:14px; margin-top:0; text-align:center;">近五次花費趨勢</h3>
+                        <canvas id="spendingLineChart" style="max-height: 200px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top:0; border-bottom:1px solid #e5e5ea; padding-bottom:10px; font-size:16px;">詳細訂單明細</h3>
             <div class="table-responsive">
                 <table>
                     <thead><tr><th>日期</th><th>餐廳/餐點</th><th>狀態</th></tr></thead>
                     <tbody id="ph_tableBody"><tr><td colspan="3">讀取中...</td></tr></tbody>
                 </table>
             </div>
-            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
+            <button class="btn btn-secondary" style="margin-top:20px;" onclick="gotoHome()">返回首頁</button>
         </div>
 
         <div class="card login-box" id="authArea">
@@ -289,7 +342,7 @@
                 <h2 style="border:none; justify-content:center; margin-bottom:15px;"><span class="material-symbols-outlined">search</span> 查詢狀態與紀錄</h2>
                 <div style="display:flex; gap:10px;">
                     <button class="btn btn-outline" style="flex:1;" onclick="checkStatusQuick()">當日狀態</button>
-                    <button class="btn btn-outline" style="flex:1;" onclick="showMyHistory()">歷史紀錄</button>
+                    <button class="btn btn-outline" style="flex:1;" onclick="showMyHistory()">歷史紀錄與分析</button>
                 </div>
             </div>
         </div>
@@ -307,7 +360,6 @@
             <div style="display:flex; align-items:center; gap:4px;">完成選擇 <span class="material-symbols-outlined" style="font-size:18px; margin:0;">arrow_forward</span></div>
         </div>
 
-        <!-- 客製化專區 -->
         <div class="card" id="customizeArea">
             <h2><span class="material-symbols-outlined">tune</span> 選擇客製化/套餐選項</h2>
             <div style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e5e5ea; margin-bottom:20px;">
@@ -356,7 +408,7 @@
             
             <button class="btn btn-outline" style="margin-top:10px;" onclick="goToReviewFromReceipt()"><span class="material-symbols-outlined">star</span> 前往評分剛才的餐點</button>
             <button class="btn btn-danger" onclick="cancelOrder()" style="margin-top:10px;">取消今日訂單</button>
-            <button class="btn btn-secondary" onclick="location.reload()" style="margin-top:10px;">回首頁</button>
+            <button class="btn btn-secondary" onclick="gotoHome()" style="margin-top:10px;">回首頁</button>
         </div>
     </div>
 </div>
@@ -379,60 +431,26 @@
     
     let cart = {}; let pendingOrder = { studentId: 0, meal: "", price: 0, basePrice: 0, restaurant: "" }; 
     let currentRestaurant = ""; let currentOrderStep = 'authArea'; window.currentUserId = null;
+    window.currentViewId = 'authArea';
 
-    // 🚀 完整 13 家餐廳菜單資料庫 (壓縮儲存空間)
+    // 🚀 完整 13 家餐廳菜單資料庫 (無刪減壓縮版)
     const restaurantDB = {
-        "麵朝 (新竹食品店)": {
-            menu: [{category:"鮮蝦雲吞拌麵",items:[{name:"鮮蝦雲吞拌麵",price:110},{name:"青醬雲吞拌麵",price:115},{name:"椒麻雲吞拌麵",price:115},{name:"蔥油雲吞拌麵",price:115},{name:"香滷雲吞拌麵",price:115},{name:"XO醬雲吞拌麵",price:115}]},{category:"港式水餃拌麵",items:[{name:"港式水餃拌麵",price:105},{name:"青醬水餃拌麵",price:110},{name:"椒麻水餃拌麵",price:110},{name:"蔥油水餃拌麵",price:110},{name:"香滷水餃拌麵",price:110},{name:"XO醬水餃拌麵",price:110}]},{category:"乾拌麵",items:[{name:"京醬肉絲拌麵",price:85},{name:"椒麻雞絲拌麵",price:85},{name:"青醬雞絲拌麵",price:85},{name:"蔥油雞絲拌麵",price:85},{name:"香滷雞絲拌麵",price:85},{name:"XO醬雞絲拌麵",price:85}]},{category:"風味湯麵",items:[{name:"羅宋番茄雞湯麵",price:130},{name:"養生清燉雞湯麵",price:130},{name:"剝皮辣椒雞湯麵",price:140},{name:"漢方肉骨茶雞湯麵",price:140},{name:"羅宋番茄湯麵",price:75},{name:"鮮蝦雲吞湯麵",price:110}]},{category:"功夫小點",items:[{name:"豬五花肉(蒜泥)",price:80},{name:"豬五花肉(椒麻)",price:80},{name:"舒肥雞(蔥油)",price:90},{name:"舒肥雞(青醬)",price:90},{name:"鮮蝦抄手(紅油)",price:100},{name:"鮮蝦抄手(白油)",price:100},{name:"港式翠玉水餃10粒",price:90}]},{category:"湯品&青菜",items:[{name:"大推烏梅汁",price:30},{name:"季節燙青菜",price:40},{name:"新竹貢丸湯",price:40},{name:"虱目魚丸湯",price:40},{name:"手工餛飩湯",price:40},{name:"羅宋番茄湯",price:50},{name:"鮮蝦雲吞湯",price:55},{name:"羅宋雲吞湯",price:80},{name:"養生清燉雞湯",price:95},{name:"剝皮辣椒雞湯",price:95},{name:"漢方肉骨茶雞湯",price:95}]}],
-            options: `<label class="checkbox-item"><input type="checkbox" value="加麵" data-price="15"> +15元 加麵</label><label class="checkbox-item"><input type="checkbox" value="加舒肥雞" data-price="30"> +30元 拌麵類加舒肥雞</label>`
-        },
-        "湯食主義": {
-            menu: [{category:"嫩切雞蓋飯系列",items:[{name:"嫩切雞蓋飯",price:135},{name:"嫩切雞蓋飯泡溫泉",price:155},{name:"明太子嫩切雞蓋飯",price:185},{name:"明太子嫩切雞蓋飯泡溫泉",price:205}]},{category:"豬五花蓋飯系列",items:[{name:"豬五花蓋飯",price:125},{name:"豬五花蓋飯泡溫泉",price:145},{name:"明太子豬肉蓋飯",price:175},{name:"明太子豬五花蓋飯泡溫泉",price:195},{name:"韓式泡菜豬肉蓋飯",price:145},{name:"香檸泰泰豬飯",price:150}]},{category:"牛五花蓋飯系列",items:[{name:"牛五花蓋飯",price:135},{name:"牛五花蓋飯泡溫泉",price:155},{name:"明太子牛肉蓋飯",price:185},{name:"明太子牛五花蓋飯泡溫泉",price:205},{name:"川味牛五花蓋飯",price:135}]}],
-            options: `<label class="checkbox-item"><input type="checkbox" value="加高麗菜" data-price="20"> +20元 加高麗菜</label><label class="checkbox-item"><input type="checkbox" value="加飯" data-price="10"> +10元 加飯</label><label class="checkbox-item"><input type="checkbox" value="升級套餐" data-price="70"> +70元 升級套餐(小菜擇1+溏心蛋)</label>`
-        },
-        "麥當勞 (中餐時段)": {
-            menu: [{category:"牛肉漢堡系列",items:[{name:"大麥克",price:85},{name:"雙層牛肉吉事堡",price:75},{name:"四盎司牛肉堡",price:95},{name:"雙層四盎司牛肉堡",price:135},{name:"BLT安格斯牛肉堡",price:122},{name:"蕈菇安格斯牛肉堡",price:132}]},{category:"雞肉與海鮮系列",items:[{name:"麥香鷄",price:48},{name:"麥香魚",price:60},{name:"雙層麥香魚",price:80},{name:"勁辣鷄腿堡",price:78},{name:"炭燒醬烤鷄腿堡",price:99},{name:"BLT香烙烤鷄腿堡",price:129},{name:"煙燻勁脆鷄腿堡",price:99},{name:"肯瓊勁脆鷄腿堡",price:99}]},{category:"麥克鷄塊與分享盒",items:[{name:"麥克鷄塊(6塊)",price:68},{name:"麥克鷄塊(10塊)",price:109},{name:"麥脆鷄腿(2塊)",price:126},{name:"麥脆鷄腿分享盒",price:319},{name:"麥克鷄塊分享盒(20塊)",price:249},{name:"鷄塊鷄腿分享盒",price:289},{name:"勁辣香鷄翅分享盒",price:259}]},{category:"單點點心與沙拉",items:[{name:"大薯",price:66},{name:"中薯",price:50},{name:"小薯",price:40},{name:"金黃地瓜條",price:66},{name:"勁辣香鷄翅(1份2塊)",price:49},{name:"四季沙拉(小)",price:49},{name:"蘋果派",price:39},{name:"香芋派",price:39},{name:"OREO冰炫風",price:59}]}],
-            options: `<div style="font-weight:700; margin:10px 0 5px 0;">選擇單點或配餐 (適用於主餐)：</div><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="單點" data-price="0" checked> 單點 (+$0)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="經典配餐(中薯+38元飲品)" data-price="38"> +38元 經典配餐 (中薯+飲品)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="清爽配餐(沙拉+38元飲品)" data-price="38"> +38元 清爽配餐 (四季沙拉+飲品)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="勁脆配餐(麥脆鷄腿+38元飲品)" data-price="38"> +38元 勁脆配餐 (麥脆鷄腿1塊+飲品)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="炫冰配餐(冰炫風+小薯+38元飲品)" data-price="38"> +38元 炫冰配餐 (OREO冰炫風+小薯+飲品)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="豪吃配餐(6塊鷄塊+小薯+38元飲品)" data-price="38"> +38元 豪吃配餐 (6塊麥克鷄塊+小薯+飲品)</label>`
-        },
-        "阿寶魯肉飯": {
-            menu: [{category:"滷肉飯便當&主食",items:[{name:"滷肉飯(小)",price:50},{name:"滷肉飯(大)",price:60},{name:"滷肉飯+滷蛋(小)",price:65},{name:"滷肉飯+滷蛋(大)",price:75},{name:"高麗菜水餃(10個)",price:70},{name:"韭菜水餃(10個)",price:70},{name:"綜合水餃(10個)",price:70},{name:"白飯",price:15},{name:"滷肉飯套餐(小)",price:85},{name:"滷肉飯套餐(大)",price:95}]},{category:"麵食類",items:[{name:"乾麵",price:50},{name:"乾米粉",price:50},{name:"乾粄條",price:50},{name:"湯麵",price:50},{name:"湯米粉",price:50},{name:"湯粄條",price:50},{name:"貢丸麵",price:65},{name:"貢丸米粉",price:65},{name:"貢丸粄條",price:65},{name:"餛飩麵",price:65},{name:"餛飩米粉",price:65},{name:"餛飩粄條",price:65},{name:"肉羹麵",price:65},{name:"肉羹米粉",price:65},{name:"肉羹粄條",price:65}]},{category:"湯品類",items:[{name:"豬血湯",price:40},{name:"綜合丸湯",price:45},{name:"魚丸湯",price:45},{name:"貢丸湯",price:45},{name:"餛飩湯",price:45},{name:"肉羹湯",price:50},{name:"骨仔肉湯",price:60},{name:"豬腸肚片湯",price:60}]},{category:"小菜類",items:[{name:"油豆腐",price:30},{name:"滷筍干",price:30},{name:"油豆腐+筍干(半)",price:30},{name:"滷海帶",price:30},{name:"滷豆干",price:30},{name:"海帶+豆干(半)",price:30},{name:"燙空心菜",price:40},{name:"燙地瓜葉",price:40},{name:"燙大陸妹",price:40},{name:"紅油抄手(辣)",price:45},{name:"紅油抄手(不辣)",price:45},{name:"肉鬆皮蛋",price:45},{name:"蒜泥白肉",price:70},{name:"乾骨仔肉",price:70},{name:"乾豬腸肚片",price:70}]}],
-            options: `<label class="checkbox-item"><input type="checkbox" value="麵食加大" data-price="5"> +5元 麵食加大</label>`
-        },
-        "八方雲集": {
-            menu: [{category:"金牌牛肉系列",items:[{name:"美國帶骨牛小排麵",price:350},{name:"紅燒牛肉麵",price:168},{name:"清燉牛肉麵",price:168},{name:"麻辣牛肉麵",price:178},{name:"紅燒牛肉湯",price:158},{name:"清燉牛肉湯",price:158},{name:"麻辣牛肉湯",price:168},{name:"紅燒牛肉湯餃(8顆)",price:120},{name:"麻辣牛肉湯餃(8顆)",price:125},{name:"紅燒牛肉湯珍珠餛飩(10顆)",price:125},{name:"麻辣牛肉湯珍珠餛飩(10顆)",price:130},{name:"紅燒牛肉湯菜肉大餛飩(6顆)",price:125},{name:"麻辣牛肉湯菜肉大餛飩(6顆)",price:130}]},{category:"鍋貼 (單顆)",items:[{name:"招牌鍋貼",price:7},{name:"韭菜鍋貼",price:7},{name:"韓式辣味鍋貼",price:7},{name:"咖哩鍋貼",price:7},{name:"玉米鍋貼",price:7}]},{category:"水餃 (單顆)",items:[{name:"招牌水餃",price:7},{name:"韭菜水餃",price:7},{name:"韓式辣味水餃",price:7},{name:"咖哩水餃",price:7},{name:"玉米水餃",price:7},{name:"新蔬食水餃",price:7.5},{name:"鮮蝦水餃",price:10.5}]},{category:"湯餃(8顆)",items:[{name:"酸辣湯餃(招牌)",price:90},{name:"酸辣湯餃(韭菜)",price:90},{name:"酸辣湯餃(韓式辣味)",price:90},{name:"酸辣湯餃(咖哩)",price:90},{name:"酸辣湯餃(玉米)",price:90},{name:"玉米湯餃(招牌)",price:90},{name:"玉米湯餃(韭菜)",price:90},{name:"玉米湯餃(玉米)",price:90}]},{category:"麵食類",items:[{name:"古早味乾麵",price:45},{name:"麻醬乾麵",price:55},{name:"招牌乾麵",price:55},{name:"紹辣乾麵",price:60},{name:"古早味湯麵",price:45},{name:"酸辣湯麵",price:70},{name:"珍珠餛飩麵",price:70},{name:"菜肉大餛飩麵",price:80},{name:"榨菜肉絲麵",price:80},{name:"紹辣珍珠餛飩麵",price:80},{name:"紹辣菜肉大餛飩麵",price:90},{name:"梁師傅排骨麵",price:105}]},{category:"抄手系列",items:[{name:"珍珠抄手(紅油)",price:60},{name:"珍珠抄手(和風)",price:60},{name:"菜肉大抄手(紅油)",price:75},{name:"菜肉大抄手(和風)",price:75}]},{category:"湯品類",items:[{name:"酸辣湯",price:35},{name:"玉米濃湯",price:35},{name:"羅蔔湯",price:35},{name:"原塊花枝魚丸湯",price:40},{name:"珍珠餛飩湯",price:50},{name:"菜肉大餛飩湯",price:60}]},{category:"小菜與飲品",items:[{name:"滷蛋",price:15},{name:"黃金泡菜",price:30},{name:"涼拌豆腐(醬油)",price:30},{name:"涼拌豆腐(紅油)",price:30},{name:"黃金豆腐",price:35},{name:"燙青菜",price:35},{name:"燉羅蔔",price:35},{name:"家常小菜",price:40},{name:"小菜雙拼",price:40},{name:"柚香羅蔔",price:40},{name:"皮蛋豆腐(整粒)",price:45},{name:"古早味排骨",price:68},{name:"香濃豆漿",price:20},{name:"香濃豆漿(無加糖)",price:20},{name:"黑豆漿",price:20},{name:"真傳特調紅茶",price:20}]}],
-            options: `<label class="checkbox-item"><input type="checkbox" value="鍋貼換冬粉" data-price="0"> 鍋貼換冬粉</label>`
-        },
-        "老周燒肉飯": {
-            menu: [{category:"80元系列",items:[{name:"日式豬排飯",price:80},{name:"照燒排骨飯",price:80},{name:"起司豬排飯",price:80},{name:"三杯雞飯",price:80},{name:"卡啦雞飯",price:80}]},{category:"85元系列",items:[{name:"招牌燒肉飯",price:85},{name:"蒲燒鯛魚飯",price:85}]},{category:"90元系列",items:[{name:"五香控肉飯",price:90},{name:"香酥雞排飯",price:90},{name:"薄鹽鯖魚飯",price:90},{name:"美味油雞飯",price:90},{name:"厚切豬排飯",price:90}]},{category:"100元系列",items:[{name:"宮保雞丁飯",price:100},{name:"蒜泥白肉飯",price:100}]},{category:"110元系列",items:[{name:"烤雞腿飯",price:110},{name:"炸雞腿飯",price:110}]}]
-        },
-        "廟口鴨香飯": {
-            menu: [{category:"飯類/蛋類",items:[{name:"鴨香飯(小)",price:70},{name:"鴨香飯(大)",price:80},{name:"鴨香飯(特大)",price:90},{name:"白飯",price:20},{name:"荷包蛋",price:15},{name:"菜脯蛋",price:90}]},{category:"煮類",items:[{name:"鴨肉麵(小)",price:70},{name:"鴨肉麵(大)",price:85},{name:"鴨肉米粉(小)",price:70},{name:"鴨肉米粉(大)",price:85},{name:"鴨肉米粉麵(小)",price:70},{name:"鴨肉米粉麵(大)",price:85},{name:"鴨肉冬粉(小)",price:70},{name:"鴨肉冬粉(大)",price:85},{name:"鴨肉乾拌麵/米粉(小)",price:70},{name:"鴨肉乾拌麵/米粉(大)",price:85},{name:"鴨肉湯",price:80},{name:"鴨腸湯",price:80},{name:"下水湯",price:80},{name:"鴨血湯",price:55},{name:"餛飩湯",price:50},{name:"蛋花湯",price:50},{name:"貢丸湯",price:50},{name:"鴨丸湯",price:50}]},{category:"炒類",items:[{name:"鴨肉炒米粉(小)",price:100},{name:"鴨肉炒米粉(大)",price:120},{name:"炒鴨血",price:90},{name:"醬拌鴨腸",price:90},{name:"醬拌下水",price:90},{name:"炒高麗菜",price:90},{name:"燙高麗菜(小)",price:45},{name:"燙高麗菜(大)",price:80}]},{category:"小菜與切類",items:[{name:"涼拌干絲",price:50},{name:"涼拌燻豆包",price:50},{name:"煙燻豬耳絲",price:50},{name:"炸餛飩",price:90},{name:"帶骨後腿鴨肉",price:250},{name:"去骨後腿鴨肉",price:250},{name:"鴨翅(支)",price:30},{name:"鴨翅(盒)",price:120},{name:"鴨頭(支)",price:30},{name:"鴨頭(盒)",price:60},{name:"鴨腳(支)",price:10},{name:"鴨腳(盒)",price:100},{name:"鴨舌(支)",price:15},{name:"鴨舌(盒)",price:150},{name:"鴨脖(盒)",price:30},{name:"鴨屁股(盒)",price:30}]}],
-            options: `<label class="checkbox-item"><input type="checkbox" value="加蛋花" data-price="15"> +15元 湯加蛋花</label><label class="checkbox-item"><input type="checkbox" value="加貢丸" data-price="15"> +15元 加貢丸</label><label class="checkbox-item"><input type="checkbox" value="加鴨丸" data-price="10"> +10元 加鴨丸</label><label class="checkbox-item"><input type="checkbox" value="加醃瓜瓜" data-price="20"> +20元 加醃瓜瓜</label>`
-        },
-        "青虎食堂": {
-            menu: [{category:"咖哩",items:[{name:"特製咖哩飯",price:90},{name:"豬排咖哩飯",price:100},{name:"唐揚雞咖哩飯",price:100},{name:"雞腿排咖哩飯",price:100},{name:"鱈魚排咖哩飯",price:100}]},{category:"丼飯",items:[{name:"唐揚雞丼飯",price:100},{name:"豬排丼飯",price:100}]}]
-        },
-        "阿婆早餐麵店": {
-            menu: [{category:"早點",items:[{name:"蛋餅",price:35},{name:"雙黃蛋餅",price:45},{name:"蛋餅油條",price:50},{name:"雙黃油條",price:60},{name:"荷包蛋",price:20},{name:"蔥花蛋",price:20},{name:"肉包",price:20},{name:"油條",price:20},{name:"粽子",price:30},{name:"白饅頭(不夾蛋)",price:15},{name:"白饅頭(夾蔥花蛋)",price:30},{name:"白饅頭(夾雙蛋)",price:30},{name:"紅糖饅頭(不夾蛋)",price:15},{name:"芋頭饅頭(不夾蛋)",price:15},{name:"熱豆漿",price:20},{name:"冰豆漿",price:25}]},{category:"麵類(請備註麵體)",items:[{name:"陽春麵(大)",price:55},{name:"陽春麵(小)",price:45},{name:"清麵(大)",price:55},{name:"清麵(小)",price:45},{name:"炒榨菜肉絲麵(大)",price:60},{name:"炒榨菜肉絲麵(小)",price:50},{name:"湯榨菜肉絲麵(大)",price:60},{name:"湯榨菜肉絲麵(小)",price:50},{name:"乾香菇肉焿麵(大)",price:65},{name:"乾香菇肉焿麵(小)",price:55},{name:"湯香菇肉焿麵(大)",price:65},{name:"湯香菇肉焿麵(小)",price:55},{name:"大油麵(大)",price:60},{name:"大油麵(小)",price:50},{name:"牛肉麵(大)",price:60},{name:"牛肉麵(小)",price:50},{name:"牛肉焿麵(大)",price:100},{name:"牛肉焿麵(小)",price:90},{name:"限量牛菇麵(大)",price:120},{name:"限量牛菇麵(小)",price:110}]},{category:"飯類",items:[{name:"香菇肉燥飯(大)",price:50},{name:"香菇肉燥飯(中)",price:45},{name:"香菇肉燥飯(小)",price:40}]},{category:"炒手類(川味/原味)",items:[{name:"川味炒手(沒有麵)大",price:90},{name:"川味炒手(沒有麵)小",price:50},{name:"川味炒手(一把麵)大",price:100},{name:"川味炒手(一把麵)小",price:60},{name:"川味炒手(二把麵)大",price:110},{name:"川味炒手(二把麵)小",price:70},{name:"原味炒手(沒有麵)大",price:90},{name:"原味炒手(沒有麵)小",price:50},{name:"原味炒手(一把麵)大",price:100},{name:"原味炒手(一把麵)小",price:60},{name:"原味炒手(二把麵)大",price:110},{name:"原味炒手(二把麵)小",price:70}]},{category:"湯品與小菜",items:[{name:"牛肉湯(沒有肉)",price:45},{name:"牛肉湯(有肉)",price:70},{name:"肉絲湯",price:40},{name:"餛飩湯",price:40},{name:"蛋花湯",price:40},{name:"滷蛋",price:20},{name:"燙豆芽",price:20},{name:"滷豆干",price:25}]}],
-            options: `<label class="checkbox-item"><input type="checkbox" value="加餛飩肉類" data-price="10"> +10元 加餛飩肉類</label><label class="checkbox-item"><input type="checkbox" value="加麵一把" data-price="15"> +15元 加麵一把(湯麵不可加)</label>`
-        },
-        "日光手作食堂": {
-            menu: [{category:"肉燥飯/簡易特餐",items:[{name:"肉燥飯(小)",price:50},{name:"肉燥飯(大)",price:60},{name:"學生特餐(小)",price:65},{name:"學生特餐(大)",price:75},{name:"肉燥飯唐揚特餐",price:95},{name:"肉燥飯炸排特餐",price:95},{name:"肉燥飯滷排特餐",price:95}]},{category:"炒飯/炒麵系列",items:[{name:"肉絲蛋炒飯(小)",price:85},{name:"肉絲蛋炒飯(大)",price:95},{name:"肉絲炒麵/米粉(小)",price:85},{name:"肉絲炒麵/米粉(大)",price:95},{name:"什錦炒麵/米粉(小)",price:110},{name:"什錦炒麵/米粉(大)",price:120}]},{category:"湯麵/乾拌麵系列",items:[{name:"餛飩肉絲意麵/米粉/油麵(小)",price:80},{name:"餛飩肉絲意麵/米粉/油麵(大)",price:90},{name:"貢丸肉絲意麵/米粉/油麵(小)",price:80},{name:"貢丸肉絲意麵/米粉/油麵(大)",price:90},{name:"什錦湯麵/湯米粉(小)",price:95},{name:"什錦湯麵/湯米粉(大)",price:105},{name:"日光炸醬麵(小)",price:55},{name:"日光炸醬麵(大)",price:65},{name:"肉燥乾拌油麵/米粉/意麵(小)",price:50},{name:"肉燥乾拌油麵/米粉/意麵(大)",price:60}]},{category:"咖哩飯系列",items:[{name:"日式咖哩飯",price:75},{name:"香檸雞柳咖哩飯",price:100},{name:"豬排咖哩飯",price:110},{name:"唐揚雞咖哩飯",price:110},{name:"滷排咖哩飯",price:110}]},{category:"湯品系列",items:[{name:"鱺魚丸湯",price:40},{name:"魚羹湯",price:40},{name:"貢丸湯",price:40},{name:"餛飩湯",price:40},{name:"蛋花湯",price:40}]},{category:"炸物/滷味/小菜",items:[{name:"炸薯餅(片)",price:20},{name:"炸米腸(支)",price:25},{name:"炸甜不辣(份)",price:35},{name:"炸脆薯(份)",price:40},{name:"炸香檸雞柳(2條)",price:40},{name:"炸唐揚(6個)",price:45},{name:"炸豬排(片)",price:45},{name:"豆干(2片)",price:10},{name:"海帶(片)",price:10},{name:"豆皮(片)",price:10},{name:"滷蛋(個)",price:15},{name:"豬耳朵(份)",price:50},{name:"綜合滷味(小)",price:30},{name:"綜合滷味(大)",price:55},{name:"燙青菜",price:40},{name:"皮蛋豆腐",price:40},{name:"筍絲",price:50}]},{category:"特餐系列(週三限定)",items:[{name:"香檸雞特餐(炸)",price:90},{name:"唐揚雞特餐(炸)",price:95},{name:"日光豬排特餐(炸)",price:95},{name:"鐵路豬排特餐(滷)",price:95},{name:"大雞腿特餐(滷)",price:105},{name:"大雞腿特餐(炸)",price:105}]}]
-        },
-        "龍滿排骨": {
-            menu: [{category:"經典便當",items:[{name:"炸雞腿飯",price:120},{name:"鱈魚飯",price:100},{name:"香雞排飯",price:100},{name:"滷雞腿飯",price:95},{name:"黑胡椒豬柳飯",price:95},{name:"燒肉飯",price:90},{name:"滷排骨飯",price:90},{name:"炸排骨飯",price:90},{name:"鐵板豬排飯",price:90},{name:"起司豬排飯",price:85},{name:"卡啦腿排飯",price:85},{name:"招牌飯",price:85},{name:"爌肉飯",price:85}]}]
-        },
-        "丼真閣": {
-            menu: [{category:"招牌丼飯",items:[{name:"原味丼(牛)",price:110},{name:"原味丼(豚)",price:100},{name:"原味丼(雞)",price:100},{name:"原味丼(野菇)",price:100},{name:"起士丼(牛)",price:120},{name:"起士丼(豚)",price:110},{name:"起士丼(雞)",price:110},{name:"韓式泡菜丼(牛)",price:120},{name:"韓式泡菜丼(豚)",price:110},{name:"韓式泡菜丼(雞)",price:110},{name:"羅勒丼(牛)",price:120},{name:"羅勒丼(豚)",price:110},{name:"羅勒丼(雞)",price:110},{name:"沙茶丼(牛)",price:120},{name:"沙茶丼(豚)",price:110},{name:"沙茶丼(雞)",price:110},{name:"雙拼雙饗丼附飲料(野菇牛)",price:180},{name:"雙拼雙饗丼附飲料(野菇豚)",price:170},{name:"雙拼雙饗丼附飲料(野菇雞)",price:170},{name:"乳酪起士丼附飲料(牛)",price:180},{name:"乳酪起士丼附飲料(豚)",price:170},{name:"乳酪起士丼附飲料(雞)",price:170}]},{category:"炸物丼/炙燒丼",items:[{name:"黃太厚豬排丼",price:150},{name:"麥克雞丼",price:90},{name:"炙燒丼(牛)",price:130},{name:"炙燒丼(豚)",price:120},{name:"炙燒起士丼(牛)",price:140},{name:"炙燒起士丼(豚)",price:130}]},{category:"單點類",items:[{name:"味噌湯",price:30},{name:"飲料",price:30},{name:"溫泉蛋",price:30},{name:"韓式泡菜",price:50},{name:"炸豬排",price:70},{name:"牛肉",price:70},{name:"豬肉",price:60},{name:"雞肉",price:60},{name:"麥克雞塊",price:50},{name:"炸咖哩餅",price:50}]}]
-        },
-        "鐵屋涼麵": {
-            menu: [{category:"涼麵系列(醬包另附)",items:[{name:"原味涼麵(小)",price:55},{name:"原味涼麵(大)",price:65},{name:"蒜味涼麵(小)",price:55},{name:"蒜味涼麵(大)",price:65},{name:"雞絲涼麵(小)",price:65},{name:"雞絲涼麵(大)",price:75},{name:"雙醬涼麵(小)",price:65},{name:"雙醬涼麵(大)",price:75},{name:"麻辣涼麵(小)",price:65},{name:"麻辣涼麵(大)",price:75}]},{category:"飯/麵系列",items:[{name:"滷肉飯",price:50},{name:"雞滷飯",price:60},{name:"紅燒肉滷飯",price:70},{name:"排骨滷肉飯",price:100},{name:"炸醬黃麵",price:50},{name:"炸醬烏龍麵",price:50},{name:"古早味乾麵",price:50},{name:"沙茶蛋蛋炒麵",price:100}]},{category:"鍋燒麵(請備註麵體)",items:[{name:"原味鍋燒",price:100},{name:"味噌鍋燒",price:100},{name:"沙茶鍋燒",price:100},{name:"泡菜鍋燒",price:130},{name:"海鮮鍋燒",price:130},{name:"麻奶鍋燒",price:130},{name:"泡菜海鮮鍋燒",price:150}]},{category:"單點/湯品/飲品",items:[{name:"滷蛋",price:15},{name:"滷豆干(4片)",price:30},{name:"味噌湯",price:25},{name:"味噌蛋花湯",price:35},{name:"味噌貢丸湯",price:45},{name:"味噌綜合湯",price:55},{name:"招牌鮮豆漿",price:35},{name:"鐵屋紅茶",price:30},{name:"豆漿紅茶",price:40}]}],
-            options: `<label class="checkbox-item"><input type="checkbox" value="芥末包" data-price="5"> +5元 芥末包</label>`
-        }
+        "麵朝 (新竹食品店)": { menu: [{category:"鮮蝦雲吞拌麵",items:[{name:"鮮蝦雲吞拌麵",price:110},{name:"青醬雲吞拌麵",price:115},{name:"椒麻雲吞拌麵",price:115},{name:"蔥油雲吞拌麵",price:115},{name:"香滷雲吞拌麵",price:115},{name:"XO醬雲吞拌麵",price:115}]},{category:"港式水餃拌麵",items:[{name:"港式水餃拌麵",price:105},{name:"青醬水餃拌麵",price:110},{name:"椒麻水餃拌麵",price:110},{name:"蔥油水餃拌麵",price:110},{name:"香滷水餃拌麵",price:110},{name:"XO醬水餃拌麵",price:110}]},{category:"乾拌麵",items:[{name:"京醬肉絲拌麵",price:85},{name:"椒麻雞絲拌麵",price:85},{name:"青醬雞絲拌麵",price:85},{name:"蔥油雞絲拌麵",price:85},{name:"香滷雞絲拌麵",price:85},{name:"XO醬雞絲拌麵",price:85}]},{category:"風味湯麵",items:[{name:"羅宋番茄雞湯麵",price:130},{name:"養生清燉雞湯麵",price:130},{name:"剝皮辣椒雞湯麵",price:140},{name:"漢方肉骨茶雞湯麵",price:140},{name:"羅宋番茄湯麵",price:75},{name:"鮮蝦雲吞湯麵",price:110}]},{category:"功夫小點",items:[{name:"豬五花肉(蒜泥)",price:80},{name:"豬五花肉(椒麻)",price:80},{name:"舒肥雞(蔥油)",price:90},{name:"舒肥雞(青醬)",price:90},{name:"鮮蝦抄手(紅油)",price:100},{name:"鮮蝦抄手(白油)",price:100},{name:"港式翠玉水餃10粒",price:90}]},{category:"湯品&青菜",items:[{name:"大推烏梅汁",price:30},{name:"季節燙青菜",price:40},{name:"新竹貢丸湯",price:40},{name:"虱目魚丸湯",price:40},{name:"手工餛飩湯",price:40},{name:"羅宋番茄湯",price:50},{name:"鮮蝦雲吞湯",price:55},{name:"羅宋雲吞湯",price:80},{name:"養生清燉雞湯",price:95},{name:"剝皮辣椒雞湯",price:95},{name:"漢方肉骨茶雞湯",price:95}]}], options: `<label class="checkbox-item"><input type="checkbox" value="加麵" data-price="15"> +15元 加麵</label><label class="checkbox-item"><input type="checkbox" value="加舒肥雞" data-price="30"> +30元 拌麵類加舒肥雞</label>` },
+        "湯食主義": { menu: [{category:"嫩切雞蓋飯系列",items:[{name:"嫩切雞蓋飯",price:135},{name:"嫩切雞蓋飯泡溫泉",price:155},{name:"明太子嫩切雞蓋飯",price:185},{name:"明太子嫩切雞蓋飯泡溫泉",price:205}]},{category:"豬五花蓋飯系列",items:[{name:"豬五花蓋飯",price:125},{name:"豬五花蓋飯泡溫泉",price:145},{name:"明太子豬肉蓋飯",price:175},{name:"明太子豬五花蓋飯泡溫泉",price:195},{name:"韓式泡菜豬肉蓋飯",price:145},{name:"香檸泰泰豬飯",price:150}]},{category:"牛五花蓋飯系列",items:[{name:"牛五花蓋飯",price:135},{name:"牛五花蓋飯泡溫泉",price:155},{name:"明太子牛肉蓋飯",price:185},{name:"明太子牛五花蓋飯泡溫泉",price:205},{name:"川味牛五花蓋飯",price:135}]}], options: `<label class="checkbox-item"><input type="checkbox" value="加高麗菜" data-price="20"> +20元 加高麗菜</label><label class="checkbox-item"><input type="checkbox" value="加飯" data-price="10"> +10元 加飯</label><label class="checkbox-item"><input type="checkbox" value="升級套餐" data-price="70"> +70元 升級套餐(小菜擇1+溏心蛋)</label>` },
+        "麥當勞 (中餐時段)": { menu: [{category:"牛肉漢堡系列",items:[{name:"大麥克",price:85},{name:"雙層牛肉吉事堡",price:75},{name:"四盎司牛肉堡",price:95},{name:"雙層四盎司牛肉堡",price:135},{name:"BLT安格斯牛肉堡",price:122},{name:"蕈菇安格斯牛肉堡",price:132}]},{category:"雞肉與海鮮系列",items:[{name:"麥香鷄",price:48},{name:"麥香魚",price:60},{name:"雙層麥香魚",price:80},{name:"勁辣鷄腿堡",price:78},{name:"炭燒醬烤鷄腿堡",price:99},{name:"BLT香烙烤鷄腿堡",price:129},{name:"煙燻勁脆鷄腿堡",price:99},{name:"肯瓊勁脆鷄腿堡",price:99}]},{category:"麥克鷄塊與分享盒",items:[{name:"麥克鷄塊(6塊)",price:68},{name:"麥克鷄塊(10塊)",price:109},{name:"麥脆鷄腿(2塊)",price:126},{name:"麥脆鷄腿分享盒",price:319},{name:"麥克鷄塊分享盒(20塊)",price:249},{name:"鷄塊鷄腿分享盒",price:289},{name:"勁辣香鷄翅分享盒",price:259}]},{category:"單點點心與沙拉",items:[{name:"大薯",price:66},{name:"中薯",price:50},{name:"小薯",price:40},{name:"金黃地瓜條",price:66},{name:"勁辣香鷄翅(1份2塊)",price:49},{name:"四季沙拉(小)",price:49},{name:"蘋果派",price:39},{name:"香芋派",price:39},{name:"OREO冰炫風",price:59}]}], options: `<div style="font-weight:700; margin:10px 0 5px 0;">選擇單點或配餐 (適用於主餐)：</div><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="單點" data-price="0" checked> 單點 (+$0)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="經典配餐(中薯+38元飲品)" data-price="38"> +38元 經典配餐 (中薯+飲品)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="清爽配餐(沙拉+38元飲品)" data-price="38"> +38元 清爽配餐 (四季沙拉+飲品)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="勁脆配餐(麥脆鷄腿+38元飲品)" data-price="38"> +38元 勁脆配餐 (麥脆鷄腿1塊+飲品)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="炫冰配餐(冰炫風+小薯+38元飲品)" data-price="38"> +38元 炫冰配餐 (OREO冰炫風+小薯+飲品)</label><label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="豪吃配餐(6塊鷄塊+小薯+38元飲品)" data-price="38"> +38元 豪吃配餐 (6塊麥克鷄塊+小薯+飲品)</label>` },
+        "阿寶魯肉飯": { menu: [{category:"滷肉飯便當&主食",items:[{name:"滷肉飯(小)",price:50},{name:"滷肉飯(大)",price:60},{name:"滷肉飯+滷蛋(小)",price:65},{name:"滷肉飯+滷蛋(大)",price:75},{name:"高麗菜水餃(10個)",price:70},{name:"韭菜水餃(10個)",price:70},{name:"綜合水餃(10個)",price:70},{name:"白飯",price:15},{name:"滷肉飯套餐(小)",price:85},{name:"滷肉飯套餐(大)",price:95}]},{category:"麵食類",items:[{name:"乾麵",price:50},{name:"乾米粉",price:50},{name:"乾粄條",price:50},{name:"湯麵",price:50},{name:"湯米粉",price:50},{name:"湯粄條",price:50},{name:"貢丸麵",price:65},{name:"貢丸米粉",price:65},{name:"貢丸粄條",price:65},{name:"餛飩麵",price:65},{name:"餛飩米粉",price:65},{name:"餛飩粄條",price:65},{name:"肉羹麵",price:65},{name:"肉羹米粉",price:65},{name:"肉羹粄條",price:65}]},{category:"湯品類",items:[{name:"豬血湯",price:40},{name:"綜合丸湯",price:45},{name:"魚丸湯",price:45},{name:"貢丸湯",price:45},{name:"餛飩湯",price:45},{name:"肉羹湯",price:50},{name:"骨仔肉湯",price:60},{name:"豬腸肚片湯",price:60}]},{category:"小菜類",items:[{name:"油豆腐",price:30},{name:"滷筍干",price:30},{name:"油豆腐+筍干(半)",price:30},{name:"滷海帶",price:30},{name:"滷豆干",price:30},{name:"海帶+豆干(半)",price:30},{name:"燙空心菜",price:40},{name:"燙地瓜葉",price:40},{name:"燙大陸妹",price:40},{name:"紅油抄手(辣)",price:45},{name:"紅油抄手(不辣)",price:45},{name:"肉鬆皮蛋",price:45},{name:"蒜泥白肉",price:70},{name:"乾骨仔肉",price:70},{name:"乾豬腸肚片",price:70}]}], options: `<label class="checkbox-item"><input type="checkbox" value="麵食加大" data-price="5"> +5元 麵食加大</label>` },
+        "八方雲集": { menu: [{category:"金牌牛肉系列",items:[{name:"美國帶骨牛小排麵",price:350},{name:"紅燒牛肉麵",price:168},{name:"清燉牛肉麵",price:168},{name:"麻辣牛肉麵",price:178},{name:"紅燒牛肉湯",price:158},{name:"清燉牛肉湯",price:158},{name:"麻辣牛肉湯",price:168},{name:"紅燒牛肉湯餃(8顆)",price:120},{name:"麻辣牛肉湯餃(8顆)",price:125},{name:"紅燒牛肉湯珍珠餛飩(10顆)",price:125},{name:"麻辣牛肉湯珍珠餛飩(10顆)",price:130},{name:"紅燒牛肉湯菜肉大餛飩(6顆)",price:125},{name:"麻辣牛肉湯菜肉大餛飩(6顆)",price:130}]},{category:"鍋貼 (單顆)",items:[{name:"招牌鍋貼",price:7},{name:"韭菜鍋貼",price:7},{name:"韓式辣味鍋貼",price:7},{name:"咖哩鍋貼",price:7},{name:"玉米鍋貼",price:7}]},{category:"水餃 (單顆)",items:[{name:"招牌水餃",price:7},{name:"韭菜水餃",price:7},{name:"韓式辣味水餃",price:7},{name:"咖哩水餃",price:7},{name:"玉米水餃",price:7},{name:"新蔬食水餃",price:7.5},{name:"鮮蝦水餃",price:10.5}]},{category:"湯餃(8顆)",items:[{name:"酸辣湯餃(招牌)",price:90},{name:"酸辣湯餃(韭菜)",price:90},{name:"酸辣湯餃(韓式辣味)",price:90},{name:"酸辣湯餃(咖哩)",price:90},{name:"酸辣湯餃(玉米)",price:90},{name:"玉米湯餃(招牌)",price:90},{name:"玉米湯餃(韭菜)",price:90},{name:"玉米湯餃(玉米)",price:90}]},{category:"麵食類",items:[{name:"古早味乾麵",price:45},{name:"麻醬乾麵",price:55},{name:"招牌乾麵",price:55},{name:"紹辣乾麵",price:60},{name:"古早味湯麵",price:45},{name:"酸辣湯麵",price:70},{name:"珍珠餛飩麵",price:70},{name:"菜肉大餛飩麵",price:80},{name:"榨菜肉絲麵",price:80},{name:"紹辣珍珠餛飩麵",price:80},{name:"紹辣菜肉大餛飩麵",price:90},{name:"梁師傅排骨麵",price:105}]},{category:"抄手系列",items:[{name:"珍珠抄手(紅油)",price:60},{name:"珍珠抄手(和風)",price:60},{name:"菜肉大抄手(紅油)",price:75},{name:"菜肉大抄手(和風)",price:75}]},{category:"湯品類",items:[{name:"酸辣湯",price:35},{name:"玉米濃湯",price:35},{name:"羅蔔湯",price:35},{name:"原塊花枝魚丸湯",price:40},{name:"珍珠餛飩湯",price:50},{name:"菜肉大餛飩湯",price:60}]},{category:"小菜與飲品",items:[{name:"滷蛋",price:15},{name:"黃金泡菜",price:30},{name:"涼拌豆腐(醬油)",price:30},{name:"涼拌豆腐(紅油)",price:30},{name:"黃金豆腐",price:35},{name:"燙青菜",price:35},{name:"燉羅蔔",price:35},{name:"家常小菜",price:40},{name:"小菜雙拼",price:40},{name:"柚香羅蔔",price:40},{name:"皮蛋豆腐(整粒)",price:45},{name:"古早味排骨",price:68},{name:"香濃豆漿",price:20},{name:"香濃豆漿(無加糖)",price:20},{name:"黑豆漿",price:20},{name:"真傳特調紅茶",price:20}]}], options: `<label class="checkbox-item"><input type="checkbox" value="鍋貼換冬粉" data-price="0"> 鍋貼換冬粉</label>` },
+        "老周燒肉飯": { menu: [{category:"80元系列",items:[{name:"日式豬排飯",price:80},{name:"照燒排骨飯",price:80},{name:"起司豬排飯",price:80},{name:"三杯雞飯",price:80},{name:"卡啦雞飯",price:80}]},{category:"85元系列",items:[{name:"招牌燒肉飯",price:85},{name:"蒲燒鯛魚飯",price:85}]},{category:"90元系列",items:[{name:"五香控肉飯",price:90},{name:"香酥雞排飯",price:90},{name:"薄鹽鯖魚飯",price:90},{name:"美味油雞飯",price:90},{name:"厚切豬排飯",price:90}]},{category:"100元系列",items:[{name:"宮保雞丁飯",price:100},{name:"蒜泥白肉飯",price:100}]},{category:"110元系列",items:[{name:"烤雞腿飯",price:110},{name:"炸雞腿飯",price:110}]}] },
+        "廟口鴨香飯": { menu: [{category:"飯類/蛋類",items:[{name:"鴨香飯(小)",price:70},{name:"鴨香飯(大)",price:80},{name:"鴨香飯(特大)",price:90},{name:"白飯",price:20},{name:"荷包蛋",price:15},{name:"菜脯蛋",price:90}]},{category:"煮類",items:[{name:"鴨肉麵(小)",price:70},{name:"鴨肉麵(大)",price:85},{name:"鴨肉米粉(小)",price:70},{name:"鴨肉米粉(大)",price:85},{name:"鴨肉米粉麵(小)",price:70},{name:"鴨肉米粉麵(大)",price:85},{name:"鴨肉冬粉(小)",price:70},{name:"鴨肉冬粉(大)",price:85},{name:"鴨肉乾拌麵/米粉(小)",price:70},{name:"鴨肉乾拌麵/米粉(大)",price:85},{name:"鴨肉湯",price:80},{name:"鴨腸湯",price:80},{name:"下水湯",price:80},{name:"鴨血湯",price:55},{name:"餛飩湯",price:50},{name:"蛋花湯",price:50},{name:"貢丸湯",price:50},{name:"鴨丸湯",price:50}]},{category:"炒類",items:[{name:"鴨肉炒米粉(小)",price:100},{name:"鴨肉炒米粉(大)",price:120},{name:"炒鴨血",price:90},{name:"醬拌鴨腸",price:90},{name:"醬拌下水",price:90},{name:"炒高麗菜",price:90},{name:"燙高麗菜(小)",price:45},{name:"燙高麗菜(大)",price:80}]},{category:"小菜與切類",items:[{name:"涼拌干絲",price:50},{name:"涼拌燻豆包",price:50},{name:"煙燻豬耳絲",price:50},{name:"炸餛飩",price:90},{name:"帶骨後腿鴨肉",price:250},{name:"去骨後腿鴨肉",price:250},{name:"鴨翅(支)",price:30},{name:"鴨翅(盒)",price:120},{name:"鴨頭(支)",price:30},{name:"鴨頭(盒)",price:60},{name:"鴨腳(支)",price:10},{name:"鴨腳(盒)",price:100},{name:"鴨舌(支)",price:15},{name:"鴨舌(盒)",price:150},{name:"鴨脖(盒)",price:30},{name:"鴨屁股(盒)",price:30}]}], options: `<label class="checkbox-item"><input type="checkbox" value="加蛋花" data-price="15"> +15元 湯加蛋花</label><label class="checkbox-item"><input type="checkbox" value="加貢丸" data-price="15"> +15元 加貢丸</label><label class="checkbox-item"><input type="checkbox" value="加鴨丸" data-price="10"> +10元 加鴨丸</label><label class="checkbox-item"><input type="checkbox" value="加醃瓜瓜" data-price="20"> +20元 加醃瓜瓜</label>` },
+        "青虎食堂": { menu: [{category:"咖哩",items:[{name:"特製咖哩飯",price:90},{name:"豬排咖哩飯",price:100},{name:"唐揚雞咖哩飯",price:100},{name:"雞腿排咖哩飯",price:100},{name:"鱈魚排咖哩飯",price:100}]},{category:"丼飯",items:[{name:"唐揚雞丼飯",price:100},{name:"豬排丼飯",price:100}]}] },
+        "阿婆早餐麵店": { menu: [{category:"早點",items:[{name:"蛋餅",price:35},{name:"雙黃蛋餅",price:45},{name:"蛋餅油條",price:50},{name:"雙黃油條",price:60},{name:"荷包蛋",price:20},{name:"蔥花蛋",price:20},{name:"肉包",price:20},{name:"油條",price:20},{name:"粽子",price:30},{name:"白饅頭(不夾蛋)",price:15},{name:"白饅頭(夾蔥花蛋)",price:30},{name:"白饅頭(夾雙蛋)",price:30},{name:"紅糖饅頭(不夾蛋)",price:15},{name:"芋頭饅頭(不夾蛋)",price:15},{name:"熱豆漿",price:20},{name:"冰豆漿",price:25}]},{category:"麵類(請備註麵體)",items:[{name:"陽春麵(大)",price:55},{name:"陽春麵(小)",price:45},{name:"清麵(大)",price:55},{name:"清麵(小)",price:45},{name:"炒榨菜肉絲麵(大)",price:60},{name:"炒榨菜肉絲麵(小)",price:50},{name:"湯榨菜肉絲麵(大)",price:60},{name:"湯榨菜肉絲麵(小)",price:50},{name:"乾香菇肉焿麵(大)",price:65},{name:"乾香菇肉焿麵(小)",price:55},{name:"湯香菇肉焿麵(大)",price:65},{name:"湯香菇肉焿麵(小)",price:55},{name:"大油麵(大)",price:60},{name:"大油麵(小)",price:50},{name:"牛肉麵(大)",price:60},{name:"牛肉麵(小)",price:50},{name:"牛肉焿麵(大)",price:100},{name:"牛肉焿麵(小)",price:90},{name:"限量牛菇麵(大)",price:120},{name:"限量牛菇麵(小)",price:110}]},{category:"飯類",items:[{name:"香菇肉燥飯(大)",price:50},{name:"香菇肉燥飯(中)",price:45},{name:"香菇肉燥飯(小)",price:40}]},{category:"炒手類(川味/原味)",items:[{name:"川味炒手(沒有麵)大",price:90},{name:"川味炒手(沒有麵)小",price:50},{name:"川味炒手(一把麵)大",price:100},{name:"川味炒手(一把麵)小",price:60},{name:"川味炒手(二把麵)大",price:110},{name:"川味炒手(二把麵)小",price:70},{name:"原味炒手(沒有麵)大",price:90},{name:"原味炒手(沒有麵)小",price:50},{name:"原味炒手(一把麵)大",price:100},{name:"原味炒手(一把麵)小",price:60},{name:"原味炒手(二把麵)大",price:110},{name:"原味炒手(二把麵)小",price:70}]},{category:"湯品與小菜",items:[{name:"牛肉湯(沒有肉)",price:45},{name:"牛肉湯(有肉)",price:70},{name:"肉絲湯",price:40},{name:"餛飩湯",price:40},{name:"蛋花湯",price:40},{name:"滷蛋",price:20},{name:"燙豆芽",price:20},{name:"滷豆干",price:25}]}], options: `<label class="checkbox-item"><input type="checkbox" value="加餛飩肉類" data-price="10"> +10元 加餛飩肉類</label><label class="checkbox-item"><input type="checkbox" value="加麵一把" data-price="15"> +15元 加麵一把(湯麵不可加)</label>` },
+        "日光手作食堂": { menu: [{category:"肉燥飯/簡易特餐",items:[{name:"肉燥飯(小)",price:50},{name:"肉燥飯(大)",price:60},{name:"學生特餐(小)",price:65},{name:"學生特餐(大)",price:75},{name:"肉燥飯唐揚特餐",price:95},{name:"肉燥飯炸排特餐",price:95},{name:"肉燥飯滷排特餐",price:95}]},{category:"炒飯/炒麵系列",items:[{name:"肉絲蛋炒飯(小)",price:85},{name:"肉絲蛋炒飯(大)",price:95},{name:"肉絲炒麵/米粉(小)",price:85},{name:"肉絲炒麵/米粉(大)",price:95},{name:"什錦炒麵/米粉(小)",price:110},{name:"什錦炒麵/米粉(大)",price:120}]},{category:"湯麵/乾拌麵系列",items:[{name:"餛飩肉絲意麵/米粉/油麵(小)",price:80},{name:"餛飩肉絲意麵/米粉/油麵(大)",price:90},{name:"貢丸肉絲意麵/米粉/油麵(小)",price:80},{name:"貢丸肉絲意麵/米粉/油麵(大)",price:90},{name:"什錦湯麵/湯米粉(小)",price:95},{name:"什錦湯麵/湯米粉(大)",price:105},{name:"日光炸醬麵(小)",price:55},{name:"日光炸醬麵(大)",price:65},{name:"肉燥乾拌油麵/米粉/意麵(小)",price:50},{name:"肉燥乾拌油麵/米粉/意麵(大)",price:60}]},{category:"咖哩飯系列",items:[{name:"日式咖哩飯",price:75},{name:"香檸雞柳咖哩飯",price:100},{name:"豬排咖哩飯",price:110},{name:"唐揚雞咖哩飯",price:110},{name:"滷排咖哩飯",price:110}]},{category:"湯品系列",items:[{name:"鱺魚丸湯",price:40},{name:"魚羹湯",price:40},{name:"貢丸湯",price:40},{name:"餛飩湯",price:40},{name:"蛋花湯",price:40}]},{category:"炸物/滷味/小菜",items:[{name:"炸薯餅(片)",price:20},{name:"炸米腸(支)",price:25},{name:"炸甜不辣(份)",price:35},{name:"炸脆薯(份)",price:40},{name:"炸香檸雞柳(2條)",price:40},{name:"炸唐揚(6個)",price:45},{name:"炸豬排(片)",price:45},{name:"豆干(2片)",price:10},{name:"海帶(片)",price:10},{name:"豆皮(片)",price:10},{name:"滷蛋(個)",price:15},{name:"豬耳朵(份)",price:50},{name:"綜合滷味(小)",price:30},{name:"綜合滷味(大)",price:55},{name:"燙青菜",price:40},{name:"皮蛋豆腐",price:40},{name:"筍絲",price:50}]},{category:"特餐系列(週三限定)",items:[{name:"香檸雞特餐(炸)",price:90},{name:"唐揚雞特餐(炸)",price:95},{name:"日光豬排特餐(炸)",price:95},{name:"鐵路豬排特餐(滷)",price:95},{name:"大雞腿特餐(滷)",price:105},{name:"大雞腿特餐(炸)",price:105}]}] },
+        "龍滿排骨": { menu: [{category:"經典便當",items:[{name:"炸雞腿飯",price:120},{name:"鱈魚飯",price:100},{name:"香雞排飯",price:100},{name:"滷雞腿飯",price:95},{name:"黑胡椒豬柳飯",price:95},{name:"燒肉飯",price:90},{name:"滷排骨飯",price:90},{name:"炸排骨飯",price:90},{name:"鐵板豬排飯",price:90},{name:"起司豬排飯",price:85},{name:"卡啦腿排飯",price:85},{name:"招牌飯",price:85},{name:"爌肉飯",price:85}]}] },
+        "丼真閣": { menu: [{category:"招牌丼飯",items:[{name:"原味丼(牛)",price:110},{name:"原味丼(豚)",price:100},{name:"原味丼(雞)",price:100},{name:"原味丼(野菇)",price:100},{name:"起士丼(牛)",price:120},{name:"起士丼(豚)",price:110},{name:"起士丼(雞)",price:110},{name:"韓式泡菜丼(牛)",price:120},{name:"韓式泡菜丼(豚)",price:110},{name:"韓式泡菜丼(雞)",price:110},{name:"羅勒丼(牛)",price:120},{name:"羅勒丼(豚)",price:110},{name:"羅勒丼(雞)",price:110},{name:"沙茶丼(牛)",price:120},{name:"沙茶丼(豚)",price:110},{name:"沙茶丼(雞)",price:110},{name:"雙拼雙饗丼附飲料(野菇牛)",price:180},{name:"雙拼雙饗丼附飲料(野菇豚)",price:170},{name:"雙拼雙饗丼附飲料(野菇雞)",price:170},{name:"乳酪起士丼附飲料(牛)",price:180},{name:"乳酪起士丼附飲料(豚)",price:170},{name:"乳酪起士丼附飲料(雞)",price:170}]},{category:"炸物丼/炙燒丼",items:[{name:"黃太厚豬排丼",price:150},{name:"麥克雞丼",price:90},{name:"炙燒丼(牛)",price:130},{name:"炙燒丼(豚)",price:120},{name:"炙燒起士丼(牛)",price:140},{name:"炙燒起士丼(豚)",price:130}]},{category:"單點類",items:[{name:"味噌湯",price:30},{name:"飲料",price:30},{name:"溫泉蛋",price:30},{name:"韓式泡菜",price:50},{name:"炸豬排",price:70},{name:"牛肉",price:70},{name:"豬肉",price:60},{name:"雞肉",price:60},{name:"麥克雞塊",price:50},{name:"炸咖哩餅",price:50}]}] },
+        "鐵屋涼麵": { menu: [{category:"涼麵系列(醬包另附)",items:[{name:"原味涼麵(小)",price:55},{name:"原味涼麵(大)",price:65},{name:"蒜味涼麵(小)",price:55},{name:"蒜味涼麵(大)",price:65},{name:"雞絲涼麵(小)",price:65},{name:"雞絲涼麵(大)",price:75},{name:"雙醬涼麵(小)",price:65},{name:"雙醬涼麵(大)",price:75},{name:"麻辣涼麵(小)",price:65},{name:"麻辣涼麵(大)",price:75}]},{category:"飯/麵系列",items:[{name:"滷肉飯",price:50},{name:"雞滷飯",price:60},{name:"紅燒肉滷飯",price:70},{name:"排骨滷肉飯",price:100},{name:"炸醬黃麵",price:50},{name:"炸醬烏龍麵",price:50},{name:"古早味乾麵",price:50},{name:"沙茶蛋蛋炒麵",price:100}]},{category:"鍋燒麵(請備註麵體)",items:[{name:"原味鍋燒",price:100},{name:"味噌鍋燒",price:100},{name:"沙茶鍋燒",price:100},{name:"泡菜鍋燒",price:130},{name:"海鮮鍋燒",price:130},{name:"麻奶鍋燒",price:130},{name:"泡菜海鮮鍋燒",price:150}]},{category:"單點/湯品/飲品",items:[{name:"滷蛋",price:15},{name:"滷豆干(4片)",price:30},{name:"味噌湯",price:25},{name:"味噌蛋花湯",price:35},{name:"味噌貢丸湯",price:45},{name:"味噌綜合湯",price:55},{name:"招牌鮮豆漿",price:35},{name:"鐵屋紅茶",price:30},{name:"豆漿紅茶",price:40}]}], options: `<label class="checkbox-item"><input type="checkbox" value="芥末包" data-price="5"> +5元 芥末包</label>` }
     };
 
     const d = new Date(); const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
-    
     let tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
     const tmrStr = tomorrow.toISOString().split('T')[0];
 
@@ -464,9 +482,84 @@
     function hideAllSections() { ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'reviewPageArea', 'feedbackPageArea', 'menuOverviewArea'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; }); }
     window.toggleMenu = function() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
 
+    // 🚀 全新視圖切換與麵包屑導覽系統
+    window.setView = function(viewId) {
+        hideAllSections();
+        document.getElementById(viewId).style.display = 'block';
+        window.currentViewId = viewId;
+        updateBreadcrumb(viewId);
+        window.scrollTo(0,0);
+        
+        if(viewId === 'menuArea' && Object.keys(cart).length > 0) {
+            document.getElementById('cartFab').style.display = 'flex';
+        } else {
+            document.getElementById('cartFab').style.display = 'none';
+        }
+    }
+
+    window.updateBreadcrumb = function(viewId) {
+        const bar = document.getElementById('breadcrumbBar');
+        const links = document.getElementById('breadcrumbLinks');
+        
+        // 這些頁面不顯示麵包屑
+        if (viewId === 'authArea' || viewId === 'loginPage' || viewId === 'lockedScreen' || viewId === 'planBDashboard') {
+            bar.style.display = 'none';
+            return;
+        }
+        bar.style.display = 'flex';
+        
+        let html = `<a onclick="gotoHome()"><span class="material-symbols-outlined" style="font-size:16px;">home</span> 首頁</a>`;
+        const sep = `<span class="separator">»</span>`;
+        
+        const viewsData = {
+            'menuArea': { icon: 'restaurant_menu', label: '餐廳菜單' },
+            'customizeArea': { icon: 'tune', label: '客製化選項' },
+            'reviewArea': { icon: 'fact_check', label: '確認訂單' },
+            'receiptArea': { icon: 'receipt_long', label: '訂單明細' },
+            'menuOverviewArea': { icon: 'menu_book', label: '菜單總覽' },
+            'personalHistoryArea': { icon: 'history', label: '歷史紀錄與分析' },
+            'reviewPageArea': { icon: 'star', label: '餐點評分' },
+            'feedbackPageArea': { icon: 'forum', label: '意見與許願池' },
+            'historyModal': { icon: 'leaderboard', label: '歷代排行榜' },
+            'infoCard': { icon: 'info', label: '資訊與說明' }
+        };
+
+        let current = viewsData[viewId];
+        if(!current) return;
+
+        // 建立階層結構
+        if (viewId === 'customizeArea') {
+            html += `${sep} <a onclick="backToMenu()"><span class="material-symbols-outlined" style="font-size:16px;">restaurant_menu</span> 餐廳菜單</a>`;
+        } else if (viewId === 'reviewArea') {
+            html += `${sep} <a onclick="backToMenu()">餐廳菜單</a> ${sep} <a onclick="backToCustomize()">客製化選項</a>`;
+        }
+
+        html += `${sep} <span class="current"><span class="material-symbols-outlined" style="font-size:16px;">${current.icon}</span> ${current.label}</span>`;
+        links.innerHTML = html;
+    }
+
+    // 「返回上一步」按鈕邏輯
+    window.goBackStep = function() {
+        if(window.currentViewId === 'menuArea') gotoHome();
+        else if(window.currentViewId === 'customizeArea') backToMenu();
+        else if(window.currentViewId === 'reviewArea') backToCustomize();
+        else gotoHome(); // 其他頁面預設返回首頁
+    }
+
+    // 🚀 首頁導航函數
+    window.gotoHome = function() { currentOrderStep = 'authArea'; setView('authArea'); }
+    window.resumeOrderFlow = function() {
+        let target = (currentOrderStep && currentOrderStep !== 'authArea' && currentOrderStep !== 'receiptArea') ? currentOrderStep : 'authArea';
+        setView(target);
+    }
+    window.showMenuOverview = function() { setView('menuOverviewArea'); renderMenuOverview(document.getElementById('mo_restaurantSelect').value); }
+    window.showFeedbackPage = function() { setView('feedbackPageArea'); }
+    window.showReviewPage = function() { setView('reviewPageArea'); }
+    window.showInfoPage = function(t, c) { document.getElementById('infoTitle').innerHTML = t; document.getElementById('infoContent').innerHTML = c; setView('infoCard'); }
+
     // 🚀 雙重排行榜系統
     window.showHistoryRank = async function() {
-        hideAllSections(); document.getElementById('historyModal').style.display = 'block'; switchRank('items');
+        setView('historyModal'); switchRank('items');
         document.getElementById('rankItemsContent').innerHTML = "計算中..."; document.getElementById('rankRestsContent').innerHTML = "計算中...";
         try {
             const snap = await getDocs(query(collection(db, "orders"))); 
@@ -482,10 +575,10 @@
                 }
             });
             let items = []; for(let k in itemCounts) items.push({ n: k, c: itemCounts[k] }); items.sort((a,b) => b.c - a.c);
-            let ih = ""; items.slice(0, 10).forEach((r, i) => ih += `<div class="rank-row"><div><span class="rank-num">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">${r.c} 次</div></div>`);
+            let ih = ""; items.slice(0, 10).forEach((r, i) => ih += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><div><span style="font-weight:700; width:30px; display:inline-block;">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">${r.c} 次</div></div>`);
             
             let rests = []; for(let k in restCounts) rests.push({ n: k, c: restCounts[k] }); rests.sort((a,b) => b.c - a.c);
-            let rh = ""; rests.forEach((r, i) => rh += `<div class="rank-row"><div><span class="rank-num">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">被吃過 ${r.c} 次</div></div>`);
+            let rh = ""; rests.forEach((r, i) => rh += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><div><span style="font-weight:700; width:30px; display:inline-block;">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">${r.c} 次</div></div>`);
             
             document.getElementById('rankItemsContent').innerHTML = ih || "無資料"; document.getElementById('rankRestsContent').innerHTML = rh || "無資料";
         } catch(e) { }
@@ -495,12 +588,72 @@
         document.getElementById('rankRestsContent').style.display = type === 'rests' ? 'block' : 'none';
         document.getElementById('btnRankItems').className = type === 'items' ? 'btn btn-primary' : 'btn btn-outline';
         document.getElementById('btnRankRests').className = type === 'rests' ? 'btn btn-primary' : 'btn btn-outline';
-        document.getElementById('btnRankItems').style.margin = '0'; document.getElementById('btnRankItems').style.flex = '1';
-        document.getElementById('btnRankRests').style.margin = '0'; document.getElementById('btnRankRests').style.flex = '1';
     }
 
-    // 🚀 菜單總覽
-    window.showMenuOverview = function() { hideAllSections(); document.getElementById('menuOverviewArea').style.display = 'block'; renderMenuOverview(document.getElementById('mo_restaurantSelect').value); }
+    // 🚀 Chart.js 個人消費分析大數據看板
+    let myPieChart = null; let myLineChart = null;
+    window.showMyHistory = async function() { 
+        const id = window.currentUserId; 
+        setView('personalHistoryArea');
+        document.getElementById('ph_studentId').innerText = id; 
+        document.getElementById('ph_tableBody').innerHTML = '<tr><td colspan="3">讀取中...</td></tr>'; 
+        document.getElementById('analyticsDashboard').style.display = 'none';
+
+        try { 
+            const snap = await getDocs(query(collection(db, "orders"), where("studentId", "==", id))); 
+            let arr = []; snap.forEach(d => arr.push(d.data())); 
+            arr.sort((a,b) => b.date.localeCompare(a.date)); 
+            
+            if(arr.length === 0){ document.getElementById('ph_tableBody').innerHTML='<tr><td colspan="3" style="color:#888;">尚無任何紀錄</td></tr>'; return; } 
+
+            let totalSpentThisMonth = 0; let totalValidOrders = 0; let restCounts = {}; let recentSpendings = []; let recentLabels = [];
+            const currentMonth = todayStr.substring(0, 7); 
+
+            let h = ""; 
+            arr.forEach(o => {
+                let pa = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? o.price : 0); 
+                let s = o.isCancelled ? '<span style="color:#888;">已作廢</span>' : (pa >= o.price ? '<span>已結清</span>' : (pa > 0 ? '<span>已付$'+pa+'</span>' : '<span style="color:#888;">未繳</span>')); 
+                h += `<tr><td>${o.date}</td><td><span style="font-size:12px; color:#c00;">[${o.restaurant||"未知"}]</span><br>${o.meal.replace(/, /g,'<br>')}</td><td style="font-weight:600;">${s}</td></tr>`;
+                
+                if (!o.isCancelled) {
+                    totalValidOrders++;
+                    if (o.date.startsWith(currentMonth)) totalSpentThisMonth += (o.price || 0);
+                    let restName = o.restaurant || "未知";
+                    restCounts[restName] = (restCounts[restName] || 0) + 1;
+                }
+            }); 
+            document.getElementById('ph_tableBody').innerHTML = h; 
+
+            let validOrdersDesc = arr.filter(o => !o.isCancelled);
+            let last5 = validOrdersDesc.slice(0, 5).reverse();
+            last5.forEach(o => { recentLabels.push(o.date.substring(5)); recentSpendings.push(o.price || 0); });
+
+            if (totalValidOrders > 0) {
+                document.getElementById('analyticsDashboard').style.display = 'block';
+                document.getElementById('monthlyTotalSpent').innerText = `$${totalSpentThisMonth}`;
+                let avgCost = Math.round(validOrdersDesc.reduce((sum, o) => sum + (o.price||0), 0) / totalValidOrders);
+                document.getElementById('avgMealCost').innerText = `$${avgCost}`;
+                let favRest = Object.keys(restCounts).reduce((a, b) => restCounts[a] > restCounts[b] ? a : b);
+                document.getElementById('favoriteRest').innerText = favRest;
+
+                if (myPieChart) myPieChart.destroy(); if (myLineChart) myLineChart.destroy();
+
+                const ctxPie = document.getElementById('restaurantPieChart').getContext('2d');
+                myPieChart = new Chart(ctxPie, {
+                    type: 'doughnut', data: { labels: Object.keys(restCounts), datasets: [{ data: Object.values(restCounts), backgroundColor: ['#111', '#555', '#888', '#aaa', '#ccc'], borderWidth: 2, borderColor: '#fafafa' }] },
+                    options: { maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 12, font: {family: 'Inter'} } } }, cutout: '60%' }
+                });
+
+                const ctxLine = document.getElementById('spendingLineChart').getContext('2d');
+                myLineChart = new Chart(ctxLine, {
+                    type: 'line', data: { labels: recentLabels, datasets: [{ label: '花費金額 ($)', data: recentSpendings, borderColor: '#111', backgroundColor: 'rgba(17,17,17,0.1)', borderWidth: 2, tension: 0.3, fill: true }] },
+                    options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#e5e5ea' } }, x: { grid: { display: false } } } }
+                });
+            }
+        } catch(e) { document.getElementById('ph_tableBody').innerHTML = '<tr><td colspan="3" style="color:red;">統計失敗</td></tr>'; } 
+    }
+
+    // 🚀 菜單總覽與許願池
     window.renderMenuOverview = function(restName) {
         const data = restaurantDB[restName] || {menu:[]}; let html = "";
         data.menu.forEach(g => {
@@ -509,27 +662,20 @@
         });
         document.getElementById('mo_menuContainer').innerHTML = html;
     }
-
-    // 🚀 許願池
     window.submitWish = async function() {
         const d = document.getElementById('wishDate').value; const r = document.getElementById('wishRestaurant').value;
         if(!d || !r) return alert("資料不完整");
-        const msg = `【許願池】希望在 ${d} 吃「${r}」！`;
-        await sendFeedback(msg);
+        await sendFeedback(`【許願池】希望在 ${d} 吃「${r}」！`);
     }
     window.submitFeedback = async function() { const t = document.getElementById('fbContent').value.trim(); if(t) { await sendFeedback(t); document.getElementById('fbContent').value=""; } }
     async function sendFeedback(content) {
         try {
             const now = new Date(); await setDoc(doc(db, "feedbacks", now.getTime().toString()), { studentId: window.currentUserId, content: content, timestamp: now.getTime(), timeString: now.toLocaleString('zh-TW', { hour12: false }) });
-            alert("✅ 傳送成功！"); resumeOrderFlow();
+            alert("✅ 傳送成功！"); gotoHome();
         } catch(e) { alert("傳送失敗"); }
     }
-    window.showFeedbackPage = function() { hideAllSections(); document.getElementById('feedbackPageArea').style.display = 'block'; }
-    window.showReviewPage = function() { hideAllSections(); document.getElementById('reviewPageArea').style.display = 'block'; }
-    window.showInfoPage = function(t, c) { hideAllSections(); document.getElementById('infoTitle').innerHTML = t; document.getElementById('infoContent').innerHTML = c; document.getElementById('infoCard').style.display = 'block'; window.scrollTo(0,0); }
-    window.resumeOrderFlow = function() { hideAllSections(); document.getElementById(currentOrderStep).style.display = 'block'; if(currentOrderStep === 'menuArea') document.getElementById('cartFab').style.display = Object.keys(cart).length ? 'flex' : 'none'; window.scrollTo(0,0); }
 
-    // 其餘原本系統邏輯不變
+    // 其餘原本系統邏輯
     async function initSystem() {
         try {
             const setSnap = await getDoc(doc(db, "system", "settings")); let st="06:00", et="11:00"; if(setSnap.exists()) { st=setSnap.data().orderStartTime; et=setSnap.data().orderEndTime; }
@@ -537,19 +683,19 @@
             if(ct<st || ct>et) { currentOrderStep='lockedScreen'; return showLocked(`目前非點餐時間。<br><span style="font-size:14px; font-weight:normal; color:#555;">開放時間為：${st} ~ ${et}</span>`); }
             const menuSnap = await getDoc(doc(db, "dailyMenus", todayStr));
             if(!menuSnap.exists()) { currentOrderStep='lockedScreen'; return showLocked("⚠️ 負責人尚未設定今日午餐<br><span style='font-size:14px; font-weight:normal; color:#555; margin-top:8px; display:inline-block;'>請等候排程或在選單使用「預覽菜單」</span>"); }
-            currentOrderStep = 'authArea'; document.getElementById('authArea').style.display = 'block'; currentRestaurant = menuSnap.data().restaurant;
+            currentOrderStep = 'authArea'; currentRestaurant = menuSnap.data().restaurant; setView('authArea');
         } catch (e) { showLocked("連線異常"); }
     }
     window.verifyStudent = async function() {
         const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + window.currentUserId));
         if(docSnap.exists() && !docSnap.data().isCancelled) { alert("⚠️ 系統偵測到你今天已經點過餐囉！轉至查詢畫面。"); return checkStatusQuick(); }
-        pendingOrder.studentId = window.currentUserId; document.getElementById('authArea').style.display = 'none'; currentOrderStep = 'menuArea'; buildMenuForm(currentRestaurant);
+        pendingOrder.studentId = window.currentUserId; currentOrderStep = 'menuArea'; buildMenuForm(currentRestaurant); setView('menuArea');
     }
     window.checkStatusQuick = async function() {
         const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + window.currentUserId));
         if(docSnap.exists() && !docSnap.data().isCancelled) { let d=docSnap.data(); showReceipt(d.studentId, d.meal, d.note, d.price, d.isPaid, d.notifiedPaid, d.timeString, d.paidAmount); } else alert("今日尚無紀錄");
     }
-    function showLocked(m) { document.getElementById('lockedScreen').style.display='block'; document.getElementById('lockedReason').innerHTML=m; document.getElementById('authArea').style.display='none'; }
+    function showLocked(m) { document.getElementById('lockedReason').innerHTML=m; setView('lockedScreen'); }
 
     function buildMenuForm(rn) {
         document.getElementById('displayRestaurant').innerText = rn; const rd = restaurantDB[rn] || {menu:[],options:""}; let nh="", mh="";
@@ -559,10 +705,10 @@
             g.items.forEach(i => mh += `<div class="menu-item"><div><div class="item-name">${i.name}</div><div class="item-price">$${i.price}</div></div><div class="qty-controls"><button class="qty-btn" onclick="updateCart('${i.name}',${i.price},-1)"><span class="material-symbols-outlined" style="margin:0;">remove</span></button><span class="qty-display" data-qty-name="${i.name}">0</span><button class="qty-btn plus" onclick="updateCart('${i.name}',${i.price},1)"><span class="material-symbols-outlined" style="margin:0;">add</span></button></div></div>`);
             mh += `</div>`;
         });
-        document.getElementById('categoryNav').innerHTML = nh; document.getElementById('fullMenuContainer').innerHTML = mh; document.getElementById('menuArea').style.display = 'block';
+        document.getElementById('categoryNav').innerHTML = nh; document.getElementById('fullMenuContainer').innerHTML = mh; 
     }
-    window.scrollToCat = function(id) { window.scrollTo({top: document.getElementById(id).offsetTop - 120, behavior: 'smooth'}); }
-    window.addEventListener('scroll', () => { if(document.getElementById('menuArea').style.display !== 'block') return; let current = ""; document.querySelectorAll('.menu-section').forEach(sec => { if (pageYOffset >= sec.offsetTop - 130) { current = sec.getAttribute('id'); } }); document.querySelectorAll('.cat-tab').forEach(tab => { tab.classList.remove('active'); if(tab.getAttribute('data-target') === current) { tab.classList.add('active'); tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } }); });
+    window.scrollToCat = function(id) { window.scrollTo({top: document.getElementById(id).offsetTop - 140, behavior: 'smooth'}); }
+    window.addEventListener('scroll', () => { if(window.currentViewId !== 'menuArea') return; let current = ""; document.querySelectorAll('.menu-section').forEach(sec => { if (pageYOffset >= sec.offsetTop - 160) { current = sec.getAttribute('id'); } }); document.querySelectorAll('.cat-tab').forEach(tab => { tab.classList.remove('active'); if(tab.getAttribute('data-target') === current) { tab.classList.add('active'); tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } }); });
     window.updateCart = function(n, p, d) {
         if(!cart[n]) cart[n] = {p:p, q:0}; cart[n].q += d; if(cart[n].q<0) cart[n].q=0;
         document.querySelectorAll(`[data-qty-name="${n}"]`).forEach(el => el.innerText=cart[n].q);
@@ -578,18 +724,15 @@
                 for(let i=0; i<cart[n].q; i++) {
                     ch += `<div style="margin-bottom:12px; padding:16px; background:#fff; border:1px solid #e5e5ea; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">`;
                     ch += `<div style="font-weight:700; color:#111; margin-bottom:10px; font-size:15px; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="color:#d32f2f; font-size:18px;">restaurant</span> ${n} <span style="font-size:13px; color:#555; font-weight:600; background:#f5f5f7; padding:2px 8px; border-radius:12px;">第 ${i+1} 份</span></div>`;
-                    let optHtml = (restaurantDB[currentRestaurant].options || "")
-                        .replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${n}" data-idx="${i}"`)
-                        .replace(/<input type="radio"/g, `<input type="radio" data-meal="${n}" data-idx="${i}"`)
-                        .replace(/\{idx\}/g, i);
+                    let optHtml = (restaurantDB[currentRestaurant].options || "").replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${n}" data-idx="${i}"`).replace(/<input type="radio"/g, `<input type="radio" data-meal="${n}" data-idx="${i}"`).replace(/\{idx\}/g, i);
                     ch += `<div class="checkbox-group" style="margin-top:0;">${optHtml}</div></div>`;
                 }
             } 
         }
         pendingOrder.meal = meals.join(", "); pendingOrder.basePrice = bp; document.getElementById('c_mealName').innerHTML = meals.join("<br>"); document.getElementById('c_basePrice').innerText = bp; document.getElementById('dynamicOptions').innerHTML = ch;
-        document.getElementById('menuArea').style.display='none'; document.getElementById('cartFab').style.display='none'; document.getElementById('customizeArea').style.display='block'; currentOrderStep='customizeArea'; window.scrollTo(0,0);
+        currentOrderStep='customizeArea'; setView('customizeArea');
     }
-    window.backToMenu = function() { document.getElementById('customizeArea').style.display='none'; document.getElementById('menuArea').style.display='block'; document.getElementById('cartFab').style.display='flex'; currentOrderStep='menuArea'; }
+    window.backToMenu = function() { currentOrderStep='menuArea'; setView('menuArea'); }
     window.goToReview = function() {
         let fp = pendingOrder.basePrice; let notes = []; let cust = {};
         const opts = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
@@ -604,24 +747,22 @@
         if(document.getElementById('orderNote').value) notes.push("全單備註: " + document.getElementById('orderNote').value.trim());
         pendingOrder.note = notes.length ? notes.join(" | ") : "無"; pendingOrder.price = fp; pendingOrder.date = todayStr; pendingOrder.restaurant = currentRestaurant;
         document.getElementById('v_id').innerText = pendingOrder.studentId; document.getElementById('v_rest').innerText = currentRestaurant; document.getElementById('v_meal').innerHTML = pendingOrder.meal.replace(/, /g, '<br>'); document.getElementById('v_note').innerText = pendingOrder.note; document.getElementById('v_price').innerText = pendingOrder.price;
-        document.getElementById('customizeArea').style.display='none'; document.getElementById('reviewArea').style.display='block'; currentOrderStep='reviewArea';
+        currentOrderStep='reviewArea'; setView('reviewArea');
     }
-    window.backToCustomize = function() { document.getElementById('reviewArea').style.display='none'; document.getElementById('customizeArea').style.display='block'; currentOrderStep='customizeArea'; }
+    window.backToCustomize = function() { currentOrderStep='customizeArea'; setView('customizeArea'); }
     window.confirmSubmit = async function() {
         const btn = document.getElementById('submitBtn'); btn.innerHTML = '<span class="material-symbols-outlined">sync</span> 處理中...'; btn.disabled = true;
         pendingOrder.isPaid = false; pendingOrder.notifiedPaid = false; pendingOrder.paidAmount = 0; pendingOrder.timestamp = new Date().getTime(); pendingOrder.timeString = new Date().toLocaleString('zh-TW', { hour12: false });
         try { await setDoc(doc(db, "orders", todayStr + "_" + pendingOrder.studentId), pendingOrder); showReceipt(pendingOrder.studentId, pendingOrder.meal, pendingOrder.note, pendingOrder.price, false, false, pendingOrder.timeString, 0); } catch(e) { alert("錯誤"); btn.innerHTML='確認送出訂單'; btn.disabled=false;}
     }
 
-    function showReceipt(id, m, n, p, ip, np, ts, pa) { hideAllSections(); document.getElementById('receiptArea').style.display = 'block'; document.getElementById('r_id').innerText = id; document.getElementById('r_meal').innerHTML = m.replace(/, /g,'<br>'); document.getElementById('r_price').innerText = p; document.getElementById('r_time').innerText = ts||""; let a = pa!==undefined?pa:(ip?p:0); const ui = document.getElementById('paymentStatusUI'); const b = document.getElementById('notifyBtn'); if(a>=p){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">check_circle</span> 已結清</h3>'; b.style.display='none';} else if(a>0){ui.innerHTML=`<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">warning</span> 已付$${a} (尚欠$${p-a})</h3>`; b.style.display='block';} else if(np){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">hourglass_empty</span> 已通知對帳中</h3>'; b.style.display='none';} else {ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">cancel</span> 尚未繳費</h3>'; b.style.display='block';} window.currentViewingId=id; currentOrderStep='receiptArea'; }
+    function showReceipt(id, m, n, p, ip, np, ts, pa) { document.getElementById('r_id').innerText = id; document.getElementById('r_meal').innerHTML = m.replace(/, /g,'<br>'); document.getElementById('r_price').innerText = p; document.getElementById('r_time').innerText = ts||""; let a = pa!==undefined?pa:(ip?p:0); const ui = document.getElementById('paymentStatusUI'); const b = document.getElementById('notifyBtn'); if(a>=p){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">check_circle</span> 已結清</h3>'; b.style.display='none';} else if(a>0){ui.innerHTML=`<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">warning</span> 已付$${a} (尚欠$${p-a})</h3>`; b.style.display='block';} else if(np){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">hourglass_empty</span> 已通知對帳中</h3>'; b.style.display='none';} else {ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">cancel</span> 尚未繳費</h3>'; b.style.display='block';} window.currentViewingId=id; currentOrderStep='receiptArea'; setView('receiptArea'); }
     window.notifyAdminPaid = async function() { try { await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { notifiedPaid: true }); alert("已通知！"); location.reload(); } catch(e) {} }
     window.cancelOrder = async function() { if(confirm("確定取消訂單？")) { try { await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { isCancelled: true }); alert("已取消！"); location.reload(); } catch(e) {} } }
     
-    // 歷史紀錄、評分與 Plan B 等皆保留...
-    window.showMyHistory = async function() { const id = window.currentUserId; hideAllSections(); document.getElementById('personalHistoryArea').style.display = 'block'; document.getElementById('ph_studentId').innerText = id; document.getElementById('ph_tableBody').innerHTML = '<tr><td colspan="3">讀取中...</td></tr>'; try { const snap = await getDocs(query(collection(db, "orders"), where("studentId", "==", id))); let arr = []; snap.forEach(d => arr.push(d.data())); arr.sort((a,b) => b.date.localeCompare(a.date)); if(arr.length===0){document.getElementById('ph_tableBody').innerHTML='<tr><td colspan="3">無紀錄</td></tr>';return;} let h=""; arr.forEach(o=>{let pa=o.paidAmount!==undefined?o.paidAmount:(o.isPaid?o.price:0); let s=o.isCancelled?'<span style="color:#888;">已取消</span>':(pa>=o.price?'<span>已結清</span>':(pa>0?'<span>已付$'+pa+'</span>':'<span style="color:#888;">未繳</span>')); h+=`<tr><td>${o.date}</td><td><span style="font-size:12px; color:#c00;">[${o.restaurant||""}]</span><br>${o.meal.replace(/, /g,'<br>')}</td><td style="font-weight:600;">${s}</td></tr>`;}); document.getElementById('ph_tableBody').innerHTML=h; } catch(e){} }
     let rvOrders = []; window.fetchOrdersForReview = async function() { const id = window.currentUserId; try { const oSnap=await getDocs(query(collection(db, "orders"), where("studentId","==",id))); let all=[]; const d7=new Date(); d7.setDate(d7.getDate()-7); const lim=d7.toISOString().split('T')[0]; oSnap.forEach(d=>{let o=d.data(); if(!o.isCancelled&&o.date>=lim)all.push(o);}); all.sort((a,b)=>b.date.localeCompare(a.date)); const rSnap=await getDocs(query(collection(db, "reviews"), where("studentId","==",id))); let rm={}; rSnap.forEach(d=>rm[d.data().orderTimestamp]=d.data().timeString); rvOrders=[]; let log=""; all.forEach(o=>{if(rm[o.timestamp]) log+=`<div style="font-size:13px; color:#666; margin:4px 0;"><span class="material-symbols-outlined" style="font-size:16px;">check</span> ${o.date} (${o.meal})<br><span style="color:#888;">評分時間：${rm[o.timestamp]}</span></div>`; else rvOrders.push(o);}); document.getElementById('reviewedOrdersLog').innerHTML=log?`<div style="margin-top:15px; padding:10px; background:#f9f9f9; border:1px solid #eee;">📌 已評分紀錄：${log}</div>`:""; if(rvOrders.length===0){alert("最近有效訂單已全數評分完畢！"); document.getElementById('reviewFormBlock').style.display='none'; return;} let sel=""; rvOrders.forEach((o,i)=>sel+=`<option value="${i}">${o.date} - [${o.restaurant||"未知"}] ${o.meal}</option>`); document.getElementById('rvOrderSelect').innerHTML=sel; document.getElementById('reviewFormBlock').style.display='block'; } catch(e){} };
-    window.submitMealReview = async function() { const o = rvOrders[document.getElementById('rvOrderSelect').value]; if(!o)return; const s1=document.getElementById('rvScore1').value,s2=document.getElementById('rvScore2').value,s3=document.getElementById('rvScore3').value,s4=document.getElementById('rvScore4').value,c=document.getElementById('rvComment').value; if(!s1&&!s2&&!s3&&!s4&&!c.trim())return alert("未填寫任何內容"); const now=new Date(); try { await setDoc(doc(db,"reviews",`${o.date}_${o.studentId}_${o.timestamp}`), {studentId:o.studentId, orderDate:o.date, orderTimestamp:o.timestamp, meal:o.meal, restaurant:o.restaurant||"未知", score1:s1?parseInt(s1):null, score2:s2?parseInt(s2):null, score3:s3?parseInt(s3):null, score4:s4?parseInt(s4):null, comment:c.trim(), timestamp:now.getTime(), timeString:now.toLocaleString('zh-TW',{hour12:false})}); alert("✅ 評分已傳送！"); resumeOrderFlow(); document.getElementById('reviewFormBlock').style.display='none'; document.getElementById('reviewedOrdersLog').innerHTML=""; } catch(e){} }
-    window.goToReviewFromReceipt = async function() { hideAllSections(); document.getElementById('reviewPageArea').style.display = 'block'; await window.fetchOrdersForReview(); };
+    window.submitMealReview = async function() { const o = rvOrders[document.getElementById('rvOrderSelect').value]; if(!o)return; const s1=document.getElementById('rvScore1').value,s2=document.getElementById('rvScore2').value,s3=document.getElementById('rvScore3').value,s4=document.getElementById('rvScore4').value,c=document.getElementById('rvComment').value; if(!s1&&!s2&&!s3&&!s4&&!c.trim())return alert("未填寫任何內容"); const now=new Date(); try { await setDoc(doc(db,"reviews",`${o.date}_${o.studentId}_${o.timestamp}`), {studentId:o.studentId, orderDate:o.date, orderTimestamp:o.timestamp, meal:o.meal, restaurant:o.restaurant||"未知", score1:s1?parseInt(s1):null, score2:s2?parseInt(s2):null, score3:s3?parseInt(s3):null, score4:s4?parseInt(s4):null, comment:c.trim(), timestamp:now.getTime(), timeString:now.toLocaleString('zh-TW',{hour12:false})}); alert("✅ 評分已傳送！"); gotoHome(); document.getElementById('reviewFormBlock').style.display='none'; document.getElementById('reviewedOrdersLog').innerHTML=""; } catch(e){} }
+    window.goToReviewFromReceipt = async function() { setView('reviewPageArea'); await window.fetchOrdersForReview(); };
     window.showAboutPage = function() { showInfoPage('<span class="material-symbols-outlined">info</span> 關於本站', '<p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p><p><b>🚀 核心功能特色</b><br>1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>2. <b>大數據推薦</b>：即時顯示「熱門排行榜」。<br>3. <b>透明化帳務</b>：支援部分付款與自動差額計算。<br>4. <b>Plan B 危機應變</b>：店家沒開時自動計算補退款。<br>5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p style="text-align:right; font-weight:700;">網頁開發與系統架構設計：羅亦承</p>'); };
     window.showFaqPage = function() { showInfoPage('<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)', '<p><b><span class="material-symbols-outlined" style="font-size:18px;">schedule</span> 關於點餐時間與權限</b><br><b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。<br><b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">shopping_cart</span> 關於點餐與修改</b><br><b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">payments</span> 關於金錢與繳費</b><br><b>Q4：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">emergency</span> 關於突發狀況 (Plan B)</b><br><b>Q5：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會啟動「Plan B 備案」，前台會顯示補退款金額，你也可以選擇取消訂單。</p>'); };
 
@@ -630,7 +771,7 @@
         if (docSnap.exists() && docSnap.data().date === todayStr) {
             const data = docSnap.data(); banner.style.display = 'block'; document.getElementById('announcementMsg').innerText = data.message;
             if (data.isPlanB) {
-                hideAllSections(); planBBoard.style.display = 'block'; currentOrderStep = 'planBDashboard';
+                planBBoard.style.display = 'block'; setView('planBDashboard');
                 document.getElementById('pbMealDisplay').innerText = data.planBMeal; document.getElementById('pbPriceDisplay').innerText = data.planBPrice;
                 onSnapshot(query(collection(db, "orders"), where("date", "==", todayStr)), (snap) => {
                     let arr = []; snap.forEach(d => { if(!d.data().isCancelled) arr.push(d.data()); }); arr.sort((a,b) => a.studentId - b.studentId);
