@@ -54,14 +54,14 @@
         .price-text { color: #111; font-size: 28px; font-weight: 700; margin: 15px 0; }
         #announcementBanner { display: none; background: #fafafa; border: 1px solid #111; padding: 15px; border-radius: 8px; margin-bottom: 20px; color: #111; }
         
-        /* 🚀 修正：選單吸附防重疊設計 (毛玻璃白底 + 陰影區隔 + 精準的高度計算) */
+        /* 🚀 選單吸附防重疊設計 (毛玻璃白底 + 陰影區隔 + 精準的高度計算) */
         .category-nav { 
             display: flex; 
             overflow-x: auto; 
             white-space: nowrap; 
             gap: 20px; 
             padding: 12px 15px 0 15px; 
-            background: rgba(255, 255, 255, 0.98); /* 實體白底，防穿透 */
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(8px);
             position: sticky; 
             top: 104px; /* header(60px) + breadcrumb(44px) */
@@ -69,14 +69,14 @@
             border-bottom: 1px solid #e5e5ea; 
             margin: -15px -15px 20px -15px; 
             scroll-behavior: smooth; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.06); /* 底部加上陰影層次 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
         }
         .category-nav::-webkit-scrollbar { display: none; } 
         .cat-tab { color: #888; cursor: pointer; font-weight: 600; font-size: 15px; padding-bottom: 12px; position: relative; transition: color 0.2s; }
         .cat-tab.active { color: #111; } .cat-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background-color: #111; } 
         
         .menu-category { font-size: 20px; font-weight: 700; color: #111; margin: 30px 0 15px 0; padding-bottom: 5px; }
-        .menu-section { scroll-margin-top: 160px; } /* 修正往下捲動時被導覽列遮住的距離 */
+        .menu-section { scroll-margin-top: 160px; } 
         
         .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); transition: border-color 0.2s; }
         .menu-item:hover { border-color: #111; }
@@ -89,6 +89,7 @@
 
         .cart-fab { position: fixed; bottom: 24px; right: 24px; background: #111; color: white; padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; display: none; align-items: center; gap: 12px; transition: transform 0.2s; }
         
+        /* 🚀 客製化標籤 (Chips) */
         .opt-section-title { font-size: 13px; color: #666; font-weight: 700; margin: 15px 0 8px; }
         .chip-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
         .custom-chip { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; border: 1px solid #d2d2d7; border-radius: 20px; background: #fff; color: #111; cursor: pointer; transition: all 0.2s; font-size: 14px; font-weight: 500; user-select: none; }
@@ -169,8 +170,8 @@
             <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
             <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
             <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
-            <!-- 🚀 新增更新紀錄入口 -->
-            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.0.0</span></a></li>
+            <!-- 🚀 升級至 v2.1.0 標籤 -->
+            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.1.0</span></a></li>
             <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
             <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
             <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span class="material-symbols-outlined">info</span> 關於本站</a></li>
@@ -192,7 +193,7 @@
     <div class="container">
         <div id="announcementBanner">
             <h3 style="margin-top:0; display:flex; align-items:center;"><span class="material-symbols-outlined">campaign</span> 負責人緊急廣播</h3>
-            <p id="announcementMsg" style="font-weight:600;"></p>
+            <p id="announcementMsg" style="font-weight:600; line-height: 1.6;"></p>
         </div>
 
         <div class="card" id="menuOverviewArea">
@@ -263,15 +264,26 @@
             </div>
         </div>
 
-        <!-- 🚀 網頁更新紀錄專區 -->
+        <!-- 🚀 網頁更新紀錄專區 (只保留 v2.0.0 以上版本) -->
         <div class="card" id="updateLogArea">
             <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
             <div style="margin-top: 15px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:16px;">v2.0.0 終極版上線 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                    <h3 style="margin:0; font-size:16px;">v2.1.0 點餐期間動態換單機制 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
+                    <li>🚨 <strong>動態換店重置機制：</strong> 支援在當日點餐時段內更換餐廳，系統將自動作廢所有已訂購餐點並啟動預繳退費。</li>
+                    <li>📢 <strong>即時廣播通知：</strong> 換店後前台將自動跳出緊急通知，提醒同學重新下單。</li>
+                    <li>💵 <strong>退費帳本連動：</strong> 升級帳務演算法，作廢訂單若有預繳金額將自動列入「應退款」狀態。</li>
+                    <li>🗑 <strong>清理冗餘紀錄：</strong> 移除 v2.0.0 以前的舊版更新日誌，保持介面簡潔。</li>
+                </ul>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.0.0 終極版上線</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>🔥 <strong>擴充至 13 家餐廳：</strong> 完整收錄各式在地美食與精細客製化菜單。</li>
                     <li>📊 <strong>個人消費大數據看板：</strong> 導入 Chart.js 圓餅圖與折線圖，分析每月花費與餐廳喜好。</li>
                     <li>🎨 <strong>客製化介面升級：</strong> 採用全新藥丸標籤 (Chips) 設計，加入紅色「挑食區」防呆。</li>
@@ -279,25 +291,6 @@
                     <li>✨ <strong>修復版面問題：</strong> 解決菜單導覽列透明造成的文字重疊問題。</li>
                     <li>🏆 <strong>雙重排行榜：</strong> 新增「熱門餐點」與「人氣餐廳」雙榜單切換。</li>
                     <li>💬 <strong>許願池與評分系統：</strong> 加入指定日期想吃餐廳功能，並優化歷史訂單評分過濾。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v1.5.0 系統核心優化</h3>
-                    <span style="font-size:13px; color:#888;">2026-08</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>緊急備案機制 (Plan B) 實裝，支援統一改單與自動差額計算。</li>
-                    <li>加入點餐時間限制鎖定畫面，由後台全權控制。</li>
-                    <li>實裝「班級付款總情形」對帳系統與獨立防呆審核。</li>
-                </ul>
-                
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v1.0.0 基礎測試版</h3>
-                    <span style="font-size:13px; color:#888;">2026-08</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>初步建立點餐系統與動態購物車邏輯。</li>
-                    <li>支援單一餐廳（麵朝）與基本加購設定。</li>
                 </ul>
             </div>
             <button class="btn btn-secondary" style="margin-top:20px;" onclick="gotoHome()">返回首頁</button>
@@ -525,7 +518,6 @@
             options: `<div class="opt-section-title">🔹 醬料包加購</div>
                       <div class="chip-group"><label class="custom-chip"><input type="checkbox" value="芥末包" data-price="5">芥末包 +$5</label></div>` 
         },
-        // 無客製化選項的餐廳
         "老周燒肉飯": { menu: [{category:"80元系列",items:[{name:"日式豬排飯",price:80},{name:"照燒排骨飯",price:80}]},{category:"90~110元",items:[{name:"五香控肉飯",price:90},{name:"烤雞腿飯",price:110},{name:"炸雞腿飯",price:110}]}] },
         "青虎食堂": { menu: [{category:"咖哩",items:[{name:"特製咖哩飯",price:90},{name:"豬排咖哩飯",price:100},{name:"唐揚雞咖哩飯",price:100}]},{category:"丼飯",items:[{name:"唐揚雞丼飯",price:100},{name:"豬排丼飯",price:100}]}] },
         "日光手作食堂": { menu: [{category:"特餐系列",items:[{name:"肉燥飯唐揚特餐",price:95},{name:"日光豬排特餐(炸)",price:95}]},{category:"飯麵系列",items:[{name:"肉絲蛋炒飯(大)",price:95},{name:"什錦炒麵/米粉(大)",price:120},{name:"日式咖哩飯",price:75}]},{category:"炸物/小菜",items:[{name:"炸唐揚(6個)",price:45},{name:"皮蛋豆腐",price:40}]}] },
@@ -814,9 +806,10 @@
     let rvOrders = []; window.fetchOrdersForReview = async function() { const id = window.currentUserId; try { const oSnap=await getDocs(query(collection(db, "orders"), where("studentId","==",id))); let all=[]; const d7=new Date(); d7.setDate(d7.getDate()-7); const lim=d7.toISOString().split('T')[0]; oSnap.forEach(d=>{let o=d.data(); if(!o.isCancelled&&o.date>=lim)all.push(o);}); all.sort((a,b)=>b.date.localeCompare(a.date)); const rSnap=await getDocs(query(collection(db, "reviews"), where("studentId","==",id))); let rm={}; rSnap.forEach(d=>rm[d.data().orderTimestamp]=d.data().timeString); rvOrders=[]; let log=""; all.forEach(o=>{if(rm[o.timestamp]) log+=`<div style="font-size:13px; color:#666; margin:4px 0;"><span class="material-symbols-outlined" style="font-size:16px;">check</span> ${o.date} (${o.meal})<br><span style="color:#888;">評分時間：${rm[o.timestamp]}</span></div>`; else rvOrders.push(o);}); document.getElementById('reviewedOrdersLog').innerHTML=log?`<div style="margin-top:15px; padding:10px; background:#f9f9f9; border:1px solid #eee;">📌 已評分紀錄：${log}</div>`:""; if(rvOrders.length===0){alert("最近有效訂單已全數評分完畢！"); document.getElementById('reviewFormBlock').style.display='none'; return;} let sel=""; rvOrders.forEach((o,i)=>sel+=`<option value="${i}">${o.date} - [${o.restaurant||"未知"}] ${o.meal}</option>`); document.getElementById('rvOrderSelect').innerHTML=sel; document.getElementById('reviewFormBlock').style.display='block'; } catch(e){} };
     window.submitMealReview = async function() { const o = rvOrders[document.getElementById('rvOrderSelect').value]; if(!o)return; const s1=document.getElementById('rvScore1').value,s2=document.getElementById('rvScore2').value,s3=document.getElementById('rvScore3').value,s4=document.getElementById('rvScore4').value,c=document.getElementById('rvComment').value; if(!s1&&!s2&&!s3&&!s4&&!c.trim())return alert("未填寫任何內容"); const now=new Date(); try { await setDoc(doc(db,"reviews",`${o.date}_${o.studentId}_${o.timestamp}`), {studentId:o.studentId, orderDate:o.date, orderTimestamp:o.timestamp, meal:o.meal, restaurant:o.restaurant||"未知", score1:s1?parseInt(s1):null, score2:s2?parseInt(s2):null, score3:s3?parseInt(s3):null, score4:s4?parseInt(s4):null, comment:c.trim(), timestamp:now.getTime(), timeString:now.toLocaleString('zh-TW',{hour12:false})}); alert("✅ 評分已傳送！"); gotoHome(); document.getElementById('reviewFormBlock').style.display='none'; document.getElementById('reviewedOrdersLog').innerHTML=""; } catch(e){} }
     window.goToReviewFromReceipt = async function() { setView('reviewPageArea'); await window.fetchOrdersForReview(); };
-    window.showAboutPage = function() { showInfoPage('<span class="material-symbols-outlined">info</span> 關於本站', '<p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p><p><b>🚀 核心功能特色</b><br>1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>2. <b>大數據推薦</b>：即時顯示「熱門排行榜」。<br>3. <b>透明化帳務</b>：支援部分付款與自動差額計算。<br>4. <b>Plan B 危機應變</b>：店家沒開時自動計算補退款。<br>5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p style="text-align:right; font-weight:700;">網頁開發與系統架構設計：羅亦承</p>'); };
-    window.showFaqPage = function() { showInfoPage('<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)', '<p><b><span class="material-symbols-outlined" style="font-size:18px;">schedule</span> 關於點餐時間與權限</b><br><b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。<br><b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">shopping_cart</span> 關於點餐與修改</b><br><b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">payments</span> 關於金錢與繳費</b><br><b>Q4：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">emergency</span> 關於突發狀況 (Plan B)</b><br><b>Q5：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會啟動「Plan B 備案」，前台會顯示補退款金額，你也可以選擇取消訂單。</p>'); };
+    window.showAboutPage = function() { showInfoPage('<span class="material-symbols-outlined">info</span> 關於本站', '<p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p><p><b>🚀 核心功能特色</b><br>1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>2. <b>大數據推薦</b>：即時顯示「熱門排行榜」。<br>3. <b>透明化帳務</b>：支援部分付款與自動差額計算。<br>4. <b>動態換單機制</b>：店家沒開時自動重置作廢與退費。<br>5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p style="text-align:right; font-weight:700;">網頁開發與系統架構設計：羅亦承</p>'); };
+    window.showFaqPage = function() { showInfoPage('<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)', '<p><b><span class="material-symbols-outlined" style="font-size:18px;">schedule</span> 關於點餐時間與權限</b><br><b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。<br><b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">shopping_cart</span> 關於點餐與修改</b><br><b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">payments</span> 關於金錢與繳費</b><br><b>Q4：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">emergency</span> 關於突發狀況 (強制換單)</b><br><b>Q5：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會從後台強制換店。系統會直接把你的訂單作廢，並把預繳費用存入退費帳本。同時首頁會跳出全班廣播通知，請重新點餐！</p>'); };
 
+    // 🚀 v2.1.0: 廣播通知與自動退費提示邏輯優化
     onSnapshot(doc(db, "system", "announcement"), (docSnap) => {
         const banner = document.getElementById('announcementBanner'); const planBBoard = document.getElementById('planBDashboard');
         if (docSnap.exists() && docSnap.data().date === todayStr) {
@@ -834,7 +827,7 @@
                     });
                     document.getElementById('pbTableBody').innerHTML = html || `<tr><td colspan="2">目前無人訂餐</td></tr>`;
                 });
-            }
+            } else { planBBoard.style.display = 'none'; }
         } else { banner.style.display = 'none'; planBBoard.style.display = 'none'; if (localStorage.getItem('loggedInUser_217') && localStorage.getItem('tosAgreed_217')) { initSystem(); } }
     });
     window.pbOptIn = async function() { const id = window.currentUserId; const r = doc(db, "orders", todayStr + "_" + id); const s = await getDoc(r); if(s.exists() && !s.data().isCancelled) return alert('你已經有訂單囉！'); await setDoc(r, { studentId: parseInt(id), date: todayStr, meal: document.getElementById('pbMealDisplay').innerText, note: "🚨 備案後額外加入", price: parseInt(document.getElementById('pbPriceDisplay').innerText), isPaid: false, paidAmount: 0, notifiedPaid: false, isCancelled: false, restaurant: "備案餐廳" }); alert('✅ 已加入備案訂單！'); }
