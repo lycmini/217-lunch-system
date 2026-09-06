@@ -167,7 +167,7 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.4</span></a></li>
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.5</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
         </ul>
     </div>
@@ -275,7 +275,7 @@
         <div id="page-ledger" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">account_balance_wallet</span> 班級付款總情形</h2>
-                <p style="font-size:13px; color:#555; margin-top:0;">系統會自動結算包含「事後退補款項」在內的所有費用。點擊右側按鈕可直接調整該座號金額。</p>
+                <p style="font-size:13px; color:#555; margin-top:0;">系統會精準結算包含「事後退補款項」在內的所有款項。點擊右側按鈕可自動抓取該座號的多退少補紀錄。</p>
                 <button class="btn btn-primary" onclick="loadLedger()"><span class="material-symbols-outlined">refresh</span> 重新整理帳務</button>
                 <div class="table-responsive">
                     <table>
@@ -288,31 +288,39 @@
             </div>
         </div>
 
+        <!-- 🚀 v2.4.5: 智慧退補款項處理中心 -->
         <div id="page-adjustment" class="admin-page">
             <div class="card" style="max-width: 600px; margin: 0 auto;">
-                <h2><span class="material-symbols-outlined">payments</span> 事後退補款項處理</h2>
-                <p style="color:#555; font-size:14px;">透過此功能可為特定座號增加「補收款項」或「退還款項」，並會直接同步至學生的前台歷史紀錄中。</p>
+                <h2><span class="material-symbols-outlined">payments</span> 事後退補款項處理中心</h2>
+                <p style="color:#555; font-size:14px; line-height: 1.6;">此功能專為<strong style="color:#111;">「補齊系統歷史紀錄上的差額」</strong>設計。系統會自動找出該座號所有少付或多付的訂單供您選擇，結清後帳目將完美平衡！</p>
                 
                 <div style="background:#fafafa; padding:20px; border-radius:12px; border:1px solid #e5e5ea; margin-top:20px;">
-                    <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">選擇座號：</label>
-                    <select id="adjStudentId" style="margin-bottom:15px;"></select>
+                    <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">1. 選擇座號：</label>
+                    <select id="adjStudentId" style="margin-bottom:15px; font-weight:bold; font-size:16px;" onchange="loadUnsettledOrders()"></select>
 
-                    <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">調整類型：</label>
-                    <select id="adjType" style="margin-bottom:15px;" onchange="updateAdjPresets()">
-                        <option value="補收">➕ 補收金額 (學生需再付錢)</option>
-                        <option value="退款">➖ 退還金額 (退現金給學生)</option>
+                    <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">2. 選擇要處理的歷史紀錄 (系統自動偵測落差)：</label>
+                    <select id="adjTargetOrder" style="margin-bottom:15px; border: 2px solid #111;" onchange="handleTargetOrderChange()">
+                        <option value="">請先選擇上方座號...</option>
                     </select>
 
-                    <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">金額 ($)：</label>
-                    <input type="number" id="adjAmount" placeholder="例：50" style="margin-bottom:15px;">
+                    <div style="display:flex; gap:10px; margin-bottom:15px;">
+                        <div style="flex:1;">
+                            <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">調整類型：</label>
+                            <select id="adjType" style="background:#eaf4fc;">
+                                <option value="補收">➕ 補收現金 (結清欠款)</option>
+                                <option value="退款">➖ 退還現金 (退回溢繳)</option>
+                            </select>
+                        </div>
+                        <div style="flex:1;">
+                            <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">金額 ($)：</label>
+                            <input type="number" id="adjAmount" placeholder="落差金額" style="font-weight:bold; color:#d32f2f;">
+                        </div>
+                    </div>
 
-                    <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">備註說明 (原因)：</label>
-                    <select id="adjNotePreset" style="margin-bottom:8px; background:#fff;" onchange="handleAdjPresetChange()">
-                        <option value="">-- 點此選擇常用原因 --</option>
-                    </select>
-                    <input type="text" id="adjNote" placeholder="或在此手動輸入/修改詳細原因..." style="margin-bottom:20px;">
+                    <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">備註說明 (已為您自動產生，可手動修改)：</label>
+                    <input type="text" id="adjNote" placeholder="例如：結清 9/6 麥當勞欠款" style="margin-bottom:20px;">
 
-                    <button class="btn btn-primary" style="width:100%; padding:14px; font-size:16px;" onclick="submitAdjustment()">確認送出並同步至學生前台</button>
+                    <button class="btn btn-primary" style="width:100%; padding:14px; font-size:16px;" onclick="submitAdjustment()">確認退補，結清這筆帳務</button>
                 </div>
             </div>
         </div>
@@ -444,31 +452,29 @@
                 <div style="margin-top: 15px;">
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.4.4 菜單全自訂排序按鈕 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.4.5 智慧退補款連動與完美結清 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
-                        <li>🔃 <strong>解決手機拖曳失效問題：</strong> 將菜單管理庫中無效的「點點拖曳圖示」全面升級為「實體上移 / 下移按鈕」，保證在手機與平板上操作 100% 順暢。</li>
-                        <li>🗂️ <strong>分類與品項皆可排序：</strong> 現在不僅可以調整餐點品項的順序，連「整個分類板塊」都可以自由上下調換位置，幫助你將最熱門的分類排在最上方！</li>
+                        <li>🎯 <strong>事後退補邏輯重建：</strong> 功能定位精準調整為「填平歷史欠款與溢繳」，退補操作不再產生額外的負債，而是純粹的現金結清，確保總帳本完美平衡。</li>
+                        <li>🤖 <strong>歷史訂單自動偵測：</strong> 選擇座號後，系統會自動幫你掃描該座號所有「少付錢」與「多付待退」的訂單並列表，一鍵帶入金額與備註，徹底防呆。</li>
+                        <li>🧹 <strong>介面優化瘦身：</strong> 移除了已無作用的「初次升級必按」按鈕，讓雲端菜單管理庫更加清爽。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.3 智能退補選單與無條件進位</h3>
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.4 菜單全自訂排序按鈕</h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>💡 <strong>退補原因聯動選單：</strong> 新增常用原因下拉選單，並支援帶入後手動補充文字，操作更快更準！</li>
-                        <li>🧮 <strong>小數點無條件進位：</strong> 全系統金額輸入與計算皆套用 `Math.ceil()` 處理，遇到小數點自動無條件進位。</li>
+                        <li>🔃 <strong>解決手機拖曳失效問題：</strong> 將菜單管理庫全面升級為「實體上移 / 下移按鈕」，分類與品項皆可輕鬆排序。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.2 基於 2.3.1 穩定升級版</h3>
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.3 小數點無條件進位</h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>💳 <strong>事後退補款項實裝：</strong> 支援補收與退還現金，並完美寫入前台歷史明細。</li>
-                        <li>📊 <strong>帳務合計結算：</strong> 班級付款情形底部加回「全班合計」大寫報表。</li>
-                        <li>📱 <strong>維持完美排版：</strong> 基於最穩定的 v2.3.1，完美保留手機專用卡片式看板。</li>
+                        <li>🧮 <strong>小數點無條件進位：</strong> 全系統金額輸入與計算皆套用 `Math.ceil()` 處理，確保分毫不差。</li>
                     </ul>
 
                 </div>
@@ -508,23 +514,6 @@
     window.allRestaurants = [];
     window.editingRest = null; 
 
-    // 初次移轉用的 13 家餐廳資料庫
-    const legacyHardcodedDB = {
-        "麵朝 (新竹食品店)": { menu: [{category:"鮮蝦雲吞拌麵",items:[{name:"鮮蝦雲吞拌麵",price:110},{name:"青醬雲吞拌麵",price:115},{name:"椒麻雲吞拌麵",price:115},{name:"蔥油雲吞拌麵",price:115},{name:"香滷雲吞拌麵",price:115},{name:"XO醬雲吞拌麵",price:115}]},{category:"港式水餃拌麵",items:[{name:"港式水餃拌麵",price:105},{name:"青醬水餃拌麵",price:110},{name:"椒麻水餃拌麵",price:110},{name:"蔥油水餃拌麵",price:110},{name:"香滷水餃拌麵",price:110},{name:"XO醬水餃拌麵",price:110}]},{category:"乾拌麵",items:[{name:"京醬肉絲拌麵",price:85},{name:"椒麻雞絲拌麵",price:85},{name:"青醬雞絲拌麵",price:85},{name:"蔥油雞絲拌麵",price:85},{name:"香滷雞絲拌麵",price:85},{name:"XO醬雞絲拌麵",price:85}]},{category:"風味湯麵",items:[{name:"羅宋番茄雞湯麵",price:130},{name:"養生清燉雞湯麵",price:130},{name:"剝皮辣椒雞湯麵",price:140},{name:"漢方肉骨茶雞湯麵",price:140},{name:"羅宋番茄湯麵",price:75},{name:"鮮蝦雲吞湯麵",price:110}]},{category:"功夫小點",items:[{name:"豬五花肉(蒜泥)",price:80},{name:"豬五花肉(椒麻)",price:80},{name:"舒肥雞(蔥油)",price:90},{name:"舒肥雞(青醬)",price:90},{name:"鮮蝦抄手(紅油)",price:100},{name:"鮮蝦抄手(白油)",price:100},{name:"港式翠玉水餃10粒",price:90}]},{category:"湯品&青菜",items:[{name:"大推烏梅汁",price:30},{name:"季節燙青菜",price:40},{name:"新竹貢丸湯",price:40},{name:"虱目魚丸湯",price:40},{name:"手工餛飩湯",price:40},{name:"羅宋番茄湯",price:50},{name:"鮮蝦雲吞湯",price:55},{name:"羅宋雲吞湯",price:80},{name:"養生清燉雞湯",price:95},{name:"剝皮辣椒雞湯",price:95},{name:"漢方肉骨茶雞湯",price:95}]}], options: `<div class="opt-section-title">🔹 麵食加量區</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="加麵" data-price="15">加麵 +$15</label><label class="custom-chip"><input type="checkbox" value="加舒肥雞" data-price="30">加舒肥雞 +$30</label></div>` },
-        "湯食主義": { menu: [{category:"嫩切雞蓋飯系列",items:[{name:"嫩切雞蓋飯",price:135},{name:"嫩切雞蓋飯泡溫泉",price:155},{name:"明太子嫩切雞蓋飯",price:185},{name:"明太子嫩切雞蓋飯泡溫泉",price:205}]},{category:"豬五花蓋飯系列",items:[{name:"豬五花蓋飯",price:125},{name:"豬五花蓋飯泡溫泉",price:145},{name:"明太子豬肉蓋飯",price:175},{name:"明太子豬五花蓋飯泡溫泉",price:195},{name:"韓式泡菜豬肉蓋飯",price:145},{name:"香檸泰泰豬飯",price:150}]},{category:"牛五花蓋飯系列",items:[{name:"牛五花蓋飯",price:135},{name:"牛五花蓋飯泡溫泉",price:155},{name:"明太子牛肉蓋飯",price:185},{name:"明太子牛五花蓋飯泡溫泉",price:205},{name:"川味牛五花蓋飯",price:135}]},{category:"SPA舒肥雞胸盒飯",items:[{name:"原味檸檬舒肥雞",price:135},{name:"泰式酸辣舒肥雞",price:135},{name:"手作花椒油舒肥雞",price:135},{name:"海苔呀海苔舒肥雞",price:135},{name:"義式香料舒肥雞",price:135},{name:"墨西哥BBQ舒肥雞",price:135},{name:"手工海南醬舒肥雞",price:135},{name:"巴薩米克醋舒肥雞",price:135},{name:"蒲燒鯛魚腹蓋飯",price:145},{name:"健康蔬食盒飯(蛋奶素)",price:135}]},{category:"湯烏龍系列",items:[{name:"日式柴魚豬肉湯烏龍",price:120},{name:"日式柴魚牛肉湯烏龍",price:130},{name:"韓式泡菜豬肉湯烏龍",price:140},{name:"韓式泡菜牛肉湯烏龍",price:150},{name:"蜀味川香豬肉湯烏龍",price:140},{name:"蜀味川香牛肉湯烏龍",price:150}]},{category:"單點與加購",items:[{name:"豬五花一份",price:60},{name:"牛五花一份",price:60},{name:"舒肥雞胸肉一份",price:60},{name:"溏心蛋",price:30},{name:"溫泉蛋",price:30},{name:"胡麻高麗菜",price:55},{name:"柚香白蘿蔔",price:55},{name:"辣黃豆芽",price:40},{name:"胡麻雞胸冷麵(夏季限定)",price:110}]}], options: `<div class="opt-section-title">🔹 蓋飯/飯盒 加量升級</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="加飯" data-price="10">加飯 +$10</label><label class="custom-chip"><input type="checkbox" value="加高麗菜" data-price="20">加高麗菜 +$20</label><label class="custom-chip"><input type="checkbox" value="飯換地瓜" data-price="0">飯換地瓜</label><label class="custom-chip"><input type="checkbox" value="加地瓜" data-price="20">加地瓜 +$20</label><label class="custom-chip"><input type="checkbox" value="菜增量" data-price="35">菜增量 +$35</label><label class="custom-chip"><input type="checkbox" value="加豆腐" data-price="20">加豆腐 +$20</label><label class="custom-chip"><input type="checkbox" value="加1份雞胸肉" data-price="60">加1份雞胸肉 +$60</label><label class="custom-chip"><input type="checkbox" value="加明太子魚卵" data-price="50">加明太子魚卵 +$50</label></div><div class="opt-section-title">🔹 蛋類客製</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="溏心蛋換溫泉蛋" data-price="0">半顆溏心蛋換溫泉蛋</label></div><div class="opt-section-title">🚫 挑食區 (不要加甚麼)</div><div class="chip-group"><label class="custom-chip exclude"><input type="checkbox" value="不青蔥" data-price="0">不青蔥</label><label class="custom-chip exclude"><input type="checkbox" value="不洋蔥" data-price="0">不洋蔥</label><label class="custom-chip exclude"><input type="checkbox" value="不辣豆芽" data-price="0">不辣豆芽</label><label class="custom-chip exclude"><input type="checkbox" value="不玉米粒" data-price="0">不玉米粒</label><label class="custom-chip exclude"><input type="checkbox" value="不七味粉" data-price="0">不七味粉</label><label class="custom-chip exclude"><input type="checkbox" value="不海苔粉" data-price="0">不海苔粉</label></div>` },
-        "麥當勞 (中餐時段)": { menu: [{category:"牛肉漢堡",items:[{name:"大麥克",price:85},{name:"雙層牛肉吉事堡",price:75},{name:"四盎司牛肉堡",price:95},{name:"雙層四盎司牛肉堡",price:135},{name:"BLT安格斯牛肉堡",price:122},{name:"蕈菇安格斯牛肉堡",price:132}]},{category:"雞/魚漢堡",items:[{name:"麥香鷄",price:48},{name:"麥香魚",price:60},{name:"雙層麥香魚",price:80},{name:"勁辣鷄腿堡",price:78},{name:"炭燒醬烤鷄腿堡",price:99},{name:"BLT香烙烤鷄腿堡",price:129},{name:"煙燻勁脆鷄腿堡",price:99},{name:"肯瓊勁脆鷄腿堡",price:99}]},{category:"分享盒與點心",items:[{name:"麥克鷄塊(6塊)",price:68},{name:"麥克鷄塊(10塊)",price:109},{name:"麥脆鷄腿(2塊)",price:126},{name:"大薯",price:66},{name:"中薯",price:50},{name:"四季沙拉",price:49},{name:"蘋果派",price:39},{name:"OREO冰炫風",price:59}]}], options: `<div class="opt-section-title">搭配組合 (適用於漢堡/主餐)：</div><div class="chip-group"><label class="custom-chip"><input type="radio" name="mcd_{idx}" value="單點" data-price="0" checked>單點 +$0</label><label class="custom-chip"><input type="radio" name="mcd_{idx}" value="經典配餐(中薯+飲品)" data-price="38">經典配餐 +$38</label><label class="custom-chip"><input type="radio" name="mcd_{idx}" value="清爽配餐(沙拉+飲品)" data-price="38">清爽配餐 +$38</label><label class="custom-chip"><input type="radio" name="mcd_{idx}" value="勁脆配餐(麥脆鷄腿+飲品)" data-price="38">勁脆配餐 +$38</label><label class="custom-chip"><input type="radio" name="mcd_{idx}" value="炫冰配餐(冰炫風+小薯+飲品)" data-price="38">炫冰配餐 +$38</label><label class="custom-chip"><input type="radio" name="mcd_{idx}" value="豪吃配餐(6塊鷄塊+小薯+飲品)" data-price="38">豪吃配餐 +$38</label></div>` },
-        "阿寶魯肉飯": { menu: [{category:"滷肉飯便當",items:[{name:"滷肉飯(大)",price:60},{name:"滷肉飯+滷蛋(大)",price:75},{name:"高麗菜水餃(10個)",price:70},{name:"滷肉飯套餐(大)",price:95}]},{category:"麵食類",items:[{name:"乾麵",price:50},{name:"貢丸麵",price:65},{name:"餛飩麵",price:65},{name:"肉羹麵",price:65}]},{category:"湯品與小菜",items:[{name:"豬血湯",price:40},{name:"骨仔肉湯",price:60},{name:"燙空心菜",price:40},{name:"蒜泥白肉",price:70}]}], options: `<div class="opt-section-title">🔹 麵食加量區</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="麵食加大" data-price="5">麵食加大 +$5</label></div>` },
-        "八方雲集": { menu: [{category:"牛肉麵",items:[{name:"紅燒牛肉麵",price:168},{name:"麻辣牛肉麵",price:178},{name:"紅燒牛肉湯餃(8顆)",price:120}]},{category:"鍋貼/水餃(單顆)",items:[{name:"招牌鍋貼",price:7},{name:"韭菜鍋貼",price:7},{name:"韓式辣味鍋貼",price:7},{name:"招牌水餃",price:7},{name:"鮮蝦水餃",price:10.5}]},{category:"湯麵/小菜",items:[{name:"酸辣湯麵",price:70},{name:"酸辣湯",price:35},{name:"燙青菜",price:35},{name:"香濃豆漿",price:20}]}], options: `<div class="opt-section-title">🔹 鍋貼客製</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="鍋貼換冬粉" data-price="0">鍋貼換冬粉</label></div>` },
-        "廟口鴨香飯": { menu: [{category:"飯類",items:[{name:"鴨香飯(大)",price:80},{name:"鴨香飯(特大)",price:90},{name:"荷包蛋",price:15}]},{category:"麵食與湯",items:[{name:"鴨肉麵(大)",price:85},{name:"鴨肉米粉(小)",price:70},{name:"鴨肉湯",price:80}]},{category:"炒類與切類",items:[{name:"鴨肉炒米粉(小)",price:100},{name:"去骨後腿鴨肉",price:250},{name:"鴨翅(支)",price:30}]}], options: `<div class="opt-section-title">🔹 湯品加料區</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="加蛋花" data-price="15">湯加蛋花 +$15</label><label class="custom-chip"><input type="checkbox" value="加貢丸" data-price="15">加貢丸 +$15</label><label class="custom-chip"><input type="checkbox" value="加鴨丸" data-price="10">加鴨丸 +$10</label><label class="custom-chip"><input type="checkbox" value="加醃瓜瓜" data-price="20">加醃瓜瓜 +$20</label></div>` },
-        "阿婆早餐麵店": { menu: [{category:"早點",items:[{name:"蛋餅",price:35},{name:"雙黃蛋餅",price:45},{name:"白饅頭(夾蔥花蛋)",price:30},{name:"冰豆漿",price:25}]},{category:"麵飯類",items:[{name:"陽春麵(大)",price:55},{name:"炒榨菜肉絲麵(大)",price:60},{name:"牛肉焿麵(大)",price:100}]},{category:"炒手與湯",items:[{name:"原味炒手(一把麵)大",price:100},{name:"餛飩湯",price:40}]}], options: `<div class="opt-section-title">🔹 麵食加量區</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="加餛飩肉類" data-price="10">加餛飩肉類 +$10</label><label class="custom-chip"><input type="checkbox" value="加麵一把" data-price="15">加麵一把(湯麵不可) +$15</label></div>` },
-        "鐵屋涼麵": { menu: [{category:"涼麵系列",items:[{name:"原味涼麵(大)",price:65},{name:"雞絲涼麵(大)",price:75},{name:"麻辣涼麵(大)",price:75}]},{category:"鍋燒麵",items:[{name:"原味鍋燒",price:100},{name:"泡菜海鮮鍋燒",price:150}]},{category:"飯類/湯品",items:[{name:"滷肉飯",price:50},{name:"排骨滷肉飯",price:100},{name:"味噌綜合湯",price:55},{name:"招牌鮮豆漿",price:35}]}], options: `<div class="opt-section-title">🔹 醬料包加購</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="芥末包" data-price="5">芥末包 +$5</label></div>` },
-        "老周燒肉飯": { menu: [{category:"80元系列",items:[{name:"日式豬排飯",price:80},{name:"照燒排骨飯",price:80}]},{category:"90~110元",items:[{name:"五香控肉飯",price:90},{name:"烤雞腿飯",price:110},{name:"炸雞腿飯",price:110}]}], options: "" },
-        "青虎食堂": { menu: [{category:"咖哩",items:[{name:"特製咖哩飯",price:90},{name:"豬排咖哩飯",price:100},{name:"唐揚雞咖哩飯",price:100}]},{category:"丼飯",items:[{name:"唐揚雞丼飯",price:100},{name:"豬排丼飯",price:100}]}], options: "" },
-        "日光手作食堂": { menu: [{category:"特餐系列",items:[{name:"肉燥飯唐揚特餐",price:95},{name:"日光豬排特餐(炸)",price:95}]},{category:"飯麵系列",items:[{name:"肉絲蛋炒飯(大)",price:95},{name:"什錦炒麵/米粉(大)",price:120},{name:"日式咖哩飯",price:75}]},{category:"炸物/小菜",items:[{name:"炸唐揚(6個)",price:45},{name:"皮蛋豆腐",price:40}]}], options: "" },
-        "龍滿排骨": { menu: [{category:"經典便當",items:[{name:"炸雞腿飯",price:120},{name:"香雞排飯",price:100},{name:"滷雞腿飯",price:95},{name:"燒肉飯",price:90},{name:"炸排骨飯",price:90},{name:"招牌飯",price:85}]}], options: "" },
-        "丼真閣": { menu: [{category:"招牌丼飯",items:[{name:"原味丼(牛)",price:110},{name:"原味丼(豚)",price:100},{name:"起士丼(牛)",price:120},{name:"雙拼雙饗丼附飲料(野菇牛)",price:180}]},{category:"炸物/炙燒",items:[{name:"黃太厚豬排丼",price:150},{name:"炙燒丼(牛)",price:130},{name:"炸豬排",price:70},{name:"溫泉蛋",price:30}]}], options: "" }
-    };
-
     window.logAdminAction = async function(actionName, detailsStr) {
         try {
             const now = new Date();
@@ -544,7 +533,7 @@
             document.getElementById('mainApp').style.display = 'block';
             
             let recordFilterHtml = '<option value="all">顯示全班 (所有號碼)</option>';
-            let adjFilterHtml = '';
+            let adjFilterHtml = '<option value="">請選擇座號...</option>';
             for(let i=1; i<=28; i++) {
                 recordFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
                 adjFilterHtml += `<option value="${i}">座號 ${i} 號</option>`;
@@ -561,33 +550,6 @@
             loadScheduledMenus();
             loadSettings();
             listenToAnnouncements();
-            
-            updateAdjPresets();
-        }
-    };
-
-    window.updateAdjPresets = function() {
-        const type = document.getElementById('adjType').value;
-        const presetSelect = document.getElementById('adjNotePreset');
-        let options = '<option value="">-- 點此選擇常用原因 --</option>';
-        if(type === '補收') {
-            options += '<option value="餐點修改差額補收">餐點修改差額補收</option>';
-            options += '<option value="前期歷史欠款補收">前期歷史欠款補收</option>';
-            options += '<option value="代墊費用補收">代墊費用補收</option>';
-        } else {
-            options += '<option value="作廢/換單預繳退還">作廢/換單預繳退還</option>';
-            options += '<option value="餐點修改差額退還">餐點修改差額退還</option>';
-            options += '<option value="備案差額退還">備案差額退還</option>';
-            options += '<option value="溢繳/找零多給退還">溢繳/找零多給退還</option>';
-        }
-        presetSelect.innerHTML = options;
-        document.getElementById('adjNote').value = ""; 
-    };
-
-    window.handleAdjPresetChange = function() {
-        const preset = document.getElementById('adjNotePreset').value;
-        if(preset) {
-            document.getElementById('adjNote').value = preset;
         }
     };
 
@@ -668,30 +630,6 @@
         } catch(e) { console.error("載入雲端菜單失敗", e); }
     };
 
-    window.seedCloudMenu = async function() {
-        if(!confirm("⚠️ 確定要將內建的 13 家餐廳覆蓋上傳至雲端資料庫嗎？\n（這將會覆蓋雲端同名餐廳的所有資料！）")) return;
-        const btn = document.querySelector('button[onclick="seedCloudMenu()"]');
-        btn.innerHTML = '<span class="material-symbols-outlined">sync</span> 上傳中，請稍候...';
-        btn.disabled = true;
-
-        let count = 0;
-        for(let restName in legacyHardcodedDB) {
-            try {
-                await setDoc(doc(db, "restaurants", restName), {
-                    name: restName,
-                    menu: legacyHardcodedDB[restName].menu,
-                    options: legacyHardcodedDB[restName].options || ""
-                });
-                count++;
-            } catch(e) { console.error(e); }
-        }
-        await logAdminAction("系統初始化", `將 ${count} 家本機菜單推播至雲端`);
-        alert(`✅ 成功上傳 ${count} 家餐廳資料至雲端！`);
-        btn.innerHTML = '<span class="material-symbols-outlined">cloud_upload</span> 🚀 一鍵將內建餐廳上傳至雲端';
-        btn.disabled = false;
-        await loadCloudMenus();
-    };
-
     window.openMenuEditor = function(restName) {
         const ws = document.getElementById('menuEditorWorkspace');
         if(!restName) { ws.style.display = 'none'; return; }
@@ -706,7 +644,6 @@
         renderMenuEditorUI();
     };
 
-    // 🚀 v2.4.4: 菜單分類與品項上移下移按鈕實作
     window.moveCat = function(cIdx, dir) {
         let menu = window.editingRest.menu;
         if(cIdx + dir < 0 || cIdx + dir >= menu.length) return;
@@ -1004,6 +941,7 @@
         } catch(e) {}
     }
 
+    // 🚀 v2.4.5 核心升級：完美的純現金退補帳務邏輯
     window.loadLedger = async function() {
         document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">計算中...</td></tr>`;
         try {
@@ -1014,18 +952,18 @@
                 let o = doc.data();
                 let sIdx = parseInt(o.studentId) - 1;
                 if(sIdx >= 0 && sIdx < 28) {
-                    let originalPrice = o.price || 0;
-                    let safePrice = o.isCancelled ? 0 : originalPrice;
-                    let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? originalPrice : 0);
+                    let safePrice = o.isCancelled ? 0 : (o.price || 0);
+                    let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? safePrice : 0);
                     
                     if (o.isAdjustment) {
+                        // 調整單是純現金流動，不產生新的負債(Debt)！
                         if (o.adjType === '退款') {
-                            ledger[sIdx].paid -= o.price;
+                            ledger[sIdx].paid -= o.price; // 負責人退現金給學生
                         } else {
-                            ledger[sIdx].debt += o.price;
-                            ledger[sIdx].paid += paidAmt;
+                            ledger[sIdx].paid += o.price; // 負責人收到學生的補款現金
                         }
                     } else {
+                        // 一般訂單正常計算應收與已收
                         ledger[sIdx].debt += safePrice; 
                         ledger[sIdx].paid += paidAmt;   
                     }
@@ -1066,18 +1004,106 @@
         } catch(e) {}
     }
 
+    // 🚀 v2.4.5: 智慧讀取欠款/待退單，免手動打字！
     window.prepareAdjustment = function(studentId) {
         document.getElementById('adjStudentId').value = studentId;
         switchPage('page-adjustment');
+        loadUnsettledOrders(); // 自動幫負責人掃描這個學生的歷史問題單！
     }
+
+    window.loadUnsettledOrders = async function() {
+        const studentId = document.getElementById('adjStudentId').value;
+        const targetSelect = document.getElementById('adjTargetOrder');
+        if(!studentId) {
+            targetSelect.innerHTML = '<option value="">請先選擇上方座號...</option>';
+            return;
+        }
+        targetSelect.innerHTML = '<option value="">掃描歷史紀錄中...</option>';
+        
+        try {
+            const snap = await getDocs(query(collection(db, "orders"), where("studentId", "==", parseInt(studentId))));
+            let normals = [];
+            let adjs = [];
+            snap.forEach(docSnap => {
+                let o = docSnap.data();
+                o.docId = docSnap.id;
+                if(o.isAdjustment) adjs.push(o);
+                else normals.push(o);
+            });
+            
+            // 計算每個歷史訂單目前已經被退補了多少錢
+            let adjMap = {};
+            adjs.forEach(a => {
+                if(a.targetOrderId && a.targetOrderId !== 'manual') {
+                    let val = a.adjType === '補收' ? a.price : -a.price;
+                    adjMap[a.targetOrderId] = (adjMap[a.targetOrderId] || 0) + val;
+                }
+            });
+            
+            let html = '<option value="">-- 請選擇有落差的歷史紀錄 (或選最下方手動) --</option>';
+            let hasUnsettled = false;
+            
+            normals.sort((a,b) => b.timestamp - a.timestamp).forEach(o => {
+                let targetPrice = o.isCancelled ? 0 : (o.price || 0);
+                let paid = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? targetPrice : 0);
+                let diff = paid - targetPrice; // 負數代表少付(欠款), 正數代表多付(溢繳待退)
+                
+                // 加上之前針對這筆單做過的退補
+                diff += (adjMap[o.docId] || 0); 
+                
+                if(diff !== 0) {
+                    hasUnsettled = true;
+                    let type = diff < 0 ? '補收' : '退款';
+                    let amt = Math.abs(diff);
+                    let dateStr = o.date;
+                    let mealStr = o.isCancelled ? '[作廢]' : `[${o.restaurant||''}] ` + o.meal.substring(0,10);
+                    let noteStr = `結清 ${dateStr} ${mealStr} 的${type}款項`; // 系統自動幫你寫好備註！
+                    
+                    html += `<option value="${o.docId}" data-type="${type}" data-amt="${amt}" data-note="${noteStr}">
+                        ${dateStr} | ${mealStr} | 應${type} $${amt}
+                    </option>`;
+                }
+            });
+            
+            if(!hasUnsettled) {
+                html += '<option value="" disabled>此座號目前帳務完美結清！無歷史落差</option>';
+            }
+            
+            html += '<option value="manual">➕ 手動純現金調整 (無對應特定紀錄，例如借款)</option>';
+            targetSelect.innerHTML = html;
+            
+            // 清空輸入框
+            document.getElementById('adjType').value = '補收';
+            document.getElementById('adjAmount').value = '';
+            document.getElementById('adjNote').value = '';
+            
+        } catch(e) {
+            targetSelect.innerHTML = '<option value="">讀取失敗</option>';
+        }
+    };
+
+    window.handleTargetOrderChange = function() {
+        const sel = document.getElementById('adjTargetOrder');
+        const opt = sel.options[sel.selectedIndex];
+        if(opt && opt.value && opt.value !== 'manual') {
+            document.getElementById('adjType').value = opt.getAttribute('data-type');
+            document.getElementById('adjAmount').value = opt.getAttribute('data-amt');
+            document.getElementById('adjNote').value = opt.getAttribute('data-note');
+        } else if(opt && opt.value === 'manual') {
+            document.getElementById('adjAmount').value = '';
+            document.getElementById('adjNote').value = '';
+        }
+    };
 
     window.submitAdjustment = async function() {
         const studentId = parseInt(document.getElementById('adjStudentId').value);
+        const targetOrderId = document.getElementById('adjTargetOrder').value;
         const type = document.getElementById('adjType').value;
         const amount = Math.ceil(parseFloat(document.getElementById('adjAmount').value));
         const note = document.getElementById('adjNote').value.trim() || "無";
 
         if(isNaN(amount) || amount <= 0) return alert("請輸入有效的金額！");
+        if(!targetOrderId) return alert("請選擇上方要處理的歷史紀錄，或是選擇最下方的『手動調整』！");
 
         const now = new Date();
         const timestamp = now.getTime();
@@ -1087,25 +1113,26 @@
             studentId: studentId,
             date: todayStr,
             restaurant: "款項調整中心",
-            meal: type === '補收' ? `[事後補收] ${note}` : `[事後退款] ${note}`,
+            meal: type === '補收' ? `[事後補收]` : `[事後退款]`,
             price: amount,
-            paidAmount: type === '退款' ? 0 : 0, 
-            isPaid: type === '退款' ? true : false,
+            paidAmount: amount, // 退補單屬於純現金交易，Price = PaidAmount
+            isPaid: true,
             isCancelled: false,
-            note: `事後${type}: $${amount} | 備註: ${note}`,
+            note: `金額: $${amount} | 原因: ${note}`,
             timestamp: timestamp,
             timeString: timeString,
             isAdjustment: true,
-            adjType: type
+            adjType: type,
+            targetOrderId: targetOrderId // 標記這筆調整是為了解決哪一筆歷史訂單
         };
 
         try {
             await setDoc(doc(db, "orders", `${todayStr}_adj_${studentId}_${timestamp}`), orderData);
-            logAdminAction("事後退補款項", `對座號 ${studentId} 執行 ${type} $${amount}，備註: ${note}`);
-            alert(`✅ 成功為 ${studentId} 號執行 ${type} $${amount}！已同步至學生前台。`);
+            logAdminAction("事後退補", `對座號 ${studentId} 執行 ${type} $${amount}，備註: ${note}`);
+            alert(`✅ 成功為 ${studentId} 號執行 ${type} $${amount}！已補平該筆帳務並同步至前台。`);
             
-            document.getElementById('adjAmount').value = '';
-            document.getElementById('adjNote').value = '';
+            // 自動重整畫面，剛剛選的那筆有落差的單子就會從清單消失了（因為帳補平了！）
+            loadUnsettledOrders(); 
             switchPage('page-ledger');
         } catch(e) {
             alert("送出失敗");
@@ -1139,7 +1166,7 @@
                 if (o.isCancelled) {
                     status = "已作廢";
                 } else if (o.isAdjustment) {
-                    status = o.adjType === '退款' ? '已退還現金' : (o.isPaid ? '已補收結清' : '未繳補收');
+                    status = `<span style="color:#0078d4;">${o.adjType === '退款' ? '已退還現金' : '已收到補款'}</span>`;
                 } else {
                     status = o.isPaid ? "已結清" : "未繳";
                 }
