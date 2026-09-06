@@ -7,108 +7,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <style>
-        /* 🚀 完美平衡：明顯但柔和的莫蘭迪藍紫漸層 */
         body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
-        
         .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .menu-btn { font-size: 26px; background: none; border: none; color: white; cursor: pointer; padding: 0 10px; }
         .header-title { font-size: 18px; font-weight: 700; flex-grow: 1; text-align: center; letter-spacing: 0.5px; }
-        
         .sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: #fff; border-right: 1px solid #e5e5ea; transition: left 0.3s ease; z-index: 1000; display: flex; flex-direction: column; overflow-y: auto; }
         .sidebar.active { left: 0; }
         .sidebar-header { background: #fafafa; color: #111; padding: 20px; font-size: 18px; font-weight: 700; border-bottom: 1px solid #e5e5ea; }
-        
         .account-status { background: #f5f5f7; padding: 15px 20px; font-size: 15px; font-weight: 600; color: #111; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e5ea; }
         .btn-logout { background: transparent; border: 1px solid #111; color: #111; padding: 4px 10px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; transition: 0.2s; font-family: inherit;}
-        .btn-logout:hover { background: #111; color: #fff; }
-
         .sidebar-menu { list-style: none; padding: 0; margin: 0; }
         .sidebar-menu li { border-bottom: 1px solid #f2f2f7; }
         .sidebar-menu a { display: block; padding: 15px 20px; color: #333; text-decoration: none; font-size: 15px; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
         .sidebar-menu a:hover { background: #f5f5f7; color: #000; }
-        
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); display: none; z-index: 999; }
         .overlay.active { display: block; }
-
         .container { max-width: 500px; margin: 0 auto; padding: 15px; }
         .card { background: white; padding: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 8px 30px rgba(0,0,0,0.08); margin-bottom: 20px; }
         h2 { color: #111; font-size: 18px; border-bottom: 1px solid #e5e5ea; padding-bottom: 12px; margin-top:0; font-weight: 700; display: flex; align-items: center;}
-        
         .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; font-size: 15px; font-weight: 600; font-family: inherit; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn-primary { background-color: #111; color: #fff; }
-        .btn-primary:hover { background-color: #333; }
-        .btn-secondary { background-color: #f5f5f7; color: #111; border: 1px solid #d2d2d7; }
-        .btn-secondary:hover { background-color: #ebebf0; }
-        .btn-danger { background-color: #fff; color: #111; border: 1px solid #111; }
-        .btn-danger:hover { background-color: #f5f5f7; }
-        .btn-success { background-color: #111; color: #fff; }
-        .btn-outline { background-color: transparent; color: #111; border: 1px solid #d2d2d7; }
-        .btn-outline:hover { border-color: #111; background: #fafafa; }
-        
-        #menuArea, #customizeArea, #reviewArea, #receiptArea, #planBDashboard, #lockedScreen, #historyModal, #infoCard, #personalHistoryArea, #reviewPageArea, #feedbackPageArea { display: none; }
+        .btn-primary { background-color: #111; color: #fff; } .btn-secondary { background-color: #f5f5f7; color: #111; border: 1px solid #d2d2d7; } .btn-danger { background-color: #fff; color: #111; border: 1px solid #111; } .btn-outline { background-color: transparent; color: #111; border: 1px solid #d2d2d7; }
+        #menuArea, #customizeArea, #reviewArea, #receiptArea, #planBDashboard, #lockedScreen, #historyModal, #infoCard, #personalHistoryArea, #reviewPageArea, #feedbackPageArea, #menuOverviewArea { display: none; }
         .price-text { color: #111; font-size: 28px; font-weight: 700; margin: 15px 0; }
         #announcementBanner { display: none; background: #fafafa; border: 1px solid #111; padding: 15px; border-radius: 8px; margin-bottom: 20px; color: #111; }
-        
         .category-nav { display: flex; overflow-x: auto; white-space: nowrap; gap: 20px; padding: 10px 15px 0 15px; background: transparent; position: sticky; top: 60px; z-index: 90; border-bottom: 1px solid #e5e5ea; margin: -15px -15px 20px -15px; scroll-behavior: smooth; }
         .category-nav::-webkit-scrollbar { display: none; } 
-        .cat-tab { color: #888; cursor: pointer; font-weight: 600; font-size: 15px; padding-bottom: 12px; position: relative; transition: color 0.2s; }
-        .cat-tab.active { color: #111; }
-        .cat-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background-color: #111; } 
-        
-        .menu-category { font-size: 20px; font-weight: 700; color: #111; margin: 30px 0 15px 0; padding-bottom: 5px; }
-        .menu-section { scroll-margin-top: 115px; } 
-        
-        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); transition: border-color 0.2s; }
-        .menu-item:hover { border-color: #111; }
-        .item-name { font-size: 15px; font-weight: 600; color: #111; }
-        .item-price { color: #555; font-weight: 500; margin-top: 4px; font-size: 14px;}
-        .qty-controls { display: flex; align-items: center; gap: 12px; }
-        .qty-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid #d2d2d7; background: #fafafa; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #111; transition: 0.2s;}
-        .qty-btn:hover { background: #eee; }
-        .qty-btn.plus { background: #111; color: #fff; border-color: #111; }
-        .qty-btn.plus:hover { background: #333; }
-        .qty-display { font-weight: 600; font-size: 15px; min-width: 20px; text-align: center; }
-
-        .cart-fab { position: fixed; bottom: 24px; right: 24px; background: #111; color: white; padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; display: none; align-items: center; gap: 12px; transition: transform 0.2s; }
-        
-        .hot-section { background: #fafafa; padding: 16px; border-radius: 12px; border: 1px solid #e5e5ea; margin-bottom: 24px; }
-        .hot-title { color: #111; font-weight: 700; margin-bottom: 12px; display:flex; align-items:center; }
-        
+        .cat-tab { color: #888; cursor: pointer; font-weight: 600; font-size: 15px; padding-bottom: 12px; position: relative; transition: color 0.2s; } .cat-tab.active { color: #111; } .cat-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background-color: #111; } 
+        .menu-category { font-size: 20px; font-weight: 700; color: #111; margin: 30px 0 15px 0; padding-bottom: 5px; } .menu-section { scroll-margin-top: 115px; } 
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; margin-bottom: 12px; transition: border-color 0.2s; }
+        .item-name { font-size: 15px; font-weight: 600; color: #111; } .item-price { color: #555; font-weight: 500; margin-top: 4px; font-size: 14px;}
+        .qty-controls { display: flex; align-items: center; gap: 12px; } .qty-btn { width: 30px; height: 30px; border-radius: 6px; border: 1px solid #d2d2d7; background: #fafafa; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #111;} .qty-btn.plus { background: #111; color: #fff; border-color: #111; } .qty-display { font-weight: 600; font-size: 15px; min-width: 20px; text-align: center; }
+        .cart-fab { position: fixed; bottom: 24px; right: 24px; background: #111; color: white; padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; display: none; align-items: center; gap: 12px; }
         .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-        .checkbox-item { display: flex; align-items: center; background: #fafafa; padding: 14px; border-radius: 8px; border: 1px solid #e5e5ea; cursor: pointer; font-size:15px; }
-        .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; margin-right: 12px; accent-color: #111; }
-        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 14px; box-sizing: border-box; border: 1px solid #d2d2d7; border-radius: 8px; font-size: 15px; font-family: inherit; outline: none; transition: 0.2s;}
-        input:focus, select:focus, textarea:focus { border-color: #111; }
-        
+        .checkbox-item { display: flex; align-items: center; background: #fafafa; padding: 14px; border-radius: 8px; border: 1px solid #e5e5ea; cursor: pointer; font-size:15px; } .checkbox-item input { width: 18px; height: 18px; margin-right: 12px; accent-color: #111; }
+        input[type="text"], input[type="number"], input[type="date"], select, textarea { width: 100%; padding: 14px; box-sizing: border-box; border: 1px solid #d2d2d7; border-radius: 8px; font-size: 15px; font-family: inherit; outline: none; transition: 0.2s;} input:focus, select:focus, textarea:focus { border-color: #111; }
         #tosModal { display: none; position: fixed; top: 5%; left: 50%; transform: translate(-50%, 0); width: 90%; max-width: 500px; background: white; padding: 25px 24px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); z-index: 2000; border: 1px solid #e5e5ea; max-height: 85vh; overflow-y: auto; }
-        .tos-title { color: #111; border-bottom: 1px solid #e5e5ea; padding-bottom: 12px; margin-top: 0; font-weight: 700; text-align: center; }
-        .tos-text { font-size: 14px; line-height: 1.6; color: #444; }
         #systemOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); z-index: 1999; }
-        
-        .rank-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f2f2f7; font-size:15px; }
-        .rank-num { font-weight: 700; color: #111; width: 30px; display:inline-block; }
-        .table-responsive { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; white-space: nowrap; }
-        th, td { border: 1px solid #e5e5ea; padding: 10px; text-align: center; }
-        th { background-color: #fafafa; color: #111; font-weight: 600; }
-        
-        .review-label { font-weight:600; color:#111; display:block; margin: 16px 0 6px 0; font-size:15px;}
-        .review-hint { font-size:12px; color:#888; font-weight:normal; }
-        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; white-space: nowrap; } th, td { border: 1px solid #e5e5ea; padding: 10px; text-align: center; } th { background-color: #fafafa; color: #111; font-weight: 600; }
         .user-badge { display:inline-block; background:#111; color:white; padding:4px 10px; border-radius:12px; font-size:15px; font-weight:600; margin:0 5px; }
-
-        /* 🚀 獨立登入頁面 IG 風格 */
-        #loginPage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
-        .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
-        .ig-title { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 24px; color: #111; letter-spacing: 1px;}
-        .ig-input { width: 100%; padding: 14px 16px; border: 1px solid #e5e5ea; border-radius: 12px; font-size: 14px; background-color: #fafafa; outline: none; box-sizing: border-box; font-family: inherit;}
-        .ig-input:focus { border-color: #111; background-color: #fff; }
-        .ig-btn { width: 100%; padding: 14px; background-color: #111; color: white; border: none; border-radius: 24px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 4px; font-family: inherit; transition: 0.2s;}
-        .ig-btn:hover { background-color: #333; }
-        .ig-forgot { text-align: center; margin-top: 20px; font-size: 14px; color: #555; cursor: pointer; font-weight: 500; transition: 0.2s; }
-        .ig-forgot:hover { color: #111; }
-        
+        #loginPage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; } .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.5); } .ig-input { width: 100%; padding: 14px; border: 1px solid #e5e5ea; border-radius: 12px; font-size: 14px; background-color: #fafafa; } .ig-btn { width: 100%; padding: 14px; background-color: #111; color: white; border: none; border-radius: 24px; font-size: 15px; font-weight: bold; cursor: pointer;}
         #mainApp { display: none; }
     </style>
 </head>
@@ -116,17 +54,16 @@
 
 <div id="loginPage">
     <div class="ig-form">
-        <div class="ig-title">217午餐訂購系統</div>
+        <div style="font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 24px; color: #111;">217午餐訂購系統</div>
         <input type="text" id="loginAccount" class="ig-input" placeholder="帳號 (例如: 21701)">
         <input type="password" id="loginPassword" class="ig-input" placeholder="密碼">
         <button class="ig-btn" onclick="doLogin()">登入</button>
-        <div class="ig-forgot" onclick="alert('忘記密碼？請直接聯絡負責人處理！')">忘記密碼？</div>
     </div>
 </div>
 
 <div id="mainApp">
     <div class="header">
-        <button class="menu-btn" onclick="toggleMenu()"><span class="material-symbols-outlined" style="font-size:28px; margin:0;">menu</span></button>
+        <button class="menu-btn" onclick="toggleMenu()"><span class="material-symbols-outlined">menu</span></button>
         <div class="header-title">217午餐訂購系統</div>
         <div style="width: 44px;"></div>
     </div>
@@ -135,180 +72,163 @@
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">系統選單</div>
         <div class="account-status">
-            <div style="display:flex; align-items:center;"><span class="material-symbols-outlined" style="margin-right:6px;">account_circle</span> <span id="sidebarLoggedId">尚未登入</span> 號</div>
+            <div><span class="material-symbols-outlined" style="margin-right:6px;">account_circle</span> <span id="sidebarLoggedId">尚未登入</span> 號</div>
             <button class="btn-logout" onclick="logout()">登出</button>
         </div>
+        <!-- 🚀 選單完美重新排序 -->
         <ul class="sidebar-menu">
             <li><a href="javascript:void(0)" onclick="resumeOrderFlow(); toggleMenu();"><span class="material-symbols-outlined">restaurant_menu</span> 進行點餐 / 首頁</a></li>
+            <li><a href="javascript:void(0)" onclick="showMenuOverview(); toggleMenu();"><span class="material-symbols-outlined">menu_book</span> 菜單總覽</a></li>
+            <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
             <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
             <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
-            <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
+            <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
             <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
             <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span class="material-symbols-outlined">info</span> 關於本站</a></li>
-            <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
         </ul>
     </div>
 
     <div id="systemOverlay"></div>
-
     <div id="tosModal">
-        <h2 class="tos-title"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</h2>
-        <div class="tos-text" id="tosTextContent">
-            <p><strong>第一條（同意條款與契約成立）</strong><br>使用者於本系統點擊「確認送出訂單」之同時，即推定已審閱、瞭解並同意遵守本條款，約定委任關係生效。</p>
-            <p><strong>第二條（真實身分與冒用之法律責任）</strong><br>使用者應以本人真實座號登入。倘有無經授權冒用他人座號點餐、取消或輸入不實電磁紀錄致生損害者，負責人得逕行保全存取紀錄移請學務處查處；情節重大者，依法追究刑事責任。</p>
-            <p><strong>第三條（履約義務與損害賠償）</strong><br>契約一經成立，除不可抗力外，訂購人不得無故拒絕受領或拒付價金。惡意棄單者應負損害賠償責任。</p>
-            <p><strong>第四條（免責事由與帳務確認）</strong><br>因設備故障致資料滅失，負責人不負賠償責任。帳務結算概以負責人實際收受現金為唯一認定標準。</p>
-            <p><strong>第五條（緊急處置權）</strong><br>遇店家無法履約時，負責人得逕行啟動備案或撤銷訂單，價金差額依多退少補處理，訂購人不得異議。</p>
-            <hr style="border: 0; border-top: 1px solid #e5e5ea; margin: 15px 0;">
-            <p><strong><span class="material-symbols-outlined">assignment</span> 學校午餐規定</strong><br>詳見校網公告：<br><a href="https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754" target="_blank" style="color: #111; word-break: break-all; font-weight:600;">點擊前往新竹高中校網查看</a></p>
+        <h2 style="text-align:center;"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</h2>
+        <div id="tosTextContent" style="font-size: 14px; line-height: 1.6; color: #444;">
+            <p><strong>第一條（同意條款與契約成立）</strong><br>使用者點擊「確認送出訂單」時，即同意遵守本條款。</p>
+            <p><strong>第二條（真實身分與冒用）</strong><br>冒用他人座號點餐致生損害者，將移請學務處查處。</p>
+            <p><strong>第三條（履約義務）</strong><br>契約成立後，惡意棄單者應負損害賠償責任。</p>
+            <p><strong>第四條（緊急處置權）</strong><br>店家無法履約時，負責人得啟動備案或撤銷訂單，價金多退少補。</p>
         </div>
         <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="agreeToS()">我已詳閱並同意</button>
     </div>
 
     <div class="container">
-        <div id="announcementBanner">
-            <h3 style="margin-top:0; display:flex; align-items:center;"><span class="material-symbols-outlined">campaign</span> 負責人緊急廣播</h3>
-            <p id="announcementMsg" style="font-weight:600;"></p>
-            <div style="font-size: 12px; color: #555; text-align: right; margin-top: 5px;" id="announcementTime"></div>
+        <div id="announcementBanner"><h3 style="margin-top:0;"><span class="material-symbols-outlined">campaign</span> 緊急廣播</h3><p id="announcementMsg"></p></div>
+
+        <!-- 菜單總覽頁面 -->
+        <div class="card" id="menuOverviewArea">
+            <h2><span class="material-symbols-outlined">menu_book</span> 菜單總覽 (檢視模式)</h2>
+            <select id="mo_restaurantSelect" onchange="renderMenuOverview(this.value)" style="margin-bottom:15px;"></select>
+            <div id="mo_menuContainer" style="background:#fafafa; border:1px solid #e5e5ea; border-radius:12px; padding:15px;"></div>
+            <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
         <div class="card" id="infoCard">
             <h2 id="infoTitle">標題</h2>
-            <div id="infoContent" style="font-size: 15px; line-height: 1.8; color: #333;">內容</div>
-            <button class="btn btn-primary" style="margin-top: 25px;" onclick="resumeOrderFlow()"><span class="material-symbols-outlined">arrow_back</span> 返回首頁</button>
+            <div id="infoContent" style="font-size: 15px; line-height: 1.8;">內容</div>
+            <button class="btn btn-primary" style="margin-top: 25px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
+        <!-- 許願池升級 -->
         <div class="card" id="feedbackPageArea">
             <h2><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</h2>
-            <p style="color:#555; font-size:14px; line-height:1.6;">想增加或改善甚麼功能？一起優化這個網站吧！</p>
-            <div style="font-size:15px; font-weight:600; color:#111; margin:15px 0;">目前登入座號：<span class="display-user-id user-badge"></span></div>
-            <label class="review-label">你的意見或願望：</label>
-            <textarea id="fbContent" rows="4" placeholder="請輸入任何想法..."></textarea>
-            <button class="btn btn-primary" style="margin-top:20px;" onclick="submitFeedback()">送出意見</button>
-            <button class="btn btn-secondary" style="margin-top:10px;" onclick="resumeOrderFlow()">返回首頁</button>
+            
+            <div style="background:#f5f5f7; padding:15px; border-radius:12px; border:1px solid #e5e5ea; margin-bottom:25px;">
+                <h3 style="margin-top:0; font-size:16px; color:#111;"><span class="material-symbols-outlined" style="color:#d32f2f;">event</span> 接下來幾天想吃甚麼？</h3>
+                <label style="font-size:14px; font-weight:600; display:block; margin:10px 0 5px 0;">指定日期：</label>
+                <input type="date" id="wishDate">
+                <label style="font-size:14px; font-weight:600; display:block; margin:10px 0 5px 0;">想吃的餐廳：</label>
+                <select id="wishRestaurant"></select>
+                <button class="btn btn-primary" style="margin-top:15px;" onclick="submitWish()">送出許願</button>
+            </div>
+
+            <div style="border-top:1px solid #e5e5ea; padding-top:20px;">
+                <h3 style="margin-top:0; font-size:16px; color:#111;"><span class="material-symbols-outlined">edit_note</span> 其他意見與回饋</h3>
+                <textarea id="fbContent" rows="4" placeholder="請輸入任何想法..."></textarea>
+                <button class="btn btn-outline" style="margin-top:15px;" onclick="submitFeedback()">傳送意見</button>
+            </div>
+            <button class="btn btn-secondary" style="margin-top:15px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
         <div class="card" id="reviewPageArea">
             <h2><span class="material-symbols-outlined">star</span> 餐點評分</h2>
-            <p style="color:#555; font-size:14px;">請查詢最近 7 天內的有效餐點並給予評價。若訂單作廢，則無法評分；重新下單後將產生全新紀錄供你評價！</p>
-            <div style="font-size:15px; font-weight:600; color:#111; margin:15px 0;">目前登入座號：<span class="display-user-id user-badge"></span></div>
-            <button class="btn btn-outline" style="margin-top:5px;" onclick="fetchOrdersForReview()"><span class="material-symbols-outlined">search</span> 查詢我的近期餐點</button>
-            
+            <p style="color:#555; font-size:14px;">查詢最近 7 天的有效餐點並給予評價。</p>
+            <button class="btn btn-outline" style="margin-top:5px;" onclick="fetchOrdersForReview()">查詢我的近期餐點</button>
             <div id="reviewedOrdersLog"></div>
-
             <div id="reviewFormBlock" style="display:none; margin-top:20px; border-top:1px solid #e5e5ea; padding-top:15px;">
-                <label class="review-label">1. 選擇尚未評分的歷史餐點：</label>
-                <select id="rvOrderSelect"></select>
-                <label class="review-label">2. 餐點滿意度 (好不好吃) <span class="review-hint">(1~10分)</span>：</label>
-                <input type="number" id="rvScore1" min="1" max="10" placeholder="留空不計分">
-                <label class="review-label">3. 送餐速度滿意度 <span class="review-hint">(1~10分)</span>：</label>
-                <input type="number" id="rvScore2" min="1" max="10" placeholder="留空不計分">
-                <label class="review-label">4. 價格滿意度 <span class="review-hint">(1~10分)</span>：</label>
-                <input type="number" id="rvScore3" min="1" max="10" placeholder="留空不計分">
-                <label class="review-label">5. 整體推不推薦以後繼續訂 <span class="review-hint">(1~10分)</span>：</label>
-                <input type="number" id="rvScore4" min="1" max="10" placeholder="留空不計分">
-                <label class="review-label">6. 其他想反應的建議 (文字)：</label>
-                <textarea id="rvComment" rows="3" placeholder="例如：麵條太軟、湯太鹹..."></textarea>
+                <label style="font-weight:600;">1. 選擇尚未評分的餐點：</label> <select id="rvOrderSelect"></select>
+                <label style="font-weight:600; margin-top:10px; display:block;">2. 餐點滿意度 (1~10)：</label> <input type="number" id="rvScore1" min="1" max="10">
+                <label style="font-weight:600; margin-top:10px; display:block;">3. 送餐速度 (1~10)：</label> <input type="number" id="rvScore2" min="1" max="10">
+                <label style="font-weight:600; margin-top:10px; display:block;">4. 價格滿意度 (1~10)：</label> <input type="number" id="rvScore3" min="1" max="10">
+                <label style="font-weight:600; margin-top:10px; display:block;">5. 整體推薦度 (1~10)：</label> <input type="number" id="rvScore4" min="1" max="10">
+                <label style="font-weight:600; margin-top:10px; display:block;">6. 文字建議：</label> <textarea id="rvComment" rows="2"></textarea>
                 <button class="btn btn-primary" style="margin-top:20px;" onclick="submitMealReview()">送出評分</button>
             </div>
             <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
         <div class="card" id="planBDashboard" style="border: 2px solid #111; background: #fafafa;">
-            <h2 style="justify-content:center; border:none; margin-bottom:0;"><span class="material-symbols-outlined">emergency</span> 統一備案名單與補退款</h2>
-            <div style="text-align:center; margin-bottom:15px; font-size:16px;">今日改訂：<strong id="pbMealDisplay"></strong> ($<strong id="pbPriceDisplay"></strong>)</div>
-            <div class="table-responsive">
-                <table style="width:100%; text-align:center; background:white;">
-                    <thead><tr><th>座號</th><th>狀態 & 補退款指示</th></tr></thead>
-                    <tbody id="pbTableBody"><tr><td colspan="2">載入中...</td></tr></tbody>
-                </table>
+            <h2 style="justify-content:center; border:none; margin-bottom:0;"><span class="material-symbols-outlined">emergency</span> 統一備案補退款</h2>
+            <div style="text-align:center; font-size:16px;">今日改訂：<strong id="pbMealDisplay"></strong> ($<strong id="pbPriceDisplay"></strong>)</div>
+            <div style="overflow-x:auto;">
+                <table style="background:white;"><tbody id="pbTableBody"></tbody></table>
             </div>
-            <hr style="margin:20px 0; border:0; border-top:1px solid #e5e5ea;">
-            <h3 style="margin-top:0; font-size:15px;">操作區：</h3>
-            <div style="font-size:15px; font-weight:600; color:#111; margin-bottom:15px;">身分認證：<span class="display-user-id user-badge"></span></div>
-            <div style="display:flex; flex-direction:column; gap:8px;">
-                <button class="btn btn-primary" onclick="pbNotifyPaid()"><span class="material-symbols-outlined">front_hand</span> 已補差額/繳費，通知負責人</button>
-                <button class="btn btn-outline" onclick="pbOptIn()"><span class="material-symbols-outlined">add</span> 額外加入統一定餐</button>
-                <button class="btn btn-danger" onclick="pbOptOut()"><span class="material-symbols-outlined">close</span> 取消我的訂單</button>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:15px;">
+                <button class="btn btn-primary" onclick="pbNotifyPaid()">已補差額/繳費，通知負責人</button>
+                <button class="btn btn-outline" onclick="pbOptIn()">額外加入統一定餐</button>
+                <button class="btn btn-danger" onclick="pbOptOut()">取消我的訂單</button>
             </div>
         </div>
 
         <div id="lockedScreen" class="card" style="text-align:center; padding: 40px 20px;">
             <span class="material-symbols-outlined" style="font-size:48px; color:#111; margin-bottom:10px; display:block;">lock</span>
-            <h2 style="justify-content:center; border:none; margin-bottom:5px;">目前無法點餐</h2>
-            <p id="lockedReason" style="font-weight:600; color:#555; margin-top:0; line-height:1.6;"></p>
-            <hr style="margin:30px 0 20px 0; border:0; border-top:1px solid #e5e5ea;">
-            <p style="color:#888; font-size:14px; margin-bottom:15px;">等待開放的同時，你可以：</p>
-            <div style="display:flex; gap:10px;">
-                <button class="btn btn-outline" style="flex:1; margin-top:0;" onclick="showReviewPage()"><span class="material-symbols-outlined">star</span> 填寫評分</button>
-                <button class="btn btn-outline" style="flex:1; margin-top:0;" onclick="showFeedbackPage()"><span class="material-symbols-outlined">forum</span> 意見反應</button>
-            </div>
+            <h2>目前無法點餐</h2>
+            <p id="lockedReason" style="font-weight:600; color:#555; line-height:1.6;"></p>
         </div>
 
+        <!-- 排行榜升級雙榜單 -->
         <div class="card" id="historyModal">
-            <h2><span class="material-symbols-outlined">leaderboard</span> 歷代排行榜 (總計)</h2>
-            <div id="historyRankContent">載入中...</div>
+            <h2><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</h2>
+            <div style="display:flex; gap:10px; margin-bottom:15px;">
+                <button class="btn btn-outline" style="margin:0; padding:8px; font-size:14px;" onclick="document.getElementById('rankItems').style.display='block'; document.getElementById('rankRests').style.display='none';">餐點排行</button>
+                <button class="btn btn-outline" style="margin:0; padding:8px; font-size:14px;" onclick="document.getElementById('rankItems').style.display='none'; document.getElementById('rankRests').style.display='block';">人氣餐廳排行</button>
+            </div>
+            <div id="rankItems">載入中...</div>
+            <div id="rankRests" style="display:none;">載入中...</div>
             <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
         <div class="card" id="personalHistoryArea">
             <h2><span class="material-symbols-outlined">history</span> 我的歷史訂單紀錄</h2>
-            <p>座號：<strong id="ph_studentId" style="font-size:18px;"></strong> 號</p>
-            <div class="table-responsive">
-                <table>
-                    <thead><tr><th>日期</th><th>餐點</th><th>狀態</th></tr></thead>
-                    <tbody id="ph_tableBody"><tr><td colspan="3">讀取中...</td></tr></tbody>
-                </table>
+            <div style="overflow-x:auto;">
+                <table><thead><tr><th>日期</th><th>餐點</th><th>狀態</th></tr></thead><tbody id="ph_tableBody"></tbody></table>
             </div>
             <button class="btn btn-secondary" style="margin-top:20px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
-        <div class="card login-box" id="authArea">
-            <div style="border-bottom: 1px solid #e5e5ea; padding-bottom: 25px; margin-bottom: 25px;">
-                <h2 style="border:none; justify-content:center; margin-bottom:15px;"><span class="material-symbols-outlined">restaurant</span> 我要點餐</h2>
-                <div style="font-size:15px; font-weight:600; color:#111; margin-bottom:15px;">身分認證：<span class="display-user-id user-badge"></span></div>
-                <button class="btn btn-primary" onclick="verifyStudent()">點此進入菜單 <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span></button>
-            </div>
-            <div>
-                <h2 style="border:none; justify-content:center; margin-bottom:15px;"><span class="material-symbols-outlined">search</span> 查詢狀態與紀錄</h2>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn btn-outline" style="flex:1;" onclick="checkStatusQuick()">當日狀態</button>
-                    <button class="btn btn-outline" style="flex:1;" onclick="showMyHistory()">歷史紀錄</button>
-                </div>
+        <div class="card" id="authArea">
+            <h2 style="border:none; justify-content:center;"><span class="material-symbols-outlined">restaurant</span> 我要點餐</h2>
+            <div style="font-size:15px; font-weight:600; color:#111; margin-bottom:15px;">身分認證：<span class="display-user-id user-badge"></span></div>
+            <button class="btn btn-primary" onclick="verifyStudent()">進入菜單 <span class="material-symbols-outlined">arrow_forward</span></button>
+            <hr style="margin:20px 0; border:0; border-top:1px solid #e5e5ea;">
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-outline" style="flex:1;" onclick="checkStatusQuick()">當日狀態</button>
+                <button class="btn btn-outline" style="flex:1;" onclick="showMyHistory()">歷史紀錄</button>
             </div>
         </div>
 
         <div id="menuArea" style="padding-bottom: 80px;">
             <div id="categoryNav" class="category-nav"></div>
             <div style="background-color: #111; color: #fff; padding: 12px; border-radius: 8px; text-align: center; font-weight: 600; margin-bottom: 20px; font-size:15px;">
-                今日餐廳：<span id="displayRestaurant">載入中...</span>
-            </div>
-            <div class="hot-section menu-section" id="hotSection">
-                <div class="hot-title"><span class="material-symbols-outlined">local_fire_department</span> 班內熱門推薦 (Top 3)</div>
-                <div id="hotItemsContainer">載入中...</div>
+                今日餐廳：<span id="displayRestaurant"></span>
             </div>
             <div id="fullMenuContainer"></div>
         </div>
 
         <div id="cartFab" class="cart-fab" onclick="goToCustomize()">
-            <div style="display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined">shopping_cart</span> $<span id="cartTotal">0</span></div>
-            <div style="display:flex; align-items:center; gap:4px;">完成選擇 <span class="material-symbols-outlined" style="font-size:18px; margin:0;">arrow_forward</span></div>
+            <div><span class="material-symbols-outlined">shopping_cart</span> $<span id="cartTotal">0</span></div>
+            <div>完成選擇 <span class="material-symbols-outlined">arrow_forward</span></div>
         </div>
 
-        <!-- 客製化專區 (獨立綁定單一餐點版) -->
         <div class="card" id="customizeArea">
-            <h2><span class="material-symbols-outlined">tune</span> 選擇客製化選項</h2>
+            <h2><span class="material-symbols-outlined">tune</span> 選擇客製化/套餐選項</h2>
             <div style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e5e5ea; margin-bottom:20px;">
-                <div style="color:#555; font-weight:600; margin-bottom:8px; font-size:14px;">已選擇餐點清單：</div>
+                <div style="color:#555; font-weight:600; margin-bottom:8px; font-size:14px;">已選餐點：</div>
                 <div id="c_mealName" style="font-size:15px; font-weight:700; color:#111; line-height:1.6;"></div>
-                <hr style="border:0; border-top:1px solid #e5e5ea; margin:12px 0;">
-                <div style="font-size:14px; font-weight:600;">基本價格：<span id="c_basePrice" style="font-weight:700; font-size:16px;"></span></div>
             </div>
             <div id="dynamicOptions"></div>
-            <label style="font-weight:600; color:#111; display:block; margin:20px 0 8px 0; font-size:15px;">📝 全單備註 (不要蔥、不要香菜...)：</label>
-            <input type="text" id="orderNote" placeholder="輸入全單特殊需求...">
+            <label style="font-weight:600; color:#111; display:block; margin:20px 0 8px 0;">📝 全單備註：</label>
+            <input type="text" id="orderNote" placeholder="例如：不要蔥...">
             <div style="display:flex; gap:10px; margin-top:25px;">
-                <button class="btn btn-secondary" onclick="backToMenu()">返回加點</button>
+                <button class="btn btn-secondary" onclick="backToMenu()">返回</button>
                 <button class="btn btn-primary" onclick="goToReview()">下一步</button>
             </div>
         </div>
@@ -316,11 +236,11 @@
         <div class="card" id="reviewArea">
             <h2><span class="material-symbols-outlined">fact_check</span> 請確認餐點內容</h2>
             <div style="background: #fafafa; padding: 16px; border-radius: 8px; border:1px solid #e5e5ea; line-height:1.8; font-size:15px;">
-                <!-- 🚀 Bug 修復處：補上 id="v_id" -->
                 <div>座號：<strong id="v_id" class="display-user-id"></strong></div>
+                <div>餐廳：<strong id="v_rest"></strong></div>
                 <div>餐點：<strong id="v_meal"></strong></div>
                 <div>備註：<strong id="v_note"></strong></div>
-                <div class="price-text" style="margin-top:15px; padding-top:15px; border-top:1px solid #e5e5ea;">總額：$<span id="v_price"></span></div>
+                <div class="price-text" style="border-top:1px solid #e5e5ea; padding-top:15px;">總額：$<span id="v_price"></span></div>
             </div>
             <div style="display:flex; gap:10px; margin-top:20px;">
                 <button class="btn btn-secondary" onclick="backToCustomize()">返回修改</button>
@@ -330,28 +250,22 @@
 
         <div class="card" id="receiptArea">
             <h2><span class="material-symbols-outlined">receipt_long</span> 訂單狀態</h2>
-            <p style="font-size:13px; color:#888; margin-top:0;">送出時間：<span id="r_time"></span></p>
+            <p style="font-size:13px; color:#888; margin-top:0;">時間：<span id="r_time"></span></p>
             <div style="font-size:15px; line-height:1.8;">
-                <div>座號：<strong id="r_id"></strong></div>
                 <div>餐點：<strong id="r_meal"></strong></div>
-                <div class="price-text" style="margin:10px 0;">總額：$<span id="r_price"></span></div>
+                <div class="price-text">總額：$<span id="r_price"></span></div>
             </div>
-            
-            <div id="paymentActions" style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e5e5ea; margin:20px 0;">
-                <div id="paymentStatusUI">狀態讀取中...</div>
-                <button class="btn btn-primary" id="notifyBtn" onclick="notifyAdminPaid()" style="margin-top:15px; width:100%;">我已繳費了！發送通知</button>
-            </div>
-            
-            <button class="btn btn-outline" style="margin-top:10px;" onclick="goToReviewFromReceipt()"><span class="material-symbols-outlined">star</span> 前往評分剛才的餐點</button>
-            <button class="btn btn-danger" onclick="cancelOrder()" style="margin-top:10px;">取消今日訂單</button>
-            <button class="btn btn-secondary" onclick="location.reload()" style="margin-top:10px;">回首頁</button>
+            <div id="paymentStatusUI" style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e5e5ea; margin:20px 0;"></div>
+            <button class="btn btn-primary" id="notifyBtn" onclick="notifyAdminPaid()" style="width:100%; margin-bottom:10px;">我已繳費了！發送通知</button>
+            <button class="btn btn-danger" onclick="cancelOrder()" style="margin-bottom:10px;">取消今日訂單</button>
+            <button class="btn btn-secondary" onclick="location.reload()">回首頁</button>
         </div>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc, getDocs, updateDoc, onSnapshot, collection, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, getDocs, updateDoc, onSnapshot, collection, query, where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAQ3nCfS7eNB_hRQ2AQVBFARPn2YeJXl3c",
@@ -361,566 +275,302 @@
         messagingSenderId: "620598610406",
         appId: "1:620598610406:web:bd5e7db2b568c48d1d2e27"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     
-    let cart = {}; 
-    let pendingOrder = { studentId: 0, meal: "", price: 0, basePrice: 0 }; 
-    let currentRestaurant = "";
-    let currentOrderStep = 'authArea';
-    
-    window.currentUserId = null;
+    let cart = {}; let pendingOrder = {}; let currentRestaurant = ""; let currentOrderStep = 'authArea'; window.currentUserId = null;
 
+    // 🚀 完整 13 家餐廳資料庫 (含特製 Radio 選項邏輯)
     const restaurantDB = {
         "麵朝 (新竹食品店)": {
             menu: [
-                { category: "鮮蝦雲吞拌麵", items: [{name: "鮮蝦雲吞拌麵", price: 110}, {name: "青醬雲吞拌麵", price: 115}, {name: "椒麻雲吞拌麵", price: 115}, {name: "蔥油雲吞拌麵", price: 115}, {name: "香滷雲吞拌麵", price: 115}, {name: "XO醬雲吞拌麵", price: 115}] },
-                { category: "港式水餃拌麵", items: [{name: "港式水餃拌麵", price: 105}, {name: "青醬水餃拌麵", price: 110}, {name: "椒麻水餃拌麵", price: 110}, {name: "蔥油水餃拌麵", price: 110}, {name: "香滷水餃拌麵", price: 110}, {name: "XO醬水餃拌麵", price: 110}] },
-                { category: "乾拌麵", items: [{name: "京醬肉絲拌麵", price: 85}, {name: "椒麻雞絲拌麵", price: 85}, {name: "青醬雞絲拌麵", price: 85}, {name: "蔥油雞絲拌麵", price: 85}, {name: "香滷雞絲拌麵", price: 85}, {name: "XO醬雞絲拌麵", price: 85}] },
-                { category: "風味湯麵", items: [{name: "羅宋番茄雞湯麵", price: 130}, {name: "養生清燉雞湯麵", price: 130}, {name: "剝皮辣椒雞湯麵", price: 140}, {name: "漢方肉骨茶雞湯麵", price: 140}, {name: "羅宋番茄湯麵", price: 75}, {name: "鮮蝦雲吞湯麵", price: 110}] },
-                { category: "功夫小點", items: [{name: "豬五花肉(蒜泥)", price: 80}, {name: "豬五花肉(椒麻)", price: 80}, {name: "舒肥雞(蔥油)", price: 90}, {name: "舒肥雞(青醬)", price: 90}, {name: "鮮蝦抄手(紅油)", price: 100}, {name: "鮮蝦抄手(白油)", price: 100}, {name: "港式翠玉水餃10粒", price: 90}] },
-                { category: "湯品 & 青菜", items: [{name: "大推烏梅汁", price: 30}, {name: "季節燙青菜", price: 40}, {name: "新竹貢丸湯", price: 40}, {name: "虱目魚丸湯", price: 40}, {name: "手工餛飩湯", price: 40}, {name: "羅宋番茄湯", price: 50}, {name: "鮮蝦雲吞湯", price: 55}, {name: "羅宋雲吞湯", price: 80}, {name: "養生清燉雞湯", price: 95}, {name: "剝皮辣椒雞湯", price: 95}, {name: "漢方肉骨茶雞湯", price: 95}] }
+                { category: "鮮蝦雲吞拌麵", items: [{name:"鮮蝦雲吞拌麵", price:110}, {name:"青醬雲吞拌麵", price:115}, {name:"椒麻雲吞拌麵", price:115}] },
+                { category: "港式水餃拌麵", items: [{name:"港式水餃拌麵", price:105}, {name:"青醬水餃拌麵", price:110}] },
+                { category: "乾拌麵", items: [{name:"京醬肉絲拌麵", price:85}, {name:"椒麻雞絲拌麵", price:85}] },
+                { category: "風味湯麵", items: [{name:"羅宋番茄雞湯麵", price:130}, {name:"養生清燉雞湯麵", price:130}] },
+                { category: "功夫小點", items: [{name:"豬五花肉(蒜泥)", price:80}, {name:"港式翠玉水餃10粒", price:90}] },
+                { category: "湯品 & 青菜", items: [{name:"季節燙青菜", price:40}, {name:"新竹貢丸湯", price:40}] }
             ],
-            options: `<label class="checkbox-item"><input type="checkbox" value="加麵" data-price="15"> +15元 享加麵服務</label>
-                      <label class="checkbox-item"><input type="checkbox" value="加舒肥雞" data-price="30"> +30元 拌麵類加舒肥雞</label>`
+            options: `<label class="checkbox-item"><input type="checkbox" value="加麵" data-price="15"> +15元 加麵</label> <label class="checkbox-item"><input type="checkbox" value="加舒肥雞" data-price="30"> +30元 拌麵類加舒肥雞</label>`
+        },
+        "湯食主義": {
+            menu: [
+                { category: "嫩切雞蓋飯系列", items: [{name:"嫩切雞蓋飯", price:135}, {name:"嫩切雞蓋飯泡溫泉", price:155}, {name:"明太子嫩切雞蓋飯", price:185}, {name:"明太子嫩切雞蓋飯泡溫泉", price:205}] },
+                { category: "豬五花蓋飯系列", items: [{name:"豬五花蓋飯", price:125}, {name:"豬五花蓋飯泡溫泉", price:145}, {name:"明太子豬肉蓋飯", price:175}, {name:"明太子豬五花蓋飯泡溫泉", price:195}, {name:"韓式泡菜豬肉蓋飯", price:145}, {name:"香檸泰泰豬飯", price:150}] },
+                { category: "牛五花蓋飯系列", items: [{name:"牛五花蓋飯", price:135}, {name:"牛五花蓋飯泡溫泉", price:155}, {name:"明太子牛肉蓋飯", price:185}, {name:"明太子牛五花蓋飯泡溫泉", price:205}, {name:"川味牛五花蓋飯", price:135}] }
+            ],
+            options: `<label class="checkbox-item"><input type="checkbox" value="加高麗菜" data-price="20"> +20元 加高麗菜</label> <label class="checkbox-item"><input type="checkbox" value="加飯" data-price="10"> +10元 加飯</label> <label class="checkbox-item"><input type="checkbox" value="升級套餐" data-price="70"> +70元 升級套餐(小菜+溏心蛋)</label>`
+        },
+        "麥當勞 (中餐時段)": {
+            menu: [
+                { category: "牛肉漢堡系列", items: [{name:"大麥克", price:85}, {name:"雙層牛肉吉事堡", price:75}, {name:"四盎司牛肉堡", price:95}, {name:"雙層四盎司牛肉堡", price:135}, {name:"BLT安格斯牛肉堡", price:122}, {name:"蕈菇安格斯牛肉堡", price:132}] },
+                { category: "雞肉與海鮮系列", items: [{name:"麥香鷄", price:48}, {name:"麥香魚", price:60}, {name:"雙層麥香魚", price:80}, {name:"勁辣鷄腿堡", price:78}, {name:"煙燻勁脆鷄腿堡", price:99}] },
+                { category: "麥克鷄塊與分享盒", items: [{name:"麥克鷄塊(6塊)", price:68}, {name:"麥克鷄塊(10塊)", price:109}, {name:"麥脆鷄腿(2塊)", price:126}, {name:"麥脆鷄腿分享盒", price:319}, {name:"麥克鷄塊分享盒(20塊)", price:249}] },
+                { category: "單點點心", items: [{name:"大薯", price:66}, {name:"中薯", price:50}, {name:"小薯", price:40}, {name:"勁辣香鷄翅", price:49}, {name:"OREO冰炫風", price:59}] }
+            ],
+            options: `<div style="font-weight:700; margin:10px 0 5px 0;">選擇單點或配餐 (適用主餐)：</div>
+                      <label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="單點" data-price="0" checked> 單點 (+$0)</label>
+                      <label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="經典配餐(中薯+飲品)" data-price="38"> +38 經典配餐 (中薯+飲品)</label>
+                      <label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="清爽配餐(沙拉+飲品)" data-price="38"> +38 清爽配餐 (沙拉+飲品)</label>
+                      <label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="勁脆配餐(麥脆鷄腿+飲品)" data-price="38"> +38 勁脆配餐 (麥脆鷄腿+飲品)</label>
+                      <label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="炫冰配餐(冰炫風+小薯+飲品)" data-price="38"> +38 炫冰配餐 (冰炫風+小薯+飲品)</label>
+                      <label class="checkbox-item"><input type="radio" name="mcd_{idx}" value="豪吃配餐(6塊鷄塊+小薯+飲品)" data-price="38"> +38 豪吃配餐 (6塊鷄塊+小薯+飲品)</label>`
+        },
+        "阿寶魯肉飯": {
+            menu: [
+                { category: "飯食便當", items: [{name:"滷肉飯(小)", price:50}, {name:"滷肉飯(大)", price:60}, {name:"滷肉飯+滷蛋(小)", price:65}, {name:"滷肉飯+滷蛋(大)", price:75}, {name:"滷肉飯套餐(小)", price:85}, {name:"滷肉飯套餐(大)", price:95}] },
+                { category: "水餃與麵食", items: [{name:"高麗菜水餃(10個)", price:70}, {name:"韭菜水餃(10個)", price:70}, {name:"綜合水餃(10個)", price:70}, {name:"乾麵", price:50}, {name:"湯麵", price:50}, {name:"貢丸麵", price:65}, {name:"餛飩麵", price:65}, {name:"肉羹麵", price:65}] },
+                { category: "湯品與小菜", items: [{name:"豬血湯", price:40}, {name:"綜合丸湯", price:45}, {name:"骨仔肉湯", price:60}, {name:"滷筍干", price:30}, {name:"燙青菜(空心菜)", price:40}, {name:"紅油抄手(辣)", price:45}, {name:"蒜泥白肉", price:70}] }
+            ],
+            options: `<label class="checkbox-item"><input type="checkbox" value="加大" data-price="5"> +5元 麵食加大</label>`
+        },
+        "八方雲集": {
+            menu: [
+                { category: "鍋貼/水餃 (單顆)", items: [{name:"招牌鍋貼", price:7}, {name:"韭菜鍋貼", price:7}, {name:"韓式辣味鍋貼", price:7}, {name:"招牌水餃", price:7}, {name:"鮮蝦水餃", price:10.5}] },
+                { category: "牛肉麵與湯餃", items: [{name:"紅燒牛肉麵", price:168}, {name:"清燉牛肉麵", price:168}, {name:"麻辣牛肉麵", price:178}, {name:"紅燒牛肉湯餃", price:120}, {name:"酸辣湯餃(招牌)", price:90}] },
+                { category: "麵食與抄手", items: [{name:"古早味乾麵", price:45}, {name:"招牌乾麵", price:55}, {name:"酸辣湯麵", price:70}, {name:"珍珠抄手(紅油)", price:60}] },
+                { category: "湯品小菜飲品", items: [{name:"酸辣湯", price:35}, {name:"玉米濃湯", price:35}, {name:"黃金泡菜", price:30}, {name:"燙青菜", price:35}, {name:"古早味排骨", price:68}, {name:"香濃豆漿", price:20}] }
+            ],
+            options: `<label class="checkbox-item"><input type="checkbox" value="換冬粉" data-price="0"> 鍋貼換冬粉</label>`
+        },
+        "老周燒肉飯": {
+            menu: [
+                { category: "80~85元系列", items: [{name:"日式豬排飯", price:80}, {name:"照燒排骨飯", price:80}, {name:"招牌燒肉飯", price:85}, {name:"蒲燒鯛魚飯", price:85}] },
+                { category: "90~110元系列", items: [{name:"五香控肉飯", price:90}, {name:"厚切豬排飯", price:90}, {name:"蒜泥白肉飯", price:100}, {name:"烤雞腿飯", price:110}, {name:"炸雞腿飯", price:110}] }
+            ]
+        },
+        "廟口鴨香飯": {
+            menu: [
+                { category: "鴨香飯", items: [{name:"鴨香飯(小)", price:70}, {name:"鴨香飯(大)", price:80}, {name:"鴨香飯(特大)", price:90}, {name:"荷包蛋", price:15}] },
+                { category: "麵食與湯", items: [{name:"鴨肉麵(大)", price:85}, {name:"鴨肉米粉(小)", price:70}, {name:"鴨血湯", price:55}, {name:"鴨肉湯", price:80}] },
+                { category: "炒類與切類", items: [{name:"鴨肉炒米粉(小)", price:100}, {name:"炒鴨血", price:90}, {name:"去骨後腿鴨肉", price:250}, {name:"鴨翅(支)", price:30}] }
+            ],
+            options: `<label class="checkbox-item"><input type="checkbox" value="加蛋花" data-price="15"> +15 湯加蛋花</label> <label class="checkbox-item"><input type="checkbox" value="加鴨丸" data-price="10"> +10 加鴨丸(顆)</label>`
+        },
+        "青虎食堂": {
+            menu: [
+                { category: "咖哩與丼飯", items: [{name:"特製咖哩飯", price:90}, {name:"豬排咖哩飯", price:100}, {name:"唐揚雞咖哩飯", price:100}, {name:"唐揚雞丼飯", price:100}, {name:"豬排丼飯", price:100}] }
+            ]
+        },
+        "阿婆早餐麵店": {
+            menu: [
+                { category: "早點", items: [{name:"蛋餅", price:35}, {name:"雙黃蛋餅", price:45}, {name:"蛋餅油條", price:50}, {name:"白饅頭(夾蔥花蛋)", price:30}, {name:"冰豆漿", price:25}] },
+                { category: "麵飯類", items: [{name:"陽春麵(大)", price:55}, {name:"炒榨菜肉絲麵(大)", price:60}, {name:"香菇肉燥飯(大)", price:50}] },
+                { category: "炒手與湯", items: [{name:"炒手一把麵(小)", price:60}, {name:"牛肉湯(有肉)", price:70}, {name:"餛飩湯", price:40}] }
+            ],
+            options: `<label class="checkbox-item"><input type="checkbox" value="加麵一把" data-price="15"> +15 加麵(湯麵不可)</label>`
+        },
+        "日光手作食堂": {
+            menu: [
+                { category: "肉燥飯與特餐", items: [{name:"肉燥飯(大)", price:60}, {name:"學生特餐(大)", price:75}, {name:"肉燥飯唐揚特餐", price:95}] },
+                { category: "炒飯麵與咖哩", items: [{name:"肉絲蛋炒飯(大)", price:95}, {name:"什錦炒麵(大)", price:120}, {name:"日式咖哩飯", price:75}, {name:"豬排咖哩飯", price:110}] },
+                { category: "炸物小菜", items: [{name:"炸脆薯", price:40}, {name:"炸唐揚", price:45}, {name:"皮蛋豆腐", price:40}] }
+            ]
+        },
+        "龍滿排骨": {
+            menu: [
+                { category: "便當", items: [{name:"炸雞腿飯", price:120}, {name:"香雞排飯", price:100}, {name:"滷雞腿飯", price:95}, {name:"燒肉飯", price:90}, {name:"炸排骨飯", price:90}, {name:"招牌飯", price:85}] }
+            ]
+        },
+        "丼真閣": {
+            menu: [
+                { category: "丼飯", items: [{name:"原味丼(牛)", price:110}, {name:"原味丼(豚)", price:100}, {name:"起士丼(牛)", price:120}, {name:"雙拼雙饗丼(野菇牛)", price:180}] },
+                { category: "炙燒與單點", items: [{name:"炙燒丼(牛)", price:130}, {name:"黃太厚豬排丼", price:150}, {name:"炸豬排", price:70}, {name:"溫泉蛋", price:30}] }
+            ]
+        },
+        "鐵屋涼麵": {
+            menu: [
+                { category: "涼麵", items: [{name:"原味涼麵(大)", price:65}, {name:"雞絲涼麵(大)", price:75}, {name:"麻辣涼麵(大)", price:75}] },
+                { category: "鍋燒麵", items: [{name:"原味鍋燒", price:100}, {name:"泡菜鍋燒", price:130}, {name:"麻奶鍋燒", price:130}] },
+                { category: "飯麵與湯", items: [{name:"滷肉飯", price:50}, {name:"排骨滷肉飯", price:100}, {name:"味噌綜合湯", price:55}] }
+            ],
+            options: `<label class="checkbox-item"><input type="checkbox" value="加芥末包" data-price="5"> +5 芥末包</label>`
         }
     };
 
-    const d = new Date();
-    const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
+    const d = new Date(); const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
+    
+    // 初始化許願池日期 (預設明天)
+    let tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+    const tmrStr = tomorrow.toISOString().split('T')[0];
 
     window.onload = function() {
         const savedId = localStorage.getItem('loggedInUser_217');
-        if (!savedId) {
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('mainApp').style.display = 'none';
-        } else {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-            setupUser(savedId);
-            checkToS();
-        }
+        if (!savedId) { document.getElementById('loginPage').style.display = 'flex'; } 
+        else { document.getElementById('loginPage').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; setupUser(savedId); checkToS(); }
+        
+        // 準備許願池與菜單總覽的下拉選單
+        let restOpts = ""; Object.keys(restaurantDB).forEach(r => restOpts += `<option value="${r}">${r}</option>`);
+        if(document.getElementById('wishRestaurant')) document.getElementById('wishRestaurant').innerHTML = restOpts;
+        if(document.getElementById('wishDate')) { document.getElementById('wishDate').value = tmrStr; document.getElementById('wishDate').min = tmrStr; }
+        if(document.getElementById('mo_restaurantSelect')) document.getElementById('mo_restaurantSelect').innerHTML = restOpts;
     };
 
     window.doLogin = function() {
-        const acc = document.getElementById('loginAccount').value.trim();
-        const pass = document.getElementById('loginPassword').value.trim();
-        
+        const acc = document.getElementById('loginAccount').value.trim(); const pass = document.getElementById('loginPassword').value.trim();
         const match = acc.match(/^217(0[1-9]|[1-2][0-8])$/);
-        if (!match) return alert("❌ 帳號格式錯誤！請輸入 217 加上兩碼座號 (01~28)。\n例如 1 號請輸入：21701");
-        
+        if (!match) return alert("❌ 帳號格式錯誤！(21701~21728)");
         const id = parseInt(match[1], 10);
-        let expectedPass = "lunch" + (410576 + id);
-        if (id === 21) expectedPass = "lunch410605";
-        
-        if (pass !== expectedPass) return alert("❌ 密碼錯誤！請重新輸入。");
-        
-        localStorage.setItem('loggedInUser_217', id);
-        document.getElementById('loginPage').style.display = 'none';
-        document.getElementById('mainApp').style.display = 'block';
-        setupUser(id);
-        checkToS();
+        let expectedPass = "lunch" + (410576 + id); if (id === 21) expectedPass = "lunch410605";
+        if (pass !== expectedPass) return alert("❌ 密碼錯誤！");
+        localStorage.setItem('loggedInUser_217', id); location.reload();
     };
 
-    window.logout = function() {
-        if(confirm("確定要登出目前的座號嗎？")) {
-            localStorage.removeItem('loggedInUser_217');
-            location.reload();
-        }
-    };
+    window.logout = function() { if(confirm("確定登出？")) { localStorage.removeItem('loggedInUser_217'); location.reload(); } };
+    function setupUser(id) { window.currentUserId = parseInt(id); document.getElementById('sidebarLoggedId').innerText = id; document.querySelectorAll('.display-user-id').forEach(el => el.innerText = id); }
+    function checkToS() { if (!localStorage.getItem('tosAgreed_217')) { document.getElementById('tosModal').style.display = 'block'; document.getElementById('systemOverlay').style.display = 'block'; } else { initSystem(); } }
+    window.agreeToS = function() { localStorage.setItem('tosAgreed_217', 'true'); document.getElementById('tosModal').style.display = 'none'; document.getElementById('systemOverlay').style.display = 'none'; initSystem(); };
+    function hideAllSections() { ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'reviewPageArea', 'feedbackPageArea', 'menuOverviewArea'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; }); }
+    window.toggleMenu = function() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
 
-    function setupUser(id) {
-        window.currentUserId = parseInt(id);
-        document.getElementById('sidebarLoggedId').innerText = id;
-        document.querySelectorAll('.display-user-id').forEach(el => el.innerText = id);
-    }
-
-    function checkToS() {
-        if (!localStorage.getItem('tosAgreed_217')) {
-            document.getElementById('tosModal').style.display = 'block'; 
-            document.getElementById('systemOverlay').style.display = 'block'; 
-            document.getElementById('authArea').style.display = 'none'; 
-        } else { 
-            initSystem(); 
-        }
-    }
-
-    window.agreeToS = function() { 
-        localStorage.setItem('tosAgreed_217', 'true'); 
-        document.getElementById('tosModal').style.display = 'none'; 
-        document.getElementById('systemOverlay').style.display = 'none'; 
-        initSystem(); 
-    };
-
-    function hideAllSections() {
-        ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'reviewPageArea', 'feedbackPageArea'].forEach(id => {
-            if(document.getElementById(id)) document.getElementById(id).style.display = 'none';
-        });
-    }
-
-    async function logActivity(studentId, action, details) {
+    // 🚀 排行榜：加入餐廳統計
+    window.showHistoryRank = async function() {
+        hideAllSections(); document.getElementById('historyModal').style.display = 'block';
+        document.getElementById('rankItems').innerHTML = "計算中..."; document.getElementById('rankRests').innerHTML = "計算中...";
         try {
-            const now = new Date();
-            const timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            await setDoc(doc(db, "activities", now.getTime().toString()), { studentId: parseInt(studentId)||0, action: action, details: details, timestamp: now.getTime(), timeString: timeString });
+            const snap = await getDocs(query(collection(db, "orders"))); 
+            let itemCounts = {}; let restCounts = {};
+            snap.forEach(doc => {
+                let o = doc.data();
+                if (!o.isCancelled) {
+                    if(o.restaurant) restCounts[o.restaurant] = (restCounts[o.restaurant] || 0) + 1;
+                    (o.meal || "").split(", ").forEach(m => {
+                        let name = m; let qty = 1; let match = m.match(/(.*) x(\d+)$/); if(match) { name = match[1]; qty = parseInt(match[2]); }
+                        if(name.trim() !== "") itemCounts[name] = (itemCounts[name] || 0) + qty;
+                    });
+                }
+            });
+            let items = []; for(let k in itemCounts) items.push({ n: k, c: itemCounts[k] }); items.sort((a,b) => b.c - a.c);
+            let ih = ""; items.slice(0, 10).forEach((r, i) => ih += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span><strong>#${i+1}</strong> ${r.n}</span><strong>${r.c}次</strong></div>`);
+            
+            let rests = []; for(let k in restCounts) rests.push({ n: k, c: restCounts[k] }); rests.sort((a,b) => b.c - a.c);
+            let rh = ""; rests.forEach((r, i) => rh += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span><strong>#${i+1}</strong> ${r.n}</span><strong>${r.c}次</strong></div>`);
+            
+            document.getElementById('rankItems').innerHTML = ih || "無"; document.getElementById('rankRests').innerHTML = rh || "無";
         } catch(e) { }
     }
 
-    window.showHistoryRank = async function() {
-        hideAllSections(); 
-        document.getElementById('historyModal').style.display = 'block'; 
-        document.getElementById('historyRankContent').innerHTML = "即時結算排行榜中...";
-        try {
-            const querySnapshot = await getDocs(query(collection(db, "orders"))); let itemCounts = {};
-            querySnapshot.forEach((docSnap) => {
-                let order = docSnap.data();
-                if (!order.isCancelled) {
-                    let mealParts = (order.meal || "").split(", "); 
-                    mealParts.forEach(m => {
-                        let name = m; let qty = 1; let match = m.match(/(.*) x(\d+)$/); 
-                        if(match) { name = match[1]; qty = parseInt(match[2]); }
-                        if(name.trim() !== "") { itemCounts[name] = (itemCounts[name] || 0) + qty; }
-                    });
-                }
-            });
-            let ranks = []; for(let key in itemCounts) ranks.push({ item: key, count: itemCounts[key] }); ranks.sort((a,b) => b.count - a.count);
-            let html = ""; ranks.slice(0, 10).forEach((r, idx) => { html += `<div class="rank-row"><div><span class="rank-num">#${idx+1}</span> ${r.item}</div><div style="font-weight:700;">${r.count} 次</div></div>`; });
-            document.getElementById('historyRankContent').innerHTML = html || "<p>目前尚無足夠的歷史資料。</p>";
-        } catch(e) { document.getElementById('historyRankContent').innerHTML = "讀取失敗"; }
+    // 🚀 菜單總覽模式
+    window.showMenuOverview = function() {
+        hideAllSections(); document.getElementById('menuOverviewArea').style.display = 'block';
+        renderMenuOverview(document.getElementById('mo_restaurantSelect').value);
+    }
+    window.renderMenuOverview = function(restName) {
+        const data = restaurantDB[restName] || {menu:[]}; let html = "";
+        data.menu.forEach(g => {
+            html += `<h4 style="margin:15px 0 8px 0; border-bottom:2px solid #111; padding-bottom:4px;">${g.category}</h4>`;
+            g.items.forEach(i => html += `<div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px dashed #ccc; font-size:14px;"><span>${i.name}</span><span>$${i.price}</span></div>`);
+        });
+        document.getElementById('mo_menuContainer').innerHTML = html;
     }
 
-    window.showReviewPage = function() { hideAllSections(); document.getElementById('reviewPageArea').style.display = 'block'; }
+    // 🚀 許願池
+    window.submitWish = async function() {
+        const d = document.getElementById('wishDate').value; const r = document.getElementById('wishRestaurant').value;
+        if(!d || !r) return alert("資料不完整");
+        const msg = `【許願池】希望在 ${d} 吃 ${r}！`;
+        await sendFeedback(msg);
+    }
+    window.submitFeedback = async function() { const t = document.getElementById('fbContent').value.trim(); if(t) { await sendFeedback(t); document.getElementById('fbContent').value=""; } }
+    async function sendFeedback(content) {
+        try {
+            const now = new Date(); await setDoc(doc(db, "feedbacks", now.getTime().toString()), { studentId: window.currentUserId, content: content, timestamp: now.getTime(), timeString: now.toLocaleString('zh-TW') });
+            alert("✅ 傳送成功！"); resumeOrderFlow();
+        } catch(e) { alert("失敗"); }
+    }
     window.showFeedbackPage = function() { hideAllSections(); document.getElementById('feedbackPageArea').style.display = 'block'; }
+    window.showReviewPage = function() { hideAllSections(); document.getElementById('reviewPageArea').style.display = 'block'; }
+    window.showInfoPage = function(t, c) { hideAllSections(); document.getElementById('infoTitle').innerHTML = t; document.getElementById('infoContent').innerHTML = c; document.getElementById('infoCard').style.display = 'block'; window.scrollTo(0,0); }
+    window.resumeOrderFlow = function() { hideAllSections(); document.getElementById(currentOrderStep).style.display = 'block'; if(currentOrderStep === 'menuArea') document.getElementById('cartFab').style.display = Object.keys(cart).length ? 'flex' : 'none'; window.scrollTo(0,0); }
 
-    window.goToReviewFromReceipt = async function() {
-        hideAllSections();
-        document.getElementById('reviewPageArea').style.display = 'block';
-        await window.fetchOrdersForReview();
-    };
-
-    window.showAboutPage = function() {
-        const aboutContent = `
-            <p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p>
-            <hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;">
-            <p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p>
-            <p><b>🚀 核心功能特色</b><br>
-            1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>
-            2. <b>大數據推薦</b>：即時顯示「熱門排行榜」。<br>
-            3. <b>透明化帳務</b>：支援部分付款與自動差額計算。<br>
-            4. <b>Plan B 危機應變</b>：店家沒開時自動計算補退款。<br>
-            5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p>
-            <hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;">
-            <p style="text-align:right; font-weight:700;">網頁開發與系統架構設計：羅亦承</p>
-        `;
-        showInfoPage('<span class="material-symbols-outlined">info</span> 關於本站', aboutContent);
-    };
-
-    window.showFaqPage = function() {
-        const faqContent = `
-            <p><b><span class="material-symbols-outlined" style="font-size:18px;">schedule</span> 關於點餐時間與權限</b><br>
-            <b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。超過 11:00 系統會自動上鎖。<br>
-            <b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p>
-            <p><b><span class="material-symbols-outlined" style="font-size:18px;">shopping_cart</span> 關於點餐與修改</b><br>
-            <b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁輸入座號點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。<br>
-            <b>Q4：我可以幫別人點餐嗎？</b><br>A：不行，系統有專屬帳號驗證，無法代點。</p>
-            <p><b><span class="material-symbols-outlined" style="font-size:18px;">payments</span> 關於金錢與繳費</b><br>
-            <b>Q5：現金要交給誰？如果沒繳齊怎麼辦？</b><br>A：交給班級負責人。後台支援「部分付款」，系統會自動計算欠款或溢繳金額。<br>
-            <b>Q6：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p>
-            <p><b><span class="material-symbols-outlined" style="font-size:18px;">emergency</span> 關於突發狀況 (Plan B)</b><br>
-            <b>Q7：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會啟動「Plan B 備案」，前台會顯示補退款金額，你也可以選擇取消訂單。</p>
-            <p><b><span class="material-symbols-outlined" style="font-size:18px;">forum</span> 關於歷史與回饋</b><br>
-            <b>Q8：去哪裡看我以前點過什麼？</b><br>A：在首頁點擊「歷史紀錄」即可查詢。<br>
-            <b>Q9：如何給予評分或提出建議？</b><br>A：可透過左上角選單的「餐點評分」與「意見反應&許願池」隨時提交。</p>
-        `;
-        showInfoPage('<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)', faqContent);
-    };
-
-    window.showInfoPage = function(title, content) {
-        hideAllSections(); 
-        document.getElementById('infoTitle').innerHTML = title; 
-        document.getElementById('infoContent').innerHTML = content; 
-        document.getElementById('infoCard').style.display = 'block'; 
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    window.toggleMenu = function() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
-
-    window.showMyHistory = async function() {
-        const id = window.currentUserId;
-        hideAllSections(); 
-        document.getElementById('personalHistoryArea').style.display = 'block'; 
-        document.getElementById('ph_studentId').innerText = id; 
-        document.getElementById('ph_tableBody').innerHTML = '<tr><td colspan="3">讀取中...</td></tr>';
-
-        try {
-            const querySnapshot = await getDocs(query(collection(db, "orders"), where("studentId", "==", id)));
-            let orders = []; querySnapshot.forEach((doc) => { orders.push(doc.data()); });
-            orders.sort((a,b) => b.date.localeCompare(a.date));
-
-            if(orders.length === 0) { document.getElementById('ph_tableBody').innerHTML = `<tr><td colspan="3" style="color:#888;">無紀錄。</td></tr>`; return; }
-
-            let html = "";
-            orders.forEach(o => {
-                let status = ""; let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? o.price : 0);
-                if(o.isCancelled) status = `<span style="color:#888;"><span class="material-symbols-outlined" style="font-size:16px;">cancel</span>已取消</span>`;
-                else if(paidAmt >= o.price) status = `<span><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 已結清</span>`;
-                else if(paidAmt > 0) status = `<span><span class="material-symbols-outlined" style="font-size:16px;">warning</span> 已付$${paidAmt}</span>`;
-                else status = `<span><span class="material-symbols-outlined" style="font-size:16px;">cancel</span> 未繳費</span>`;
-                html += `<tr><td>${o.date}</td><td>${o.meal.replace(/, /g, '<br>')}</td><td style="font-weight:600;">${status}</td></tr>`;
-            });
-            document.getElementById('ph_tableBody').innerHTML = html;
-        } catch(e) { document.getElementById('ph_tableBody').innerHTML = '<tr><td colspan="3">讀取失敗</td></tr>'; }
-    }
-
-    window.resumeOrderFlow = function() {
-        hideAllSections();
-        document.getElementById(currentOrderStep).style.display = 'block';
-        if(currentOrderStep === 'menuArea') {
-            let totalQty = 0; for(let k in cart) totalQty += cart[k].qty;
-            if(totalQty > 0) document.getElementById('cartFab').style.display = 'flex';
-        }
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    window.submitFeedback = async function() {
-        const content = document.getElementById('fbContent').value.trim();
-        if(!content) return alert("請輸入意見內容！");
-
-        const studentId = window.currentUserId;
-        const now = new Date();
-        const timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
-
-        try {
-            await setDoc(doc(db, "feedbacks", now.getTime().toString()), {
-                studentId: studentId, content: content, timestamp: now.getTime(), timeString: timeString
-            });
-            alert("✅ 感謝你的回饋！意見已傳送至後台。");
-            document.getElementById('fbContent').value = ""; 
-            resumeOrderFlow(); 
-        } catch(e) { alert("傳送失敗，請檢查網路。"); }
-    }
-
-    let recentOrdersForReview = [];
-    window.fetchOrdersForReview = async function() {
-        const id = window.currentUserId;
-        try {
-            const qOrders = query(collection(db, "orders"), where("studentId", "==", id));
-            const querySnapshotOrders = await getDocs(qOrders);
-            let allOrders = [];
-            const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-            const limitDateStr = sevenDaysAgo.getFullYear() + "-" + String(sevenDaysAgo.getMonth()+1).padStart(2, '0') + "-" + String(sevenDaysAgo.getDate()).padStart(2, '0');
-
-            // 🚀 防呆機制：過濾掉作廢的訂單
-            querySnapshotOrders.forEach(doc => { 
-                let o = doc.data(); 
-                if(!o.isCancelled && o.date >= limitDateStr) allOrders.push(o); 
-            });
-            allOrders.sort((a,b) => b.date.localeCompare(a.date));
-
-            const qReviews = query(collection(db, "reviews"), where("studentId", "==", id));
-            const querySnapshotReviews = await getDocs(qReviews);
-            let reviewedMap = {}; 
-            // 🚀 版本追蹤
-            querySnapshotReviews.forEach(doc => {
-                let r = doc.data();
-                reviewedMap[r.orderTimestamp] = r.timeString; 
-            });
-
-            recentOrdersForReview = [];
-            let reviewedListHtml = "";
-
-            allOrders.forEach(o => {
-                if (reviewedMap[o.timestamp]) {
-                    reviewedListHtml += `<div style="font-size:13px; color:#666; margin:4px 0; display:flex; align-items:flex-start;"><span class="material-symbols-outlined" style="font-size:16px; margin-top:2px;">check</span> <span style="flex:1;"><b>${o.date}</b> (${o.meal})<br><span style="color:#888;">評分時間：${reviewedMap[o.timestamp]}</span></span></div>`;
-                } else {
-                    recentOrdersForReview.push(o);
-                }
-            });
-
-            const logContainer = document.getElementById('reviewedOrdersLog');
-            if (logContainer) {
-                logContainer.innerHTML = reviewedListHtml ? `<div style="margin-top:15px; padding:10px; background:#f9f9f9; border-radius:6px; border:1px solid #eee;"><div style="font-weight:bold; color:#555; margin-bottom:5px; font-size:13px;">📌 已完成評分的歷史餐點：</div>${reviewedListHtml}</div>` : "";
-            }
-
-            if(recentOrdersForReview.length === 0) {
-                alert("你最近 7 天內的所有有效訂單都已經評過分囉！\n(註：若訂單已作廢則無法進行評分)");
-                document.getElementById('reviewFormBlock').style.display = 'none';
-                return;
-            }
-
-            let selHtml = ""; 
-            recentOrdersForReview.forEach((o, i) => { 
-                selHtml += `<option value="${i}">${o.date} - ${o.meal}</option>`; 
-            });
-            document.getElementById('rvOrderSelect').innerHTML = selHtml; 
-            document.getElementById('reviewFormBlock').style.display = 'block';
-
-        } catch(e) { alert("讀取失敗"); }
-    };
-
-    window.submitMealReview = async function() {
-        const orderIdx = document.getElementById('rvOrderSelect').value; 
-        const targetOrder = recentOrdersForReview[orderIdx];
-        if(!targetOrder) return alert("請選擇餐點！");
-        
-        let restaurantName = "合作餐廳"; 
-        const score1 = document.getElementById('rvScore1').value, score2 = document.getElementById('rvScore2').value, score3 = document.getElementById('rvScore3').value, score4 = document.getElementById('rvScore4').value, comment = document.getElementById('rvComment').value;
-        if(!score1 && !score2 && !score3 && !score4 && !comment.trim()) return alert("你沒有填寫任何評分或建議喔！");
-        
-        const now = new Date(); 
-        const timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
-        
-        try {
-            const reviewDocId = `${targetOrder.date}_${targetOrder.studentId}_${targetOrder.timestamp}`;
-            await setDoc(doc(db, "reviews", reviewDocId), { 
-                studentId: targetOrder.studentId, orderDate: targetOrder.date, orderTimestamp: targetOrder.timestamp, meal: targetOrder.meal, restaurant: restaurantName, 
-                score1: score1 ? parseInt(score1) : null, score2: score2 ? parseInt(score2) : null, score3: score3 ? parseInt(score3) : null, score4: score4 ? parseInt(score4) : null, 
-                comment: comment.trim(), timestamp: now.getTime(), timeString: timeString 
-            });
-            
-            await logActivity(targetOrder.studentId, "送出餐點評分", `${targetOrder.date} 已回饋`); 
-            alert("✅ 感謝你的回饋！評分已傳送至後台。"); 
-            resumeOrderFlow();
-            
-            document.getElementById('rvScore1').value = ""; document.getElementById('rvScore2').value = ""; document.getElementById('rvScore3').value = ""; document.getElementById('rvScore4').value = ""; document.getElementById('rvComment').value = ""; document.getElementById('reviewFormBlock').style.display = 'none';
-            document.getElementById('reviewedOrdersLog').innerHTML = "";
-        } catch(e) { alert("傳送失敗，請檢查網路。"); }
-    }
-
+    // 點餐核心系統
     async function initSystem() {
         try {
-            const configSnap = await getDoc(doc(db, "system", "settings"));
-            let startTime = "06:00", endTime = "11:00";
-            if (configSnap.exists()) { startTime = configSnap.data().orderStartTime; endTime = configSnap.data().orderEndTime; }
-
-            const now = new Date(); const currentTime = String(now.getHours()).padStart(2, '0') + ":" + String(now.getMinutes()).padStart(2, '0');
-            if (currentTime < startTime || currentTime > endTime) {
-                currentOrderStep = 'lockedScreen'; return showLocked(`目前非點餐時間。<br><span style="font-size:14px; font-weight:normal; color:#555;">開放時間為：${startTime} ~ ${endTime}</span>`);
-            }
-
+            const setSnap = await getDoc(doc(db, "system", "settings")); let st="06:00", et="11:00"; if(setSnap.exists()) { st=setSnap.data().orderStartTime; et=setSnap.data().orderEndTime; }
+            const now = new Date(); const ct = String(now.getHours()).padStart(2,'0')+":"+String(now.getMinutes()).padStart(2,'0');
+            if(ct<st || ct>et) { currentOrderStep='lockedScreen'; return showLocked(`非點餐時間 (${st}~${et})`); }
             const menuSnap = await getDoc(doc(db, "dailyMenus", todayStr));
-            if (!menuSnap.exists()) { currentOrderStep = 'lockedScreen'; return showLocked("⚠️ 負責人尚未設定今日午餐<br><span style='font-size:14px; font-weight:normal; color:#555; margin-top:8px; display:inline-block;'>請等候負責人排程，或聯絡負責人處理。</span>"); }
-            
-            currentOrderStep = 'authArea'; document.getElementById('authArea').style.display = 'block';
-            currentRestaurant = menuSnap.data().restaurant;
-        } catch (error) { currentOrderStep = 'lockedScreen'; showLocked("系統連線異常。"); }
+            if(!menuSnap.exists()) { currentOrderStep='lockedScreen'; return showLocked("⚠️ 負責人尚未設定今日午餐"); }
+            currentOrderStep = 'authArea'; document.getElementById('authArea').style.display = 'block'; currentRestaurant = menuSnap.data().restaurant;
+        } catch (e) { showLocked("連線異常"); }
     }
-
     window.verifyStudent = async function() {
-        const id = window.currentUserId;
-        const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + id));
-        if (docSnap.exists() && !docSnap.data().isCancelled) {
-            alert("⚠️ 系統偵測到你今天已經點過餐囉！為你跳轉至查詢畫面。");
-            return checkStatusQuick();
-        }
-
-        pendingOrder.studentId = id; document.getElementById('authArea').style.display = 'none'; currentOrderStep = 'menuArea'; buildMenuForm(currentRestaurant); 
+        const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + window.currentUserId));
+        if(docSnap.exists() && !docSnap.data().isCancelled) { alert("今日已點餐，轉至查詢"); return checkStatusQuick(); }
+        pendingOrder.studentId = window.currentUserId; document.getElementById('authArea').style.display = 'none'; currentOrderStep = 'menuArea'; buildMenuForm(currentRestaurant);
     }
-
     window.checkStatusQuick = async function() {
-        let id = window.currentUserId;
-        const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + id));
-        if (docSnap.exists() && !docSnap.data().isCancelled) {
-            const data = docSnap.data(); document.getElementById('authArea').style.display = 'none';
-            showReceipt(data.studentId, data.meal, data.note, data.price, data.isPaid, data.notifiedPaid, data.timeString, data.paidAmount);
-        } else { alert(`今日尚無你的有效訂單記錄。`); }
+        const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + window.currentUserId));
+        if(docSnap.exists() && !docSnap.data().isCancelled) { let d=docSnap.data(); showReceipt(d.studentId, d.meal, d.note, d.price, d.isPaid, d.notifiedPaid, d.timeString, d.paidAmount); } else alert("無紀錄");
     }
+    function showLocked(m) { document.getElementById('lockedScreen').style.display='block'; document.getElementById('lockedReason').innerHTML=m; document.getElementById('authArea').style.display='none'; }
 
-    function showLocked(msg) { document.getElementById('lockedScreen').style.display = 'block'; document.getElementById('lockedReason').innerHTML = msg; document.getElementById('authArea').style.display = 'none'; }
-
-    function buildMenuForm(restName) {
-        document.getElementById('displayRestaurant').innerText = restName; const restData = restaurantDB[restName] || { menu: [], options: "" };
-        let navHtml = ""; let menuHtml = "";
-        restData.menu.forEach((group, idx) => {
-            let catId = `cat-${idx}`; let isActive = idx === 0 ? 'active' : '';
-            navHtml += `<div class="cat-tab ${isActive}" data-target="${catId}" onclick="scrollToCategory('${catId}')">${group.category}</div>`;
-            menuHtml += `<div id="${catId}" class="menu-section"><div class="menu-category">${group.category}</div>`;
-            group.items.forEach(item => {
-                menuHtml += `<div class="menu-item">
-                                <div><div class="item-name">${item.name}</div><div class="item-price">$${item.price}</div></div>
-                                <div class="qty-controls"><button class="qty-btn" onclick="updateCart('${item.name}', ${item.price}, -1)"><span class="material-symbols-outlined" style="margin:0;">remove</span></button><span class="qty-display" data-qty-name="${item.name}">0</span><button class="qty-btn plus" onclick="updateCart('${item.name}', ${item.price}, 1)"><span class="material-symbols-outlined" style="margin:0;">add</span></button></div>
-                             </div>`;
-            });
-            menuHtml += `</div>`;
+    function buildMenuForm(rn) {
+        document.getElementById('displayRestaurant').innerText = rn; const rd = restaurantDB[rn] || {menu:[],options:""}; let nh="", mh="";
+        rd.menu.forEach((g, idx) => {
+            let cid = `cat-${idx}`; nh += `<div class="cat-tab ${idx===0?'active':''}" data-target="${cid}" onclick="scrollToCat('${cid}')">${g.category}</div>`;
+            mh += `<div id="${cid}" class="menu-section"><div class="menu-category">${g.category}</div>`;
+            g.items.forEach(i => mh += `<div class="menu-item"><div><div class="item-name">${i.name}</div><div class="item-price">$${i.price}</div></div><div class="qty-controls"><button class="qty-btn" onclick="updateCart('${i.name}',${i.price},-1)">-</button><span class="qty-display" data-qty-name="${i.name}">0</span><button class="qty-btn plus" onclick="updateCart('${i.name}',${i.price},1)">+</button></div></div>`);
+            mh += `</div>`;
         });
-        document.getElementById('categoryNav').innerHTML = navHtml; document.getElementById('fullMenuContainer').innerHTML = menuHtml; document.getElementById('menuArea').style.display = 'block';
+        document.getElementById('categoryNav').innerHTML = nh; document.getElementById('fullMenuContainer').innerHTML = mh; document.getElementById('menuArea').style.display = 'block';
+    }
+    window.scrollToCat = function(id) { window.scrollTo({top: document.getElementById(id).offsetTop - 120, behavior: 'smooth'}); }
+    window.updateCart = function(n, p, d) {
+        if(!cart[n]) cart[n] = {p:p, q:0}; cart[n].q += d; if(cart[n].q<0) cart[n].q=0;
+        document.querySelectorAll(`[data-qty-name="${n}"]`).forEach(el => el.innerText=cart[n].q);
+        let tq=0, tp=0; for(let k in cart) { tq+=cart[k].q; tp+=cart[k].q*cart[k].p; }
+        const fab = document.getElementById('cartFab'); if(tq>0) { fab.style.display='flex'; document.getElementById('cartTotal').innerText=tp; } else fab.style.display='none';
     }
 
-    window.scrollToCategory = function(catId) { const el = document.getElementById(catId); const offsetPosition = el.getBoundingClientRect().top + window.pageYOffset - 120; window.scrollTo({ top: offsetPosition, behavior: "smooth" }); }
-
-    window.addEventListener('scroll', () => {
-        if(document.getElementById('menuArea').style.display !== 'block') return;
-        let current = ""; const sections = document.querySelectorAll('.menu-section'); 
-        sections.forEach(sec => { if (pageYOffset >= sec.offsetTop - 130) { current = sec.getAttribute('id'); } });
-        document.querySelectorAll('.cat-tab').forEach(tab => { tab.classList.remove('active'); if(tab.getAttribute('data-target') === current) { tab.classList.add('active'); tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } });
-    });
-
-    window.updateCart = function(name, price, delta) {
-        if(!cart[name]) cart[name] = { price: price, qty: 0 };
-        cart[name].qty += delta; if(cart[name].qty < 0) cart[name].qty = 0;
-        document.querySelectorAll(`[data-qty-name="${name}"]`).forEach(el => el.innerText = cart[name].qty);
-        let totalQty = 0; let totalPrice = 0; for(let k in cart) { totalQty += cart[k].qty; totalPrice += cart[k].qty * cart[k].price; }
-        const fab = document.getElementById('cartFab');
-        if(totalQty > 0) { fab.style.display = 'flex'; document.getElementById('cartTotal').innerText = totalPrice; } else { fab.style.display = 'none'; }
-    }
-
+    // 🚀 Radio 完美支援的客製化頁面
     window.goToCustomize = function() {
-        let meals = []; let basePrice = 0; let customizeHtml = "";
-        
-        for(let name in cart) { 
-            if(cart[name].qty > 0) { 
-                meals.push(`${name} x${cart[name].qty}`); 
-                basePrice += cart[name].price * cart[name].qty; 
-                
-                for(let i=0; i<cart[name].qty; i++) {
-                    customizeHtml += `<div style="margin-bottom:12px; padding:16px; background:#fff; border:1px solid #e5e5ea; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">`;
-                    customizeHtml += `<div style="font-weight:700; color:#111; margin-bottom:10px; font-size:15px; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="color:#d32f2f; font-size:18px;">restaurant</span> ${name} <span style="font-size:13px; color:#555; font-weight:600; background:#f5f5f7; padding:2px 8px; border-radius:12px;">第 ${i+1} 份</span></div>`;
-                    
-                    let optionsHtml = (restaurantDB[currentRestaurant].options || "")
-                        .replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${name}" data-idx="${i}"`);
-                    customizeHtml += `<div class="checkbox-group" style="margin-top:0;">${optionsHtml}</div>`;
-                    customizeHtml += `</div>`;
+        let meals = []; let bp = 0; let ch = "";
+        for(let n in cart) { 
+            if(cart[n].q > 0) { 
+                meals.push(`${n} x${cart[n].q}`); bp += cart[n].p * cart[n].q; 
+                for(let i=0; i<cart[n].q; i++) {
+                    ch += `<div style="margin-bottom:12px; padding:16px; background:#fff; border:1px solid #e5e5ea; border-radius:12px;">`;
+                    ch += `<div style="font-weight:700; margin-bottom:10px; font-size:15px;">${n} (第${i+1}份)</div>`;
+                    let optHtml = (restaurantDB[currentRestaurant].options || "")
+                        .replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${n}" data-idx="${i}"`)
+                        .replace(/<input type="radio"/g, `<input type="radio" data-meal="${n}" data-idx="${i}"`)
+                        .replace(/\{idx\}/g, i); // 給 Radio Group 用
+                    ch += `<div class="checkbox-group" style="margin-top:0;">${optHtml}</div></div>`;
                 }
             } 
         }
-        
-        pendingOrder.meal = meals.join(", "); 
-        pendingOrder.basePrice = basePrice;
-        document.getElementById('c_mealName').innerHTML = meals.join("<br>"); 
-        document.getElementById('c_basePrice').innerText = basePrice;
-        document.getElementById('dynamicOptions').innerHTML = customizeHtml; 
-        
-        document.getElementById('menuArea').style.display = 'none'; 
-        document.getElementById('cartFab').style.display = 'none'; 
-        document.getElementById('customizeArea').style.display = 'block'; 
-        currentOrderStep = 'customizeArea'; 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        pendingOrder.meal = meals.join(", "); pendingOrder.basePrice = bp; document.getElementById('c_mealName').innerHTML = meals.join("<br>"); document.getElementById('dynamicOptions').innerHTML = ch;
+        document.getElementById('menuArea').style.display='none'; document.getElementById('cartFab').style.display='none'; document.getElementById('customizeArea').style.display='block'; currentOrderStep='customizeArea'; window.scrollTo(0,0);
     }
-
-    window.backToMenu = function() { document.getElementById('customizeArea').style.display = 'none'; document.getElementById('menuArea').style.display = 'block'; document.getElementById('cartFab').style.display = 'flex'; currentOrderStep = 'menuArea'; }
-
+    window.backToMenu = function() { document.getElementById('customizeArea').style.display='none'; document.getElementById('menuArea').style.display='block'; document.getElementById('cartFab').style.display='flex'; currentOrderStep='menuArea'; }
     window.goToReview = function() {
-        let finalPrice = pendingOrder.basePrice; 
-        let notes = [];
-        let mealCustomizations = {}; 
-        
-        const checkboxes = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => { 
-            if(cb.checked) { 
-                finalPrice += parseInt(cb.getAttribute('data-price')); 
-                let meal = cb.getAttribute('data-meal');
-                let idx = parseInt(cb.getAttribute('data-idx')) + 1;
-                let key = `${meal}(第${idx}份)`;
-                if(!mealCustomizations[key]) mealCustomizations[key] = [];
-                mealCustomizations[key].push(cb.value);
-            } 
-        });
-        
-        for(let key in mealCustomizations) {
-            notes.push(`${key}: ${mealCustomizations[key].join(", ")}`);
-        }
-        
-        if(document.getElementById('orderNote').value) notes.push("全單備註: " + document.getElementById('orderNote').value.trim());
-        
-        pendingOrder.note = notes.length > 0 ? notes.join(" | ") : "無"; 
-        pendingOrder.price = finalPrice; 
-        pendingOrder.date = todayStr; 
-        pendingOrder.isPaid = false; 
-        pendingOrder.notifiedPaid = false; 
-        pendingOrder.paidAmount = 0; 
-        const now = new Date(); 
-        pendingOrder.timestamp = now.getTime(); 
-        pendingOrder.timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-        document.getElementById('v_id').innerText = pendingOrder.studentId; 
-        document.getElementById('v_meal').innerHTML = pendingOrder.meal.replace(/, /g, '<br>'); 
-        document.getElementById('v_note').innerText = pendingOrder.note; 
-        document.getElementById('v_price').innerText = pendingOrder.price;
-        document.getElementById('customizeArea').style.display = 'none'; 
-        document.getElementById('reviewArea').style.display = 'block'; 
-        currentOrderStep = 'reviewArea';
-    }
-
-    window.backToCustomize = function() { document.getElementById('reviewArea').style.display = 'none'; document.getElementById('customizeArea').style.display = 'block'; currentOrderStep = 'customizeArea'; }
-
-    window.confirmSubmit = async function() {
-        const btn = document.getElementById('submitBtn'); btn.innerHTML = '<span class="material-symbols-outlined">sync</span> 處理中...'; btn.disabled = true;
-        try {
-            await setDoc(doc(db, "orders", todayStr + "_" + pendingOrder.studentId), pendingOrder);
-            await logActivity(pendingOrder.studentId, "送出訂單", `總額 $${pendingOrder.price}`);
-            showReceipt(pendingOrder.studentId, pendingOrder.meal, pendingOrder.note, pendingOrder.price, false, false, pendingOrder.timeString, 0);
-        } catch (error) { alert("錯誤！請檢查網路。"); btn.innerText = "確認送出訂單"; btn.disabled = false; }
-    }
-
-    function showReceipt(id, meal, note, price, isPaid, notifiedPaid, timeString, paidAmount) {
-        hideAllSections(); document.getElementById('receiptArea').style.display = 'block';
-        document.getElementById('r_id').innerText = id; document.getElementById('r_meal').innerHTML = meal.replace(/, /g, '<br>'); document.getElementById('r_price').innerText = price; document.getElementById('r_time').innerText = timeString || "未知";
-        let actualPaid = paidAmount !== undefined ? paidAmount : (isPaid ? price : 0);
-        const paymentArea = document.getElementById('paymentStatusUI'); const notifyBtn = document.getElementById('notifyBtn');
-
-        if (actualPaid >= price) { paymentArea.innerHTML = `<h3 style="color:#111; margin:0; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="font-size:24px;">check_circle</span> 已結清 (付 $${actualPaid})</h3>`; notifyBtn.style.display = 'none'; } 
-        else if (actualPaid > 0) { paymentArea.innerHTML = `<h3 style="color:#111; margin:0; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="font-size:24px;">warning</span> 已付 $${actualPaid} (尚欠 $${price - actualPaid})</h3>`; notifyBtn.style.display = 'block'; } 
-        else if (notifiedPaid) { paymentArea.innerHTML = `<h3 style="color:#111; margin:0; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="font-size:24px;">hourglass_empty</span> 已通知負責人對帳中</h3>`; notifyBtn.style.display = 'none'; } 
-        else { paymentArea.innerHTML = `<h3 style="color:#111; margin:0; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="font-size:24px;">cancel</span> 尚未繳費 ($0)</h3>`; notifyBtn.style.display = 'block'; }
-        window.currentViewingId = id; currentOrderStep = 'receiptArea';
-    }
-
-    window.notifyAdminPaid = async function() {
-        const id = window.currentViewingId;
-        try { await updateDoc(doc(db, "orders", todayStr + "_" + id), { notifiedPaid: true }); await logActivity(id, "通知繳費", "發送通知"); alert("已通知！"); location.reload(); } catch(e) { alert("通知失敗"); }
-    }
-
-    window.cancelOrder = async function() {
-        if(confirm("確定要取消訂單嗎？")) { try { await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { isCancelled: true }); await logActivity(window.currentViewingId, "取消訂單", "作廢"); alert("已取消！"); location.reload(); } catch(e) { alert("取消失敗"); } }
-    }
-
-    onSnapshot(doc(db, "system", "announcement"), (docSnap) => {
-        const banner = document.getElementById('announcementBanner'); const planBBoard = document.getElementById('planBDashboard');
-        if (docSnap.exists() && docSnap.data().date === todayStr) {
-            const data = docSnap.data(); banner.style.display = 'block'; document.getElementById('announcementMsg').innerText = data.message; document.getElementById('announcementTime').innerText = data.time;
-            if (data.isPlanB) {
-                hideAllSections(); planBBoard.style.display = 'block'; currentOrderStep = 'planBDashboard';
-                document.getElementById('pbMealDisplay').innerText = data.planBMeal; document.getElementById('pbPriceDisplay').innerText = data.planBPrice;
-
-                const q = query(collection(db, "orders"), where("date", "==", todayStr));
-                onSnapshot(q, (snap) => {
-                    let arr = []; snap.forEach(d => { if(!d.data().isCancelled) arr.push(d.data()); }); arr.sort((a,b) => a.studentId - b.studentId);
-                    let html = '';
-                    arr.forEach(o => {
-                        let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? o.price : 0);
-                        let status = paidAmt >= o.price ? `<span style="font-weight:700;"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 已結清</span>` : `<span style="font-weight:700;"><span class="material-symbols-outlined" style="font-size:16px;">warning</span> 差 $${o.price - paidAmt}</span>`;
-                        let diffMatch = o.note.match(/🚨([^|]+)/); let diffText = diffMatch ? `<br><span style="font-size:13px; font-weight:600;">${diffMatch[1].trim()}</span>` : '';
-                        html += `<tr><td><strong>${o.studentId}</strong></td><td>${status}${diffText}</td></tr>`;
-                    });
-                    if(arr.length === 0) html = `<tr><td colspan="2">目前無人訂餐</td></tr>`; document.getElementById('pbTableBody').innerHTML = html;
-                });
+        let fp = pendingOrder.basePrice; let notes = []; let cust = {};
+        const opts = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
+        opts.forEach(cb => { 
+            if(cb.value !== "單點") {
+                fp += parseInt(cb.getAttribute('data-price') || 0); 
+                let k = `${cb.getAttribute('data-meal')}(第${parseInt(cb.getAttribute('data-idx'))+1}份)`;
+                if(!cust[k]) cust[k]=[]; cust[k].push(cb.value);
             }
-        } else {
-            banner.style.display = 'none'; planBBoard.style.display = 'none';
-            if (localStorage.getItem('loggedInUser_217') && localStorage.getItem('tosAgreed_217')) { initSystem(); }
-        }
-    });
+        });
+        for(let k in cust) notes.push(`${k}: ${cust[k].join(",")}`);
+        if(document.getElementById('orderNote').value) notes.push("全單: " + document.getElementById('orderNote').value.trim());
+        pendingOrder.note = notes.length ? notes.join(" | ") : "無"; pendingOrder.price = fp; pendingOrder.date = todayStr; pendingOrder.restaurant = currentRestaurant;
+        document.getElementById('v_id').innerText = pendingOrder.studentId; document.getElementById('v_rest').innerText = currentRestaurant; document.getElementById('v_meal').innerHTML = pendingOrder.meal.replace(/, /g, '<br>'); document.getElementById('v_note').innerText = pendingOrder.note; document.getElementById('v_price').innerText = pendingOrder.price;
+        document.getElementById('customizeArea').style.display='none'; document.getElementById('reviewArea').style.display='block'; currentOrderStep='reviewArea';
+    }
+    window.backToCustomize = function() { document.getElementById('reviewArea').style.display='none'; document.getElementById('customizeArea').style.display='block'; currentOrderStep='customizeArea'; }
+    window.confirmSubmit = async function() {
+        const btn = document.getElementById('submitBtn'); btn.innerHTML = '處理中...'; btn.disabled = true;
+        pendingOrder.isPaid = false; pendingOrder.notifiedPaid = false; pendingOrder.paidAmount = 0; pendingOrder.timestamp = new Date().getTime(); pendingOrder.timeString = new Date().toLocaleString('zh-TW');
+        try { await setDoc(doc(db, "orders", todayStr + "_" + pendingOrder.studentId), pendingOrder); showReceipt(pendingOrder.studentId, pendingOrder.meal, pendingOrder.note, pendingOrder.price, false, false, pendingOrder.timeString, 0); } catch(e) { alert("錯誤"); btn.innerHTML='送出'; btn.disabled=false;}
+    }
 
-    window.pbOptIn = async function() {
-        const id = window.currentUserId;
-        const docRef = doc(db, "orders", todayStr + "_" + id); const docSnap = await getDoc(docRef);
-        if(docSnap.exists() && !docSnap.data().isCancelled) return alert('你已經有訂單囉！名單上有你。');
-        await setDoc(docRef, { studentId: parseInt(id), date: todayStr, meal: document.getElementById('pbMealDisplay').innerText, note: "🚨 備案後額外加入", price: parseInt(document.getElementById('pbPriceDisplay').innerText), isPaid: false, paidAmount: 0, notifiedPaid: false, isCancelled: false });
-        await logActivity(id, "加入備案", "中途上車"); alert('✅ 已加入備案訂單！');
-    }
-    window.pbOptOut = async function() {
-        const id = window.currentUserId;
-        const docRef = doc(db, "orders", todayStr + "_" + id); const docSnap = await getDoc(docRef);
-        if(!docSnap.exists() || docSnap.data().isCancelled) return alert('你本來就沒訂單或已取消！');
-        if(confirm('確定要跳車嗎？')) { await updateDoc(docRef, { isCancelled: true }); await logActivity(id, "退出備案", "中途跳車"); alert('✅ 已取消！'); }
-    }
-    window.pbNotifyPaid = async function() {
-        const id = window.currentUserId;
-        const docRef = doc(db, "orders", todayStr + "_" + id); const docSnap = await getDoc(docRef);
-        if(!docSnap.exists() || docSnap.data().isCancelled) return alert('找不到訂單！');
-        await updateDoc(docRef, { notifiedPaid: true }); await logActivity(id, "備案繳費通知", "等待核帳中"); alert('✅ 已通知負責人！');
-    }
+    // 其它顯示與輔助
+    function showReceipt(id, m, n, p, ip, np, ts, pa) { hideAllSections(); document.getElementById('receiptArea').style.display = 'block'; document.getElementById('r_id').innerText = id; document.getElementById('r_meal').innerHTML = m.replace(/, /g,'<br>'); document.getElementById('r_price').innerText = p; document.getElementById('r_time').innerText = ts||""; let a = pa!==undefined?pa:(ip?p:0); const ui = document.getElementById('paymentStatusUI'); const b = document.getElementById('notifyBtn'); if(a>=p){ui.innerHTML='已結清'; b.style.display='none';} else if(a>0){ui.innerHTML=`差 $${p-a}`; b.style.display='block';} else if(np){ui.innerHTML='對帳中'; b.style.display='none';} else {ui.innerHTML='未繳費'; b.style.display='block';} window.currentViewingId=id; currentOrderStep='receiptArea'; }
+    window.notifyAdminPaid = async function() { try { await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { notifiedPaid: true }); alert("已通知"); location.reload(); } catch(e) {} }
+    window.cancelOrder = async function() { if(confirm("取消訂單？")) { try { await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { isCancelled: true }); alert("已取消"); location.reload(); } catch(e) {} } }
 </script>
 </body>
 </html>
