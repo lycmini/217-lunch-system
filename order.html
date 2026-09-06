@@ -1101,9 +1101,151 @@
     }
     
     window.goToReviewFromReceipt = async function() { setView('reviewPageArea'); await window.fetchOrdersForReview(); };
-    window.showAboutPage = function() { showInfoPage('<span class="material-symbols-outlined">info</span> 關於本站', '<p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p><p><b>🚀 核心功能特色</b><br>1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>2. <b>大數據推薦</b>：即時顯示「熱門排行榜」。<br>3. <b>透明化帳務</b>：支援部分付款與無痛加點修改。<br>4. <b>動態換單機制</b>：店家沒開時自動重置作廢與退費。<br>5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p style="text-align:right; font-weight:700;">網頁開發與系統架構設計：羅亦承</p>'); };
-    window.showFaqPage = function() { showInfoPage('<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)', '<p><b><span class="material-symbols-outlined" style="font-size:18px;">schedule</span> 關於點餐時間與權限</b><br><b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。<br><b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">shopping_cart</span> 關於點餐與修改</b><br><b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁點擊「當日狀態」，點擊下方「修改 / 加點今日餐點」即可重新點選，系統會自動保留您已付款的金額。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">payments</span> 關於金錢與繳費</b><br><b>Q4：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">emergency</span> 關於突發狀況 (強制換單)</b><br><b>Q5：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會從後台強制換店。系統會直接把你的訂單作廢，並把預繳費用存入退費帳本。同時首頁會跳出全班廣播通知，請重新點餐！</p>'); };
+window.showAboutPage = function() {
+        showInfoPage(
+            '關於本站',
+            `
+            <div style="font-size:14px; line-height:1.8; color:#333;">
+                <p style="font-size:16px; font-weight:700; color:#111; margin-top:0; text-align:center;">
+                    「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」
+                </p>
+                <hr style="border:0; border-top:1px solid #e5e5ea; margin:16px 0;">
 
+                <div style="margin-bottom:18px;">
+                    <h3 style="margin:0 0 6px 0; font-size:15px; color:#111; font-weight:700;">開發緣起與初衷</h3>
+                    <p style="margin:0;">
+                        高中生活步調緊湊，午餐訂購看似日常小事，過往卻充滿各類痛點：通訊群組訊息洗版造成漏單漏登記、紙本劃記統計耗時費力、店家突發公休時應變混亂，以及收退款與找零時繁瑣且易生爭議的帳務核對。本系統專為班級量身打造，將傳統作業全面數位化，致力建立一套高效、精準、透明且具備高度防呆機制的點餐生態系。
+                    </p>
+                </div>
+
+                <div style="margin-bottom:18px;">
+                    <h3 style="margin:0 0 6px 0; font-size:15px; color:#111; font-weight:700;">核心系統架構與技術特色</h3>
+                    <p style="margin:0 0 8px 0;">
+                        系統採用原生輕量前端架構結合 Firebase 雲端資料庫打造，兼具快速載入與資料即時同步能力：
+                    </p>
+                    <ul style="margin:0; padding-left:20px; line-height:1.75;">
+                        <li><b>雲端動態菜單管理庫</b>：菜單全面資料庫化，後台支援自訂品項分類、價格彈性設定與實體上移下移排序，儲存後即時同步全班前台，無須繁瑣維護。</li>
+                        <li><b>智慧防呆與情境感知</b>：內建星期全自動偵測機制（如週三限定特餐自動解鎖上架），並透過關鍵字過濾技術，僅針對需要選擇主食的品項動態渲染選項，徹底杜絕無效點選。</li>
+                        <li><b>極速購物車與自訂調整</b>：配備雙區塊浮動購物車與即時展開明細清單，並支援進入客製化階段後的單筆品項刪除與防呆總額鎖定，避免空單送出。</li>
+                        <li><b>無痛修改與精準帳務結算</b>：截止前支援無痛重新選餐並自動繼承已繳金額；後台建置事後退補雙向同步機制，找零多給、代墊或補收皆詳細入帳，並導入金額無條件進位計算，確保帳目分毫不差。</li>
+                        <li><b>危機處理與統一備案機制</b>：遇店家未營業或供餐異常時，負責人可於後台啟動強制換單或統一備案機制，系統自動計算全班各座號之多退少補明細表。</li>
+                        <li><b>數據分析與意見回饋中心</b>：整合個人歷史消費圖表與每餐均價統計、歷代熱門餐點排行榜、餐點評分反饋系統，以及供同學自由提出排程建議的許願池。</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom:18px;">
+                    <h3 style="margin:0 0 6px 0; font-size:15px; color:#111; font-weight:700;">設計精神與理念</h3>
+                    <p style="margin:0;">
+                        資訊科技的價值在於優化流程與解決真實問題。217 午餐訂購系統不僅是點餐工具，更是班級自治與現代化資訊管理的具體實踐。透過清晰透明的電磁紀錄與直覺友善的操作介面，有效分擔負責人的繁重雜務，同時提供全班同學順暢、安心的點餐體驗。
+                    </p>
+                </div>
+
+                <hr style="border:0; border-top:1px solid #e5e5ea; margin:16px 0;">
+                
+                <div style="text-align:right; font-size:13px; color:#555; line-height:1.6;">
+                    <div>系統版本：217 午餐訂購系統 v2.4.4</div>
+                    <div>網頁開發與系統架構設計：<span style="font-weight:700; color:#111;">羅亦承</span></div>
+                </div>
+            </div>
+            `
+        );
+    };
+   window.showFaqPage = function() {
+        showInfoPage(
+            '<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)',
+            `
+            <div style="font-size:14px; line-height:1.75; color:#333;">
+                
+                <!-- 1. 點餐時間與系統狀態 -->
+                <div style="margin-bottom:20px; background:#fafafa; padding:14px; border-radius:10px; border:1px solid #e5e5ea;">
+                    <h3 style="margin:0 0 8px 0; color:#111; font-size:15px; display:flex; align-items:center;">
+                        <span class="material-symbols-outlined" style="font-size:18px; margin-right:6px; color:#0078d4;">schedule</span> 
+                        一、點餐時間與系統狀態
+                    </h3>
+                    <p><b>Q1：每天點餐時間有什麼限制？超過時間還能訂嗎？</b><br>
+                    A：系統預設開放時段為每日 <b>06:00 至 11:00</b>。為配合校方外食登記規定與店家製作車程，<b>11:00 一到系統將自動鎖定</b>，無法再送出訂單或修改，請同學務必提早下單。</p>
+                    
+                    <p><b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>
+                    A：通常有兩種情況：<br>
+                    1. 目前非開放點餐時段（如 11:00 之後或清晨之前）。<br>
+                    2. 今日負責人尚未在後台指派今日營業餐廳，請稍候或於左側選單先使用「菜單總覽」預覽菜單。</p>
+
+                    <p style="margin-bottom:0;"><b>Q3：為什麼頁面突然提示「管理員已重置裝置」並被登出？</b><br>
+                    A：當負責人進行後台菜單重大更新或快取重置時，會發送全班同步指令，直接重新輸入座號密碼登入即可正常使用。</p>
+                </div>
+
+                <!-- 2. 購物車與智慧選單 -->
+                <div style="margin-bottom:20px; background:#fafafa; padding:14px; border-radius:10px; border:1px solid #e5e5ea;">
+                    <h3 style="margin:0 0 8px 0; color:#111; font-size:15px; display:flex; align-items:center;">
+                        <span class="material-symbols-outlined" style="font-size:18px; margin-right:6px; color:#2e7d32;">shopping_cart</span> 
+                        二、購物車與客製化操作 (v2.4.4)
+                    </h3>
+                    <p><b>Q4：怎麼確認自己到底加了哪些餐點進購物車？</b><br>
+                    A：畫面右下角的浮動黑膠囊按鈕採用雙區塊設計：<b>點擊左側「購物車圖示與總價」</b>，即可向上展開「迷你明細清單」確認品項與數量；確認無誤後點右側「前往客製化」。</p>
+
+                    <p><b>Q5：進到客製化頁面後，點錯的品項可以刪掉嗎？</b><br>
+                    A：可以！每個餐點卡片的右上角都有<b>紅色垃圾桶圖示</b>，點擊即可單獨移除該份餐點。<br>
+                    ⚠️ <b>防呆限制</b>：購物車至少需保留一項餐點，無法全部刪至 0 元；若想完全重選，請點左下角「返回加點」。</p>
+
+                    <p><b>Q6：為什麼有的品項有「我要麵 / 我要米粉」，有的卻沒有？</b><br>
+                    A：本系統具備「智慧關鍵字過濾」機制，只有名稱包含「麵/米粉」的餐點才會強制跳出主食二選一；若點小菜、湯品或飯類，選麵選項會自動隱藏，絕不干擾！</p>
+
+                    <p style="margin-bottom:0;"><b>Q7：菜單上的「週三限定特餐」平常怎麼看不到？</b><br>
+                    A：系統已內建星期偵測機制。凡標註週三限定的餐點，<b>僅在每週三當天會全自動解鎖上架</b>，其餘日子自動隱藏，避免誤點沒開的餐點。</p>
+                </div>
+
+                <!-- 3. 訂單修改與取消 -->
+                <div style="margin-bottom:20px; background:#fafafa; padding:14px; border-radius:10px; border:1px solid #e5e5ea;">
+                    <h3 style="margin:0 0 8px 0; color:#111; font-size:15px; display:flex; align-items:center;">
+                        <span class="material-symbols-outlined" style="font-size:18px; margin-right:6px; color:#d32f2f;">edit_note</span> 
+                        三、訂單修改、加點與取消
+                    </h3>
+                    <p><b>Q8：送出訂單後，中途想換餐或加點怎麼辦？</b><br>
+                    A：只要在 11:00 截止前：<br>
+                    1. 於首頁點擊「當日狀態」。<br>
+                    2. 點擊藍色按鈕<b>「修改 / 加點今日餐點」</b>。<br>
+                    3. 重新勾選想吃的所有餐點送出。<br>
+                    💡 系統會<b>自動繼承你原本已繳納的金額</b>，並在結帳明細精算出多退少補，完全無痛！</p>
+
+                    <p style="margin-bottom:0;"><b>Q9：我送出後反悔不吃，可以取消訂單嗎？</b><br>
+                    A：11:00 點餐截止前，可在「當日狀態」點擊紅色的「取消今日訂單」，系統會立即將訂單標記為作廢並通報後台。超過 11:00 店家備料後即無法取消。</p>
+                </div>
+
+                <!-- 4. 繳費、退補與帳務 -->
+                <div style="margin-bottom:20px; background:#fafafa; padding:14px; border-radius:10px; border:1px solid #e5e5ea;">
+                    <h3 style="margin:0 0 8px 0; color:#111; font-size:15px; display:flex; align-items:center;">
+                        <span class="material-symbols-outlined" style="font-size:18px; margin-right:6px; color:#f57c00;">payments</span> 
+                        四、繳費、退補與個人帳戶
+                    </h3>
+                    <p><b>Q10：我點了「我已繳費了！發送通知」，為什麼狀態還是未結清？</b><br>
+                    A：該按鈕為「主動推播通知」，按下去後負責人後台會收到你已付錢的提示。但必須等<b>負責人實際收到實體現金核對無誤後</b>，後台才會手動更新為「已結清」。</p>
+
+                    <p><b>Q11：歷史明細裡的「事後補收」或「事後退款」是什麼？</b><br>
+                    A：這是負責人處理「找零多給、代墊費用、活動補貼或店家缺餐退費」的專屬帳目。每一筆退補都會清楚列出原因，並直接加減到你的<b>「個人總帳戶餘額」</b>中。</p>
+
+                    <p style="margin-bottom:0;"><b>Q12：金額若有小數點怎麼算？</b><br>
+                    A：系統全面採用<b>小數點無條件進位 (Math.ceil)</b> 計算，金額一律取整數，方便實體投幣繳費。</p>
+                </div>
+
+                <!-- 5. 突發狀況處理 -->
+                <div style="margin-bottom:10px; background:#fafafa; padding:14px; border-radius:10px; border:1px solid #e5e5ea;">
+                    <h3 style="margin:0 0 8px 0; color:#111; font-size:15px; display:flex; align-items:center;">
+                        <span class="material-symbols-outlined" style="font-size:18px; margin-right:6px; color:#c2185b;">emergency</span> 
+                        五、突發狀況與緊急備案
+                    </h3>
+                    <p><b>Q13：如果店家臨時公休或外送沒送來怎麼辦？</b><br>
+                    A：負責人會從後台啟動「危機處理機制」：<br>
+                    1. <b>緊急換店</b>：舊訂單全數作廢，已繳款項自動轉入退費帳本，首頁跳出紅色廣播請大家重訂。<br>
+                    2. <b>全班統一備案</b>：統一改訂指定便當，系統自動列出全班各座號需補差額或退款明細表。</p>
+
+                    <p style="margin-bottom:0;"><b>Q14：填寫餐點評分與許願池有什麼用？</b><br>
+                    A：評分會即時累積至「歷代熱門排行榜」與後台大數據統計，作為後續排程依據；許願池則可指名希望哪一天訂哪一家餐廳，負責人排程時會優先考量！</p>
+                </div>
+
+            </div>
+            `
+        );
+    };
     onSnapshot(doc(db, "system", "announcement"), (docSnap) => {
         const banner = document.getElementById('announcementBanner'); const planBBoard = document.getElementById('planBDashboard');
         if (docSnap.exists() && docSnap.data().date === todayStr) {
