@@ -145,18 +145,15 @@
             <li class="sub-item"><a href="javascript:void(0)" onclick="scrollToSection('planBSection'); toggleMenu();"><span class="material-symbols-outlined">emergency</span> 危機處理：啟動備案機制</a></li>
             
             <li><a href="javascript:void(0)" onclick="switchPage('page-ledger'); toggleMenu();"><span class="material-symbols-outlined">account_balance_wallet</span> 班級付款總情形</a></li>
-            <li><a href="javascript:void(0)" onclick="switchPage('page-student-records'); loadStudentRecords('all'); toggleMenu();"><span class="material-symbols-outlined">search</span> 查詢狀態與紀錄</a></li>
-            
-            <!-- 🚀 升級：雲端菜單管理庫 -->
-            <li><a href="javascript:void(0)" onclick="switchPage('page-menu-editor'); toggleMenu();"><span class="material-symbols-outlined" style="color:#d32f2f;">restaurant</span> 雲端菜單管理庫 <span class="version-badge" style="background:#d32f2f;">New</span></a></li>
-            
+            <li><a href="javascript:void(0)" onclick="switchPage('page-student-records'); loadStudentRecords(); toggleMenu();"><span class="material-symbols-outlined">search</span> 查詢狀態與紀錄</a></li>
+            <li><a href="javascript:void(0)" onclick="switchPage('page-menu-editor'); toggleMenu();"><span class="material-symbols-outlined" style="color:#d32f2f;">restaurant</span> 雲端菜單管理庫</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-reviews'); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分接收站</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-feedbacks'); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應&許願池接收站</a></li>
-            
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.3.0</span></a></li>
+            <!-- 🚀 升級：網頁更新紀錄 v2.3.1 -->
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.3.1</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
         </ul>
     </div>
@@ -190,11 +187,20 @@
                         <div id="scheduledMenusList" style="font-size:14px; line-height:1.6; max-height: 150px; overflow-y: auto;">讀取中...</div>
                     </div>
                     
-                    <div style="background: #fafafa; padding: 16px; border-radius: 12px; border: 1px solid #e5e5ea;">
-                        <h3 style="margin-top:0; font-size:15px; display:flex; align-items:center;"><span class="material-symbols-outlined">schedule</span> 開放點餐時間區間</h3>
-                        <input type="time" id="sysStartTime" value="06:00" lang="en-GB">
-                        <input type="time" id="sysEndTime" value="11:00" lang="en-GB">
-                        <button class="btn btn-success" style="width:100%;" onclick="saveTimeSettings()">更新時間</button>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div style="background: #fafafa; padding: 16px; border-radius: 12px; border: 1px solid #e5e5ea;">
+                            <h3 style="margin-top:0; font-size:15px; display:flex; align-items:center;"><span class="material-symbols-outlined">schedule</span> 開放點餐時間區間</h3>
+                            <input type="time" id="sysStartTime" value="06:00" lang="en-GB">
+                            <input type="time" id="sysEndTime" value="11:00" lang="en-GB">
+                            <button class="btn btn-success" style="width:100%;" onclick="saveTimeSettings()">更新時間</button>
+                        </div>
+
+                        <!-- 🚀 v2.3.1 新增：強制登出所有前台裝置 -->
+                        <div style="background: #fff5f5; padding: 16px; border-radius: 12px; border: 1px solid #ffcdd2;">
+                            <h3 style="margin-top:0; font-size:15px; color:#d32f2f; display:flex; align-items:center;"><span class="material-symbols-outlined">phonelink_erase</span> 強制登出所有學生裝置</h3>
+                            <p style="font-size:12px; color:#d32f2f; margin:5px 0 10px 0;">按下後，所有已登入的前台裝置將會被立即登出並清除暫存（不影響後台）。</p>
+                            <button class="btn btn-danger" style="width:100%; border-color:#d32f2f; color:#d32f2f;" onclick="forceLogoutAllUsers()">強制全班登出</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -205,13 +211,15 @@
                 <div id="paidNotifs" style="margin-top: 15px;"></div>
             </div>
             
-            <div class="card" id="adminDateSection">
-                <h2><span class="material-symbols-outlined">event</span> 選擇查看訂單日期</h2>
-                <input type="date" id="adminDate" onchange="listenToOrders(this.value)">
-            </div>
-            
+            <!-- 整合原本的日期選擇到看板中 -->
             <div class="card" id="orderBoardSection">
                 <h2><span class="material-symbols-outlined">table_chart</span> 訂單即時看板 (支援部分付款)</h2>
+                <div style="background:#eaf4fc; padding:12px; border-radius:8px; margin-bottom:15px; border:1px solid #bce0fd; display:flex; align-items:center; gap:10px;">
+                    <span class="material-symbols-outlined" style="color:#0078d4;">event</span>
+                    <span style="font-weight:600; color:#0078d4; font-size:14px;">當前看板日期：</span>
+                    <input type="date" id="adminDate" style="margin:0; width:auto; border:none; background:transparent; font-weight:bold; color:#0078d4; outline:none; font-family:inherit;" onchange="listenToOrders(this.value)">
+                </div>
+                
                 <p style="font-weight:600; font-size:15px;">有效訂單人數：<strong id="totalCount" style="font-size: 18px;">0</strong> 人</p>
                 <div class="table-responsive">
                     <table>
@@ -223,8 +231,15 @@
                 <button class="btn btn-danger" style="width:100%;" onclick="clearTodayOrders()"><span class="material-symbols-outlined">delete_forever</span> 完全清除所選日期的所有訂單</button>
             </div>
 
+            <!-- 🚀 v2.3.1 報表增加獨立日期顯示器 -->
             <div class="card" id="statsSection">
                 <h2><span class="material-symbols-outlined">bar_chart</span> 統計報表與帳務中心</h2>
+                <div style="background:#eaf4fc; padding:12px; border-radius:8px; margin-bottom:15px; border:1px solid #bce0fd; display:flex; align-items:center; gap:10px;">
+                    <span class="material-symbols-outlined" style="color:#0078d4;">event</span>
+                    <span style="font-weight:600; color:#0078d4; font-size:14px;">當前報表日期：</span>
+                    <input type="date" id="statsDateFilter" style="margin:0; width:auto; border:none; background:transparent; font-weight:bold; color:#0078d4; outline:none; font-family:inherit;" onchange="document.getElementById('adminDate').value=this.value; listenToOrders(this.value)">
+                </div>
+                
                 <div class="item-list">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:12px; margin-bottom:12px;">
                         <h3 style="margin: 0; font-size:16px; display:flex; align-items:center;"><span class="material-symbols-outlined">call</span> 點餐總表</h3>
@@ -258,7 +273,6 @@
             </div>
         </div>
 
-        <!-- 🚀 v2.3.0 雲端菜單管理庫 (GUI 編輯器) -->
         <div id="page-menu-editor" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">restaurant</span> 雲端菜單管理庫</h2>
@@ -273,7 +287,6 @@
                     <select id="editRestSelect" onchange="openMenuEditor(this.value)" style="margin-bottom:0;"></select>
                 </div>
 
-                <!-- 編輯器工作區 -->
                 <div id="menuEditorWorkspace" style="display:none; padding-top:15px; border-top:2px solid #111;"></div>
             </div>
         </div>
@@ -294,12 +307,22 @@
             </div>
         </div>
 
+        <!-- 🚀 v2.3.1 新增：狀態紀錄的日期篩選 -->
         <div id="page-student-records" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">search</span> 學生狀態與紀錄查詢</h2>
-                <div style="background:#fafafa; padding:16px; border-radius:12px; border:1px solid #e5e5ea; margin-bottom: 20px;">
-                    <label style="font-weight:600; font-size:14px; margin-bottom:8px; display:block;">篩選座號：</label>
-                    <select id="recordStudentFilter" onchange="loadStudentRecords(this.value)" style="margin-bottom:0;"></select>
+                <div style="background:#fafafa; padding:16px; border-radius:12px; border:1px solid #e5e5ea; margin-bottom: 20px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <div style="flex:1; min-width: 150px;">
+                        <label style="font-weight:600; font-size:14px; margin-bottom:8px; display:block;">篩選座號：</label>
+                        <select id="recordStudentFilter" onchange="loadStudentRecords()" style="margin-bottom:0;"></select>
+                    </div>
+                    <div style="flex:1; min-width: 150px;">
+                        <label style="font-weight:600; font-size:14px; margin-bottom:8px; display:block;">篩選特定日期：</label>
+                        <input type="date" id="recordDateFilter" onchange="loadStudentRecords()" style="margin-bottom:0;">
+                    </div>
+                    <div style="flex:0; display:flex; align-items:flex-end;">
+                        <button class="btn btn-outline" style="margin:0; height:44px; white-space:nowrap;" onclick="document.getElementById('recordDateFilter').value=''; loadStudentRecords();">清除日期限制</button>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table>
@@ -401,14 +424,24 @@
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
                     
+                    <!-- v2.3.1 -->
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.3.0 雲端菜單資料庫實裝 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.3.1 報表對帳中心與雙向篩選升級 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
-                        <li>☁️ <strong>菜單全面雲端化：</strong> 系統架構大突破！13 家菜單從前端原始碼正式分離，移轉至 Firebase `restaurants` 集合中。</li>
-                        <li>🛠️ <strong>後台 GUI 編輯器：</strong> 新增「雲端菜單管理庫」，負責人可直接在網頁上新增餐廳、修改價格、刪除品項，完全免寫程式，前台即時同步。</li>
-                        <li>🚀 <strong>無縫移轉機制：</strong> 內建一鍵上傳指令，確保舊有菜單設定無痛搬移至雲端。</li>
+                        <li>📊 <strong>報表與帳務優化：</strong> 統計報表中心新增「歷史日期篩選器」，可隨時切換查看過去每一天的結算報表。班級付款總情形底部加入「全班合計」總金額結算。</li>
+                        <li>🔍 <strong>紀錄查詢進階篩選：</strong> 學生狀態與紀錄查詢加入「日期篩選」功能，支援座號與日期雙重條件比對。</li>
+                        <li>🔐 <strong>強制全班登出：</strong> 系統核心設定新增「強制登出所有前台裝置」功能，一鍵重置所有學生的登入狀態與快取。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.3.0 雲端菜單資料庫實裝</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>☁️ <strong>菜單全面雲端化：</strong> 系統架構大突破！13 家菜單移轉至 Firebase 資料庫，前台動態即時索取。</li>
+                        <li>🛠️ <strong>後台 GUI 編輯器：</strong> 新增「雲端菜單管理庫」，直接在網頁上新增餐廳、修改價格、刪除品項，完全免寫程式。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -417,8 +450,7 @@
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                         <li>✏️ <strong>前台修改餐點功能：</strong> 支援前台不作廢直接修改或加點餐點，系統保留已付金額並自動比對差額。</li>
-                        <li>🔝 <strong>後台看板置頂與高亮：</strong> 訂單依最新操作時間置頂，修改過的訂單會標記為「修改單」，並以刪除線顯示舊餐點。</li>
-                        <li>🧮 <strong>多退少補精算器：</strong> 後台看板會自動比對修改前後的差額，並提示「需補收 $X」或「應退還 $X」。</li>
+                        <li>🔝 <strong>後台看板置頂與高亮：</strong> 修改過的訂單會標記為「修改單」並置頂，系統會自動比對修改前後的差額。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -427,7 +459,6 @@
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                         <li>🔕 <strong>優化強制換單邏輯：</strong> 若當日「尚未有人下單」，換店將採取「靜默切換」，不再強制發布全班作廢廣播。</li>
-                        <li>🛡️ <strong>新增防呆設計：</strong> 餐廳下拉選單預設改為「未選擇餐廳」，防止手滑存成第一家。</li>
                     </ul>
                 </div>
             </div>
@@ -454,19 +485,20 @@
 
     const d = new Date();
     const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
+    
+    // 初始化各個日曆選擇器
     document.getElementById('adminDate').value = todayStr;
+    document.getElementById('statsDateFilter').value = todayStr;
     document.getElementById('scheduleDate').value = todayStr;
     document.getElementById('editHistoryDate').value = todayStr;
     document.getElementById('logDateFilter').value = todayStr;
 
     window.currentReportData = { restaurant: "未知餐廳", items: {}, totalAmount: 0 };
-    
-    // 🚀 v2.3.0 雲端化：宣告雲端資料容器
     window.cloudRestaurantDB = {};
     window.allRestaurants = [];
-    window.editingRest = null; // 當前編輯器操作的餐廳物件
+    window.editingRest = null; 
 
-    // 🚀 【僅供初次移轉使用的舊菜單資料】
+    // 本機端舊菜單資料 (用於初次雲端化)
     const legacyHardcodedDB = {
         "麵朝 (新竹食品店)": { menu: [{category:"鮮蝦雲吞拌麵",items:[{name:"鮮蝦雲吞拌麵",price:110},{name:"青醬雲吞拌麵",price:115},{name:"椒麻雲吞拌麵",price:115},{name:"蔥油雲吞拌麵",price:115},{name:"香滷雲吞拌麵",price:115},{name:"XO醬雲吞拌麵",price:115}]},{category:"港式水餃拌麵",items:[{name:"港式水餃拌麵",price:105},{name:"青醬水餃拌麵",price:110},{name:"椒麻水餃拌麵",price:110},{name:"蔥油水餃拌麵",price:110},{name:"香滷水餃拌麵",price:110},{name:"XO醬水餃拌麵",price:110}]},{category:"乾拌麵",items:[{name:"京醬肉絲拌麵",price:85},{name:"椒麻雞絲拌麵",price:85},{name:"青醬雞絲拌麵",price:85},{name:"蔥油雞絲拌麵",price:85},{name:"香滷雞絲拌麵",price:85},{name:"XO醬雞絲拌麵",price:85}]},{category:"風味湯麵",items:[{name:"羅宋番茄雞湯麵",price:130},{name:"養生清燉雞湯麵",price:130},{name:"剝皮辣椒雞湯麵",price:140},{name:"漢方肉骨茶雞湯麵",price:140},{name:"羅宋番茄湯麵",price:75},{name:"鮮蝦雲吞湯麵",price:110}]},{category:"功夫小點",items:[{name:"豬五花肉(蒜泥)",price:80},{name:"豬五花肉(椒麻)",price:80},{name:"舒肥雞(蔥油)",price:90},{name:"舒肥雞(青醬)",price:90},{name:"鮮蝦抄手(紅油)",price:100},{name:"鮮蝦抄手(白油)",price:100},{name:"港式翠玉水餃10粒",price:90}]},{category:"湯品&青菜",items:[{name:"大推烏梅汁",price:30},{name:"季節燙青菜",price:40},{name:"新竹貢丸湯",price:40},{name:"虱目魚丸湯",price:40},{name:"手工餛飩湯",price:40},{name:"羅宋番茄湯",price:50},{name:"鮮蝦雲吞湯",price:55},{name:"羅宋雲吞湯",price:80},{name:"養生清燉雞湯",price:95},{name:"剝皮辣椒雞湯",price:95},{name:"漢方肉骨茶雞湯",price:95}]}], options: `<div class="opt-section-title">🔹 麵食加量區</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="加麵" data-price="15">加麵 +$15</label><label class="custom-chip"><input type="checkbox" value="加舒肥雞" data-price="30">加舒肥雞 +$30</label></div>` },
         "湯食主義": { menu: [{category:"嫩切雞蓋飯系列",items:[{name:"嫩切雞蓋飯",price:135},{name:"嫩切雞蓋飯泡溫泉",price:155},{name:"明太子嫩切雞蓋飯",price:185},{name:"明太子嫩切雞蓋飯泡溫泉",price:205}]},{category:"豬五花蓋飯系列",items:[{name:"豬五花蓋飯",price:125},{name:"豬五花蓋飯泡溫泉",price:145},{name:"明太子豬肉蓋飯",price:175},{name:"明太子豬五花蓋飯泡溫泉",price:195},{name:"韓式泡菜豬肉蓋飯",price:145},{name:"香檸泰泰豬飯",price:150}]},{category:"牛五花蓋飯系列",items:[{name:"牛五花蓋飯",price:135},{name:"牛五花蓋飯泡溫泉",price:155},{name:"明太子牛肉蓋飯",price:185},{name:"明太子牛五花蓋飯泡溫泉",price:205},{name:"川味牛五花蓋飯",price:135}]},{category:"SPA舒肥雞胸盒飯",items:[{name:"原味檸檬舒肥雞",price:135},{name:"泰式酸辣舒肥雞",price:135},{name:"手作花椒油舒肥雞",price:135},{name:"海苔呀海苔舒肥雞",price:135},{name:"義式香料舒肥雞",price:135},{name:"墨西哥BBQ舒肥雞",price:135},{name:"手工海南醬舒肥雞",price:135},{name:"巴薩米克醋舒肥雞",price:135},{name:"蒲燒鯛魚腹蓋飯",price:145},{name:"健康蔬食盒飯(蛋奶素)",price:135}]},{category:"湯烏龍系列",items:[{name:"日式柴魚豬肉湯烏龍",price:120},{name:"日式柴魚牛肉湯烏龍",price:130},{name:"韓式泡菜豬肉湯烏龍",price:140},{name:"韓式泡菜牛肉湯烏龍",price:150},{name:"蜀味川香豬肉湯烏龍",price:140},{name:"蜀味川香牛肉湯烏龍",price:150}]},{category:"單點與加購",items:[{name:"豬五花一份",price:60},{name:"牛五花一份",price:60},{name:"舒肥雞胸肉一份",price:60},{name:"溏心蛋",price:30},{name:"溫泉蛋",price:30},{name:"胡麻高麗菜",price:55},{name:"柚香白蘿蔔",price:55},{name:"辣黃豆芽",price:40},{name:"胡麻雞胸冷麵(夏季限定)",price:110}]}], options: `<div class="opt-section-title">🔹 蓋飯/飯盒 加量升級</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="加飯" data-price="10">加飯 +$10</label><label class="custom-chip"><input type="checkbox" value="加高麗菜" data-price="20">加高麗菜 +$20</label><label class="custom-chip"><input type="checkbox" value="飯換地瓜" data-price="0">飯換地瓜</label><label class="custom-chip"><input type="checkbox" value="加地瓜" data-price="20">加地瓜 +$20</label><label class="custom-chip"><input type="checkbox" value="菜增量" data-price="35">菜增量 +$35</label><label class="custom-chip"><input type="checkbox" value="加豆腐" data-price="20">加豆腐 +$20</label><label class="custom-chip"><input type="checkbox" value="加1份雞胸肉" data-price="60">加1份雞胸肉 +$60</label><label class="custom-chip"><input type="checkbox" value="加明太子魚卵" data-price="50">加明太子魚卵 +$50</label></div><div class="opt-section-title">🔹 蛋類客製</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="溏心蛋換溫泉蛋" data-price="0">半顆溏心蛋換溫泉蛋</label></div><div class="opt-section-title">🚫 挑食區 (不要加甚麼)</div><div class="chip-group"><label class="custom-chip exclude"><input type="checkbox" value="不青蔥" data-price="0">不青蔥</label><label class="custom-chip exclude"><input type="checkbox" value="不洋蔥" data-price="0">不洋蔥</label><label class="custom-chip exclude"><input type="checkbox" value="不辣豆芽" data-price="0">不辣豆芽</label><label class="custom-chip exclude"><input type="checkbox" value="不玉米粒" data-price="0">不玉米粒</label><label class="custom-chip exclude"><input type="checkbox" value="不七味粉" data-price="0">不七味粉</label><label class="custom-chip exclude"><input type="checkbox" value="不海苔粉" data-price="0">不海苔粉</label></div>` },
@@ -493,7 +525,87 @@
         } catch(e) { console.error("Log failed", e); }
     };
 
-    // 🚀 v2.3.0 雲端菜單同步函數
+    window.onload = async function() {
+        if (!localStorage.getItem('adminLoggedIn_217')) {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'none';
+        } else {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            
+            // 下拉選單預設選項
+            let recordFilterHtml = '<option value="all">顯示全班 (所有號碼)</option>';
+            for(let i=1; i<=28; i++) recordFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
+            document.getElementById('recordStudentFilter').innerHTML = recordFilterHtml;
+            
+            let logFilterHtml = '<option value="all">所有人 (含管理員)</option><option value="Admin">Admin (後台管理員)</option>';
+            for(let i=1; i<=28; i++) logFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
+            if (document.getElementById('logStudentFilter')) { document.getElementById('logStudentFilter').innerHTML = logFilterHtml; }
+            
+            await loadCloudMenus();
+            listenToOrders(todayStr); 
+            loadScheduledMenus();
+            loadSettings();
+            listenToAnnouncements();
+        }
+    };
+
+    window.doLogin = function() {
+        const acc = document.getElementById('loginAccount').value.trim();
+        const pass = document.getElementById('loginPassword').value.trim();
+        if (acc === '217admin' && pass === 'lunchadmin') {
+            localStorage.setItem('adminLoggedIn_217', 'true');
+            logAdminAction("登入系統", "管理員登入成功");
+            location.reload();
+        } else { alert("❌ 帳號或密碼錯誤！"); }
+    };
+
+    window.logout = function() {
+        if(confirm("確定要登出管理員嗎？")) { 
+            logAdminAction("登出系統", "管理員登出");
+            localStorage.removeItem('adminLoggedIn_217'); 
+            location.reload(); 
+        }
+    };
+
+    // 🚀 v2.3.1 新增：強制登出所有前台裝置
+    window.forceLogoutAllUsers = async function() {
+        if(!confirm("⚠️ 嚴重警告：確定要強制登出所有前台（學生端）的裝置嗎？\n同學必須重新輸入帳號密碼才能點餐。")) return;
+        try {
+            await setDoc(doc(db, "system", "settings"), { forceLogoutTimestamp: Date.now() }, { merge: true });
+            await logAdminAction("強制全班登出", "執行了強制登出所有前台裝置指令");
+            alert("✅ 已成功發送強制登出指令！所有前台裝置將在幾秒內被強制登出。");
+        } catch (e) { alert("執行失敗，請檢查連線。"); }
+    }
+
+    window.toggleMenu = function() {
+        document.getElementById('sidebar').classList.toggle('active');
+        document.getElementById('overlay').classList.toggle('active');
+    }
+
+    window.scrollToSection = function(sectionId) {
+        switchPage('page-dashboard');
+        setTimeout(() => { const el = document.getElementById(sectionId); if (el) { window.scrollTo({top: el.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth'}); } }, 100);
+    }
+
+    window.switchPage = function(pageId) {
+        document.querySelectorAll('.admin-page').forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if(pageId === 'page-ledger') window.loadLedger();
+        if(pageId === 'page-activity') window.loadActivityLog();
+        if(pageId === 'page-reviews') window.loadReviews();
+        if(pageId === 'page-feedbacks') window.loadFeedbacks(); 
+    }
+
+    async function loadSettings() {
+        const configSnap = await getDoc(doc(db, "system", "settings"));
+        if (configSnap.exists()) {
+            document.getElementById('sysStartTime').value = configSnap.data().orderStartTime;
+            document.getElementById('sysEndTime').value = configSnap.data().orderEndTime;
+        }
+    }
+
     window.loadCloudMenus = async function() {
         try {
             const snap = await getDocs(collection(db, "restaurants"));
@@ -506,14 +618,12 @@
                 window.allRestaurants.push(doc.id);
             });
             
-            // 更新各處的下拉選單
             let restOpts = "<option value='' disabled selected>請選擇餐廳...</option>"; 
             window.allRestaurants.forEach(r => restOpts += `<option value="${r}">${r}</option>`);
             
             if(document.getElementById('scheduleRestaurant')) document.getElementById('scheduleRestaurant').innerHTML = restOpts;
             if(document.getElementById('planBRestaurant')) document.getElementById('planBRestaurant').innerHTML = restOpts;
             
-            // 更新編輯器的下拉選單
             let editorOpts = "<option value='' disabled selected>請選擇要編輯的餐廳...</option>";
             editorOpts += `<option value="new" style="font-weight:bold; color:#d32f2f;">+ 新增全新餐廳</option>`;
             window.allRestaurants.forEach(r => editorOpts += `<option value="${r}">${r}</option>`);
@@ -522,7 +632,6 @@
         } catch(e) { console.error("載入雲端菜單失敗", e); }
     };
 
-    // 🚀 v2.3.0: 將本機端舊菜單打包上傳
     window.seedCloudMenu = async function() {
         if(!confirm("⚠️ 確定要將內建的 13 家餐廳覆蓋上傳至雲端資料庫嗎？\n（這將會覆蓋雲端同名餐廳的所有資料！）")) return;
         
@@ -550,7 +659,6 @@
         await loadCloudMenus();
     };
 
-    // 🚀 v2.3.0: GUI 編輯器核心邏輯
     window.openMenuEditor = function(restName) {
         const ws = document.getElementById('menuEditorWorkspace');
         if(!restName) { ws.style.display = 'none'; return; }
@@ -559,7 +667,6 @@
         if(restName === 'new') {
             window.editingRest = { originalName: "", name: "", options: "", menu: [] };
         } else {
-            // 深拷貝，避免改到一半汙染原物件
             window.editingRest = JSON.parse(JSON.stringify(window.cloudRestaurantDB[restName]));
             window.editingRest.originalName = restName;
             window.editingRest.name = restName;
@@ -619,21 +726,13 @@
         let r = window.editingRest;
         if(!r.name.trim()) return alert("請輸入餐廳名稱！");
         try {
-            // 如果更改了餐廳名稱，必須先刪除舊名稱的 Document 以免產生重複
             if(r.originalName && r.originalName !== r.name) {
                 await deleteDoc(doc(db, "restaurants", r.originalName));
             }
-            // 寫入新的資料
-            await setDoc(doc(db, "restaurants", r.name), {
-                name: r.name,
-                menu: r.menu,
-                options: r.options
-            });
-            
+            await setDoc(doc(db, "restaurants", r.name), { name: r.name, menu: r.menu, options: r.options });
             await logAdminAction("編輯雲端菜單", `儲存/發布了餐廳: ${r.name}`);
             alert("✅ 儲存成功！前台點餐系統已即時同步更新。");
             
-            // 重新讀取雲端資料，並將編輯器鎖定在剛剛儲存的餐廳上
             await loadCloudMenus();
             document.getElementById('editRestSelect').value = r.name;
             openMenuEditor(r.name);
@@ -654,78 +753,6 @@
             document.getElementById('editRestSelect').value = "";
         } catch(e) { alert("刪除失敗"); console.error(e); }
     };
-
-
-    window.onload = async function() {
-        if (!localStorage.getItem('adminLoggedIn_217')) {
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('mainApp').style.display = 'none';
-        } else {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-            
-            let recordFilterHtml = '<option value="all">顯示全班 (所有號碼)</option>';
-            for(let i=1; i<=28; i++) recordFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
-            document.getElementById('recordStudentFilter').innerHTML = recordFilterHtml;
-            
-            let logFilterHtml = '<option value="all">所有人 (含管理員)</option><option value="Admin">Admin (後台管理員)</option>';
-            for(let i=1; i<=28; i++) logFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
-            if (document.getElementById('logStudentFilter')) { document.getElementById('logStudentFilter').innerHTML = logFilterHtml; }
-            
-            // 🚀 v2.3.0: 優先讀取雲端菜單資料，再執行其他後台邏輯
-            await loadCloudMenus();
-            listenToOrders(todayStr); 
-            loadScheduledMenus();
-            loadSettings();
-            listenToAnnouncements();
-        }
-    };
-
-    window.doLogin = function() {
-        const acc = document.getElementById('loginAccount').value.trim();
-        const pass = document.getElementById('loginPassword').value.trim();
-        if (acc === '217admin' && pass === 'lunchadmin') {
-            localStorage.setItem('adminLoggedIn_217', 'true');
-            logAdminAction("登入系統", "管理員登入成功");
-            location.reload();
-        } else { alert("❌ 帳號或密碼錯誤！"); }
-    };
-
-    window.logout = function() {
-        if(confirm("確定要登出管理員嗎？")) { 
-            logAdminAction("登出系統", "管理員登出");
-            localStorage.removeItem('adminLoggedIn_217'); 
-            location.reload(); 
-        }
-    };
-
-    window.toggleMenu = function() {
-        document.getElementById('sidebar').classList.toggle('active');
-        document.getElementById('overlay').classList.toggle('active');
-    }
-
-    window.scrollToSection = function(sectionId) {
-        switchPage('page-dashboard');
-        setTimeout(() => { const el = document.getElementById(sectionId); if (el) { window.scrollTo({top: el.getBoundingClientRect().top + window.pageYOffset - 80, behavior: 'smooth'}); } }, 100);
-    }
-
-    window.switchPage = function(pageId) {
-        document.querySelectorAll('.admin-page').forEach(page => page.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        if(pageId === 'page-ledger') window.loadLedger();
-        if(pageId === 'page-activity') window.loadActivityLog();
-        if(pageId === 'page-reviews') window.loadReviews();
-        if(pageId === 'page-feedbacks') window.loadFeedbacks(); 
-    }
-
-    async function loadSettings() {
-        const configSnap = await getDoc(doc(db, "system", "settings"));
-        if (configSnap.exists()) {
-            document.getElementById('sysStartTime').value = configSnap.data().orderStartTime;
-            document.getElementById('sysEndTime').value = configSnap.data().orderEndTime;
-        }
-    }
 
     window.loadScheduledMenus = async function() {
         const listEl = document.getElementById('scheduledMenusList'); listEl.innerHTML = "讀取中...";
@@ -819,6 +846,10 @@
     let currentUnsubscribe = null; 
     window.listenToOrders = async function(dateStr) {
         if(currentUnsubscribe) currentUnsubscribe();
+        
+        // 🚀 v2.3.1 連動報表的日期選擇器
+        document.getElementById('statsDateFilter').value = dateStr;
+        
         let restName = "未知餐廳";
         try { const menuSnap = await getDoc(doc(db, "dailyMenus", dateStr)); if(menuSnap.exists()) restName = menuSnap.data().restaurant; } catch(e) {}
 
@@ -853,7 +884,6 @@
             window.currentReportData = { restaurant: restName, items: itemCounts, totalAmount: totalAmount };
             renderNotifications(canceledAlerts, paidAlerts);
             
-            // 依 timestamp 降冪排列 (最新的單或修改單置頂)
             activeOrders.sort((a, b) => b.timestamp - a.timestamp);
             
             document.getElementById('totalCount').innerText = activeOrders.length;
@@ -967,6 +997,7 @@
         } catch(e) {}
     }
 
+    // 🚀 v2.3.1 新增：班級付款總情形底部加入「全班合計」總金額結算
     window.loadLedger = async function() {
         document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="4">計算中...</td></tr>`;
         try {
@@ -988,9 +1019,15 @@
             });
 
             let html = "";
+            let sumDebt = 0, sumPaid = 0;
+
             ledger.forEach((s, idx) => {
                 let id = idx + 1;
                 let balance = s.debt - s.paid; 
+                
+                sumDebt += s.debt;
+                sumPaid += s.paid;
+
                 let finalStatus = "";
                 if(balance > 0) finalStatus = `<span style="font-weight:700;"><span class="material-symbols-outlined" style="font-size:16px;">warning</span> 催繳 $${balance}</span>`;
                 else if(balance < 0) finalStatus = `<span style="font-weight:700; color:#d32f2f;"><span class="material-symbols-outlined" style="font-size:16px;">payments</span> 應退款 $${Math.abs(balance)}</span>`;
@@ -1001,24 +1038,48 @@
                             <td style="color:#555;">$${s.debt}</td><td style="font-weight:600;">$${s.paid}</td><td>${finalStatus}</td>
                          </tr>`;
             });
+
+            // 🚀 加入全班合計行
+            let totalBalance = sumDebt - sumPaid;
+            let totalStatus = "";
+            if(totalBalance > 0) totalStatus = `<span style="color:#ffeb3b; font-weight:700;"><span class="material-symbols-outlined" style="font-size:16px;">warning</span> 總催繳 $${totalBalance}</span>`;
+            else if(totalBalance < 0) totalStatus = `<span style="color:#ffcdd2; font-weight:700;"><span class="material-symbols-outlined" style="font-size:16px;">payments</span> 總應退 $${Math.abs(totalBalance)}</span>`;
+            else totalStatus = `<span><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 完美結清</span>`;
+
+            html += `<tr style="background:#111; color:#fff;">
+                        <td style="border-radius: 0 0 0 8px;"><strong>全班合計</strong></td>
+                        <td style="font-weight:700; font-size:16px;">$${sumDebt}</td>
+                        <td style="font-weight:700; font-size:16px;">$${sumPaid}</td>
+                        <td style="border-radius: 0 0 8px 0;">${totalStatus}</td>
+                     </tr>`;
+
             document.getElementById('ledgerTableBody').innerHTML = html;
         } catch(e) { }
     }
 
-    window.loadStudentRecords = async function(studentIdStr) {
+    // 🚀 v2.3.1 新增：學生狀態與紀錄查詢加入「日期篩選」功能
+    window.loadStudentRecords = async function(overrideId) {
         document.getElementById('recordTableBody').innerHTML = `<tr><td colspan="5">讀取中...</td></tr>`;
-        if (studentIdStr !== undefined) { document.getElementById('recordStudentFilter').value = studentIdStr; } 
-        else { studentIdStr = document.getElementById('recordStudentFilter').value; }
+        
+        if (overrideId !== undefined) { 
+            document.getElementById('recordStudentFilter').value = overrideId; 
+        } 
+        
+        const studentIdStr = document.getElementById('recordStudentFilter').value;
+        const dateStr = document.getElementById('recordDateFilter').value;
         
         try {
-            let q;
-            if (studentIdStr === 'all') q = query(collection(db, "orders")); 
-            else q = query(collection(db, "orders"), where("studentId", "==", parseInt(studentIdStr)));
+            let constraints = [];
+            if (studentIdStr !== 'all') constraints.push(where("studentId", "==", parseInt(studentIdStr)));
+            if (dateStr) constraints.push(where("date", "==", dateStr));
+            
+            let q = query(collection(db, "orders"), ...constraints);
             
             const querySnapshot = await getDocs(q); let orders = [];
             querySnapshot.forEach(doc => orders.push(doc.data()));
+            
             orders.sort((a, b) => { if (a.studentId !== b.studentId) return a.studentId - b.studentId; return b.date.localeCompare(a.date); });
-            if (orders.length === 0) { document.getElementById('recordTableBody').innerHTML = `<tr><td colspan="5" style="color:#888;">查無紀錄</td></tr>`; return; }
+            if (orders.length === 0) { document.getElementById('recordTableBody').innerHTML = `<tr><td colspan="5" style="color:#888;">查無符合條件的紀錄</td></tr>`; return; }
 
             let html = "";
             orders.forEach(o => {
@@ -1158,7 +1219,6 @@
         catch(e) { alert("儲存失敗"); }
     }
 
-    // 🚀 v2.3.0: 聯動從雲端抓下來的餐廳資料
     window.updatePlanBMeals = function() {
         const rest = document.getElementById('planBRestaurant').value;
         if(!rest) return; 
