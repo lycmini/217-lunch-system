@@ -145,8 +145,8 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-feedbacks'); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應&許願池接收站</a></li>
             
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
-            <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核</a></li>
-            <!-- 🚀 新增更新日誌 -->
+            <!-- 🚀 升級：網頁活動稽核紀錄 -->
+            <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.1.0</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
         </ul>
@@ -310,32 +310,60 @@
             </div>
         </div>
 
+        <!-- 🚀 全新升級：網頁活動稽核紀錄 (獨立 prod_activities 資料庫) -->
         <div id="page-activity" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</h2>
-                <button class="btn btn-primary" onclick="loadActivityLog()"><span class="material-symbols-outlined">refresh</span> 重新整理稽核表</button>
+                <p style="color:#555; font-size:14px; margin-top:0;">全新 `prod_activities` 獨立資料庫！完整追蹤系統中所有的操作動作，並可依照來源與座號精準查詢。</p>
+                
+                <!-- 篩選器區塊 -->
+                <div style="background:#fafafa; padding:16px; border-radius:12px; border:1px solid #e5e5ea; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
+                    <div style="flex: 1; min-width: 120px;">
+                        <label style="font-weight:600; font-size:13px; display:block; margin-bottom:4px;">記錄來源：</label>
+                        <select id="logSourceFilter" style="margin-bottom:0;">
+                            <option value="all">全部 (前台 + 後台)</option>
+                            <option value="frontend">前台 (學生)</option>
+                            <option value="backend">後台 (管理員)</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1; min-width: 140px;">
+                        <label style="font-weight:600; font-size:13px; display:block; margin-bottom:4px;">查詢日期：</label>
+                        <input type="date" id="logDateFilter" style="margin-bottom:0;">
+                    </div>
+                    <div style="flex: 1; min-width: 120px;">
+                        <label style="font-weight:600; font-size:13px; display:block; margin-bottom:4px;">操作者座號：</label>
+                        <select id="logStudentFilter" style="margin-bottom:0;"></select>
+                    </div>
+                    <div style="flex: 0; min-width: 100px;">
+                        <button class="btn btn-primary" style="margin-top:0; width:100%; height:44px;" onclick="loadActivityLog()"><span class="material-symbols-outlined" style="margin-right:4px;">search</span> 查詢</button>
+                    </div>
+                    <div style="flex: 0; min-width: 100px;">
+                        <button class="btn btn-outline" style="margin-top:0; width:100%; height:44px;" onclick="document.getElementById('logDateFilter').value=''; loadActivityLog();">查所有天</button>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
                     <table>
-                        <thead><tr><th>精準時間戳</th><th>座號</th><th>動作</th><th>詳細內容</th></tr></thead>
-                        <tbody id="activityTableBody"><tr><td colspan="4">點擊重新整理載入...</td></tr></tbody>
+                        <thead><tr><th>精準時間</th><th>來源</th><th>操作者</th><th>執行動作</th><th>詳細內容</th></tr></thead>
+                        <tbody id="activityTableBody"><tr><td colspan="5">點擊查詢載入...</td></tr></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- 🚀 網頁更新紀錄專區 -->
         <div id="page-updateLog" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.1.0 點餐期間動態換單機制 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.1.0 點餐期間動態換單與全能稽核 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
                         <li>🚨 <strong>動態換店重置機制：</strong> 支援在當日點餐時段內更換餐廳，系統將自動作廢所有已訂購餐點並啟動預繳退費。</li>
                         <li>📢 <strong>即時廣播通知：</strong> 換店後前台將自動跳出緊急通知，提醒同學重新下單。</li>
                         <li>💵 <strong>退費帳本連動：</strong> 升級帳務演算法，作廢訂單若有預繳金額將自動列入「應退款」狀態。</li>
+                        <li>🔍 <strong>活動稽核紀錄升級：</strong> 獨立出全新的 `prod_activities` 資料庫！分離前台與後台紀錄，支援依來源、日期、座號精準篩選追蹤，確保每一筆操作都有跡可循。</li>
                         <li>🗑 <strong>清理冗餘紀錄：</strong> 移除 v2.0.0 以前的舊版更新日誌，保持介面簡潔。</li>
                     </ul>
 
@@ -378,15 +406,32 @@
     document.getElementById('adminDate').value = todayStr;
     document.getElementById('scheduleDate').value = todayStr;
     document.getElementById('editHistoryDate').value = todayStr;
+    document.getElementById('logDateFilter').value = todayStr;
 
     window.currentReportData = { restaurant: "未知餐廳", items: {}, totalAmount: 0 };
     
-    // 13 家餐廳清單
     const allRestaurants = [
         "麵朝 (新竹食品店)", "湯食主義", "麥當勞 (中餐時段)", "阿寶魯肉飯", 
         "八方雲集", "老周燒肉飯", "廟口鴨香飯", "青虎食堂", 
         "阿婆早餐麵店", "日光手作食堂", "龍滿排骨", "丼真閣", "鐵屋涼麵"
     ];
+
+    // 🚀 後台活動日誌寫入函數 (寫入 prod_activities)
+    window.logAdminAction = async function(actionName, detailsStr) {
+        try {
+            const now = new Date();
+            const dateStr = now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0');
+            await setDoc(doc(db, "prod_activities", now.getTime().toString() + "_admin"), {
+                source: "backend",
+                studentId: "Admin",
+                action: actionName,
+                details: detailsStr,
+                date: dateStr,
+                timestamp: now.getTime(),
+                timeString: now.toLocaleString('zh-TW', { hour12: false })
+            });
+        } catch(e) { console.error("Log failed", e); }
+    };
 
     window.onload = function() {
         if (!localStorage.getItem('adminLoggedIn_217')) {
@@ -399,9 +444,17 @@
             let restOpts = ""; allRestaurants.forEach(r => restOpts += `<option value="${r}">${r}</option>`);
             document.getElementById('scheduleRestaurant').innerHTML = restOpts;
             
-            let filterHtml = '<option value="all">顯示全班 (所有號碼)</option>';
-            for(let i=1; i<=28; i++) filterHtml += `<option value="${i}">查詢 ${i} 號歷史紀錄</option>`;
-            document.getElementById('recordStudentFilter').innerHTML = filterHtml;
+            // 紀錄查詢的座號下拉選單
+            let recordFilterHtml = '<option value="all">顯示全班 (所有號碼)</option>';
+            for(let i=1; i<=28; i++) recordFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
+            document.getElementById('recordStudentFilter').innerHTML = recordFilterHtml;
+            
+            // 稽核日誌的座號下拉選單 (含 Admin)
+            let logFilterHtml = '<option value="all">所有人 (含管理員)</option><option value="Admin">Admin (後台管理員)</option>';
+            for(let i=1; i<=28; i++) logFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
+            if (document.getElementById('logStudentFilter')) {
+                document.getElementById('logStudentFilter').innerHTML = logFilterHtml;
+            }
             
             listenToOrders(todayStr); 
             loadScheduledMenus();
@@ -414,12 +467,17 @@
         const pass = document.getElementById('loginPassword').value.trim();
         if (acc === '217admin' && pass === 'lunchadmin') {
             localStorage.setItem('adminLoggedIn_217', 'true');
+            logAdminAction("登入系統", "管理員登入成功");
             location.reload();
         } else { alert("❌ 帳號或密碼錯誤！"); }
     };
 
     window.logout = function() {
-        if(confirm("確定要登出管理員嗎？")) { localStorage.removeItem('adminLoggedIn_217'); location.reload(); }
+        if(confirm("確定要登出管理員嗎？")) { 
+            logAdminAction("登出系統", "管理員登出");
+            localStorage.removeItem('adminLoggedIn_217'); 
+            location.reload(); 
+        }
     };
 
     window.toggleMenu = function() {
@@ -471,15 +529,22 @@
     }
 
     window.deleteMenu = async function(dateStr) {
-        if(confirm(`確定要刪除 ${dateStr} 的餐廳排程嗎？`)) { await deleteDoc(doc(db, "dailyMenus", dateStr)); loadScheduledMenus(); }
+        if(confirm(`確定要刪除 ${dateStr} 的餐廳排程嗎？`)) { 
+            await deleteDoc(doc(db, "dailyMenus", dateStr)); 
+            logAdminAction("刪除排程", `刪除了 ${dateStr} 的排程設定`);
+            loadScheduledMenus(); 
+        }
     }
 
     window.saveTimeSettings = async function() {
         const st = document.getElementById('sysStartTime').value, et = document.getElementById('sysEndTime').value;
-        try { await setDoc(doc(db, "system", "settings"), { orderStartTime: st, orderEndTime: et }, { merge: true }); alert("✅ 時間更新成功！"); } catch(e) {}
+        try { 
+            await setDoc(doc(db, "system", "settings"), { orderStartTime: st, orderEndTime: et }, { merge: true }); 
+            logAdminAction("更新開放時間", `時間改為 ${st} ~ ${et}`);
+            alert("✅ 時間更新成功！"); 
+        } catch(e) {}
     }
 
-    // 🚀 v2.1.0: 動態換店與全班作廢機制
     window.saveDailyMenu = async function() {
         const targetDate = document.getElementById('scheduleDate').value;
         const rest = document.getElementById('scheduleRestaurant').value;
@@ -490,17 +555,12 @@
         const st = document.getElementById('sysStartTime').value;
         const et = document.getElementById('sysEndTime').value;
 
-        // 若是在「今天」的「點餐時段內」更換餐廳
         if (targetDate === todayStr && ct >= st && ct <= et) {
             if(!confirm(`⚠️ 嚴重警告 ⚠️\n\n現在正處於點餐開放時段 (${st}~${et})！\n若您現在將餐廳更換為「${rest}」，系統將自動執行：\n\n1. 作廢今天所有已送出的訂單\n2. 啟動已預繳費同學的自動退費機制\n3. 前台廣播通知全班重新點餐\n\n您確定要強制更換嗎？`)) {
                 return;
             }
-
             try {
-                // 1. 更新餐廳
                 await setDoc(doc(db, "dailyMenus", targetDate), { restaurant: rest });
-
-                // 2. 抓取今日訂單並全部作廢
                 const q = query(collection(db, "orders"), where("date", "==", targetDate));
                 const snap = await getDocs(q);
                 let count = 0;
@@ -512,22 +572,18 @@
                         count++;
                     }
                 });
-
-                // 3. 發布緊急廣播通知
                 await setDoc(doc(db, "system", "announcement"), {
-                    date: targetDate,
-                    time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`,
-                    message: `⚠️ 負責人已緊急將今日餐廳更換為【${rest}】！您原本的訂單已全數作廢，請盡速重新下單！(已預先繳費者系統將自動轉入退費帳本)`,
-                    isPlanB: false
+                    date: targetDate, time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`,
+                    message: `⚠️ 負責人已緊急將今日餐廳更換為【${rest}】！您原本的訂單已全數作廢，請盡速重新下單！(已預先繳費者系統將自動轉入退費帳本)`, isPlanB: false
                 });
-
+                logAdminAction("強制換店與作廢", `將今日餐廳換為 ${rest}，並作廢了 ${count} 筆訂單`);
                 alert(`✅ 今日餐廳已成功更換為 ${rest}！\n系統共作廢了 ${count} 筆舊訂單，並已發送全班首頁廣播通知。`);
                 loadScheduledMenus();
             } catch(e) { alert("執行強制更換時發生錯誤"); }
         } else {
-            // 一般排程設定
             try {
                 await setDoc(doc(db, "dailyMenus", targetDate), { restaurant: rest });
+                logAdminAction("新增/修改排程", `將 ${targetDate} 設為 ${rest}`);
                 alert(`✅ 餐廳排程設定成功！`);
                 loadScheduledMenus();
             } catch(e) { alert("設定排程失敗"); }
@@ -596,8 +652,8 @@
                 let timeStr = order.timeString ? `<span class="time-label">${order.timeString.split(' ')[1]}</span>` : '';
                 
                 let quickPayBtn = paidAmt < safePrice 
-                    ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${order.date}_${order.studentId}', ${safePrice}, ${safePrice})">付清</button>` 
-                    : `<button class="btn-quick-reset" onclick="updatePaidAmount('${order.date}_${order.studentId}', 0, ${safePrice})">歸零</button>`;
+                    ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${order.date}_${order.studentId}', ${safePrice}, ${safePrice}, '${order.studentId}')">付清</button>` 
+                    : `<button class="btn-quick-reset" onclick="updatePaidAmount('${order.date}_${order.studentId}', 0, ${safePrice}, '${order.studentId}')">歸零</button>`;
 
                 html += `
                     <tr class="${rowClass}">
@@ -606,7 +662,7 @@
                         <td>$${safePrice}</td>
                         <td style="min-width:160px;">
                             <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
-                                $<input type="number" value="${paidAmt}" style="width:65px; padding:6px; margin:0; text-align:center;" onchange="updatePaidAmount('${order.date}_${order.studentId}', this.value, ${safePrice})">
+                                $<input type="number" value="${paidAmt}" style="width:65px; padding:6px; margin:0; text-align:center;" onchange="updatePaidAmount('${order.date}_${order.studentId}', this.value, ${safePrice}, '${order.studentId}')">
                                 ${quickPayBtn}
                             </div>
                             ${statusText}
@@ -618,9 +674,12 @@
         });
     }
 
-    window.updatePaidAmount = async function(docId, val, price) {
+    window.updatePaidAmount = async function(docId, val, price, studentId) {
         let amt = parseInt(val) || 0; let isPaid = amt >= price; 
-        try { await updateDoc(doc(db, "orders", docId), { paidAmount: amt, isPaid: isPaid, notifiedPaid: false }); } catch(e) {}
+        try { 
+            await updateDoc(doc(db, "orders", docId), { paidAmount: amt, isPaid: isPaid, notifiedPaid: false }); 
+            logAdminAction("修改帳務", `將單號 ${docId} (${studentId}號) 的已繳金額改為 $${amt}`);
+        } catch(e) {}
     }
 
     function renderNotifications(c, p) {
@@ -632,11 +691,14 @@
         document.getElementById('cancelNotifs').innerHTML = ch;
         
         let ph = p.length > 0 ? `<strong style="display:flex; align-items:center;"><span class="material-symbols-outlined">payments</span> 繳費通知：</strong><br>` : '';
-        p.forEach(o => ph += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button onclick="updatePaidAmount('${o.date}_${o.studentId}', ${o.price}, ${o.price})">結清 $${o.price}</button></div>`);
+        p.forEach(o => ph += `<div class="notif-badge"><strong>${o.studentId} 號</strong> <button onclick="updatePaidAmount('${o.date}_${o.studentId}', ${o.price}, ${o.price}, '${o.studentId}')">結清 $${o.price}</button></div>`);
         document.getElementById('paidNotifs').innerHTML = ph;
     }
 
-    window.dismissCancel = async function(docId) { await deleteDoc(doc(db, "orders", docId)); };
+    window.dismissCancel = async function(docId) { 
+        await deleteDoc(doc(db, "orders", docId)); 
+        logAdminAction("清除取消通知", `確認並清除了單號 ${docId} 的作廢通知`);
+    };
     
     window.clearAllOrdersAndLedger = async function() {
         if(!confirm("⚠️ 警告：這將會刪除【所有日期】的訂單紀錄，並將班級帳務完全歸零！\n\n確定要繼續嗎？")) return;
@@ -644,12 +706,12 @@
         try {
             const snapshot = await getDocs(collection(db, "orders")); let count = 0;
             snapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "orders", docSnap.id)); count++; });
+            logAdminAction("⚠️ 危險操作", `【重大警告】刪除了系統中所有 ${count} 筆歷史訂單與帳務紀錄！`);
             alert(`✅ 已成功刪除 ${count} 筆歷史紀錄！帳務與歷史紀錄已歸零。`);
             if (document.getElementById('page-ledger').classList.contains('active')) { loadLedger(); }
         } catch(e) {}
     }
 
-    // 🚀 v2.1.0: 升級帳務計算演算法，支援作廢訂單的預先退費機制
     window.loadLedger = async function() {
         document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="4">計算中...</td></tr>`;
         try {
@@ -662,9 +724,7 @@
                 
                 if(sIdx >= 0 && sIdx < 28) {
                     let originalPrice = o.price || 0;
-                    // 若訂單已作廢，則該筆不產生欠款 (應收帳款歸零)
                     let safePrice = o.isCancelled ? 0 : originalPrice;
-                    // 但若該同學之前已經為這筆訂單付款，保留其付款金額
                     let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? originalPrice : 0);
                     
                     ledger[sIdx].debt += safePrice; 
@@ -770,18 +830,51 @@
         } catch(e) { }
     }
 
+    // 🚀 升級版：網頁活動稽核紀錄讀取與篩選
     window.loadActivityLog = async function() {
-        document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="4">載入中...</td></tr>`;
+        document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="5">載入中...</td></tr>`;
         try {
-            const querySnapshot = await getDocs(collection(db, "activities"));
-            let acts = []; querySnapshot.forEach(doc => acts.push(doc.data()));
+            // 從全新的 prod_activities 讀取，避免與舊版 beta 混淆
+            const querySnapshot = await getDocs(collection(db, "prod_activities"));
+            let acts = []; 
+            querySnapshot.forEach(doc => acts.push(doc.data()));
+            
+            // 讀取篩選條件
+            const sourceF = document.getElementById('logSourceFilter').value;
+            const dateF = document.getElementById('logDateFilter').value;
+            const studentF = document.getElementById('logStudentFilter').value;
+
+            // 執行篩選
+            if (sourceF !== 'all') acts = acts.filter(a => a.source === sourceF);
+            if (dateF) acts = acts.filter(a => a.date === dateF);
+            if (studentF !== 'all') {
+                if (studentF === 'Admin') acts = acts.filter(a => a.studentId === 'Admin');
+                else acts = acts.filter(a => String(a.studentId) === studentF);
+            }
+
             acts.sort((a,b) => b.timestamp - a.timestamp); 
+            
             let html = "";
-            acts.slice(0, 100).forEach(a => { 
-                html += `<tr><td>${a.timeString}</td><td><strong>${a.studentId}</strong></td><td><span style="background:#f5f5f7; border:1px solid #e5e5ea; padding:4px 10px; border-radius:12px; font-size:13px; font-weight:600;">${a.action}</span></td><td style="color:#555;">${a.details}</td></tr>`;
+            acts.slice(0, 150).forEach(a => { 
+                let sourceBadge = a.source === 'backend' 
+                    ? `<span style="background:#111; color:#fff; padding:2px 6px; border-radius:6px; font-size:11px;">後台</span>` 
+                    : `<span style="background:#0078d4; color:#fff; padding:2px 6px; border-radius:6px; font-size:11px;">前台</span>`;
+                
+                let isWarning = a.action.includes('危險操作') || a.action.includes('作廢') || a.action.includes('刪除');
+                let actionStyle = isWarning 
+                    ? `background:#ffebee; color:#d32f2f; border:1px solid #ffcdd2;` 
+                    : `background:#f5f5f7; border:1px solid #e5e5ea;`;
+
+                html += `<tr>
+                    <td style="font-size:12px; color:#555;">${a.timeString}</td>
+                    <td>${sourceBadge}</td>
+                    <td><strong>${a.studentId}</strong></td>
+                    <td><span style="${actionStyle} padding:4px 10px; border-radius:12px; font-size:13px; font-weight:600; display:inline-block;">${a.action}</span></td>
+                    <td style="color:#555; text-align:left;">${a.details}</td>
+                </tr>`;
             });
-            document.getElementById('activityTableBody').innerHTML = html || `<tr><td colspan="4">尚無活動紀錄</td></tr>`;
-        } catch(e) { }
+            document.getElementById('activityTableBody').innerHTML = html || `<tr><td colspan="5" style="color:#888;">尚無符合條件的活動紀錄</td></tr>`;
+        } catch(e) { document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="5" style="color:red;">讀取稽核紀錄失敗</td></tr>`; }
     }
 
     window.loadHistoryForEdit = async function() {
@@ -806,7 +899,11 @@
 
     window.saveHistoryEdit = async function(dateVal, studentId) {
         const meal = document.getElementById(`editMeal_${studentId}`).value; const price = parseInt(document.getElementById(`editPrice_${studentId}`).value); const isCancelled = document.getElementById(`editCancel_${studentId}`).checked;
-        try { await updateDoc(doc(db, "orders", dateVal + "_" + studentId), { meal, price, isCancelled }); alert("修改成功！動態排行榜已自動更新。"); } 
+        try { 
+            await updateDoc(doc(db, "orders", dateVal + "_" + studentId), { meal, price, isCancelled }); 
+            logAdminAction("修改歷史紀錄", `修改了 ${dateVal} 座號 ${studentId} 的訂單資料`);
+            alert("修改成功！動態排行榜已自動更新。"); 
+        } 
         catch(e) { alert("儲存失敗"); }
     }
 
@@ -825,15 +922,24 @@
             let diff = newPrice - paidAmt; let diffMsg = diff > 0 ? `需再補繳$${diff}` : (diff < 0 ? `應退款$${Math.abs(diff)}` : `無須補退`);
             await updateDoc(doc(db, "orders", docSnap.id), { meal: newMeal, price: newPrice, note: (order.note || "無").split(" | 🚨")[0] + " | 🚨" + diffMsg, isPaid: paidAmt >= newPrice, notifiedPaid: false });
         });
+        
+        logAdminAction("啟動緊急備案", `日期: ${targetDate}，統一強制改訂 ${newMeal}`);
         alert("備案啟動成功！");
     }
 
-    window.clearAnnouncement = async function() { await deleteDoc(doc(db, "system", "announcement")); alert("廣播已解除！"); }
+    window.clearAnnouncement = async function() { 
+        await deleteDoc(doc(db, "system", "announcement")); 
+        logAdminAction("解除廣播", "解除了前台的緊急廣播狀態");
+        alert("廣播已解除！"); 
+    }
+
     window.clearTodayOrders = async function() {
         const targetDate = document.getElementById('adminDate').value;
         if(confirm(`⚠️ 警告：確定要清除 ${targetDate} 的所有訂單？`)) {
             const snapshot = await getDocs(query(collection(db, "orders"), where("date", "==", targetDate)));
-            snapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "orders", docSnap.id)); }); alert("訂單已清除！");
+            snapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "orders", docSnap.id)); }); 
+            logAdminAction("⚠️ 危險操作", `清除了 ${targetDate} 的所有訂單`);
+            alert("訂單已清除！");
         }
     }
     
