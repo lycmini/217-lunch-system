@@ -95,7 +95,6 @@
         
         .version-badge { display:inline-block; background:#111; color:white; font-size:11px; padding:2px 8px; border-radius:10px; margin-left:auto; }
 
-        /* 獨立登入頁面 IG 風格 */
         #loginPage { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
         .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
         .ig-title { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 24px; color: #111; letter-spacing: 1px;}
@@ -145,9 +144,9 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-feedbacks'); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應&許願池接收站</a></li>
             
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
-            <!-- 🚀 升級：網頁活動稽核紀錄 -->
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.1.0</span></a></li>
+            <!-- 🚀 升級：網頁更新紀錄 v2.2.0 -->
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.2.0</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
         </ul>
     </div>
@@ -163,7 +162,7 @@
                         <input type="date" id="scheduleDate">
                         <select id="scheduleRestaurant"></select>
                         <button class="btn btn-primary" style="width:100%; margin-bottom:15px;" onclick="saveDailyMenu()">儲存排程 / 緊急換店作廢</button>
-                        <p style="font-size:12px; color:#888; margin:0 0 10px 0;">如果在當日點餐時段內更換，系統將自動作廢所有訂單並全班廣播通知。</p>
+                        <p style="font-size:12px; color:#888; margin:0 0 10px 0;">如果在當日點餐時段內更換，系統將自動作廢所有訂單並全班廣播通知，且前台菜單會動態刷新為新店家。</p>
                         
                         <h3 style="margin-top:15px; font-size:14px; border-top:1px dashed #ccc; padding-top:15px; display:flex; align-items:center;"><span class="material-symbols-outlined" style="font-size:16px;">event_note</span> 已排程的餐廳</h3>
                         <div id="scheduledMenusList" style="font-size:14px; line-height:1.6; max-height: 150px; overflow-y: auto;">讀取中...</div>
@@ -219,11 +218,21 @@
                 </div>
             </div>
 
+            <!-- 🚀 v2.2.0 升級：Plan B 下拉式選單防呆 -->
             <div class="card planB-box" id="planBSection">
                 <h2 style="border:none; margin-bottom:5px;"><span class="material-symbols-outlined">emergency</span> 危機處理：啟動備案機制</h2>
-                <p style="color:#555; font-size:14px; margin-top:0;">啟動後系統會根據每人原本「已繳交的金額」自動算出差額。</p>
-                <input type="text" id="planBMeal" placeholder="全班改訂餐點 (例：八方鍋貼)">
-                <input type="number" id="planBPrice" placeholder="統一價格 (例：70)">
+                <p style="color:#555; font-size:14px; margin-top:0;">啟動後系統會根據每人原本「已繳交的金額」自動算出差額，並鎖定全班訂單為統一餐點。</p>
+                
+                <label style="font-weight:600; font-size:14px; display:block; margin:15px 0 5px;">1. 選擇備案店家：</label>
+                <select id="planBRestaurant" onchange="updatePlanBMeals()"></select>
+
+                <label style="font-weight:600; font-size:14px; display:block; margin:15px 0 5px;">2. 選擇全班統一餐點：</label>
+                <select id="planBMealSelect" onchange="updatePlanBPrice()"></select>
+                
+                <div style="font-size:15px; font-weight:600; margin:10px 0 15px; color:#d32f2f; background: #fff; padding: 10px; border: 1px solid #ffcdd2; border-radius: 8px;">
+                    系統帶入單價：$<span id="planBPriceDisplay">0</span>
+                </div>
+
                 <div style="display: flex; gap: 10px;">
                     <button class="btn btn-primary" style="flex: 2;" onclick="executePlanB()">啟動備案並鎖定前台！</button>
                     <button class="btn btn-secondary" style="flex: 1;" onclick="clearAnnouncement()">解除廣播</button>
@@ -310,13 +319,11 @@
             </div>
         </div>
 
-        <!-- 🚀 全新升級：網頁活動稽核紀錄 (獨立 prod_activities 資料庫) -->
         <div id="page-activity" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</h2>
-                <p style="color:#555; font-size:14px; margin-top:0;">全新 `prod_activities` 獨立資料庫！完整追蹤系統中所有的操作動作，並可依照來源與座號精準查詢。</p>
+                <p style="color:#555; font-size:14px; margin-top:0;">完整追蹤系統中所有的操作動作，並可依照來源與座號精準查詢。</p>
                 
-                <!-- 篩選器區塊 -->
                 <div style="background:#fafafa; padding:16px; border-radius:12px; border:1px solid #e5e5ea; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
                     <div style="flex: 1; min-width: 120px;">
                         <label style="font-weight:600; font-size:13px; display:block; margin-bottom:4px;">記錄來源：</label>
@@ -351,32 +358,30 @@
             </div>
         </div>
 
+        <!-- 🚀 升級：網頁更新紀錄 v2.2.0 -->
         <div id="page-updateLog" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.1.0 點餐期間動態換單與全能稽核 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.2.0 系統全面升級與備案聯動 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
-                        <li>🚨 <strong>動態換店重置機制：</strong> 支援在當日點餐時段內更換餐廳，系統將自動作廢所有已訂購餐點並啟動預繳退費。</li>
-                        <li>📢 <strong>即時廣播通知：</strong> 換店後前台將自動跳出緊急通知，提醒同學重新下單。</li>
-                        <li>💵 <strong>退費帳本連動：</strong> 升級帳務演算法，作廢訂單若有預繳金額將自動列入「應退款」狀態。</li>
-                        <li>🔍 <strong>活動稽核紀錄升級：</strong> 獨立出全新的 `prod_activities` 資料庫！分離前台與後台紀錄，支援依來源、日期、座號精準篩選追蹤，確保每一筆操作都有跡可循。</li>
-                        <li>🗑 <strong>清理冗餘紀錄：</strong> 移除 v2.0.0 以前的舊版更新日誌，保持介面簡潔。</li>
+                        <li>💰 <strong>個人帳戶與明細優化 (前台)：</strong> 歷史紀錄新增「個人總帳戶餘額（多退少補）」大字顯示，並將交易狀態標示改版，付費與欠款狀況一目瞭然。</li>
+                        <li>🔄 <strong>動態換店同步 (前台)：</strong> 修復臨時換店後前台菜單未更新的 Bug，現在更換後同學可立刻看到新店家的菜單並重新下單。</li>
+                        <li>🚨 <strong>Plan B 備案選單化 (後台)：</strong> 備案系統淘汰手動輸入，改為「13 家餐廳聯動下拉選單」，直接從內建菜單挑選統一餐點，價格自動帶入，實現 100% 防呆。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.0.0 終極版上線</h3>
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.1.0 點餐期間動態換單與全能稽核</h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>🔥 <strong>擴充至 13 家餐廳：</strong> 完整收錄各式在地美食與精細客製化菜單。</li>
-                        <li>📊 <strong>個人消費大數據看板：</strong> 導入 Chart.js 圓餅圖與折線圖，分析每月花費與餐廳喜好。</li>
-                        <li>🎨 <strong>客製化介面升級：</strong> 採用全新藥丸標籤 (Chips) 設計，加入紅色「挑食區」防呆。</li>
-                        <li>🧭 <strong>新增麵包屑導覽：</strong> 完美顯示當前層級，支援「返回上一頁」功能。</li>
-                        <li>🏆 <strong>雙重排行榜：</strong> 新增「熱門餐點」與「人氣餐廳」雙榜單切換。</li>
+                        <li>🚨 <strong>動態換店重置機制：</strong> 支援在當日點餐時段內更換餐廳，系統將自動作廢所有已訂購餐點並啟動預繳退費。</li>
+                        <li>📢 <strong>即時廣播通知：</strong> 換店後前台將自動跳出緊急通知，提醒同學重新下單。</li>
+                        <li>💵 <strong>退費帳本連動：</strong> 升級帳務演算法，作廢訂單若有預繳金額將自動列入「應退款」狀態。</li>
+                        <li>🔍 <strong>活動稽核紀錄升級：</strong> 獨立出全新的 `prod_activities` 資料庫！分離前台與後台紀錄，支援精準篩選追蹤。</li>
                     </ul>
                 </div>
             </div>
@@ -410,25 +415,29 @@
 
     window.currentReportData = { restaurant: "未知餐廳", items: {}, totalAmount: 0 };
     
-    const allRestaurants = [
-        "麵朝 (新竹食品店)", "湯食主義", "麥當勞 (中餐時段)", "阿寶魯肉飯", 
-        "八方雲集", "老周燒肉飯", "廟口鴨香飯", "青虎食堂", 
-        "阿婆早餐麵店", "日光手作食堂", "龍滿排骨", "丼真閣", "鐵屋涼麵"
-    ];
+    // 🚀 完整 13 家餐廳菜單資料庫 (供備案選單聯動使用)
+    const restaurantDB = {
+        "麵朝 (新竹食品店)": { menu: [{category:"鮮蝦雲吞拌麵",items:[{name:"鮮蝦雲吞拌麵",price:110},{name:"青醬雲吞拌麵",price:115},{name:"椒麻雲吞拌麵",price:115},{name:"蔥油雲吞拌麵",price:115},{name:"香滷雲吞拌麵",price:115},{name:"XO醬雲吞拌麵",price:115}]},{category:"港式水餃拌麵",items:[{name:"港式水餃拌麵",price:105},{name:"青醬水餃拌麵",price:110},{name:"椒麻水餃拌麵",price:110},{name:"蔥油水餃拌麵",price:110},{name:"香滷水餃拌麵",price:110},{name:"XO醬水餃拌麵",price:110}]},{category:"乾拌麵",items:[{name:"京醬肉絲拌麵",price:85},{name:"椒麻雞絲拌麵",price:85},{name:"青醬雞絲拌麵",price:85},{name:"蔥油雞絲拌麵",price:85},{name:"香滷雞絲拌麵",price:85},{name:"XO醬雞絲拌麵",price:85}]},{category:"風味湯麵",items:[{name:"羅宋番茄雞湯麵",price:130},{name:"養生清燉雞湯麵",price:130},{name:"剝皮辣椒雞湯麵",price:140},{name:"漢方肉骨茶雞湯麵",price:140},{name:"羅宋番茄湯麵",price:75},{name:"鮮蝦雲吞湯麵",price:110}]},{category:"功夫小點",items:[{name:"豬五花肉(蒜泥)",price:80},{name:"豬五花肉(椒麻)",price:80},{name:"舒肥雞(蔥油)",price:90},{name:"舒肥雞(青醬)",price:90},{name:"鮮蝦抄手(紅油)",price:100},{name:"鮮蝦抄手(白油)",price:100},{name:"港式翠玉水餃10粒",price:90}]},{category:"湯品&青菜",items:[{name:"大推烏梅汁",price:30},{name:"季節燙青菜",price:40},{name:"新竹貢丸湯",price:40},{name:"虱目魚丸湯",price:40},{name:"手工餛飩湯",price:40},{name:"羅宋番茄湯",price:50},{name:"鮮蝦雲吞湯",price:55},{name:"羅宋雲吞湯",price:80},{name:"養生清燉雞湯",price:95},{name:"剝皮辣椒雞湯",price:95},{name:"漢方肉骨茶雞湯",price:95}]}] },
+        "湯食主義": { menu: [{category:"嫩切雞蓋飯系列",items:[{name:"嫩切雞蓋飯",price:135},{name:"嫩切雞蓋飯泡溫泉",price:155},{name:"明太子嫩切雞蓋飯",price:185},{name:"明太子嫩切雞蓋飯泡溫泉",price:205}]},{category:"豬五花蓋飯系列",items:[{name:"豬五花蓋飯",price:125},{name:"豬五花蓋飯泡溫泉",price:145},{name:"明太子豬肉蓋飯",price:175},{name:"明太子豬五花蓋飯泡溫泉",price:195},{name:"韓式泡菜豬肉蓋飯",price:145},{name:"香檸泰泰豬飯",price:150}]},{category:"牛五花蓋飯系列",items:[{name:"牛五花蓋飯",price:135},{name:"牛五花蓋飯泡溫泉",price:155},{name:"明太子牛肉蓋飯",price:185},{name:"明太子牛五花蓋飯泡溫泉",price:205},{name:"川味牛五花蓋飯",price:135}]},{category:"SPA舒肥雞胸盒飯",items:[{name:"原味檸檬舒肥雞",price:135},{name:"泰式酸辣舒肥雞",price:135},{name:"手作花椒油舒肥雞",price:135},{name:"海苔呀海苔舒肥雞",price:135},{name:"義式香料舒肥雞",price:135},{name:"墨西哥BBQ舒肥雞",price:135},{name:"手工海南醬舒肥雞",price:135},{name:"巴薩米克醋舒肥雞",price:135},{name:"蒲燒鯛魚腹蓋飯",price:145},{name:"健康蔬食盒飯(蛋奶素)",price:135}]},{category:"湯烏龍系列",items:[{name:"日式柴魚豬肉湯烏龍",price:120},{name:"日式柴魚牛肉湯烏龍",price:130},{name:"韓式泡菜豬肉湯烏龍",price:140},{name:"韓式泡菜牛肉湯烏龍",price:150},{name:"蜀味川香豬肉湯烏龍",price:140},{name:"蜀味川香牛肉湯烏龍",price:150}]},{category:"單點與加購",items:[{name:"豬五花一份",price:60},{name:"牛五花一份",price:60},{name:"舒肥雞胸肉一份",price:60},{name:"溏心蛋",price:30},{name:"溫泉蛋",price:30},{name:"胡麻高麗菜",price:55},{name:"柚香白蘿蔔",price:55},{name:"辣黃豆芽",price:40},{name:"胡麻雞胸冷麵(夏季限定)",price:110}]}] },
+        "麥當勞 (中餐時段)": { menu: [{category:"牛肉漢堡",items:[{name:"大麥克",price:85},{name:"雙層牛肉吉事堡",price:75},{name:"四盎司牛肉堡",price:95},{name:"雙層四盎司牛肉堡",price:135},{name:"BLT安格斯牛肉堡",price:122},{name:"蕈菇安格斯牛肉堡",price:132}]},{category:"雞/魚漢堡",items:[{name:"麥香鷄",price:48},{name:"麥香魚",price:60},{name:"雙層麥香魚",price:80},{name:"勁辣鷄腿堡",price:78},{name:"炭燒醬烤鷄腿堡",price:99},{name:"BLT香烙烤鷄腿堡",price:129},{name:"煙燻勁脆鷄腿堡",price:99},{name:"肯瓊勁脆鷄腿堡",price:99}]},{category:"分享盒與點心",items:[{name:"麥克鷄塊(6塊)",price:68},{name:"麥克鷄塊(10塊)",price:109},{name:"麥脆鷄腿(2塊)",price:126},{name:"大薯",price:66},{name:"中薯",price:50},{name:"四季沙拉",price:49},{name:"蘋果派",price:39},{name:"OREO冰炫風",price:59}]}] },
+        "阿寶魯肉飯": { menu: [{category:"滷肉飯便當",items:[{name:"滷肉飯(大)",price:60},{name:"滷肉飯+滷蛋(大)",price:75},{name:"高麗菜水餃(10個)",price:70},{name:"滷肉飯套餐(大)",price:95}]},{category:"麵食類",items:[{name:"乾麵",price:50},{name:"貢丸麵",price:65},{name:"餛飩麵",price:65},{name:"肉羹麵",price:65}]},{category:"湯品與小菜",items:[{name:"豬血湯",price:40},{name:"骨仔肉湯",price:60},{name:"燙空心菜",price:40},{name:"蒜泥白肉",price:70}]}] },
+        "八方雲集": { menu: [{category:"牛肉麵",items:[{name:"紅燒牛肉麵",price:168},{name:"麻辣牛肉麵",price:178},{name:"紅燒牛肉湯餃(8顆)",price:120}]},{category:"鍋貼/水餃(單顆)",items:[{name:"招牌鍋貼",price:7},{name:"韭菜鍋貼",price:7},{name:"韓式辣味鍋貼",price:7},{name:"招牌水餃",price:7},{name:"鮮蝦水餃",price:10.5}]},{category:"湯麵/小菜",items:[{name:"酸辣湯麵",price:70},{name:"酸辣湯",price:35},{name:"燙青菜",price:35},{name:"香濃豆漿",price:20}]}] },
+        "廟口鴨香飯": { menu: [{category:"飯類",items:[{name:"鴨香飯(大)",price:80},{name:"鴨香飯(特大)",price:90},{name:"荷包蛋",price:15}]},{category:"麵食與湯",items:[{name:"鴨肉麵(大)",price:85},{name:"鴨肉米粉(小)",price:70},{name:"鴨肉湯",price:80}]},{category:"炒類與切類",items:[{name:"鴨肉炒米粉(小)",price:100},{name:"去骨後腿鴨肉",price:250},{name:"鴨翅(支)",price:30}]}] },
+        "阿婆早餐麵店": { menu: [{category:"早點",items:[{name:"蛋餅",price:35},{name:"雙黃蛋餅",price:45},{name:"白饅頭(夾蔥花蛋)",price:30},{name:"冰豆漿",price:25}]},{category:"麵飯類",items:[{name:"陽春麵(大)",price:55},{name:"炒榨菜肉絲麵(大)",price:60},{name:"牛肉焿麵(大)",price:100}]},{category:"炒手與湯",items:[{name:"原味炒手(一把麵)大",price:100},{name:"餛飩湯",price:40}]}] },
+        "鐵屋涼麵": { menu: [{category:"涼麵系列",items:[{name:"原味涼麵(大)",price:65},{name:"雞絲涼麵(大)",price:75},{name:"麻辣涼麵(大)",price:75}]},{category:"鍋燒麵",items:[{name:"原味鍋燒",price:100},{name:"泡菜海鮮鍋燒",price:150}]},{category:"飯類/湯品",items:[{name:"滷肉飯",price:50},{name:"排骨滷肉飯",price:100},{name:"味噌綜合湯",price:55},{name:"招牌鮮豆漿",price:35}]}] },
+        "老周燒肉飯": { menu: [{category:"80元系列",items:[{name:"日式豬排飯",price:80},{name:"照燒排骨飯",price:80}]},{category:"90~110元",items:[{name:"五香控肉飯",price:90},{name:"烤雞腿飯",price:110},{name:"炸雞腿飯",price:110}]}] },
+        "青虎食堂": { menu: [{category:"咖哩",items:[{name:"特製咖哩飯",price:90},{name:"豬排咖哩飯",price:100},{name:"唐揚雞咖哩飯",price:100}]},{category:"丼飯",items:[{name:"唐揚雞丼飯",price:100},{name:"豬排丼飯",price:100}]}] },
+        "日光手作食堂": { menu: [{category:"特餐系列",items:[{name:"肉燥飯唐揚特餐",price:95},{name:"日光豬排特餐(炸)",price:95}]},{category:"飯麵系列",items:[{name:"肉絲蛋炒飯(大)",price:95},{name:"什錦炒麵/米粉(大)",price:120},{name:"日式咖哩飯",price:75}]},{category:"炸物/小菜",items:[{name:"炸唐揚(6個)",price:45},{name:"皮蛋豆腐",price:40}]}] },
+        "龍滿排骨": { menu: [{category:"經典便當",items:[{name:"炸雞腿飯",price:120},{name:"香雞排飯",price:100},{name:"滷雞腿飯",price:95},{name:"燒肉飯",price:90},{name:"炸排骨飯",price:90},{name:"招牌飯",price:85}]}] },
+        "丼真閣": { menu: [{category:"招牌丼飯",items:[{name:"原味丼(牛)",price:110},{name:"原味丼(豚)",price:100},{name:"起士丼(牛)",price:120},{name:"雙拼雙饗丼附飲料(野菇牛)",price:180}]},{category:"炸物/炙燒",items:[{name:"黃太厚豬排丼",price:150},{name:"炙燒丼(牛)",price:130},{name:"炸豬排",price:70},{name:"溫泉蛋",price:30}]}] }
+    };
 
-    // 🚀 後台活動日誌寫入函數 (寫入 prod_activities)
     window.logAdminAction = async function(actionName, detailsStr) {
         try {
             const now = new Date();
             const dateStr = now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0');
             await setDoc(doc(db, "prod_activities", now.getTime().toString() + "_admin"), {
-                source: "backend",
-                studentId: "Admin",
-                action: actionName,
-                details: detailsStr,
-                date: dateStr,
-                timestamp: now.getTime(),
-                timeString: now.toLocaleString('zh-TW', { hour12: false })
+                source: "backend", studentId: "Admin", action: actionName, details: detailsStr, date: dateStr, timestamp: now.getTime(), timeString: now.toLocaleString('zh-TW', { hour12: false })
             });
         } catch(e) { console.error("Log failed", e); }
     };
@@ -441,20 +450,18 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
             
-            let restOpts = ""; allRestaurants.forEach(r => restOpts += `<option value="${r}">${r}</option>`);
+            let restOpts = ""; Object.keys(restaurantDB).forEach(r => restOpts += `<option value="${r}">${r}</option>`);
             document.getElementById('scheduleRestaurant').innerHTML = restOpts;
+            document.getElementById('planBRestaurant').innerHTML = restOpts;
+            updatePlanBMeals(); // 初始化 Plan B 餐點下拉選單
             
-            // 紀錄查詢的座號下拉選單
             let recordFilterHtml = '<option value="all">顯示全班 (所有號碼)</option>';
             for(let i=1; i<=28; i++) recordFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
             document.getElementById('recordStudentFilter').innerHTML = recordFilterHtml;
             
-            // 稽核日誌的座號下拉選單 (含 Admin)
             let logFilterHtml = '<option value="all">所有人 (含管理員)</option><option value="Admin">Admin (後台管理員)</option>';
             for(let i=1; i<=28; i++) logFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
-            if (document.getElementById('logStudentFilter')) {
-                document.getElementById('logStudentFilter').innerHTML = logFilterHtml;
-            }
+            if (document.getElementById('logStudentFilter')) { document.getElementById('logStudentFilter').innerHTML = logFilterHtml; }
             
             listenToOrders(todayStr); 
             loadScheduledMenus();
@@ -830,21 +837,17 @@
         } catch(e) { }
     }
 
-    // 🚀 升級版：網頁活動稽核紀錄讀取與篩選
     window.loadActivityLog = async function() {
         document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="5">載入中...</td></tr>`;
         try {
-            // 從全新的 prod_activities 讀取，避免與舊版 beta 混淆
             const querySnapshot = await getDocs(collection(db, "prod_activities"));
             let acts = []; 
             querySnapshot.forEach(doc => acts.push(doc.data()));
             
-            // 讀取篩選條件
             const sourceF = document.getElementById('logSourceFilter').value;
             const dateF = document.getElementById('logDateFilter').value;
             const studentF = document.getElementById('logStudentFilter').value;
 
-            // 執行篩選
             if (sourceF !== 'all') acts = acts.filter(a => a.source === sourceF);
             if (dateF) acts = acts.filter(a => a.date === dateF);
             if (studentF !== 'all') {
@@ -860,7 +863,7 @@
                     ? `<span style="background:#111; color:#fff; padding:2px 6px; border-radius:6px; font-size:11px;">後台</span>` 
                     : `<span style="background:#0078d4; color:#fff; padding:2px 6px; border-radius:6px; font-size:11px;">前台</span>`;
                 
-                let isWarning = a.action.includes('危險操作') || a.action.includes('作廢') || a.action.includes('刪除');
+                let isWarning = a.action.includes('危險操作') || a.action.includes('作廢') || a.action.includes('刪除') || a.action.includes('強制');
                 let actionStyle = isWarning 
                     ? `background:#ffebee; color:#d32f2f; border:1px solid #ffcdd2;` 
                     : `background:#f5f5f7; border:1px solid #e5e5ea;`;
@@ -907,23 +910,68 @@
         catch(e) { alert("儲存失敗"); }
     }
 
+    // 🚀 v2.2.0: 聯動 13 家餐廳的備案選單
+    window.updatePlanBMeals = function() {
+        const rest = document.getElementById('planBRestaurant').value;
+        const data = restaurantDB[rest];
+        let html = "";
+        if(data && data.menu) {
+            data.menu.forEach(g => {
+                html += `<optgroup label="${g.category}">`;
+                g.items.forEach(i => {
+                    html += `<option value="${i.name}" data-price="${i.price}">${i.name} ($${i.price})</option>`;
+                });
+                html += `</optgroup>`;
+            });
+        }
+        document.getElementById('planBMealSelect').innerHTML = html;
+        window.updatePlanBPrice();
+    }
+
+    window.updatePlanBPrice = function() {
+        const sel = document.getElementById('planBMealSelect');
+        if(sel.options.length > 0 && sel.selectedIndex >= 0) {
+            document.getElementById('planBPriceDisplay').innerText = sel.options[sel.selectedIndex].getAttribute('data-price');
+        }
+    }
+
     window.executePlanB = async function() {
-        const newMeal = document.getElementById('planBMeal').value, newPrice = parseInt(document.getElementById('planBPrice').value), targetDate = document.getElementById('adminDate').value;
-        if(!newMeal || isNaN(newPrice)) return alert("請輸入完整資料");
-        if(!confirm(`確定將 ${targetDate} 訂單改為 ${newMeal}？`)) return;
+        const rest = document.getElementById('planBRestaurant').value;
+        const sel = document.getElementById('planBMealSelect');
+        const newMeal = sel.value;
+        const newPrice = parseInt(sel.options[sel.selectedIndex].getAttribute('data-price'));
+        const targetDate = document.getElementById('adminDate').value;
+        
+        if(!newMeal || isNaN(newPrice)) return alert("請選擇完整資料");
+        if(!confirm(`確定將 ${targetDate} 訂單全班強制改為「${rest} - ${newMeal}」？`)) return;
         
         const now = new Date();
-        await setDoc(doc(db, "system", "announcement"), { date: targetDate, time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`, message: `因原店家未營業，已啟動備案！全班統一改訂「${newMeal}」(${newPrice}元)！請見下方最新名單。`, isPlanB: true, planBMeal: newMeal, planBPrice: newPrice });
+        await setDoc(doc(db, "system", "announcement"), { 
+            date: targetDate, 
+            time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`, 
+            message: `因原店家未營業，已啟動備案！全班統一改訂【${rest}】的「${newMeal}」(${newPrice}元)！請見下方最新名單。`, 
+            isPlanB: true, 
+            planBRestaurant: rest,
+            planBMeal: newMeal, 
+            planBPrice: newPrice 
+        });
         
         const snapshot = await getDocs(query(collection(db, "orders"), where("date", "==", targetDate)));
         snapshot.forEach(async (docSnap) => {
             let order = docSnap.data(); if(order.isCancelled) return; 
             let safePrice = order.price || 0; let paidAmt = order.paidAmount !== undefined ? order.paidAmount : (order.isPaid ? safePrice : 0);
             let diff = newPrice - paidAmt; let diffMsg = diff > 0 ? `需再補繳$${diff}` : (diff < 0 ? `應退款$${Math.abs(diff)}` : `無須補退`);
-            await updateDoc(doc(db, "orders", docSnap.id), { meal: newMeal, price: newPrice, note: (order.note || "無").split(" | 🚨")[0] + " | 🚨" + diffMsg, isPaid: paidAmt >= newPrice, notifiedPaid: false });
+            await updateDoc(doc(db, "orders", docSnap.id), { 
+                restaurant: rest,
+                meal: newMeal, 
+                price: newPrice, 
+                note: (order.note || "無").split(" | 🚨")[0] + " | 🚨" + diffMsg, 
+                isPaid: paidAmt >= newPrice, 
+                notifiedPaid: false 
+            });
         });
         
-        logAdminAction("啟動緊急備案", `日期: ${targetDate}，統一強制改訂 ${newMeal}`);
+        logAdminAction("啟動緊急備案", `日期: ${targetDate}，統一強制改訂 ${rest} - ${newMeal}`);
         alert("備案啟動成功！");
     }
 
