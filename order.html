@@ -771,9 +771,19 @@
         const rd = window.cloudRestaurantDB[rn] || {menu:[],options:""}; 
         let nh="", mh="";
         
+        // 🚀 系統自動偵測今天是否為星期三 (0=週日, 1=週一, 2=週二, 3=週三, 4=週四...)
+        const todayDay = new Date().getDay();
+        const isWednesday = (todayDay === 3);
+
         if (rd.menu && rd.menu.length > 0) {
             rd.menu.forEach((g, idx) => {
-                let cid = `cat-${idx}`; nh += `<div class="cat-tab ${idx===0?'active':''}" data-target="${cid}" onclick="scrollToCat('${cid}')">${g.category}</div>`;
+                // 💡 智慧判斷：如果分類名稱包含「週三」，但今天不是星期三，就直接跳過不渲染！
+                if (g.category.includes('週三') && !isWednesday) {
+                    return; 
+                }
+
+                let cid = `cat-${idx}`; 
+                nh += `<div class="cat-tab" data-target="${cid}" onclick="scrollToCat('${cid}')">${g.category}</div>`;
                 mh += `<div id="${cid}" class="menu-section"><div class="menu-category">${g.category}</div>`;
                 g.items.forEach(i => mh += `<div class="menu-item"><div><div class="item-name">${i.name}</div><div class="item-price">$${i.price}</div></div><div class="qty-controls"><button class="qty-btn" onclick="updateCart('${i.name}',${i.price},-1)"><span class="material-symbols-outlined" style="margin:0;">remove</span></button><span class="qty-display" data-qty-name="${i.name}">0</span><button class="qty-btn plus" onclick="updateCart('${i.name}',${i.price},1)"><span class="material-symbols-outlined" style="margin:0;">add</span></button></div></div>`);
                 mh += `</div>`;
@@ -782,7 +792,12 @@
             mh = "<p style='color:#888; text-align:center;'>該餐廳目前沒有任何菜單資料。</p>";
         }
 
-        document.getElementById('categoryNav').innerHTML = nh; document.getElementById('fullMenuContainer').innerHTML = mh; 
+        document.getElementById('categoryNav').innerHTML = nh; 
+        document.getElementById('fullMenuContainer').innerHTML = mh; 
+        
+        // 自動啟動第一個可見的標籤頁高亮
+        const firstTab = document.querySelector('.cat-tab');
+        if(firstTab) firstTab.classList.add('active');
     }
     
     window.scrollToCat = function(id) { window.scrollTo({top: document.getElementById(id).offsetTop - 150, behavior: 'smooth'}); }
