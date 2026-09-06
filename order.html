@@ -69,7 +69,12 @@
         .qty-btn.plus { background: #111; color: #fff; border-color: #111; }
         .qty-display { font-weight: 600; font-size: 15px; min-width: 20px; text-align: center; }
 
-        .cart-fab { position: fixed; bottom: 24px; right: 24px; background: #111; color: white; padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; display: none; align-items: center; gap: 12px; transition: transform 0.2s; }
+        /* 🚀 雙區域浮動購物車按鈕設計 */
+        .cart-fab { position: fixed; bottom: 24px; right: 24px; background: #111; color: white; border-radius: 30px; font-size: 16px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; display: none; align-items: stretch; transition: transform 0.2s; overflow: hidden; padding: 0; }
+        .cart-fab-left { display:flex; align-items:center; gap:6px; padding: 16px 12px 16px 20px; background: rgba(255,255,255,0.1); transition: 0.2s; }
+        .cart-fab-left:hover { background: rgba(255,255,255,0.2); }
+        .cart-fab-right { display:flex; align-items:center; gap:4px; padding: 16px 20px 16px 12px; transition: 0.2s; }
+        .cart-fab-right:hover { background: #333; }
         
         .opt-section-title { font-size: 13px; color: #666; font-weight: 700; margin: 15px 0 8px; }
         .chip-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
@@ -150,7 +155,7 @@
             <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
             <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
             <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
-            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.2</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.4</span></a></li>
             <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
             <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
             <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span class="material-symbols-outlined">info</span> 關於本站</a></li>
@@ -251,22 +256,22 @@
             <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
             <div style="margin-top: 15px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:16px;">v2.4.2 基於 2.3.1 穩定升級版 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                    <h3 style="margin:0; font-size:16px;">v2.4.4 購物車明細與客製化單筆刪除 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
-                    <li>💳 <strong>事後退補款項同步：</strong> 完美對接後台發出的補收與退款紀錄，在「歷史紀錄與分析」的詳細明細中可直接看到款項調整項目與說明，總餘額自動計算。</li>
-                    <li>🔐 <strong>強制全班登出監聽：</strong> 完整對接後台「強制登出所有學生裝置」安全指令，確保管理員一鍵重置所有裝置快取。</li>
-                    <li>☁️ <strong>菜單雲端化維持：</strong> 保留最穩定的 Firebase 雲端菜單同步功能。</li>
+                    <li>🛒 <strong>浮動明細預覽：</strong> 點擊左下角購物車總價區域，可向上展開目前已點的餐點明細清單，確認無誤再進入下一關。</li>
+                    <li>🗑️ <strong>客製化刪除防呆：</strong> 進入客製化頁面後可以針對單一餐點進行刪除，並具備「禁止刪到總金額為 0」的安全防呆限制。</li>
+                    <li>🤖 <strong>智慧過濾與進位：</strong> 全面導入「小數點無條件進位」與「週三限定/麵類限定」的智慧偵測過濾機制。</li>
                 </ul>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.3.1 手機自適應與報表篩選</h3>
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.4.2 歷史明細連動與安全優化</h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>📱 <strong>全站手機排版：</strong> 後台全面升級為「卡片式即時看板」，表格轉換為垂直列表。</li>
-                    <li>📅 <strong>歷史報表查詢：</strong> 統計看板可自由切換指定日期。</li>
+                    <li>💳 <strong>事後退補款項同步：</strong> 完美對接後台發出的補收與退款紀錄，在明細中可直接看到款項調整，總餘額自動計算。</li>
+                    <li>🔐 <strong>強制全班登出監聽：</strong> 對接後台「強制登出所有學生裝置」安全指令，確保管理員一鍵重置快取。</li>
                 </ul>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -274,7 +279,7 @@
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>☁️ <strong>菜單全面雲端化：</strong> 系統架構大突破！13 家菜單移轉至 Firebase 資料庫。</li>
+                    <li>☁️ <strong>菜單全面雲端化：</strong> 系統架構大突破！所有菜單移轉至 Firebase 資料庫。</li>
                     <li>✏️ <strong>前台修改餐點：</strong> 支援前台直接修改或加點餐點，系統保留已付金額並自動比對差額。</li>
                 </ul>
             </div>
@@ -343,9 +348,24 @@
             <div id="fullMenuContainer"></div>
         </div>
 
-        <div id="cartFab" class="cart-fab" onclick="goToCustomize()">
-            <div style="display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined">shopping_cart</span> $<span id="cartTotal">0</span></div>
-            <div style="display:flex; align-items:center; gap:4px;">前往客製化 <span class="material-symbols-outlined" style="font-size:18px; margin:0;">arrow_forward</span></div>
+        <!-- 🚀 浮動迷你購物車面板 (新功能) -->
+        <div id="miniCartPanel" style="display:none; position:fixed; bottom:85px; right:24px; background:#fff; padding:15px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #e5e5ea; z-index:999; max-width:250px; width:calc(100% - 48px); transition: 0.3s;">
+            <div style="font-weight:700; margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:6px; color:#111; display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:4px;"><span class="material-symbols-outlined" style="font-size:18px;">receipt_long</span> 購物車明細</div>
+                <span class="material-symbols-outlined" style="font-size:20px; color:#888; cursor:pointer;" onclick="toggleMiniCart()">close</span>
+            </div>
+            <div id="miniCartList" style="font-size:14px; color:#333; line-height:1.6; max-height:150px; overflow-y:auto;"></div>
+        </div>
+
+        <!-- 🚀 雙區域購物車按鈕 -->
+        <div id="cartFab" class="cart-fab">
+            <div class="cart-fab-left" onclick="toggleMiniCart()">
+                <span class="material-symbols-outlined">shopping_cart</span> $<span id="cartTotal">0</span>
+                <span class="material-symbols-outlined" id="miniCartIcon" style="font-size:18px; margin-left:2px;">expand_less</span>
+            </div>
+            <div class="cart-fab-right" onclick="goToCustomize()">
+                前往客製化 <span class="material-symbols-outlined" style="font-size:18px; margin:0;">arrow_forward</span>
+            </div>
         </div>
 
         <div class="card" id="customizeArea">
@@ -517,14 +537,42 @@
     function hideAllSections() { ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'reviewPageArea', 'feedbackPageArea', 'menuOverviewArea', 'updateLogArea'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; }); }
     window.toggleMenu = function() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
 
+    // 🚀 控制迷你購物車顯示/隱藏
+    window.toggleMiniCart = function() {
+        const panel = document.getElementById('miniCartPanel');
+        const icon = document.getElementById('miniCartIcon');
+        if(panel.style.display === 'none' || panel.style.display === '') {
+            let h = "";
+            for(let n in cart) {
+                if(cart[n].q > 0) {
+                    h += `<div style="display:flex; justify-content:space-between; margin-bottom:4px; border-bottom:1px dashed #eee; padding-bottom:4px;"><span>${n}</span> <strong style="color:#d32f2f;">x${cart[n].q}</strong></div>`;
+                }
+            }
+            document.getElementById('miniCartList').innerHTML = h || "空空如也";
+            panel.style.display = 'block';
+            icon.innerText = 'expand_more';
+        } else {
+            panel.style.display = 'none';
+            icon.innerText = 'expand_less';
+        }
+    }
+
     window.setView = function(viewId) {
         hideAllSections();
         document.getElementById(viewId).style.display = 'block';
         window.currentViewId = viewId;
         updateBreadcrumb(viewId);
         window.scrollTo(0,0);
-        if(viewId === 'menuArea' && Object.keys(cart).length > 0) document.getElementById('cartFab').style.display = 'flex';
-        else document.getElementById('cartFab').style.display = 'none';
+        
+        // 切換頁面時關閉 mini cart
+        document.getElementById('miniCartPanel').style.display = 'none';
+        document.getElementById('miniCartIcon').innerText = 'expand_less';
+
+        if(viewId === 'menuArea' && Object.keys(cart).some(k => cart[k].q > 0)) {
+            document.getElementById('cartFab').style.display = 'flex';
+        } else {
+            document.getElementById('cartFab').style.display = 'none';
+        }
     }
 
     window.updateBreadcrumb = function(viewId) {
@@ -771,13 +819,11 @@
         const rd = window.cloudRestaurantDB[rn] || {menu:[],options:""}; 
         let nh="", mh="";
         
-        // 🚀 系統自動偵測今天是否為星期三 (0=週日, 1=週一, 2=週二, 3=週三, 4=週四...)
         const todayDay = new Date().getDay();
         const isWednesday = (todayDay === 3);
 
         if (rd.menu && rd.menu.length > 0) {
             rd.menu.forEach((g, idx) => {
-                // 💡 智慧判斷：如果分類名稱包含「週三」，但今天不是星期三，就直接跳過不渲染！
                 if (g.category.includes('週三') && !isWednesday) {
                     return; 
                 }
@@ -795,18 +841,41 @@
         document.getElementById('categoryNav').innerHTML = nh; 
         document.getElementById('fullMenuContainer').innerHTML = mh; 
         
-        // 自動啟動第一個可見的標籤頁高亮
         const firstTab = document.querySelector('.cat-tab');
         if(firstTab) firstTab.classList.add('active');
     }
     
     window.scrollToCat = function(id) { window.scrollTo({top: document.getElementById(id).offsetTop - 150, behavior: 'smooth'}); }
     window.addEventListener('scroll', () => { if(window.currentViewId !== 'menuArea') return; let current = ""; document.querySelectorAll('.menu-section').forEach(sec => { if (pageYOffset >= sec.offsetTop - 160) { current = sec.getAttribute('id'); } }); document.querySelectorAll('.cat-tab').forEach(tab => { tab.classList.remove('active'); if(tab.getAttribute('data-target') === current) { tab.classList.add('active'); tab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } }); });
+    
     window.updateCart = function(n, p, d) {
         if(!cart[n]) cart[n] = {p:p, q:0}; cart[n].q += d; if(cart[n].q<0) cart[n].q=0;
         document.querySelectorAll(`[data-qty-name="${n}"]`).forEach(el => el.innerText=cart[n].q);
-        let tq=0, tp=0; for(let k in cart) { tq+=cart[k].q; tp+=cart[k].q*cart[k].p; }
-        const fab = document.getElementById('cartFab'); if(tq>0) { fab.style.display='flex'; document.getElementById('cartTotal').innerText=tp; } else fab.style.display='none';
+        
+        let tq=0, tp=0; 
+        for(let k in cart) { tq+=cart[k].q; tp+=cart[k].q*cart[k].p; }
+        
+        const fab = document.getElementById('cartFab'); 
+        const miniCart = document.getElementById('miniCartPanel');
+        
+        if(tq > 0) { 
+            fab.style.display = 'flex'; 
+            document.getElementById('cartTotal').innerText = tp; 
+            
+            // 如果迷你購物車面板打開中，即時更新它
+            if(miniCart.style.display === 'block') {
+                let h = "";
+                for(let k in cart) {
+                    if(cart[k].q > 0) {
+                        h += `<div style="display:flex; justify-content:space-between; margin-bottom:4px; border-bottom:1px dashed #eee; padding-bottom:4px;"><span>${k}</span> <strong style="color:#d32f2f;">x${cart[k].q}</strong></div>`;
+                    }
+                }
+                document.getElementById('miniCartList').innerHTML = h;
+            }
+        } else { 
+            fab.style.display = 'none'; 
+            miniCart.style.display = 'none';
+        }
     }
 
     window.modifyOrder = async function() {
@@ -820,6 +889,7 @@
                 document.querySelectorAll('.qty-display').forEach(el => el.innerText="0");
                 document.getElementById('cartTotal').innerText="0";
                 document.getElementById('cartFab').style.display='none';
+                document.getElementById('miniCartPanel').style.display='none';
                 
                 currentOrderStep = 'menuArea';
                 buildMenuForm(currentRestaurant);
@@ -830,9 +900,48 @@
         }
     }
 
-   window.goToCustomize = function() {
+    // 🚀 v2.4.4 客製化單筆刪除功能
+    window.removeCustItem = function(mealName, price, blockId) {
+        let totalQ = 0;
+        for(let k in cart) totalQ += cart[k].q;
+        
+        // 防呆限制：不能刪到全空
+        if(totalQ <= 1) {
+            return alert("⚠️ 購物車至少需保留一項餐點，無法全部刪除！\n若要重新選擇，請點擊左下角「返回加點」。");
+        }
+        
+        if(confirm(`確定要刪除這份【${mealName}】嗎？`)) {
+            // 更新背景購物車資料
+            cart[mealName].q -= 1;
+            
+            // 更新菜單頁面上隱藏的數量顯示
+            document.querySelectorAll(`[data-qty-name="${mealName}"]`).forEach(el => el.innerText = cart[mealName].q);
+
+            // 更新客製化頁面的價格與名稱
+            pendingOrder.basePrice -= price;
+            document.getElementById('c_basePrice').innerText = pendingOrder.basePrice;
+            
+            let meals = [];
+            for(let k in cart) { 
+                if(cart[k].q > 0) meals.push(`${k} x${cart[k].q}`); 
+            }
+            pendingOrder.meal = meals.join(", ");
+            document.getElementById('c_mealName').innerHTML = meals.join("<br>");
+            
+            // 更新浮動購物車總價
+            let tp = 0; 
+            for(let k in cart) tp += cart[k].q * cart[k].p;
+            document.getElementById('cartTotal').innerText = tp;
+            
+            // 將這個客製化區塊直接從畫面上移除
+            document.getElementById(blockId).remove();
+        }
+    }
+
+    window.goToCustomize = function() {
         let meals = []; let bp = 0; let ch = "";
         const restData = window.cloudRestaurantDB[currentRestaurant] || {options:""};
+        let blockCounter = 0;
         
         for(let n in cart) { 
             if(cart[n].q > 0) { 
@@ -848,15 +957,21 @@
                     // 只要「餐點名稱 (n)」包含設定的關鍵字，才保留選項
                     let isMatch = keywords.some(kw => n.includes(kw.trim()));
                     if(!isMatch) {
-                        block.remove(); // 條件不符，把這個客製化區塊隱藏刪除
+                        block.remove(); 
                     }
                 });
                 
                 let filteredOptions = tempDiv.innerHTML;
 
                 for(let i=0; i<cart[n].q; i++) {
-                    ch += `<div style="margin-bottom:12px; padding:16px; background:#fff; border:1px solid #e5e5ea; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">`;
-                    ch += `<div style="font-weight:700; color:#111; margin-bottom:10px; font-size:15px; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="color:#d32f2f; font-size:18px;">restaurant</span> ${n} <span style="font-size:13px; color:#555; font-weight:600; background:#f5f5f7; padding:2px 8px; border-radius:12px;">第 ${i+1} 份</span></div>`;
+                    let blockId = `cust_block_${blockCounter++}`;
+                    ch += `<div id="${blockId}" style="margin-bottom:12px; padding:16px; background:#fff; border:1px solid #e5e5ea; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">`;
+                    
+                    // 🚀 新增垃圾桶刪除按鈕
+                    ch += `<div style="font-weight:700; color:#111; margin-bottom:10px; font-size:15px; display:flex; justify-content:space-between; align-items:center;">`;
+                    ch += `<div style="display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="color:#d32f2f; font-size:18px;">restaurant</span> ${n} <span style="font-size:13px; color:#555; font-weight:600; background:#f5f5f7; padding:2px 8px; border-radius:12px;">第 ${i+1} 份</span></div>`;
+                    ch += `<button onclick="removeCustItem('${n}', ${cart[n].p}, '${blockId}')" style="background:transparent; border:none; color:#d32f2f; cursor:pointer; padding:4px; display:flex; align-items:center;"><span class="material-symbols-outlined" style="font-size:20px;">delete</span></button>`;
+                    ch += `</div>`;
                     
                     let optHtml = filteredOptions.replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${n}" data-idx="${i}"`).replace(/<input type="radio"/g, `<input type="radio" data-meal="${n}" data-idx="${i}"`).replace(/\{idx\}/g, i);
                     
@@ -869,15 +984,21 @@
             } 
         }
         pendingOrder.meal = meals.join(", "); pendingOrder.basePrice = bp; document.getElementById('c_mealName').innerHTML = meals.join("<br>"); document.getElementById('c_basePrice').innerText = bp; document.getElementById('dynamicOptions').innerHTML = ch;
+        
+        // 隱藏迷你購物車
+        document.getElementById('miniCartPanel').style.display = 'none';
+        document.getElementById('miniCartIcon').innerText = 'expand_less';
+
         currentOrderStep='customizeArea'; setView('customizeArea');
     }
+    
     window.backToMenu = function() { currentOrderStep='menuArea'; setView('menuArea'); }
     
     window.goToReview = function() {
         let fp = pendingOrder.basePrice; let notes = []; let cust = {};
         const opts = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
         opts.forEach(cb => { 
-            if(cb.value !== "單點") {
+            if(!cb.value.includes("預設")) { // 排除寫著預設的自動選項
                 fp += parseInt(cb.getAttribute('data-price') || 0); 
                 let k = `${cb.getAttribute('data-meal')}(第${parseInt(cb.getAttribute('data-idx'))+1}份)`;
                 if(!cust[k]) cust[k]=[]; cust[k].push(cb.value);
@@ -885,6 +1006,10 @@
         });
         for(let k in cust) notes.push(`${k}: ${cust[k].join(", ")}`);
         if(document.getElementById('orderNote').value) notes.push("全單備註: " + document.getElementById('orderNote').value.trim());
+        
+        // 🚀 無條件進位處理
+        fp = Math.ceil(fp);
+        
         pendingOrder.note = notes.length ? notes.join(" | ") : "無"; pendingOrder.price = fp; pendingOrder.date = todayStr; pendingOrder.restaurant = currentRestaurant;
         
         document.getElementById('v_id').innerText = pendingOrder.studentId; document.getElementById('v_rest').innerText = currentRestaurant; document.getElementById('v_meal').innerHTML = pendingOrder.meal.replace(/, /g, '<br>'); document.getElementById('v_note').innerText = pendingOrder.note; document.getElementById('v_price').innerText = pendingOrder.price;
