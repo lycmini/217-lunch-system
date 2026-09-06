@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        /* 🚀 柔和的莫蘭迪藍紫漸層 */
         body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
@@ -15,6 +16,7 @@
         .menu-btn { font-size: 26px; background: none; border: none; color: white; cursor: pointer; padding: 0 10px; }
         .header-title { font-size: 18px; font-weight: 700; flex-grow: 1; text-align: center; letter-spacing: 0.5px; }
         
+        /* 麵包屑導覽列樣式 */
         .breadcrumb { background-color: #eaf4fc; padding: 0 15px; font-size: 14px; display: flex; align-items: center; border-bottom: 1px solid #bce0fd; position: sticky; top: 60px; z-index: 90; overflow-x: auto; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.03); height: 44px; box-sizing: border-box; }
         .breadcrumb::-webkit-scrollbar { display: none; }
         .breadcrumb-back { background: none; border: none; color: #0078d4; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 2px; padding: 0; font-size: 14px; font-family: inherit; }
@@ -52,6 +54,7 @@
         .price-text { color: #111; font-size: 28px; font-weight: 700; margin: 15px 0; }
         #announcementBanner { display: none; background: #fafafa; border: 1px solid #111; padding: 15px; border-radius: 8px; margin-bottom: 20px; color: #111; }
         
+        /* 選單吸附防重疊設計 */
         .category-nav { display: flex; overflow-x: auto; white-space: nowrap; gap: 20px; padding: 12px 15px 0 15px; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(8px); position: sticky; top: 104px; z-index: 85; border-bottom: 1px solid #e5e5ea; margin: -15px -15px 20px -15px; scroll-behavior: smooth; box-shadow: 0 4px 8px rgba(0,0,0,0.06); }
         .category-nav::-webkit-scrollbar { display: none; } 
         .cat-tab { color: #888; cursor: pointer; font-weight: 600; font-size: 15px; padding-bottom: 12px; position: relative; transition: color 0.2s; }
@@ -71,6 +74,7 @@
 
         .cart-fab { position: fixed; bottom: 24px; right: 24px; background: #111; color: white; padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; display: none; align-items: center; gap: 12px; transition: transform 0.2s; }
         
+        /* 客製化標籤 (Chips) */
         .opt-section-title { font-size: 13px; color: #666; font-weight: 700; margin: 15px 0 8px; }
         .chip-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
         .custom-chip { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; border: 1px solid #d2d2d7; border-radius: 20px; background: #fff; color: #111; cursor: pointer; transition: all 0.2s; font-size: 14px; font-weight: 500; user-select: none; }
@@ -95,10 +99,12 @@
         .user-badge { display:inline-block; background:#111; color:white; padding:4px 10px; border-radius:12px; font-size:15px; font-weight:600; margin:0 5px; }
         .version-badge { display:inline-block; background:#111; color:white; font-size:11px; padding:2px 8px; border-radius:10px; margin-left:auto; }
 
+        /* Dashboard 專用樣式 */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .stat-box { background: #fafafa; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #e5e5ea; box-shadow: 0 2px 5px rgba(0,0,0,0.02);}
         .stat-value { font-size: 22px; font-weight: 700; margin-top: 6px; color: #111; }
 
+        /* 獨立登入頁面 IG 風格 */
         #loginPage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
         .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
         .ig-title { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 24px; color: #111; letter-spacing: 1px;}
@@ -130,6 +136,7 @@
         <div style="width: 44px;"></div>
     </div>
 
+    <!-- 麵包屑導覽列 -->
     <div id="breadcrumbBar" class="breadcrumb" style="display:none;">
         <button class="breadcrumb-back" onclick="goBackStep()"><span class="material-symbols-outlined" style="font-size: 16px;">arrow_back_ios_new</span> 返回</button>
         <div style="border-left: 2px solid #bce0fd; height: 18px; margin: 0 10px;"></div>
@@ -150,7 +157,8 @@
             <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
             <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
             <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
-            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.0</span></a></li>
+            <!-- 🚀 升級至 v2.3.0 標籤 -->
+            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.3.0</span></a></li>
             <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
             <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
             <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span class="material-symbols-outlined">info</span> 關於本站</a></li>
@@ -247,35 +255,61 @@
             </div>
         </div>
 
-        <!-- 🚀 網頁更新紀錄專區 (包含 v2.4.0) -->
+        <!-- 🚀 網頁更新紀錄專區 -->
         <div class="card" id="updateLogArea">
             <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
             <div style="margin-top: 15px;">
                 
+                <!-- v2.3.0 -->
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:16px;">v2.4.0 事後退補款項與雙向明細連動 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                    <h3 style="margin:0; font-size:16px;">v2.3.0 雲端菜單資料庫實裝 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
-                    <li>💳 <strong>事後退補款項連動：</strong> 後台新增「事後退補款項」管理功能（可直接從班級付款情形右側按鈕進入）。負責人執行補收或退款後，系統會自動生成調整單，並即時同步顯示在學生前台的「歷史紀錄與分析之詳細訂單明細」中，帳目雙向完全透明！</li>
-                    <li>🧭 <strong>左側選單層級優化：</strong> 將「查詢狀態與紀錄」及「事後退補款項」縮排並附屬於「班級付款總情形」下方，介面結構更直覺。</li>
+                    <li>☁️ <strong>菜單全面雲端化：</strong> 系統架構大突破！前台不再內建固定菜單，改為「即時連線雲端資料庫」索取最新菜單，載入速度更快，確保資訊永遠最新。</li>
+                    <li>🛠️ <strong>後台聯動同步：</strong> 負責人可直接在後台網頁上新增餐廳、修改價格、刪除品項，完全免寫程式，前台即時同步。</li>
                 </ul>
 
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.3.0 雲端菜單資料庫實裝</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>☁️ <strong>菜單全面雲端化：</strong> 13 家菜單從原始碼移轉至 Firebase 資料庫，前台即時連線索取。</li>
-                    <li>🛠️ <strong>後台 GUI 編輯器：</strong> 新增「雲端菜單管理庫」，線上直接修改價格、新增品項。</li>
-                </ul>
-
+                <!-- v2.2.3 -->
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
                     <h3 style="margin:0; font-size:16px; color:#555;">v2.2.3 訂單無痛修改與即時置頂防呆</h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>✏️ <strong>前台修改餐點功能：</strong> 支援前台不作廢直接修改或加點餐點，系統保留已付金額並自動比對差額。</li>
+                    <li>🔝 <strong>後台看板置頂與高亮：</strong> 即時看板改為「最新操作時間置頂排列」。修改過的訂單會標記為「修改單」，並以刪除線顯示舊餐點、紅字標示新餐點。</li>
+                    <li>🧮 <strong>多退少補精算器：</strong> 後台看板會自動比對修改前後的差額，並提示「需補收 $X」或「應退還 $X」，讓負責人收款絕對不出錯。</li>
+                </ul>
+
+                <!-- v2.2.2 -->
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.2.2 靜默換單與智能防呆機制</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                    <li>🔕 <strong>優化強制換單邏輯：</strong> 在點餐開放時間內，若當日「尚未有任何人下單」，更換店家將採取「靜默切換」，不再強制發布全班作廢廣播。</li>
+                    <li>🛡️ <strong>新增防呆設計：</strong> 排程與備案的餐廳下拉選單，預設值改為「未選擇餐廳」，徹底防止負責人手滑誤送預設店家的狀況。</li>
+                </ul>
+
+                <!-- v2.2.1 -->
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.2.1 首頁鎖定穿透修正與廣播管理面板</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                    <li>🐛 <strong>修復前台鎖定狀態穿透 Bug：</strong> 修復在非點餐時段，透過「菜單總覽」點擊「返回首頁」會繞過鎖定畫面直接進入點餐狀態的漏洞。</li>
+                    <li>📢 <strong>後台專屬「廣播管理儀表板」：</strong> 增加頂部紅色動態面板，負責人能即時監看廣播文字，並提供一鍵「撤除廣播」功能。</li>
+                </ul>
+
+                <!-- v2.2.0 -->
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.2.0 系統全面升級與備案聯動</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                    <li>💰 <strong>個人帳戶與明細優化 (前台)：</strong> 歷史紀錄新增「個人總帳戶餘額（多退少補）」大字顯示，並將交易狀態標示改版，付費與欠款狀況一目瞭然。</li>
+                    <li>🔄 <strong>動態換店同步 (前台)：</strong> 修復臨時換店後前台菜單未更新的 Bug，現在更換後同學可立刻看到新店家的菜單並重新下單。</li>
+                    <li>🚨 <strong>Plan B 備案選單化 (後台)：</strong> 備案系統淘汰手動輸入，改為「聯動下拉選單」，直接從內建菜單挑選統一餐點，價格自動帶入，實現 100% 防呆。</li>
                 </ul>
             </div>
             <button class="btn btn-secondary" style="margin-top:20px;" onclick="gotoHome()">返回首頁</button>
@@ -291,7 +325,6 @@
             <button class="btn btn-secondary" style="margin-top:20px;" onclick="gotoHome()">返回首頁</button>
         </div>
 
-        <!-- 🚀 個人歷史與分析 (自動同步後台事後退補款項紀錄) -->
         <div class="card" id="personalHistoryArea">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h2 style="border:none; margin:0;"><span class="material-symbols-outlined">history</span> 歷史紀錄與分析</h2>
@@ -429,6 +462,8 @@
     let currentRestaurant = ""; let currentOrderStep = 'authArea'; window.currentUserId = null;
     window.currentViewId = 'authArea';
     window.editingOrder = null;
+
+    // 🚀 v2.3.0 菜單雲端化：初始化空物件，資料將由 Firebase 讀取
     window.cloudRestaurantDB = {};
 
     window.logStudentAction = async function(actionName, detailsStr) {
@@ -453,44 +488,31 @@
             document.getElementById('loginPage').style.display = 'none'; 
             document.getElementById('mainApp').style.display = 'block'; 
             setupUser(savedId); 
+            
+            // 🚀 v2.3.0 在執行系統邏輯前，先從雲端抓取所有菜單資料
             await loadCloudMenus();
             checkToS(); 
         }
-        if(document.getElementById('wishDate')) { document.getElementById('wishDate').value = tmrStr; document.getElementById('wishDate').min = tmrStr; }
         
-        // 🚀 v2.3.1 監聽強制登出指令
-        listenToForceLogout();
+        if(document.getElementById('wishDate')) { document.getElementById('wishDate').value = tmrStr; document.getElementById('wishDate').min = tmrStr; }
     };
 
+    // 🚀 v2.3.0 讀取雲端菜單
     window.loadCloudMenus = async function() {
         try {
             const snap = await getDocs(collection(db, "restaurants"));
             window.cloudRestaurantDB = {};
             let restOpts = "";
             snap.forEach(doc => {
-                window.cloudRestaurantDB[doc.id] = doc.data();
+                let data = doc.data();
+                window.cloudRestaurantDB[doc.id] = data;
                 restOpts += `<option value="${doc.id}">${doc.id}</option>`;
             });
+            
             if(document.getElementById('wishRestaurant')) document.getElementById('wishRestaurant').innerHTML = restOpts;
             if(document.getElementById('mo_restaurantSelect')) document.getElementById('mo_restaurantSelect').innerHTML = restOpts;
-        } catch(e) { console.error(e); }
+        } catch(e) { console.error("載入雲端菜單失敗", e); }
     };
-
-    // 🚀 v2.3.1 強制登出監聽
-    window.listenToForceLogout = function() {
-        onSnapshot(doc(db, "system", "settings"), (docSnap) => {
-            if (docSnap.exists() && docSnap.data().forceLogoutTimestamp) {
-                const ts = docSnap.data().forceLogoutTimestamp;
-                const last = localStorage.getItem('lastForceLogoutTime_217');
-                if (!last || parseInt(ts) > parseInt(last)) {
-                    localStorage.setItem('lastForceLogoutTime_217', ts);
-                    localStorage.removeItem('loggedInUser_217');
-                    alert("⚠️ 系統公告：管理員已重置所有前台裝置，請重新登入！");
-                    location.reload();
-                }
-            }
-        });
-    }
 
     window.doLogin = async function() {
         const acc = document.getElementById('loginAccount').value.trim(); const pass = document.getElementById('loginPassword').value.trim();
@@ -520,6 +542,7 @@
     function hideAllSections() { ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'reviewPageArea', 'feedbackPageArea', 'menuOverviewArea', 'updateLogArea'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; }); }
     window.toggleMenu = function() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
 
+    // 視圖切換
     window.setView = function(viewId) {
         hideAllSections();
         document.getElementById(viewId).style.display = 'block';
@@ -583,7 +606,7 @@
         try {
             const snap = await getDocs(query(collection(db, "orders"))); 
             let itemCounts = {}; let restCounts = {};
-            snap.forEach(doc => { let o = doc.data(); if (!o.isCancelled && !o.isAdjustment) { if(o.restaurant) restCounts[o.restaurant] = (restCounts[o.restaurant] || 0) + 1; (o.meal || "").split(", ").forEach(m => { let name = m; let qty = 1; let match = m.match(/(.*) x(\d+)$/); if(match) { name = match[1]; qty = parseInt(match[2]); } if(name.trim() !== "") itemCounts[name] = (itemCounts[name] || 0) + qty; }); } });
+            snap.forEach(doc => { let o = doc.data(); if (!o.isCancelled) { if(o.restaurant) restCounts[o.restaurant] = (restCounts[o.restaurant] || 0) + 1; (o.meal || "").split(", ").forEach(m => { let name = m; let qty = 1; let match = m.match(/(.*) x(\d+)$/); if(match) { name = match[1]; qty = parseInt(match[2]); } if(name.trim() !== "") itemCounts[name] = (itemCounts[name] || 0) + qty; }); } });
             let items = []; for(let k in itemCounts) items.push({ n: k, c: itemCounts[k] }); items.sort((a,b) => b.c - a.c);
             let ih = ""; items.slice(0, 10).forEach((r, i) => ih += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><div><span style="font-weight:700; width:30px; display:inline-block;">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">${r.c} 次</div></div>`);
             let rests = []; for(let k in restCounts) rests.push({ n: k, c: restCounts[k] }); rests.sort((a,b) => b.c - a.c);
@@ -592,13 +615,10 @@
         } catch(e) { }
     }
     window.switchRank = function(type) {
-        document.getElementById('rankItemsContent').style.display = type === 'items' ? 'block' : 'none';
-        document.getElementById('rankRestsContent').style.display = type === 'rests' ? 'block' : 'none';
-        document.getElementById('btnRankItems').className = type === 'items' ? 'btn btn-primary' : 'btn btn-outline';
-        document.getElementById('btnRankRests').className = type === 'rests' ? 'btn btn-primary' : 'btn btn-outline';
+        document.getElementById('rankItemsContent').style.display = type === 'items' ? 'block' : 'none'; document.getElementById('rankRestsContent').style.display = type === 'rests' ? 'block' : 'none';
+        document.getElementById('btnRankItems').className = type === 'items' ? 'btn btn-primary' : 'btn btn-outline'; document.getElementById('btnRankRests').className = type === 'rests' ? 'btn btn-primary' : 'btn btn-outline';
     }
 
-    // 🚀 v2.4.0: 個人消費分析與明細連動事後退補款項
     let myPieChart = null; let myLineChart = null;
     window.showMyHistory = async function() { 
         const id = window.currentUserId; 
@@ -628,9 +648,7 @@
                 totalPaid += paidAmt;
 
                 let s = "";
-                if (o.isAdjustment) {
-                    s = `<span style="color:#0078d4; font-weight:700;">${o.note}</span>`;
-                } else if (o.isCancelled) {
+                if (o.isCancelled) {
                     if (paidAmt > 0) s = `<span style="color:#d32f2f; font-weight:700;">應退費 $${paidAmt}</span>`;
                     else s = `<span style="color:#888;">已作廢</span>`;
                 } else if (paidAmt >= safePrice) {
@@ -647,7 +665,7 @@
                     <td style="font-size:13px; line-height:1.5;">單價: $${originalPrice}<br>已付: $${paidAmt}<br>${s}</td>
                 </tr>`;
                 
-                if (!o.isCancelled && !o.isAdjustment) {
+                if (!o.isCancelled) {
                     totalValidOrders++;
                     if (o.date.startsWith(currentMonth)) totalSpentThisMonth += originalPrice;
                     let restName = o.restaurant || "未知";
@@ -663,7 +681,7 @@
             else balanceHtml = `<span style="color:#111;">已結清 $0</span>`;
             document.getElementById('personalBalance').innerHTML = balanceHtml;
 
-            let validOrdersDesc = arr.filter(o => !o.isCancelled && !o.isAdjustment);
+            let validOrdersDesc = arr.filter(o => !o.isCancelled);
             let last5 = validOrdersDesc.slice(0, 5).reverse();
             last5.forEach(o => { recentLabels.push(o.date.substring(5)); recentSpendings.push(o.price || 0); });
 
@@ -694,6 +712,7 @@
         } catch(e) { document.getElementById('ph_tableBody').innerHTML = '<tr><td colspan="3" style="color:red;">統計失敗</td></tr>'; } 
     }
 
+    // 🚀 v2.3.0 改用雲端資料庫渲染
     window.renderMenuOverview = function(restName) {
         const data = window.cloudRestaurantDB[restName] || {menu:[]}; let html = "";
         data.menu.forEach(g => {
@@ -750,7 +769,7 @@
     
     window.verifyStudent = async function() {
         const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + window.currentUserId));
-        if(docSnap.exists() && !docSnap.data().isCancelled && !docSnap.data().isAdjustment) { alert("⚠️ 系統偵測到你今天已經點過餐囉！轉至查詢畫面。"); return checkStatusQuick(); }
+        if(docSnap.exists() && !docSnap.data().isCancelled) { alert("⚠️ 系統偵測到你今天已經點過餐囉！轉至查詢畫面。"); return checkStatusQuick(); }
         pendingOrder.studentId = window.currentUserId; currentOrderStep = 'menuArea'; buildMenuForm(currentRestaurant); setView('menuArea');
     }
     window.checkStatusQuick = async function() {
@@ -760,6 +779,7 @@
     }
     function showLocked(m) { document.getElementById('lockedReason').innerHTML=m; setView('lockedScreen'); }
 
+    // 🚀 v2.3.0 改用雲端資料庫渲染
     function buildMenuForm(rn) {
         document.getElementById('displayRestaurant').innerText = rn; 
         const rd = window.cloudRestaurantDB[rn] || {menu:[],options:""}; 
@@ -789,12 +809,7 @@
     }
 
     window.modifyOrder = async function() {
-        if(confirm("【修改/加點說明】
-您即將修改今日訂單。請注意，您必須「重新選擇」所有要吃的餐點（包含原有的與要加點的）。
-
-系統會自動保留您已繳納的費用，並於結帳時為您計算多退少補。
-
-確定要開始重新選擇嗎？")) {
+        if(confirm("【修改/加點說明】\n您即遇到修改今日訂單。請注意，您必須「重新選擇」所有要吃的餐點（包含原有的與要加點的）。\n\n系統會自動保留您已繳納的費用，並於結帳時為您計算多退少補。\n\n確定要開始重新選擇嗎？")) {
             const id = window.currentUserId;
             const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + id));
             if(docSnap.exists() && !docSnap.data().isCancelled) {
@@ -814,6 +829,7 @@
         }
     }
 
+    // 🚀 v2.3.0 改用雲端資料庫渲染客製化選項
     window.goToCustomize = function() {
         let meals = []; let bp = 0; let ch = "";
         const restData = window.cloudRestaurantDB[currentRestaurant] || {options:""};
@@ -854,14 +870,18 @@
             let oldP = window.editingOrder.price || 0;
             let paid = window.editingOrder.paidAmount !== undefined ? window.editingOrder.paidAmount : (window.editingOrder.isPaid ? oldP : 0);
             let diff = fp - paid;
-            let diffText = diff > 0 ? `需再補繳 $${diff}` : (diff < 0 ? `應退款 $${Math.abs(diff)}` : `無須補退 ($0)`);
+            let diffText = "";
+            if(diff > 0) diffText = `需再補繳 $${diff}`;
+            else if(diff < 0) diffText = `應退款 $${Math.abs(diff)}`;
+            else diffText = `無須補退 ($0)`;
             
             document.getElementById('v_modifyInfo').innerHTML = `
                 <hr style="border:0; border-top:1px dashed #d32f2f; margin:15px 0;">
                 <div style="color:#d32f2f; font-size:14px; background:#fff5f5; padding:12px; border-radius:8px; border:1px solid #ffcdd2;">
-                    <div style="font-weight:700; margin-bottom:5px;">訂單修改結算：</div>
-                    <div>原總額：$${oldP} | 已繳：$${paid}</div>
-                    <div style="font-weight:700; font-size:16px; margin-top:6px;">本次修改後：${diffText}</div>
+                    <div style="font-weight:700; margin-bottom:5px; display:flex; align-items:center;"><span class="material-symbols-outlined" style="font-size:16px; margin-right:4px;">edit_square</span> 訂單修改結算：</div>
+                    <div style="color:#111;">原訂單總額：$${oldP}</div>
+                    <div style="color:#111;">目前已繳納：$${paid}</div>
+                    <div style="font-weight:700; font-size:16px; margin-top:8px; border-top:1px dashed #d32f2f; padding-top:8px;">本次修改後：${diffText}</div>
                 </div>
             `;
             document.getElementById('v_modifyInfo').style.display = 'block';
@@ -883,9 +903,11 @@
         if (window.editingOrder) {
             let oldP = window.editingOrder.price || 0;
             let paid = window.editingOrder.paidAmount !== undefined ? window.editingOrder.paidAmount : (window.editingOrder.isPaid ? oldP : 0);
+            
             pendingOrder.paidAmount = paid;
             pendingOrder.isPaid = (paid >= pendingOrder.price);
             pendingOrder.notifiedPaid = false; 
+            
             pendingOrder.isModified = true;
             pendingOrder.previousMeal = window.editingOrder.meal;
             pendingOrder.previousPrice = oldP;
@@ -898,8 +920,10 @@
 
         try { 
             await setDoc(doc(db, "orders", todayStr + "_" + pendingOrder.studentId), pendingOrder); 
+            
             let actionType = window.editingOrder ? "修改訂單" : "送出訂單";
             await logStudentAction(actionType, `訂購了 [${pendingOrder.restaurant}] ${pendingOrder.meal}，總額 $${pendingOrder.price}`);
+            
             window.editingOrder = null; 
             showReceipt(pendingOrder.studentId, pendingOrder.meal, pendingOrder.note, pendingOrder.price, pendingOrder.isPaid, pendingOrder.notifiedPaid, pendingOrder.timeString, pendingOrder.paidAmount); 
         } catch(e) { alert("錯誤"); btn.innerHTML='確認送出訂單'; btn.disabled=false;}
@@ -925,7 +949,7 @@
         } 
     }
     
-    let rvOrders = []; window.fetchOrdersForReview = async function() { const id = window.currentUserId; try { const oSnap=await getDocs(query(collection(db, "orders"), where("studentId","==",id))); let all=[]; const d7=new Date(); d7.setDate(d7.getDate()-7); const lim=d7.toISOString().split('T')[0]; oSnap.forEach(d=>{let o=d.data(); if(!o.isCancelled&&!o.isAdjustment&&o.date>=lim)all.push(o);}); all.sort((a,b)=>b.date.localeCompare(a.date)); const rSnap=await getDocs(query(collection(db, "reviews"), where("studentId","==",id))); let rm={}; rSnap.forEach(d=>rm[d.data().orderTimestamp]=d.data().timeString); rvOrders=[]; let log=""; all.forEach(o=>{if(rm[o.timestamp]) log+=`<div style="font-size:13px; color:#666; margin:4px 0;"><span class="material-symbols-outlined" style="font-size:16px;">check</span> ${o.date} (${o.meal})<br><span style="color:#888;">評分時間：${rm[o.timestamp]}</span></div>`; else rvOrders.push(o);}); document.getElementById('reviewedOrdersLog').innerHTML=log?`<div style="margin-top:15px; padding:10px; background:#f9f9f9; border:1px solid #eee;">📌 已評分紀錄：${log}</div>`:""; if(rvOrders.length===0){alert("最近有效訂單已全數評分完畢！"); document.getElementById('reviewFormBlock').style.display='none'; return;} let sel=""; rvOrders.forEach((o,i)=>sel+=`<option value="${i}">${o.date} - [${o.restaurant||"未知"}] ${o.meal}</option>`); document.getElementById('rvOrderSelect').innerHTML=sel; document.getElementById('reviewFormBlock').style.display='block'; } catch(e){} };
+    let rvOrders = []; window.fetchOrdersForReview = async function() { const id = window.currentUserId; try { const oSnap=await getDocs(query(collection(db, "orders"), where("studentId","==",id))); let all=[]; const d7=new Date(); d7.setDate(d7.getDate()-7); const lim=d7.toISOString().split('T')[0]; oSnap.forEach(d=>{let o=d.data(); if(!o.isCancelled&&o.date>=lim)all.push(o);}); all.sort((a,b)=>b.date.localeCompare(a.date)); const rSnap=await getDocs(query(collection(db, "reviews"), where("studentId","==",id))); let rm={}; rSnap.forEach(d=>rm[d.data().orderTimestamp]=d.data().timeString); rvOrders=[]; let log=""; all.forEach(o=>{if(rm[o.timestamp]) log+=`<div style="font-size:13px; color:#666; margin:4px 0;"><span class="material-symbols-outlined" style="font-size:16px;">check</span> ${o.date} (${o.meal})<br><span style="color:#888;">評分時間：${rm[o.timestamp]}</span></div>`; else rvOrders.push(o);}); document.getElementById('reviewedOrdersLog').innerHTML=log?`<div style="margin-top:15px; padding:10px; background:#f9f9f9; border:1px solid #eee;">📌 已評分紀錄：${log}</div>`:""; if(rvOrders.length===0){alert("最近有效訂單已全數評分完畢！"); document.getElementById('reviewFormBlock').style.display='none'; return;} let sel=""; rvOrders.forEach((o,i)=>sel+=`<option value="${i}">${o.date} - [${o.restaurant||"未知"}] ${o.meal}</option>`); document.getElementById('rvOrderSelect').innerHTML=sel; document.getElementById('reviewFormBlock').style.display='block'; } catch(e){} };
     
     window.submitMealReview = async function() { 
         const o = rvOrders[document.getElementById('rvOrderSelect').value]; if(!o)return; const s1=document.getElementById('rvScore1').value,s2=document.getElementById('rvScore2').value,s3=document.getElementById('rvScore3').value,s4=document.getElementById('rvScore4').value,c=document.getElementById('rvComment').value; if(!s1&&!s2&&!s3&&!s4&&!c.trim())return alert("未填寫任何內容"); const now=new Date(); 
@@ -937,8 +961,8 @@
     }
     
     window.goToReviewFromReceipt = async function() { setView('reviewPageArea'); await window.fetchOrdersForReview(); };
-    window.showAboutPage = function() { showInfoPage('<span class="material-symbols-outlined">info</span> 關於本站', '<p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p>'); };
-    window.showFaqPage = function() { showInfoPage('<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)', '<p><b>Q1：如何修改餐點？</b><br>A：於首頁點擊當日狀態，按下修改 / 加點即可。</p>'); };
+    window.showAboutPage = function() { showInfoPage('<span class="material-symbols-outlined">info</span> 關於本站', '<p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p><p><b>🚀 核心功能特色</b><br>1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>2. <b>大數據推薦</b>：即時顯示「熱門排行榜」。<br>3. <b>透明化帳務</b>：支援部分付款與無痛加點修改。<br>4. <b>動態換單機制</b>：店家沒開時自動重置作廢與退費。<br>5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p style="text-align:right; font-weight:700;">網頁開發與系統架構設計：羅亦承</p>'); };
+    window.showFaqPage = function() { showInfoPage('<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)', '<p><b><span class="material-symbols-outlined" style="font-size:18px;">schedule</span> 關於點餐時間與權限</b><br><b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。<br><b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">shopping_cart</span> 關於點餐與修改</b><br><b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁點擊「當日狀態」，點擊下方「修改 / 加點今日餐點」即可重新點選，系統會自動保留您已付款的金額。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">payments</span> 關於金錢與繳費</b><br><b>Q4：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">emergency</span> 關於突發狀況 (強制換單)</b><br><b>Q5：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會從後台強制換店。系統會直接把你的訂單作廢，並把預繳費用存入退費帳本。同時首頁會跳出全班廣播通知，請重新點餐！</p>'); };
 
     onSnapshot(doc(db, "system", "announcement"), (docSnap) => {
         const banner = document.getElementById('announcementBanner'); const planBBoard = document.getElementById('planBDashboard');
@@ -948,6 +972,16 @@
                 planBBoard.style.display = 'block'; setView('planBDashboard');
                 let planBDisplayStr = data.planBRestaurant ? `[${data.planBRestaurant}] ` : ''; planBDisplayStr += data.planBMeal;
                 document.getElementById('pbMealDisplay').innerText = planBDisplayStr; document.getElementById('pbPriceDisplay').innerText = data.planBPrice;
+                onSnapshot(query(collection(db, "orders"), where("date", "==", todayStr)), (snap) => {
+                    let arr = []; snap.forEach(d => { if(!d.data().isCancelled) arr.push(d.data()); }); arr.sort((a,b) => a.studentId - b.studentId);
+                    let html = ''; arr.forEach(o => {
+                        let pa = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? o.price : 0);
+                        let s = pa >= o.price ? `<span style="font-weight:700;">已結清</span>` : `<span style="font-weight:700;">差 $${o.price - pa}</span>`;
+                        let diffMatch = o.note.match(/🚨([^|]+)/); let diffText = diffMatch ? `<br><span style="font-size:13px;">${diffMatch[1].trim()}</span>` : '';
+                        html += `<tr><td style="padding:10px;"><strong>${o.studentId}</strong></td><td style="padding:10px;">${s}${diffText}</td></tr>`;
+                    });
+                    document.getElementById('pbTableBody').innerHTML = html || `<tr><td colspan="2">目前無人訂餐</td></tr>`;
+                });
             } else { planBBoard.style.display = 'none'; }
         } else { banner.style.display = 'none'; planBBoard.style.display = 'none'; if (localStorage.getItem('loggedInUser_217') && localStorage.getItem('tosAgreed_217')) { initSystem(); } }
     });
