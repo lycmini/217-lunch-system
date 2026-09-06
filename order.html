@@ -54,23 +54,8 @@
         .price-text { color: #111; font-size: 28px; font-weight: 700; margin: 15px 0; }
         #announcementBanner { display: none; background: #fafafa; border: 1px solid #111; padding: 15px; border-radius: 8px; margin-bottom: 20px; color: #111; }
         
-        /* 🚀 選單吸附防重疊設計 (毛玻璃白底 + 陰影區隔 + 精準的高度計算) */
-        .category-nav { 
-            display: flex; 
-            overflow-x: auto; 
-            white-space: nowrap; 
-            gap: 20px; 
-            padding: 12px 15px 0 15px; 
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(8px);
-            position: sticky; 
-            top: 104px; /* header(60px) + breadcrumb(44px) */
-            z-index: 85; 
-            border-bottom: 1px solid #e5e5ea; 
-            margin: -15px -15px 20px -15px; 
-            scroll-behavior: smooth; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
-        }
+        /* 選單吸附防重疊設計 */
+        .category-nav { display: flex; overflow-x: auto; white-space: nowrap; gap: 20px; padding: 12px 15px 0 15px; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(8px); position: sticky; top: 104px; z-index: 85; border-bottom: 1px solid #e5e5ea; margin: -15px -15px 20px -15px; scroll-behavior: smooth; box-shadow: 0 4px 8px rgba(0,0,0,0.06); }
         .category-nav::-webkit-scrollbar { display: none; } 
         .cat-tab { color: #888; cursor: pointer; font-weight: 600; font-size: 15px; padding-bottom: 12px; position: relative; transition: color 0.2s; }
         .cat-tab.active { color: #111; } .cat-tab.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background-color: #111; } 
@@ -89,7 +74,7 @@
 
         .cart-fab { position: fixed; bottom: 24px; right: 24px; background: #111; color: white; padding: 16px 24px; border-radius: 30px; font-size: 16px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,0.2); cursor: pointer; z-index: 1000; display: none; align-items: center; gap: 12px; transition: transform 0.2s; }
         
-        /* 🚀 客製化標籤 (Chips) */
+        /* 客製化標籤 (Chips) */
         .opt-section-title { font-size: 13px; color: #666; font-weight: 700; margin: 15px 0 8px; }
         .chip-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
         .custom-chip { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; border: 1px solid #d2d2d7; border-radius: 20px; background: #fff; color: #111; cursor: pointer; transition: all 0.2s; font-size: 14px; font-weight: 500; user-select: none; }
@@ -118,6 +103,7 @@
         .stat-box { flex: 1; background: #fafafa; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #e5e5ea; box-shadow: 0 2px 5px rgba(0,0,0,0.02);}
         .stat-value { font-size: 22px; font-weight: 700; margin-top: 6px; color: #111; }
 
+        /* 獨立登入頁面 IG 風格 */
         #loginPage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
         .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
         .ig-title { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 24px; color: #111; letter-spacing: 1px;}
@@ -170,7 +156,6 @@
             <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
             <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
             <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
-            <!-- 🚀 升級至 v2.1.0 標籤 -->
             <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.1.0</span></a></li>
             <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
             <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
@@ -184,8 +169,12 @@
         <h2 class="tos-title"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</h2>
         <div class="tos-text" id="tosTextContent">
             <p><strong>第一條（同意條款與契約成立）</strong><br>使用者於本系統點擊「確認送出訂單」之同時，即推定已審閱、瞭解並同意遵守本條款，約定委任關係生效。</p>
-            <p><strong>第二條（真實身分與冒用之法律責任）</strong><br>使用者應以本人真實座號登入。倘有無經授權冒用他人座號點餐、取消或輸入不實電磁紀錄致生損害者，負責人得逕行保全存取紀錄移請學務處查處。</p>
+            <p><strong>第二條（真實身分與冒用之法律責任）</strong><br>使用者應以本人真實座號登入。倘有無經授權冒用他人座號點餐、取消或輸入不實電磁紀錄致生損害者，負責人得逕行保全存取紀錄移請學務處查處；情節重大者，依法追究刑事責任。</p>
             <p><strong>第三條（履約義務與損害賠償）</strong><br>契約一經成立，除不可抗力外，訂購人不得無故拒絕受領或拒付價金。惡意棄單者應負損害賠償責任。</p>
+            <p><strong>第四條（免責事由與帳務確認）</strong><br>因設備故障致資料滅失，負責人不負賠償責任。帳務結算概以負責人實際收受現金為唯一認定標準。</p>
+            <p><strong>第五條（緊急處置權）</strong><br>遇店家無法履約時，負責人得逕行啟動備案或撤銷訂單，價金差額依多退少補處理，訂購人不得異議。</p>
+            <hr style="border: 0; border-top: 1px solid #e5e5ea; margin: 15px 0;">
+            <p><strong><span class="material-symbols-outlined">assignment</span> 學校午餐規定</strong><br>詳見校網公告：<br><a href="https://www.hchs.hc.edu.tw/ischool/publish_page/25/?cid=754" target="_blank" style="color: #111; word-break: break-all; font-weight:600;">點擊前往新竹高中校網查看</a></p>
         </div>
         <button class="btn btn-primary" style="width:100%; margin-top:15px;" onclick="agreeToS()">我已詳閱並同意</button>
     </div>
@@ -264,18 +253,19 @@
             </div>
         </div>
 
-        <!-- 🚀 網頁更新紀錄專區 (只保留 v2.0.0 以上版本) -->
+        <!-- 網頁更新紀錄專區 -->
         <div class="card" id="updateLogArea">
             <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
             <div style="margin-top: 15px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:16px;">v2.1.0 點餐期間動態換單機制 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                    <h3 style="margin:0; font-size:16px;">v2.1.0 點餐期間動態換單與全能稽核 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
                     <li>🚨 <strong>動態換店重置機制：</strong> 支援在當日點餐時段內更換餐廳，系統將自動作廢所有已訂購餐點並啟動預繳退費。</li>
                     <li>📢 <strong>即時廣播通知：</strong> 換店後前台將自動跳出緊急通知，提醒同學重新下單。</li>
                     <li>💵 <strong>退費帳本連動：</strong> 升級帳務演算法，作廢訂單若有預繳金額將自動列入「應退款」狀態。</li>
+                    <li>🔍 <strong>活動稽核紀錄升級：</strong> 獨立出全新的 `prod_activities` 資料庫！分離前台與後台紀錄，支援依來源、日期、座號精準篩選追蹤，確保每一筆操作都有跡可循。</li>
                     <li>🗑 <strong>清理冗餘紀錄：</strong> 移除 v2.0.0 以前的舊版更新日誌，保持介面簡潔。</li>
                 </ul>
 
@@ -430,6 +420,24 @@
     let currentRestaurant = ""; let currentOrderStep = 'authArea'; window.currentUserId = null;
     window.currentViewId = 'authArea';
 
+    // 🚀 前台活動日誌寫入函數 (寫入獨立的 prod_activities 資料庫)
+    window.logStudentAction = async function(actionName, detailsStr) {
+        if (!window.currentUserId) return;
+        try {
+            const now = new Date();
+            const dateStr = now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0');
+            await setDoc(doc(db, "prod_activities", now.getTime().toString() + "_student_" + window.currentUserId), {
+                source: "frontend",
+                studentId: window.currentUserId,
+                action: actionName,
+                details: detailsStr,
+                date: dateStr,
+                timestamp: now.getTime(),
+                timeString: now.toLocaleString('zh-TW', { hour12: false })
+            });
+        } catch(e) { console.error("Log failed", e); }
+    };
+
     const restaurantDB = {
         "湯食主義": { 
             menu: [
@@ -540,17 +548,28 @@
         if(document.getElementById('mo_restaurantSelect')) document.getElementById('mo_restaurantSelect').innerHTML = restOpts;
     };
 
-    window.doLogin = function() {
+    window.doLogin = async function() {
         const acc = document.getElementById('loginAccount').value.trim(); const pass = document.getElementById('loginPassword').value.trim();
         const match = acc.match(/^217(0[1-9]|[1-2][0-8])$/);
         if (!match) return alert("❌ 帳號格式錯誤！(21701~21728)");
         const id = parseInt(match[1], 10);
         let expectedPass = "lunch" + (410576 + id); if (id === 21) expectedPass = "lunch410605";
         if (pass !== expectedPass) return alert("❌ 密碼錯誤！");
-        localStorage.setItem('loggedInUser_217', id); location.reload();
+        
+        localStorage.setItem('loggedInUser_217', id); 
+        window.currentUserId = id;
+        await logStudentAction("登入系統", "學生登入成功");
+        location.reload();
     };
 
-    window.logout = function() { if(confirm("確定登出？")) { localStorage.removeItem('loggedInUser_217'); location.reload(); } };
+    window.logout = async function() { 
+        if(confirm("確定登出？")) { 
+            await logStudentAction("登出系統", "學生登出");
+            localStorage.removeItem('loggedInUser_217'); 
+            location.reload(); 
+        } 
+    };
+    
     function setupUser(id) { window.currentUserId = parseInt(id); document.getElementById('sidebarLoggedId').innerText = id; document.querySelectorAll('.display-user-id').forEach(el => el.innerText = id); }
     function checkToS() { if (!localStorage.getItem('tosAgreed_217')) { document.getElementById('tosModal').style.display = 'block'; document.getElementById('systemOverlay').style.display = 'block'; } else { initSystem(); } }
     window.agreeToS = function() { localStorage.setItem('tosAgreed_217', 'true'); document.getElementById('tosModal').style.display = 'none'; document.getElementById('systemOverlay').style.display = 'none'; initSystem(); };
@@ -715,6 +734,7 @@
     async function sendFeedback(content) {
         try {
             const now = new Date(); await setDoc(doc(db, "feedbacks", now.getTime().toString()), { studentId: window.currentUserId, content: content, timestamp: now.getTime(), timeString: now.toLocaleString('zh-TW', { hour12: false }) });
+            await logStudentAction("送出意見/許願", `內容: ${content}`);
             alert("✅ 傳送成功！"); gotoHome();
         } catch(e) { alert("傳送失敗"); }
     }
@@ -793,23 +813,52 @@
         currentOrderStep='reviewArea'; setView('reviewArea');
     }
     window.backToCustomize = function() { currentOrderStep='customizeArea'; setView('customizeArea'); }
+    
     window.confirmSubmit = async function() {
         const btn = document.getElementById('submitBtn'); btn.innerHTML = '<span class="material-symbols-outlined">sync</span> 處理中...'; btn.disabled = true;
         pendingOrder.isPaid = false; pendingOrder.notifiedPaid = false; pendingOrder.paidAmount = 0; pendingOrder.timestamp = new Date().getTime(); pendingOrder.timeString = new Date().toLocaleString('zh-TW', { hour12: false });
-        try { await setDoc(doc(db, "orders", todayStr + "_" + pendingOrder.studentId), pendingOrder); showReceipt(pendingOrder.studentId, pendingOrder.meal, pendingOrder.note, pendingOrder.price, false, false, pendingOrder.timeString, 0); } catch(e) { alert("錯誤"); btn.innerHTML='確認送出訂單'; btn.disabled=false;}
+        try { 
+            await setDoc(doc(db, "orders", todayStr + "_" + pendingOrder.studentId), pendingOrder); 
+            await logStudentAction("送出訂單", `訂購了 [${pendingOrder.restaurant}] ${pendingOrder.meal}，總額 $${pendingOrder.price}`);
+            showReceipt(pendingOrder.studentId, pendingOrder.meal, pendingOrder.note, pendingOrder.price, false, false, pendingOrder.timeString, 0); 
+        } catch(e) { alert("錯誤"); btn.innerHTML='確認送出訂單'; btn.disabled=false;}
     }
 
     function showReceipt(id, m, n, p, ip, np, ts, pa) { document.getElementById('r_id').innerText = id; document.getElementById('r_meal').innerHTML = m.replace(/, /g,'<br>'); document.getElementById('r_price').innerText = p; document.getElementById('r_time').innerText = ts||""; let a = pa!==undefined?pa:(ip?p:0); const ui = document.getElementById('paymentStatusUI'); const b = document.getElementById('notifyBtn'); if(a>=p){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">check_circle</span> 已結清</h3>'; b.style.display='none';} else if(a>0){ui.innerHTML=`<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">warning</span> 已付$${a} (尚欠$${p-a})</h3>`; b.style.display='block';} else if(np){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">hourglass_empty</span> 已通知對帳中</h3>'; b.style.display='none';} else {ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">cancel</span> 尚未繳費</h3>'; b.style.display='block';} window.currentViewingId=id; currentOrderStep='receiptArea'; setView('receiptArea'); }
-    window.notifyAdminPaid = async function() { try { await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { notifiedPaid: true }); alert("已通知！"); location.reload(); } catch(e) {} }
-    window.cancelOrder = async function() { if(confirm("確定取消訂單？")) { try { await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { isCancelled: true }); alert("已取消！"); location.reload(); } catch(e) {} } }
+    
+    window.notifyAdminPaid = async function() { 
+        try { 
+            await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { notifiedPaid: true }); 
+            await logStudentAction("通知繳費", "點擊了我已繳費按鈕");
+            alert("已通知！"); location.reload(); 
+        } catch(e) {} 
+    }
+    
+    window.cancelOrder = async function() { 
+        if(confirm("確定取消訂單？")) { 
+            try { 
+                await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { isCancelled: true }); 
+                await logStudentAction("取消訂單", "取消了今日訂單");
+                alert("已取消！"); location.reload(); 
+            } catch(e) {} 
+        } 
+    }
     
     let rvOrders = []; window.fetchOrdersForReview = async function() { const id = window.currentUserId; try { const oSnap=await getDocs(query(collection(db, "orders"), where("studentId","==",id))); let all=[]; const d7=new Date(); d7.setDate(d7.getDate()-7); const lim=d7.toISOString().split('T')[0]; oSnap.forEach(d=>{let o=d.data(); if(!o.isCancelled&&o.date>=lim)all.push(o);}); all.sort((a,b)=>b.date.localeCompare(a.date)); const rSnap=await getDocs(query(collection(db, "reviews"), where("studentId","==",id))); let rm={}; rSnap.forEach(d=>rm[d.data().orderTimestamp]=d.data().timeString); rvOrders=[]; let log=""; all.forEach(o=>{if(rm[o.timestamp]) log+=`<div style="font-size:13px; color:#666; margin:4px 0;"><span class="material-symbols-outlined" style="font-size:16px;">check</span> ${o.date} (${o.meal})<br><span style="color:#888;">評分時間：${rm[o.timestamp]}</span></div>`; else rvOrders.push(o);}); document.getElementById('reviewedOrdersLog').innerHTML=log?`<div style="margin-top:15px; padding:10px; background:#f9f9f9; border:1px solid #eee;">📌 已評分紀錄：${log}</div>`:""; if(rvOrders.length===0){alert("最近有效訂單已全數評分完畢！"); document.getElementById('reviewFormBlock').style.display='none'; return;} let sel=""; rvOrders.forEach((o,i)=>sel+=`<option value="${i}">${o.date} - [${o.restaurant||"未知"}] ${o.meal}</option>`); document.getElementById('rvOrderSelect').innerHTML=sel; document.getElementById('reviewFormBlock').style.display='block'; } catch(e){} };
-    window.submitMealReview = async function() { const o = rvOrders[document.getElementById('rvOrderSelect').value]; if(!o)return; const s1=document.getElementById('rvScore1').value,s2=document.getElementById('rvScore2').value,s3=document.getElementById('rvScore3').value,s4=document.getElementById('rvScore4').value,c=document.getElementById('rvComment').value; if(!s1&&!s2&&!s3&&!s4&&!c.trim())return alert("未填寫任何內容"); const now=new Date(); try { await setDoc(doc(db,"reviews",`${o.date}_${o.studentId}_${o.timestamp}`), {studentId:o.studentId, orderDate:o.date, orderTimestamp:o.timestamp, meal:o.meal, restaurant:o.restaurant||"未知", score1:s1?parseInt(s1):null, score2:s2?parseInt(s2):null, score3:s3?parseInt(s3):null, score4:s4?parseInt(s4):null, comment:c.trim(), timestamp:now.getTime(), timeString:now.toLocaleString('zh-TW',{hour12:false})}); alert("✅ 評分已傳送！"); gotoHome(); document.getElementById('reviewFormBlock').style.display='none'; document.getElementById('reviewedOrdersLog').innerHTML=""; } catch(e){} }
+    
+    window.submitMealReview = async function() { 
+        const o = rvOrders[document.getElementById('rvOrderSelect').value]; if(!o)return; const s1=document.getElementById('rvScore1').value,s2=document.getElementById('rvScore2').value,s3=document.getElementById('rvScore3').value,s4=document.getElementById('rvScore4').value,c=document.getElementById('rvComment').value; if(!s1&&!s2&&!s3&&!s4&&!c.trim())return alert("未填寫任何內容"); const now=new Date(); 
+        try { 
+            await setDoc(doc(db,"reviews",`${o.date}_${o.studentId}_${o.timestamp}`), {studentId:o.studentId, orderDate:o.date, orderTimestamp:o.timestamp, meal:o.meal, restaurant:o.restaurant||"未知", score1:s1?parseInt(s1):null, score2:s2?parseInt(s2):null, score3:s3?parseInt(s3):null, score4:s4?parseInt(s4):null, comment:c.trim(), timestamp:now.getTime(), timeString:now.toLocaleString('zh-TW',{hour12:false})}); 
+            await logStudentAction("填寫評分", `為 ${o.date} 的訂單填寫了評分`);
+            alert("✅ 評分已傳送！"); gotoHome(); document.getElementById('reviewFormBlock').style.display='none'; document.getElementById('reviewedOrdersLog').innerHTML=""; 
+        } catch(e){} 
+    }
+    
     window.goToReviewFromReceipt = async function() { setView('reviewPageArea'); await window.fetchOrdersForReview(); };
     window.showAboutPage = function() { showInfoPage('<span class="material-symbols-outlined">info</span> 關於本站', '<p><b>「用科技解決午餐的混亂，讓每一碗麵都準時送到你桌上。」</b></p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p><b>💡 系統誕生的初衷</b><br>過去班上訂便當總是充滿痛點：LINE 群組洗版、紙條統計漏單、店家臨時休息不知所措、收錢對帳麻煩。本系統將傳統作業全面數位化，打造高效、防呆、透明的點餐生態系。</p><p><b>🚀 核心功能特色</b><br>1. <b>極速點餐購物車</b>：支援多品項一次勾選與客製化。<br>2. <b>大數據推薦</b>：即時顯示「熱門排行榜」。<br>3. <b>透明化帳務</b>：支援部分付款與自動差額計算。<br>4. <b>動態換單機制</b>：店家沒開時自動重置作廢與退費。<br>5. <b>活動稽核與回饋</b>：內建動作黑盒子與許願池。</p><hr style="border:0; border-top:1px solid #e5e5ea; margin:15px 0;"><p style="text-align:right; font-weight:700;">網頁開發與系統架構設計：羅亦承</p>'); };
     window.showFaqPage = function() { showInfoPage('<span class="material-symbols-outlined">help</span> 常見問題 (FAQ)', '<p><b><span class="material-symbols-outlined" style="font-size:18px;">schedule</span> 關於點餐時間與權限</b><br><b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。<br><b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">shopping_cart</span> 關於點餐與修改</b><br><b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">payments</span> 關於金錢與繳費</b><br><b>Q4：按了「我已繳費了」後台怎麼沒馬上打勾？</b><br>A：這只是發送通知，須等負責人實際收到現金並確認後才會更新狀態。</p><p><b><span class="material-symbols-outlined" style="font-size:18px;">emergency</span> 關於突發狀況 (強制換單)</b><br><b>Q5：如果今天餐廳臨時沒開怎麼辦？</b><br>A：負責人會從後台強制換店。系統會直接把你的訂單作廢，並把預繳費用存入退費帳本。同時首頁會跳出全班廣播通知，請重新點餐！</p>'); };
 
-    // 🚀 v2.1.0: 廣播通知與自動退費提示邏輯優化
     onSnapshot(doc(db, "system", "announcement"), (docSnap) => {
         const banner = document.getElementById('announcementBanner'); const planBBoard = document.getElementById('planBDashboard');
         if (docSnap.exists() && docSnap.data().date === todayStr) {
@@ -830,9 +879,32 @@
             } else { planBBoard.style.display = 'none'; }
         } else { banner.style.display = 'none'; planBBoard.style.display = 'none'; if (localStorage.getItem('loggedInUser_217') && localStorage.getItem('tosAgreed_217')) { initSystem(); } }
     });
-    window.pbOptIn = async function() { const id = window.currentUserId; const r = doc(db, "orders", todayStr + "_" + id); const s = await getDoc(r); if(s.exists() && !s.data().isCancelled) return alert('你已經有訂單囉！'); await setDoc(r, { studentId: parseInt(id), date: todayStr, meal: document.getElementById('pbMealDisplay').innerText, note: "🚨 備案後額外加入", price: parseInt(document.getElementById('pbPriceDisplay').innerText), isPaid: false, paidAmount: 0, notifiedPaid: false, isCancelled: false, restaurant: "備案餐廳" }); alert('✅ 已加入備案訂單！'); }
-    window.pbOptOut = async function() { const id = window.currentUserId; const r = doc(db, "orders", todayStr + "_" + id); const s = await getDoc(r); if(!s.exists() || s.data().isCancelled) return alert('沒訂單！'); if(confirm('確定要跳車嗎？')) { await updateDoc(r, { isCancelled: true }); alert('✅ 已取消！'); } }
-    window.pbNotifyPaid = async function() { const id = window.currentUserId; const r = doc(db, "orders", todayStr + "_" + id); const s = await getDoc(r); if(!s.exists() || s.data().isCancelled) return; await updateDoc(r, { notifiedPaid: true }); alert('✅ 已通知負責人！'); }
+    
+    window.pbOptIn = async function() { 
+        const id = window.currentUserId; const r = doc(db, "orders", todayStr + "_" + id); const s = await getDoc(r); 
+        if(s.exists() && !s.data().isCancelled) return alert('你已經有訂單囉！'); 
+        await setDoc(r, { studentId: parseInt(id), date: todayStr, meal: document.getElementById('pbMealDisplay').innerText, note: "🚨 備案後額外加入", price: parseInt(document.getElementById('pbPriceDisplay').innerText), isPaid: false, paidAmount: 0, notifiedPaid: false, isCancelled: false, restaurant: "備案餐廳" }); 
+        await logStudentAction("備案操作", "同意額外加入備案訂單");
+        alert('✅ 已加入備案訂單！'); 
+    }
+    
+    window.pbOptOut = async function() { 
+        const id = window.currentUserId; const r = doc(db, "orders", todayStr + "_" + id); const s = await getDoc(r); 
+        if(!s.exists() || s.data().isCancelled) return alert('沒訂單！'); 
+        if(confirm('確定要跳車嗎？')) { 
+            await updateDoc(r, { isCancelled: true }); 
+            await logStudentAction("備案操作", "取消了原本被轉換的備案訂單");
+            alert('✅ 已取消！'); 
+        } 
+    }
+    
+    window.pbNotifyPaid = async function() { 
+        const id = window.currentUserId; const r = doc(db, "orders", todayStr + "_" + id); const s = await getDoc(r); 
+        if(!s.exists() || s.data().isCancelled) return; 
+        await updateDoc(r, { notifiedPaid: true }); 
+        await logStudentAction("備案操作", "點擊了已補差額/繳費按鈕");
+        alert('✅ 已通知負責人！'); 
+    }
 </script>
 </body>
 </html>
