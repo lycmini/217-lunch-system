@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -127,6 +127,22 @@
 </head>
 <body class="bg-theme-1">
 
+<!-- 背景選擇 Modal -->
+<div id="bgSelectorModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+    <div class="card" style="width:90%; max-width:400px; padding:20px;">
+        <h2 style="margin-top:0; border-bottom:1px solid #e5e5ea; padding-bottom:10px;"><span class="material-symbols-outlined">palette</span> 選擇系統背景</h2>
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:15px; justify-content:center;">
+            <div onclick="changeBg('bg-theme-1')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-2')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-3')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-4')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-5')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-6')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+        </div>
+        <button class="btn btn-secondary" style="width:100%; margin-top:25px;" onclick="closeBgSelector()">完成並關閉</button>
+    </div>
+</div>
+
 <div id="loginPage">
     <div class="ig-form">
         <div class="ig-title">217午餐後台管理</div>
@@ -162,7 +178,6 @@
             <li class="sub-item"><a href="javascript:void(0)" onclick="switchPage('page-adjustment'); toggleMenu();"><span class="material-symbols-outlined">payments</span> 事後退補款項中心</a></li>
             <li class="sub-item"><a href="javascript:void(0)" onclick="switchPage('page-adj-history'); loadAdjHistory(); toggleMenu();"><span class="material-symbols-outlined">receipt_long</span> 發送事後退補紀錄</a></li>
             
-            <!-- 🚀 v2.5.1 新增後台排行榜 -->
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyRank'); loadHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
 
             <li><a href="javascript:void(0)" onclick="switchPage('page-menu-editor'); toggleMenu();"><span class="material-symbols-outlined" style="color:#d32f2f;">restaurant</span> 雲端菜單管理庫</a></li>
@@ -171,27 +186,11 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.5.1</span></a></li>
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.5.2</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
             
             <li><a href="javascript:void(0)" onclick="showBgSelector(); toggleMenu();"><span class="material-symbols-outlined">palette</span> 個性化背景選擇</a></li>
         </ul>
-    </div>
-
-    <!-- 背景選擇 Modal -->
-    <div id="bgSelectorModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
-        <div class="card" style="width:90%; max-width:400px; padding:20px;">
-            <h2 style="margin-top:0; border-bottom:1px solid #e5e5ea; padding-bottom:10px;"><span class="material-symbols-outlined">palette</span> 選擇系統背景</h2>
-            <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:15px; justify-content:center;">
-                <div onclick="changeBg('bg-theme-1')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
-                <div onclick="changeBg('bg-theme-2')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
-                <div onclick="changeBg('bg-theme-3')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
-                <div onclick="changeBg('bg-theme-4')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
-                <div onclick="changeBg('bg-theme-5')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
-                <div onclick="changeBg('bg-theme-6')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
-            </div>
-            <button class="btn btn-secondary" style="width:100%; margin-top:25px;" onclick="closeBgSelector()">完成並關閉</button>
-        </div>
     </div>
 
     <div class="container">
@@ -381,7 +380,6 @@
             </div>
         </div>
 
-        <!-- 🚀 v2.5.1 新增：歷代熱門排行榜 (後台版) -->
         <div id="page-historyRank" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">leaderboard</span> 歷代排行榜總計</h2>
@@ -523,12 +521,19 @@
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
 
-                    <!-- 🚀 v2.5.1 最新更新 -->
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.5.1 前台修改 Bug 徹底修復與後台優化 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.5.2 危機處理功能修復 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
+                        <li>🚑 <strong>備案機制修復：</strong> 補回先前改版過程中意外遺失的備案菜單連動與強制換單廣播核心程式碼，危機處理模組全面恢復運作。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.5.1 前台修改 Bug 徹底修復與後台優化</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                         <li>🐞 <strong>零號同學 Bug 斬殺：</strong> 修復前台從查詢頁面直接點擊「修改訂單」時，身分驗證被略過導致系統生成 0 號空單的問題。</li>
                         <li>💰 <strong>後台溢繳精準顯示：</strong> 訂單即時看板現在能精準偵測「已付大於應付」的狀況，並以醒目紅字顯示「溢繳待退 $金額」。</li>
                         <li>📉 <strong>表格模式極簡化：</strong> 將看板表格模式下的備註欄位縮小字體並淡化，讓版面更專注於數字與餐點本身。</li>
@@ -922,6 +927,76 @@
         alert("✅ 時間更新成功！");
     }
 
+    // 🚀 v2.5.2: 修復遺失的備案菜單連動與強制轉換功能
+    window.updatePlanBMeals = function() {
+        const rn = document.getElementById('planBRestaurant').value;
+        const ms = document.getElementById('planBMealSelect');
+        const rd = window.cloudRestaurantDB[rn];
+        if(!rd) return;
+        let opts = '<option value="" disabled selected>請選擇統一餐點...</option>';
+        rd.menu.forEach(c => {
+            c.items.forEach(i => {
+                opts += `<option value="${i.name}" data-price="${i.price}">${i.name} ($${i.price})</option>`;
+            });
+        });
+        ms.innerHTML = opts;
+        document.getElementById('planBPriceDisplay').innerText = "0";
+    };
+
+    window.updatePlanBPrice = function() {
+        const ms = document.getElementById('planBMealSelect');
+        const opt = ms.options[ms.selectedIndex];
+        if(opt) document.getElementById('planBPriceDisplay').innerText = opt.getAttribute('data-price');
+    };
+
+    window.executePlanB = async function() {
+        const rest = document.getElementById('planBRestaurant').value;
+        const meal = document.getElementById('planBMealSelect').value;
+        const price = parseInt(document.getElementById('planBPriceDisplay').innerText);
+        
+        if(!rest || !meal || isNaN(price)) return alert("請完整選擇備案餐廳與餐點！");
+        
+        if(!confirm(`⚠️ 嚴重警告 ⚠️\n\n確定要啟動備案機制嗎？\n系統將會把今天所有「有效訂單」強制變更為：\n[${rest}] ${meal} ($${price})\n\n並且會在前台發布紅色警報通知全班！`)) return;
+
+        try {
+            const q = query(collection(db, "orders"), where("date", "==", todayStr));
+            const snap = await getDocs(q);
+            let count = 0;
+            for (let docSnap of snap.docs) {
+                let o = docSnap.data();
+                if (!o.isCancelled && !o.isAdjustment) {
+                    let newNote = `🚨 [備案轉換] 原訂: ${o.meal.substring(0,10)}... | ` + (o.note || "");
+                    await updateDoc(doc(db, "orders", docSnap.id), {
+                        restaurant: rest,
+                        meal: meal,
+                        price: price,
+                        note: newNote,
+                        isModified: true
+                    });
+                    count++;
+                }
+            }
+            
+            const now = new Date();
+            await setDoc(doc(db, "system", "announcement"), {
+                date: todayStr, 
+                time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`,
+                message: `🚨 【緊急通知】今日午餐發生突發狀況！負責人已啟動緊急備案，全班統一改訂【${rest} - ${meal}】。系統已自動轉換訂單並精算差額，請至下方確認補退款狀態！`, 
+                isPlanB: true,
+                planBRestaurant: rest,
+                planBMeal: meal,
+                planBPrice: price
+            });
+            
+            logAdminAction("啟動備案機制", `將 ${count} 筆訂單強制轉換為 [${rest}] ${meal}`);
+            alert(`✅ 備案啟動成功！已強制轉換 ${count} 筆訂單，並發布前台全班通知。`);
+            
+        } catch(e) {
+            alert("執行失敗");
+            console.error(e);
+        }
+    };
+
     window.saveDailyMenu = async function() {
         const targetDate = document.getElementById('scheduleDate').value;
         const rest = document.getElementById('scheduleRestaurant').value;
@@ -988,7 +1063,7 @@
                 if (order.isCancelled) { 
                     canceledAlerts.push(order); 
                 } else if (order.isAdjustment) {
-                    // 退補款移除了
+                    
                 } else {
                     activeOrders.push(order);
                     let safePrice = order.price || 0;
@@ -1019,7 +1094,6 @@
                 let safePrice = order.price || 0;
                 let paidAmt = order.paidAmount !== undefined ? order.paidAmount : (order.isPaid ? safePrice : 0);
                 
-                // 🚀 v2.5.1 精準的溢繳偵測與顯示
                 let rowClass = '';
                 let statusText = '';
                 
@@ -1043,7 +1117,6 @@
                 let timeStr = order.timeString ? order.timeString.split(' ')[1] : '';
                 
                 let noteTextCard = order.note ? `<div style="font-size:13px; color:#555; font-weight:normal; margin-top:8px; padding:6px; background:#f5f5f7; border-radius:6px; border-left:3px solid #111;">${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
-                // 🚀 v2.5.1 表格備註極小化
                 let noteTextTable = order.note ? `<div style="font-size:12px; color:#999; margin-top:4px; max-width: 200px; white-space: normal;">備註: ${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
                 
                 let docIdStr = `${order.date}_${order.studentId}`;
@@ -1114,7 +1187,6 @@
         }
     }
 
-    // 🚀 v2.5.1 新增：後台專用歷代熱門排行榜 (Real-time Calculation)
     window.loadHistoryRank = async function() {
         document.getElementById('rankItemsContentAdmin').innerHTML = "即時資料運算中..."; 
         document.getElementById('rankRestsContentAdmin').innerHTML = "即時資料運算中...";
