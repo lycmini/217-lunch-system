@@ -8,18 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <style>
         /* 🚀 完美平衡：明顯但柔和的莫蘭迪藍紫漸層 */
-        body { 
-    font-family: 'Inter', 'Noto Sans TC', sans-serif; 
-    color: #1d1d1f; 
-    margin: 0; 
-    padding: 0; 
-    min-height: 100vh;
-    background-color: #f7f8fa;
-    background-image: 
-        radial-gradient(at 10% 20%, rgba(120, 119, 198, 0.12) 0px, transparent 50%),
-        radial-gradient(at 90% 80%, rgba(56, 189, 248, 0.12) 0px, transparent 50%);
-    background-attachment: fixed;
-}
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
+        .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
         .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .menu-btn { font-size: 26px; background: none; border: none; color: white; cursor: pointer; padding: 0 10px; }
@@ -211,8 +201,13 @@
                         <select id="scheduleRestaurant">
                             <option value="麵朝 (新竹食品店)">麵朝 (新竹食品店)</option>
                         </select>
-                        <button class="btn btn-primary" style="width:100%;" onclick="saveDailyMenu()">儲存排程</button>
+                        <button class="btn btn-primary" style="width:100%; margin-bottom:15px;" onclick="saveDailyMenu()">儲存排程</button>
+                        
+                        <!-- 🚀 升級：顯示接下來已排程的餐廳清單 -->
+                        <h3 style="margin-top:15px; font-size:14px; border-top:1px dashed #ccc; padding-top:15px; display:flex; align-items:center;"><span class="material-symbols-outlined" style="font-size:16px;">event_note</span> 已排程的餐廳</h3>
+                        <div id="scheduledMenusList" style="font-size:14px; line-height:1.6; max-height: 150px; overflow-y: auto;">讀取中...</div>
                     </div>
+                    
                     <div style="background: #fafafa; padding: 16px; border-radius: 12px; border: 1px solid #e5e5ea;">
                         <h3 style="margin-top:0; font-size:15px; display:flex; align-items:center;"><span class="material-symbols-outlined">schedule</span> 開放點餐時間區間</h3>
                         <input type="time" id="sysStartTime" value="06:00" lang="en-GB">
@@ -419,6 +414,7 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
             listenToOrders(todayStr); 
+            loadScheduledMenus(); // 🚀 啟動時載入排程
         }
     };
 
@@ -431,6 +427,7 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
             listenToOrders(todayStr);
+            loadScheduledMenus(); // 🚀 登入後載入排程
         } else {
             alert("❌ 帳號或密碼錯誤！");
         }
@@ -530,6 +527,43 @@
     }
     loadSettings();
 
+    // 🚀 新增：讀取並渲染已排程的餐廳
+    window.loadScheduledMenus = async function() {
+        const listEl = document.getElementById('scheduledMenusList');
+        listEl.innerHTML = "讀取中...";
+        try {
+            const q = query(collection(db, "dailyMenus"), where("__name__", ">=", todayStr));
+            const snap = await getDocs(q);
+            let menus = [];
+            snap.forEach(doc => menus.push({ date: doc.id, restaurant: doc.data().restaurant }));
+            menus.sort((a,b) => a.date.localeCompare(b.date));
+            
+            if(menus.length === 0) {
+                listEl.innerHTML = "<span style='color:#888;'>目前沒有接下來的排程。</span>";
+                return;
+            }
+            
+            let html = "";
+            menus.forEach(m => {
+                let isToday = m.date === todayStr ? " <strong style='color:#d32f2f;'>(今天)</strong>" : "";
+                html += `<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #ccc; padding:8px 0;">
+                    <span><strong>${m.date}</strong>${isToday} - ${m.restaurant}</span>
+                    <button class="btn-quick-reset" onclick="deleteMenu('${m.date}')"><span class="material-symbols-outlined" style="font-size:16px;">delete</span></button>
+                </div>`;
+            });
+            listEl.innerHTML = html;
+        } catch(e) {
+            listEl.innerHTML = "讀取排程失敗";
+        }
+    }
+
+    window.deleteMenu = async function(dateStr) {
+        if(confirm(`確定要刪除 ${dateStr} 的餐廳排程嗎？`)) {
+            await deleteDoc(doc(db, "dailyMenus", dateStr));
+            loadScheduledMenus(); // 刷新列表
+        }
+    }
+
     window.saveTimeSettings = async function() {
         const st = document.getElementById('sysStartTime').value, et = document.getElementById('sysEndTime').value;
         try { await setDoc(doc(db, "system", "settings"), { orderStartTime: st, orderEndTime: et }, { merge: true }); alert("✅ 時間更新成功！"); } catch(e) { alert("儲存失敗"); }
@@ -537,7 +571,11 @@
 
     window.saveDailyMenu = async function() {
         const targetDate = document.getElementById('scheduleDate').value, rest = document.getElementById('scheduleRestaurant').value;
-        try { await setDoc(doc(db, "dailyMenus", targetDate), { restaurant: rest }); alert(`✅ 設定成功！`); } catch(e) { alert("儲存失敗"); }
+        try { 
+            await setDoc(doc(db, "dailyMenus", targetDate), { restaurant: rest }); 
+            alert(`✅ 餐廳排程設定成功！`); 
+            loadScheduledMenus(); // 🚀 刷新排程列表
+        } catch(e) { alert("儲存失敗"); }
     }
 
     window.showHistoryRank = async function() {
