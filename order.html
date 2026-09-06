@@ -8,7 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
+        /* 🚀 v2.5.0: 背景選擇系統支援 */
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; transition: background 0.3s ease; }
+        body.bg-theme-1 { background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); }
+        body.bg-theme-2 { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); }
+        body.bg-theme-3 { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
+        body.bg-theme-4 { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+        body.bg-theme-5 { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); }
+        body.bg-theme-6 { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); }
+
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
         .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); height: 60px; box-sizing: border-box; }
@@ -115,7 +123,23 @@
         #mainApp { display: none; }
     </style>
 </head>
-<body>
+<body class="bg-theme-1">
+
+<!-- 背景選擇 Modal -->
+<div id="bgSelectorModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+    <div class="card" style="width:90%; max-width:400px; padding:20px;">
+        <h2 style="margin-top:0; border-bottom:1px solid #e5e5ea; padding-bottom:10px;"><span class="material-symbols-outlined">palette</span> 個性化背景選擇</h2>
+        <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:15px; justify-content:center;">
+            <div onclick="changeBg('bg-theme-1')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-2')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-3')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-4')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-5')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-6')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+        </div>
+        <button class="btn btn-secondary" style="width:100%; margin-top:25px;" onclick="closeBgSelector()">完成並關閉</button>
+    </div>
+</div>
 
 <div id="loginPage">
     <div class="ig-form">
@@ -154,10 +178,11 @@
             <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
             <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
             <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
-            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.5</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.5.0</span></a></li>
             <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
             <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
             <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span class="material-symbols-outlined">info</span> 關於本站</a></li>
+            <li><a href="javascript:void(0)" onclick="showBgSelector(); toggleMenu();"><span class="material-symbols-outlined">palette</span> 個性化背景選擇</a></li>
         </ul>
     </div>
 
@@ -254,15 +279,17 @@
         <div class="card" id="updateLogArea">
             <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
             <div style="margin-top: 15px;">
+                
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:16px;">v2.4.5 介面排版優化與防呆除錯 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                    <h3 style="margin:0; font-size:16px;">v2.5.0 介面排版優化與防呆除錯 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
                     <li>🛒 <strong>迷你購物車一鍵刪除：</strong> 左下角上拉明細中，每個品項新增 `×` 刪除圖示，點擊後即可快速直接將該品項數量歸零。</li>
                     <li>👻 <strong>修復無痕模式幽靈通知：</strong> 修正了未登入狀態下開啟網頁會誤跳出「重置裝置警告」的問題，全面提升未登入訪客的體驗。</li>
-                    <li>📊 <strong>歷史明細排版優化：</strong> 在歷史分析頁面中，將「詳細訂單明細」列表移至圖表上方，讓你進來一眼就能確認最近點了什麼！</li>
-                    <li>💰 <strong>對齊純現金結算邏輯：</strong> 總餘額結算已完美對齊後台最新的事後退補純現金邏輯，帳目顯示一毛不差。</li>
+                    <li>📊 <strong>歷史明細排版優化：</strong> 在歷史分析頁面中，將「詳細訂單明細」列表移至圖表上方，讓你一眼就能確認最近點了什麼！</li>
+                    <li>💰 <strong>對齊純現金結算邏輯：</strong> 總餘額結算完美對齊後台最新的事後退補純現金邏輯，帳目顯示一毛不差。</li>
+                    <li>🎨 <strong>個性化背景選擇：</strong> 系統新增多款低飽和度漸層背景，隨心切換屬於你的點餐介面。</li>
                 </ul>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -271,7 +298,7 @@
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>🛒 <strong>浮動明細預覽：</strong> 點擊購物車總價可向上展開目前餐點明細清單。</li>
-                    <li>🤖 <strong>智慧過濾與進位：</strong> 全面導入「小數點無條件進位」與「週三限定/麵類限定」的智慧偵測過濾機制。</li>
+                    <li>🤖 <strong>智慧過濾與進位：</strong> 導入「小數點無條件進位」與「週三限定/麵類限定」的智慧偵測過濾機制。</li>
                 </ul>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -281,6 +308,39 @@
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>💳 <strong>事後退補款項同步：</strong> 完美對接後台退補紀錄。</li>
                 </ul>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.3.0 雲端菜單資料庫實裝</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                    <li>☁️ <strong>菜單全面雲端化：</strong> 系統架構大突破！13 家菜單移轉至 Firebase 資料庫，並開放前台直接無痛修改餐點。</li>
+                </ul>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.2.0 歷史大數據與個人帳戶</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                    <li>📈 <strong>歷史大數據：</strong> 新增圓餅圖與折線圖分析學生的歷史花費趨勢，並建構個人總帳戶餘額機制。</li>
+                </ul>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.1.0 菜單總覽與評分系統</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                    <li>⭐ <strong>評分與許願池：</strong> 開放同學對歷史訂單進行給分，並能隨時許願想吃的餐廳。</li>
+                </ul>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.0.0 系統全新創立</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                    <li>🚀 <strong>全新出發：</strong> 正式脫離紙本與群組點餐，導入 Firebase 雲端資料庫，建立基礎前台極速點餐架構。</li>
+                </ul>
+
             </div>
             <button class="btn btn-secondary" style="margin-top:20px;" onclick="gotoHome()">返回首頁</button>
         </div>
@@ -301,7 +361,6 @@
                 <p style="margin:0; font-weight:600;">座號：<strong id="ph_studentId" style="font-size:18px;"></strong></p>
             </div>
             
-            <!-- 🚀 v2.4.5: 將詳細訂單明細移到最上方 -->
             <h3 style="margin-top:0; border-bottom:1px solid #e5e5ea; padding-bottom:10px; font-size:16px;">詳細訂單明細</h3>
             <div class="table-responsive">
                 <table style="width:100%;">
@@ -310,7 +369,6 @@
                 </table>
             </div>
 
-            <!-- 圖表區移到下方 -->
             <div id="analyticsDashboard" style="display:none; margin-top:30px; border-top:2px solid #111; padding-top:25px;">
                 <h3 style="margin-top:0; margin-bottom:15px; font-size:16px;">大數據與帳務分析</h3>
                 <div class="stats-grid" style="margin-bottom:20px;">
@@ -352,7 +410,6 @@
             <div id="fullMenuContainer"></div>
         </div>
 
-        <!-- 🚀 浮動迷你購物車面板 -->
         <div id="miniCartPanel" style="display:none; position:fixed; bottom:85px; right:24px; background:#fff; padding:15px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.15); border:1px solid #e5e5ea; z-index:999; max-width:280px; width:calc(100% - 48px); transition: 0.3s;">
             <div style="font-weight:700; margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:6px; color:#111; display:flex; justify-content:space-between; align-items:center;">
                 <div style="display:flex; align-items:center; gap:4px;"><span class="material-symbols-outlined" style="font-size:18px;">receipt_long</span> 購物車明細</div>
@@ -361,7 +418,6 @@
             <div id="miniCartList" style="font-size:14px; color:#333; line-height:1.6; max-height:200px; overflow-y:auto;"></div>
         </div>
 
-        <!-- 🚀 雙區域購物車按鈕 -->
         <div id="cartFab" class="cart-fab">
             <div class="cart-fab-left" onclick="toggleMiniCart()">
                 <span class="material-symbols-outlined">shopping_cart</span> $<span id="cartTotal">0</span>
@@ -454,6 +510,21 @@
     window.editingOrder = null;
     window.cloudRestaurantDB = {};
 
+    // 🚀 v2.5.0: 初始化與切換背景功能
+    const savedBg = localStorage.getItem('bgTheme_217') || 'bg-theme-1';
+    document.body.className = savedBg;
+
+    window.showBgSelector = function() {
+        document.getElementById('bgSelectorModal').style.display = 'flex';
+    };
+    window.closeBgSelector = function() {
+        document.getElementById('bgSelectorModal').style.display = 'none';
+    };
+    window.changeBg = function(themeClass) {
+        document.body.className = themeClass;
+        localStorage.setItem('bgTheme_217', themeClass);
+    };
+
     window.logStudentAction = async function(actionName, detailsStr) {
         if (!window.currentUserId) return;
         try {
@@ -498,7 +569,6 @@
         } catch(e) { console.error(e); }
     };
 
-    // 🚀 修正無痕模式未登入卻一直跳重置警告的問題
     window.listenToForceLogout = function() {
         onSnapshot(doc(db, "system", "settings"), (docSnap) => {
             if (docSnap.exists() && docSnap.data().forceLogoutTimestamp) {
@@ -507,10 +577,7 @@
                 const isLoggedIn = localStorage.getItem('loggedInUser_217');
                 
                 if (!last || parseInt(ts) > parseInt(last)) {
-                    // 更新本地端接收到廣播的時間
                     localStorage.setItem('lastForceLogoutTime_217', ts);
-                    
-                    // 只有當前是在「已登入狀態」的人，才會被踢出並跳警告
                     if (isLoggedIn) {
                         localStorage.removeItem('loggedInUser_217');
                         alert("⚠️ 系統公告：管理員已重置所有前台裝置，請重新登入！");
@@ -549,7 +616,6 @@
     function hideAllSections() { ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'reviewPageArea', 'feedbackPageArea', 'menuOverviewArea', 'updateLogArea'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; }); }
     window.toggleMenu = function() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').classList.toggle('active'); }
 
-    // 🚀 渲染迷你購物車內容
     window.renderMiniCart = function() {
         let h = "";
         for(let k in cart) {
@@ -566,16 +632,14 @@
         document.getElementById('miniCartList').innerHTML = h;
     }
 
-    // 🚀 從迷你購物車一鍵歸零刪除品項
     window.removeMiniCartItem = function(n) {
         if(cart[n]) {
-            cart[n].q = 0; // 直接歸零
+            cart[n].q = 0; 
             document.querySelectorAll(`[data-qty-name="${n}"]`).forEach(el => el.innerText = "0");
-            refreshCartState(); // 重新計算與判斷顯示隱藏
+            refreshCartState(); 
         }
     }
 
-    // 🚀 統一處理購物車按鈕與面板的顯示狀態
     function refreshCartState() {
         let tq=0, tp=0; 
         for(let k in cart) { tq += cart[k].q; tp += cart[k].q * cart[k].p; }
@@ -587,12 +651,10 @@
             fab.style.display = 'flex'; 
             document.getElementById('cartTotal').innerText = tp; 
             
-            // 如果面板開著，即時重繪
             if(miniCart.style.display === 'block') {
                 renderMiniCart();
             }
         } else { 
-            // 刪除到空了就隱藏全部
             fab.style.display = 'none'; 
             miniCart.style.display = 'none';
         }
@@ -674,7 +736,7 @@
     window.showReviewPage = function() { setView('reviewPageArea'); }
     window.showUpdateLog = function() { setView('updateLogArea'); }
     
-    // 📖 關於本站與 FAQ 文案區
+    // 📖 v2.5.0: 全新詳細版「關於本站」與「FAQ」
     window.showAboutPage = function() {
         showInfoPage(
             '關於本站',
@@ -700,10 +762,19 @@
                     <ul style="margin:0; padding-left:20px; line-height:1.75;">
                         <li><b>雲端動態菜單管理庫</b>：菜單全面資料庫化，後台支援自訂品項分類、價格彈性設定與實體上移下移排序，儲存後即時同步全班前台，無須繁瑣維護。</li>
                         <li><b>智慧防呆與情境感知</b>：內建星期全自動偵測機制（如週三限定特餐自動解鎖上架），並透過關鍵字過濾技術，僅針對需要選擇主食的品項動態渲染選項，徹底杜絕無效點選。</li>
-                        <li><b>極速購物車與自訂調整</b>：配備雙區塊浮動購物車與即時展開明細清單，並支援購物車與客製化階段的單筆品項刪除與防呆總額鎖定，避免空單送出。</li>
-                        <li><b>無痛修改與精準帳務結算</b>：截止前支援無痛重新選餐並自動繼承已繳金額；後台建置事後退補純現金連動機制，並導入金額無條件進位計算，確保總帳本完美平衡。</li>
+                        <li><b>極速購物車與自訂調整</b>：配備雙區塊浮動購物車與即時展開明細清單，並支援進入客製化階段後的單筆品項刪除與防呆總額鎖定，避免空單送出。</li>
+                        <li><b>無痛修改與精準帳務結算</b>：截止前支援無痛重新選餐並自動繼承已繳金額；後台建置事後退補純現金連動機制，並導入金額無條件進位計算，確保帳目分毫不差。</li>
                         <li><b>危機處理與統一備案機制</b>：遇店家未營業或供餐異常時，負責人可於後台啟動強制換單或統一備案機制，系統自動計算全班各座號之多退少補明細表。</li>
                         <li><b>數據分析與意見回饋中心</b>：整合個人歷史消費圖表與每餐均價統計、歷代熱門餐點排行榜、餐點評分反饋系統，以及供同學自由提出排程建議的許願池。</li>
+                    </ul>
+                </div>
+
+                <div style="margin-bottom:18px;">
+                    <h3 style="margin:0 0 6px 0; font-size:15px; color:#111; font-weight:700;">系統變革歷程</h3>
+                    <ul style="margin:0; padding-left:20px; line-height:1.75;">
+                        <li>2026/09/04：開始創作與架構規劃。</li>
+                        <li>2026/09/05：推行 Beta 測試版，確立核心下單與記帳邏輯。</li>
+                        <li>2026/09/06：推出全新雲端多樣化菜單，正式上線營運。</li>
                     </ul>
                 </div>
 
@@ -717,7 +788,7 @@
                 <hr style="border:0; border-top:1px solid #e5e5ea; margin:16px 0;">
                 
                 <div style="text-align:right; font-size:13px; color:#555; line-height:1.6;">
-                    <div>系統版本：217 午餐訂購系統 v2.4.5</div>
+                    <div>系統版本：217 午餐訂購系統 v2.5.0</div>
                     <div>網頁開發與系統架構設計：<span style="font-weight:700; color:#111;">羅亦承</span></div>
                 </div>
             </div>
@@ -791,7 +862,7 @@
                     <p><b>Q10：我點了「我已繳費了！發送通知」，為什麼狀態還是未結清？</b><br>
                     A：該按鈕為「主動推播通知」，按下去後負責人後台會收到你已付錢的提示。但必須等<b>負責人實際收到實體現金核對無誤後</b>，後台才會手動更新為「已結清」。</p>
 
-                    <p><b>Q11：歷史明細裡的「事後補收 / 退還現金」是什麼？</b><br>
+                    <p><b>Q11：歷史明細裡的「事後補收 / 退款」是什麼？</b><br>
                     A：這是負責人處理「歷史欠款補齊或退回作廢溢繳」的純現金流動紀錄。每一筆退補都會精準加減到你的<b>「個人總帳戶餘額」</b>中。</p>
 
                     <p style="margin-bottom:0;"><b>Q12：金額若有小數點怎麼算？</b><br>
@@ -842,7 +913,6 @@
 
     let myPieChart = null; let myLineChart = null;
     
-    // 🚀 v2.4.5: 對齊後台最新的「純現金補齊」歷史結算邏輯
     window.showMyHistory = async function() { 
         const id = window.currentUserId; 
         setView('personalHistoryArea');
@@ -871,7 +941,6 @@
                 let displayMeal = o.meal.replace(/, /g,'<br>');
 
                 if (o.isAdjustment) {
-                    // 💰 純現金流動，不增加負債！
                     if (o.adjType === '退款') {
                         totalPaid -= o.price;
                     } else {
