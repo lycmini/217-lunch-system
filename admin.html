@@ -7,7 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <style>
-        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
+        /* 🚀 v2.5.0: 背景選擇系統支援 */
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; transition: background 0.3s ease; }
+        body.bg-theme-1 { background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); } /* 原本的紫藍 */
+        body.bg-theme-2 { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); } /* 質感灰白 */
+        body.bg-theme-3 { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); } /* 夢幻紫青 */
+        body.bg-theme-4 { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); } /* 冷色金屬 */
+        body.bg-theme-5 { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); } /* 淺草綠 */
+        body.bg-theme-6 { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); } /* 暖陽黃 */
+
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
         .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -44,24 +52,14 @@
         th, td { border-bottom: 1px solid #e5e5ea; padding: 12px 10px; text-align: center; }
         th { background-color: #fafafa; color: #111; font-weight: 600; white-space: nowrap; border-top: 1px solid #e5e5ea; border-bottom: 2px solid #111; }
         
-        @media (max-width: 768px) {
-            .table-responsive table { min-width: 100%; }
-            .table-responsive table, .table-responsive thead, .table-responsive tbody, .table-responsive th, .table-responsive td, .table-responsive tr { display: block; }
-            .table-responsive thead tr { position: absolute; top: -9999px; left: -9999px; }
-            .table-responsive tr { border: 1px solid #e5e5ea; border-radius: 12px; margin-bottom: 15px; background: #fff; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-            .table-responsive td { border: none; border-bottom: 1px dashed #eee; position: relative; padding: 12px 12px 12px 40%; text-align: right; min-height: 24px; display: flex; justify-content: flex-end; align-items: flex-start; }
-            .table-responsive td:last-child { border-bottom: none; }
-            .table-responsive td::before { content: attr(data-label); position: absolute; left: 12px; top: 12px; width: 35%; padding-right: 10px; white-space: nowrap; text-align: left; font-weight: 600; color: #888; font-size: 13px; }
-            .table-responsive td input[type="text"], .table-responsive td input[type="number"], .table-responsive td select { margin-bottom: 0; padding: 6px; }
-        }
-
+        /* 雙模式切換支援：表格模式的強勢復出 */
         .order-board-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 15px; }
         .order-card { background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; position: relative; overflow: hidden; transition: 0.2s; }
         .order-card:hover { border-color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .order-card.paid { border-left: 5px solid #2e7d32; background: #fdfdfd; }
-        .order-card.partial { border-left: 5px solid #ff9800; }
-        .order-card.unpaid { border-left: 5px solid #d32f2f; }
-        .order-card.adj-row { border-left: 5px solid #0078d4; background: #f0f8ff; }
+        .order-card.paid, tr.paid { border-left: 5px solid #2e7d32; }
+        .order-card.partial, tr.partial { border-left: 5px solid #ff9800; }
+        .order-card.unpaid, tr.unpaid { border-left: 5px solid #d32f2f; }
+        tr.paid, tr.partial, tr.unpaid { background:#fff; }
 
         .oc-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #f2f2f7; padding-bottom: 10px; margin-bottom: 10px; }
         .oc-student { font-size: 22px; font-weight: 800; color: #111; display:flex; align-items:center; gap:6px; }
@@ -86,6 +84,9 @@
         .btn-school { background-color: #fff; color: #111; border: 1px solid #111; margin-top:0; padding: 8px 14px; font-size:13px; }
         .btn-school:hover { background-color: #f5f5f7; }
         
+        .view-btn { padding: 6px 12px; font-size: 13px; border-radius: 6px; cursor: pointer; border: 1px solid #d2d2d7; background: #fff; color: #555; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; font-family: inherit; }
+        .view-btn.active { background: #111; color: #fff; border-color: #111; }
+
         input[type="date"], input[type="text"], input[type="number"], input[type="time"], select, textarea { padding: 10px; font-size: 15px; border-radius: 8px; border: 1px solid #d2d2d7; width: 100%; box-sizing: border-box; margin-bottom: 10px; outline: none; transition: 0.2s; font-family: inherit; }
         input:focus, select:focus, textarea:focus { border-color: #111; }
         .planB-box { background-color: #fafafa; border: 1px solid #111; padding: 20px; border-radius: 12px; }
@@ -125,7 +126,7 @@
         #mainApp { display: none; }
     </style>
 </head>
-<body>
+<body class="bg-theme-1">
 
 <div id="loginPage">
     <div class="ig-form">
@@ -159,7 +160,8 @@
             
             <li><a href="javascript:void(0)" onclick="switchPage('page-ledger'); toggleMenu();"><span class="material-symbols-outlined">account_balance_wallet</span> 班級付款總情形</a></li>
             <li class="sub-item"><a href="javascript:void(0)" onclick="switchPage('page-student-records'); loadStudentRecords(); toggleMenu();"><span class="material-symbols-outlined">search</span> 查詢狀態與紀錄</a></li>
-            <li class="sub-item"><a href="javascript:void(0)" onclick="switchPage('page-adjustment'); toggleMenu();"><span class="material-symbols-outlined">payments</span> 事後退補款項</a></li>
+            <li class="sub-item"><a href="javascript:void(0)" onclick="switchPage('page-adjustment'); toggleMenu();"><span class="material-symbols-outlined">payments</span> 事後退補款項中心</a></li>
+            <li class="sub-item"><a href="javascript:void(0)" onclick="switchPage('page-adj-history'); loadAdjHistory(); toggleMenu();"><span class="material-symbols-outlined">receipt_long</span> 發送事後退補紀錄</a></li>
             
             <li><a href="javascript:void(0)" onclick="switchPage('page-menu-editor'); toggleMenu();"><span class="material-symbols-outlined" style="color:#d32f2f;">restaurant</span> 雲端菜單管理庫</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-reviews'); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分接收站</a></li>
@@ -167,9 +169,28 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.5</span></a></li>
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.5.0</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
+            
+            <!-- 🚀 v2.5.0 背景選擇功能 -->
+            <li><a href="javascript:void(0)" onclick="showBgSelector(); toggleMenu();"><span class="material-symbols-outlined">palette</span> 個性化背景選擇</a></li>
         </ul>
+    </div>
+
+    <!-- 背景選擇 Modal -->
+    <div id="bgSelectorModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+        <div class="card" style="width:90%; max-width:400px; padding:20px;">
+            <h2 style="margin-top:0; border-bottom:1px solid #e5e5ea; padding-bottom:10px;"><span class="material-symbols-outlined">palette</span> 選擇系統背景</h2>
+            <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:15px; justify-content:center;">
+                <div onclick="changeBg('bg-theme-1')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+                <div onclick="changeBg('bg-theme-2')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+                <div onclick="changeBg('bg-theme-3')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+                <div onclick="changeBg('bg-theme-4')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+                <div onclick="changeBg('bg-theme-5')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+                <div onclick="changeBg('bg-theme-6')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            </div>
+            <button class="btn btn-secondary" style="width:100%; margin-top:25px;" onclick="closeBgSelector()">完成並關閉</button>
+        </div>
     </div>
 
     <div class="container">
@@ -220,7 +241,15 @@
             </div>
             
             <div class="card" id="orderBoardSection">
-                <h2><span class="material-symbols-outlined">table_chart</span> 訂單即時看板</h2>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom: 12px; margin-bottom: 15px;">
+                    <h2 style="border:none; padding:0; margin:0;"><span class="material-symbols-outlined">table_chart</span> 訂單即時看板</h2>
+                    <!-- 🚀 v2.5.0: 看板模式雙切換 -->
+                    <div style="display:flex; gap:6px;">
+                        <button class="view-btn active" id="btnViewCard" onclick="setBoardView('card')"><span class="material-symbols-outlined" style="font-size:16px;">grid_view</span> 卡片</button>
+                        <button class="view-btn" id="btnViewTable" onclick="setBoardView('table')"><span class="material-symbols-outlined" style="font-size:16px;">list</span> 表格</button>
+                    </div>
+                </div>
+                
                 <div style="background:#eaf4fc; padding:12px; border-radius:8px; margin-bottom:15px; border:1px solid #bce0fd; display:flex; align-items:center; gap:10px;">
                     <span class="material-symbols-outlined" style="color:#0078d4;">event</span>
                     <span style="font-weight:600; color:#0078d4; font-size:14px;">當前看板日期：</span>
@@ -229,9 +258,13 @@
                 
                 <p style="font-weight:600; font-size:15px;">有效訂單人數：<strong id="totalCount" style="font-size: 18px;">0</strong> 人</p>
                 
+                <!-- 卡片模式容器 -->
                 <div id="orderBoardGrid" class="order-board-grid">
                     <div style="padding: 20px; text-align: center; color: #888; width: 100%;">連線讀取中...</div>
                 </div>
+
+                <!-- 表格模式容器 -->
+                <div id="orderBoardTableContainer" class="table-responsive" style="display:none; margin-top:0;"></div>
 
                 <hr style="margin: 30px 0; border:0; border-top:1px solid #e5e5ea;">
                 <button class="btn btn-danger" style="width:100%;" onclick="clearTodayOrders()"><span class="material-symbols-outlined">delete_forever</span> 完全清除所選日期的所有訂單</button>
@@ -288,7 +321,6 @@
             </div>
         </div>
 
-        <!-- 🚀 v2.4.5: 智慧退補款項處理中心 -->
         <div id="page-adjustment" class="admin-page">
             <div class="card" style="max-width: 600px; margin: 0 auto;">
                 <h2><span class="material-symbols-outlined">payments</span> 事後退補款項處理中心</h2>
@@ -321,6 +353,33 @@
                     <input type="text" id="adjNote" placeholder="例如：結清 9/6 麥當勞欠款" style="margin-bottom:20px;">
 
                     <button class="btn btn-primary" style="width:100%; padding:14px; font-size:16px;" onclick="submitAdjustment()">確認退補，結清這筆帳務</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🚀 v2.5.0: 全新的「事後退補紀錄清單」頁面 -->
+        <div id="page-adj-history" class="admin-page">
+            <div class="card">
+                <h2><span class="material-symbols-outlined">receipt_long</span> 發送事後退補款項紀錄</h2>
+                <p style="font-size:13px; color:#555; margin-top:0;">此處忠實紀錄所有透過「事後退補中心」發送的每一筆帳務流動紀錄。</p>
+                <div style="background:#fafafa; padding:16px; border-radius:12px; border:1px solid #e5e5ea; margin-bottom: 20px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <div style="flex:1; min-width: 150px;">
+                        <label style="font-weight:600; font-size:14px; margin-bottom:8px; display:block;">依據座號篩選：</label>
+                        <select id="adjHistStudentFilter" onchange="loadAdjHistory()" style="margin-bottom:0;"></select>
+                    </div>
+                    <div style="flex:1; min-width: 150px;">
+                        <label style="font-weight:600; font-size:14px; margin-bottom:8px; display:block;">依據日期篩選：</label>
+                        <input type="date" id="adjHistDateFilter" onchange="loadAdjHistory()" style="margin-bottom:0;">
+                    </div>
+                    <div style="flex:0; display:flex; align-items:flex-end;">
+                        <button class="btn btn-outline" style="margin:0; height:44px; white-space:nowrap;" onclick="document.getElementById('adjHistDateFilter').value=''; loadAdjHistory();">清除日期</button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead><tr><th>發送時間</th><th>座號</th><th>類型</th><th>金額</th><th>目的/備註</th><th>操作</th></tr></thead>
+                        <tbody id="adjHistTableBody"><tr><td colspan="6" data-label="狀態">讀取中...</td></tr></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -397,7 +456,7 @@
 
         <div id="page-historyEdit" class="admin-page">
             <div class="card">
-                <h2><span class="material-symbols-outlined">edit_note</span> 歷史紀錄編輯器</h2>
+                <h2><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</h2>
                 <input type="date" id="editHistoryDate">
                 <button class="btn btn-primary" onclick="loadHistoryForEdit()"><span class="material-symbols-outlined">search</span> 讀取當日訂單</button>
                 <div class="table-responsive">
@@ -451,14 +510,25 @@
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
 
+                    <!-- 🚀 v2.5.0 全新更新項目 -->
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.4.5 智慧退補款連動與完美結清 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.5.0 退補紀錄獨立與看板雙模式切換 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
-                        <li>🎯 <strong>事後退補邏輯重建：</strong> 功能定位精準調整為「填平歷史欠款與溢繳」，退補操作不再產生額外的負債，而是純粹的現金結清，確保總帳本完美平衡。</li>
-                        <li>🤖 <strong>歷史訂單自動偵測：</strong> 選擇座號後，系統會自動幫你掃描該座號所有「少付錢」與「多付待退」的訂單並列表，一鍵帶入金額與備註，徹底防呆。</li>
-                        <li>🧹 <strong>介面優化瘦身：</strong> 移除了已無作用的「初次升級必按」按鈕，讓雲端菜單管理庫更加清爽。</li>
+                        <li>🧾 <strong>事後退補紀錄獨立頁面：</strong> 將退補紀錄從即時看板中移出，設立專屬管理頁面，忠實紀錄每筆帳務變動與原因。</li>
+                        <li>🎛️ <strong>看板雙模式切換：</strong> 訂單即時看板現在支援「卡片模式」與「表格模式」自由切換，滿足不同裝置與情境需求。</li>
+                        <li>🎨 <strong>個性化背景選擇：</strong> 系統新增多款低飽和度漸層背景，隨心切換屬於你的管理介面。</li>
+                        <li>📝 <strong>版本追溯補齊：</strong> 補齊從 v2.0.0 至今的詳細更新沿革，見證系統成長。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.5 智慧退補款連動與完美結清</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>🎯 <strong>事後退補邏輯重建：</strong> 功能定位精準調整為「填平歷史欠款與溢繳」，退補操作不再產生額外的負債，而是純粹的現金結清。</li>
+                        <li>🤖 <strong>歷史訂單自動偵測：</strong> 選擇座號後，系統會自動掃描所有「少付錢」與「多付待退」的訂單並列表，一鍵帶入金額與備註。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -466,15 +536,63 @@
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>🔃 <strong>解決手機拖曳失效問題：</strong> 將菜單管理庫全面升級為「實體上移 / 下移按鈕」，分類與品項皆可輕鬆排序。</li>
+                        <li>🔃 <strong>解決手機拖曳失效：</strong> 將菜單管理庫升級為「實體上移 / 下移按鈕」，分類與品項皆可輕鬆排序。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.3 小數點無條件進位</h3>
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.3 智能退補選單與小數點無條件進位</h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>🧮 <strong>小數點無條件進位：</strong> 全系統金額輸入與計算皆套用 `Math.ceil()` 處理，確保分毫不差。</li>
+                        <li>🧮 <strong>無條件進位：</strong> 全系統金額計算皆套用 <code>Math.ceil()</code> 處理，確保分毫不差。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.2 歷史明細連動</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>💳 <strong>事後退補款項實裝：</strong> 支援補收與退還現金，並完美寫入前台歷史明細。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.3.1 手機自適應與報表篩選</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>📱 <strong>全站手機排版：</strong> 後台全面升級為「卡片式即時看板」，表格轉換為垂直列表。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.3.0 雲端菜單資料庫實裝</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>☁️ <strong>菜單全面雲端化：</strong> 系統架構大突破！13 家菜單移轉至 Firebase 資料庫，並開放前台直接無痛修改餐點。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.2.0 歷史大數據與個人帳戶</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>📈 <strong>歷史大數據：</strong> 新增圓餅圖與折線圖分析學生的歷史花費趨勢，並建構個人總帳戶餘額機制。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.1.0 菜單總覽與評分系統</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>⭐ <strong>評分與許願池：</strong> 開放同學對歷史訂單進行給分，並能隨時許願想吃的餐廳。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.0.0 系統全新創立</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>🚀 <strong>全新出發：</strong> 正式脫離紙本與群組點餐，導入 Firebase 雲端資料庫，建立基礎前台極速點餐與後台管控架構。</li>
                     </ul>
 
                 </div>
@@ -509,10 +627,43 @@
     document.getElementById('editHistoryDate').value = todayStr;
     document.getElementById('logDateFilter').value = todayStr;
 
+    // 🚀 v2.5.0: 初始化與切換背景功能
+    const savedBg = localStorage.getItem('bgTheme_217') || 'bg-theme-1';
+    document.body.className = savedBg;
+
+    window.showBgSelector = function() {
+        document.getElementById('bgSelectorModal').style.display = 'flex';
+    };
+    window.closeBgSelector = function() {
+        document.getElementById('bgSelectorModal').style.display = 'none';
+    };
+    window.changeBg = function(themeClass) {
+        document.body.className = themeClass;
+        localStorage.setItem('bgTheme_217', themeClass);
+    };
+
     window.currentReportData = { restaurant: "未知餐廳", items: {}, totalAmount: 0 };
     window.cloudRestaurantDB = {};
     window.allRestaurants = [];
     window.editingRest = null; 
+    
+    // 🚀 v2.5.0: 看板模式雙切換設定
+    window.boardViewMode = 'card';
+    window.setBoardView = function(mode) {
+        window.boardViewMode = mode;
+        document.getElementById('btnViewCard').classList.remove('active');
+        document.getElementById('btnViewTable').classList.remove('active');
+        
+        if(mode === 'card') {
+            document.getElementById('btnViewCard').classList.add('active');
+            document.getElementById('orderBoardGrid').style.display = 'grid';
+            document.getElementById('orderBoardTableContainer').style.display = 'none';
+        } else {
+            document.getElementById('btnViewTable').classList.add('active');
+            document.getElementById('orderBoardGrid').style.display = 'none';
+            document.getElementById('orderBoardTableContainer').style.display = 'block';
+        }
+    };
 
     window.logAdminAction = async function(actionName, detailsStr) {
         try {
@@ -534,12 +685,16 @@
             
             let recordFilterHtml = '<option value="all">顯示全班 (所有號碼)</option>';
             let adjFilterHtml = '<option value="">請選擇座號...</option>';
+            let adjHistStudentHtml = '<option value="all">全部座號</option>';
+            
             for(let i=1; i<=28; i++) {
                 recordFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
                 adjFilterHtml += `<option value="${i}">座號 ${i} 號</option>`;
+                adjHistStudentHtml += `<option value="${i}">查詢 ${i} 號</option>`;
             }
             document.getElementById('recordStudentFilter').innerHTML = recordFilterHtml;
             document.getElementById('adjStudentId').innerHTML = adjFilterHtml;
+            if(document.getElementById('adjHistStudentFilter')) document.getElementById('adjHistStudentFilter').innerHTML = adjHistStudentHtml;
             
             let logFilterHtml = '<option value="all">所有人 (含管理員)</option><option value="Admin">Admin (後台管理員)</option>';
             for(let i=1; i<=28; i++) logFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
@@ -808,13 +963,10 @@
 
             snapshot.forEach((docSnap) => {
                 let order = docSnap.data();
-                if (order.isCancelled) { canceledAlerts.push(order); } 
-                else if (order.isAdjustment) {
-                    if (order.adjType === '補收') {
-                        activeOrders.push(order);
-                        totalAmount += order.price;
-                        collectedAmount += (order.paidAmount || 0);
-                    }
+                if (order.isCancelled) { 
+                    canceledAlerts.push(order); 
+                } else if (order.isAdjustment) {
+                    // 🚀 v2.5.0: 退補款項完全移出看板，不推入 activeOrders 中
                 } else {
                     activeOrders.push(order);
                     let safePrice = order.price || 0;
@@ -838,13 +990,14 @@
             let itemsHtml = ''; for (let [item, count] of Object.entries(itemCounts)) itemsHtml += `<li>${item}：<strong>${count}</strong> 份</li>`;
             document.getElementById('statItemCounts').innerHTML = itemsHtml || "<li>無資料</li>";
 
-            let html = '';
+            let cardHtml = '';
+            let tableHtml = '<table><thead><tr><th>座號</th><th>時間</th><th>餐點內容</th><th>總額</th><th>狀態 / 操作</th></tr></thead><tbody>';
+
             activeOrders.forEach(order => {
                 let safePrice = order.price || 0;
                 let paidAmt = order.paidAmount !== undefined ? order.paidAmount : (order.isPaid ? safePrice : 0);
                 
-                let isAdj = order.isAdjustment;
-                let rowClass = isAdj ? 'adj-row' : (paidAmt >= safePrice ? 'paid' : (paidAmt > 0 ? 'partial' : 'unpaid')); 
+                let rowClass = (paidAmt >= safePrice ? 'paid' : (paidAmt > 0 ? 'partial' : 'unpaid')); 
                 
                 let statusText = '';
                 if(paidAmt >= safePrice) { statusText = `<div class="status-paid" style="color:#2e7d32;"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>已付清</div>`; }
@@ -854,27 +1007,19 @@
                 let inlineBadge = (order.notifiedPaid && paidAmt < safePrice) ? `<div class="inline-badge" style="margin:0;"><span class="material-symbols-outlined" style="font-size:14px; margin:0;">front_hand</span> 說他交了</div>` : '';
                 
                 let mealContent = order.meal.replace(/, /g, '<br>');
-                let adjBadge = "";
-
-                if (isAdj) {
-                    adjBadge = `<span style="background:#0078d4; color:#fff; font-size:11px; padding:2px 6px; border-radius:4px; font-weight:bold; margin-right:6px; vertical-align:middle;">事後補收</span>`;
-                    mealContent = `<div style="color:#0078d4; font-weight:bold;"><span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">payments</span> ${order.meal}</div>`;
-                }
-
                 let timeStr = order.timeString ? order.timeString.split(' ')[1] : '';
                 let noteText = order.note ? `<div style="font-size:13px; color:#555; font-weight:normal; margin-top:8px; padding:6px; background:#f5f5f7; border-radius:6px; border-left:3px solid #111;">${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
-                if (isAdj) noteText = ""; 
                 
+                let docIdStr = `${order.date}_${order.studentId}`;
                 let quickPayBtn = paidAmt < safePrice 
-                    ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${order.date}_${order.studentId}_${order.timestamp || ''}', ${safePrice}, ${safePrice})">付清</button>` 
-                    : `<button class="btn-quick-reset" onclick="updatePaidAmount('${order.date}_${order.studentId}_${order.timestamp || ''}', 0, ${safePrice})">歸零</button>`;
+                    ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${docIdStr}', ${safePrice}, ${safePrice})">付清</button>` 
+                    : `<button class="btn-quick-reset" onclick="updatePaidAmount('${docIdStr}', 0, ${safePrice})">歸零</button>`;
 
-                let docIdStr = order.isAdjustment ? `${order.date}_adj_${order.studentId}_${order.timestamp}` : `${order.date}_${order.studentId}`;
-
-                html += `
+                // 卡片模式 HTML
+                cardHtml += `
                     <div class="order-card ${rowClass}">
                         <div class="oc-header">
-                            <div class="oc-student">${adjBadge}${order.studentId} 號</div>
+                            <div class="oc-student">${order.studentId} 號</div>
                             <div class="oc-price">$${safePrice}<br><span class="oc-time">${timeStr}</span></div>
                         </div>
                         <div class="oc-body">
@@ -886,7 +1031,7 @@
                                 <div class="oc-pay-input">
                                     已收 $<input type="number" value="${paidAmt}" onchange="updatePaidAmount('${docIdStr}', this.value, ${safePrice})" style="width:65px; padding:6px; margin:0; text-align:center; font-size:14px; border:1px solid #ccc; border-radius:6px;">
                                 </div>
-                                <button class="btn-quick-pay" onclick="updatePaidAmount('${docIdStr}', ${safePrice}, ${safePrice})">付清</button>
+                                ${quickPayBtn}
                             </div>
                             <div class="oc-status-row">
                                 <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
@@ -897,8 +1042,32 @@
                         </div>
                     </div>
                 `;
+
+                // 表格模式 HTML
+                tableHtml += `
+                    <tr class="${rowClass}">
+                        <td><strong>${order.studentId}</strong></td>
+                        <td style="color:#555; font-size:13px;">${timeStr}</td>
+                        <td style="text-align:left;">
+                            <div style="font-weight:600;">${mealContent}</div>
+                            ${noteText}
+                        </td>
+                        <td style="font-weight:700;">$${safePrice}</td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:8px; justify-content:center; flex-wrap:wrap;">
+                                <input type="number" value="${paidAmt}" onchange="updatePaidAmount('${docIdStr}', this.value, ${safePrice})" style="width:60px; padding:6px; margin:0; text-align:center; font-size:14px; border:1px solid #ccc; border-radius:6px;">
+                                ${quickPayBtn}
+                                ${statusText}
+                            </div>
+                            ${inlineBadge}
+                        </td>
+                    </tr>
+                `;
             });
-            document.getElementById('orderBoardGrid').innerHTML = html || `<div style="padding: 20px; text-align: center; color: #888; width: 100%;">這天沒有紀錄。</div>`;
+            tableHtml += '</tbody></table>';
+
+            document.getElementById('orderBoardGrid').innerHTML = cardHtml || `<div style="padding: 20px; text-align: center; color: #888; width: 100%;">這天沒有紀錄。</div>`;
+            document.getElementById('orderBoardTableContainer').innerHTML = activeOrders.length ? tableHtml : `<div style="padding: 20px; text-align: center; color: #888; width: 100%;">這天沒有紀錄。</div>`;
         });
     }
 
@@ -941,7 +1110,6 @@
         } catch(e) {}
     }
 
-    // 🚀 v2.4.5 核心升級：完美的純現金退補帳務邏輯
     window.loadLedger = async function() {
         document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">計算中...</td></tr>`;
         try {
@@ -956,14 +1124,12 @@
                     let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? safePrice : 0);
                     
                     if (o.isAdjustment) {
-                        // 調整單是純現金流動，不產生新的負債(Debt)！
                         if (o.adjType === '退款') {
-                            ledger[sIdx].paid -= o.price; // 負責人退現金給學生
+                            ledger[sIdx].paid -= o.price; 
                         } else {
-                            ledger[sIdx].paid += o.price; // 負責人收到學生的補款現金
+                            ledger[sIdx].paid += o.price; 
                         }
                     } else {
-                        // 一般訂單正常計算應收與已收
                         ledger[sIdx].debt += safePrice; 
                         ledger[sIdx].paid += paidAmt;   
                     }
@@ -1004,11 +1170,10 @@
         } catch(e) {}
     }
 
-    // 🚀 v2.4.5: 智慧讀取欠款/待退單，免手動打字！
     window.prepareAdjustment = function(studentId) {
         document.getElementById('adjStudentId').value = studentId;
         switchPage('page-adjustment');
-        loadUnsettledOrders(); // 自動幫負責人掃描這個學生的歷史問題單！
+        loadUnsettledOrders(); 
     }
 
     window.loadUnsettledOrders = async function() {
@@ -1031,7 +1196,6 @@
                 else normals.push(o);
             });
             
-            // 計算每個歷史訂單目前已經被退補了多少錢
             let adjMap = {};
             adjs.forEach(a => {
                 if(a.targetOrderId && a.targetOrderId !== 'manual') {
@@ -1046,9 +1210,8 @@
             normals.sort((a,b) => b.timestamp - a.timestamp).forEach(o => {
                 let targetPrice = o.isCancelled ? 0 : (o.price || 0);
                 let paid = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? targetPrice : 0);
-                let diff = paid - targetPrice; // 負數代表少付(欠款), 正數代表多付(溢繳待退)
+                let diff = paid - targetPrice; 
                 
-                // 加上之前針對這筆單做過的退補
                 diff += (adjMap[o.docId] || 0); 
                 
                 if(diff !== 0) {
@@ -1057,7 +1220,7 @@
                     let amt = Math.abs(diff);
                     let dateStr = o.date;
                     let mealStr = o.isCancelled ? '[作廢]' : `[${o.restaurant||''}] ` + o.meal.substring(0,10);
-                    let noteStr = `結清 ${dateStr} ${mealStr} 的${type}款項`; // 系統自動幫你寫好備註！
+                    let noteStr = `結清 ${dateStr} ${mealStr} 的${type}款項`;
                     
                     html += `<option value="${o.docId}" data-type="${type}" data-amt="${amt}" data-note="${noteStr}">
                         ${dateStr} | ${mealStr} | 應${type} $${amt}
@@ -1072,7 +1235,6 @@
             html += '<option value="manual">➕ 手動純現金調整 (無對應特定紀錄，例如借款)</option>';
             targetSelect.innerHTML = html;
             
-            // 清空輸入框
             document.getElementById('adjType').value = '補收';
             document.getElementById('adjAmount').value = '';
             document.getElementById('adjNote').value = '';
@@ -1115,7 +1277,7 @@
             restaurant: "款項調整中心",
             meal: type === '補收' ? `[事後補收]` : `[事後退款]`,
             price: amount,
-            paidAmount: amount, // 退補單屬於純現金交易，Price = PaidAmount
+            paidAmount: amount, 
             isPaid: true,
             isCancelled: false,
             note: `金額: $${amount} | 原因: ${note}`,
@@ -1123,7 +1285,7 @@
             timeString: timeString,
             isAdjustment: true,
             adjType: type,
-            targetOrderId: targetOrderId // 標記這筆調整是為了解決哪一筆歷史訂單
+            targetOrderId: targetOrderId 
         };
 
         try {
@@ -1131,7 +1293,6 @@
             logAdminAction("事後退補", `對座號 ${studentId} 執行 ${type} $${amount}，備註: ${note}`);
             alert(`✅ 成功為 ${studentId} 號執行 ${type} $${amount}！已補平該筆帳務並同步至前台。`);
             
-            // 自動重整畫面，剛剛選的那筆有落差的單子就會從清單消失了（因為帳補平了！）
             loadUnsettledOrders(); 
             switchPage('page-ledger');
         } catch(e) {
@@ -1139,6 +1300,61 @@
             console.error(e);
         }
     }
+
+    // 🚀 v2.5.0: 全新的發送事後退補紀錄頁面載入邏輯
+    window.loadAdjHistory = async function() {
+        document.getElementById('adjHistTableBody').innerHTML = `<tr><td colspan="6" data-label="狀態">讀取中...</td></tr>`;
+        const studentF = document.getElementById('adjHistStudentFilter').value;
+        const dateF = document.getElementById('adjHistDateFilter').value;
+        try {
+            const snap = await getDocs(query(collection(db, "orders")));
+            let adjs = [];
+            snap.forEach(doc => {
+                let d = doc.data();
+                if(d.isAdjustment) {
+                    d.docId = doc.id;
+                    adjs.push(d);
+                }
+            });
+
+            if (studentF !== 'all') adjs = adjs.filter(o => o.studentId === parseInt(studentF));
+            if (dateF) adjs = adjs.filter(o => o.date === dateF);
+
+            adjs.sort((a, b) => b.timestamp - a.timestamp);
+
+            if(adjs.length === 0) {
+                document.getElementById('adjHistTableBody').innerHTML = `<tr><td colspan="6" style="color:#888;">無退補紀錄</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            adjs.forEach(a => {
+                let typeStyle = a.adjType === '補收' ? 'color:#d32f2f; background:#fff5f5; padding:2px 8px; border-radius:12px; border:1px solid #ffcdd2;' : 'color:#2e7d32; background:#e8f5e9; padding:2px 8px; border-radius:12px; border:1px solid #c8e6c9;';
+                html += `<tr>
+                    <td data-label="發送時間" style="font-size:13px; color:#555;">${a.timeString}</td>
+                    <td data-label="座號"><strong>${a.studentId} 號</strong></td>
+                    <td data-label="類型"><span style="font-weight:bold; ${typeStyle}">${a.adjType}</span></td>
+                    <td data-label="金額" style="font-weight:700; font-size:15px;">$${a.price}</td>
+                    <td data-label="目的/備註" style="text-align:left; color:#333;">${a.note}</td>
+                    <td data-label="操作"><button class="btn btn-outline" style="padding:4px 10px; font-size:13px; color:#d32f2f; border-color:#d32f2f;" onclick="deleteAdj('${a.docId}')"><span class="material-symbols-outlined" style="font-size:16px;">delete</span></button></td>
+                </tr>`;
+            });
+            document.getElementById('adjHistTableBody').innerHTML = html;
+        } catch(e) {
+            document.getElementById('adjHistTableBody').innerHTML = `<tr><td colspan="6" style="color:red;">讀取失敗</td></tr>`;
+        }
+    };
+
+    window.deleteAdj = async function(docId) {
+        if(confirm("⚠️ 確定要刪除這筆退補紀錄嗎？\n刪除後，學生的總餘額將會因此變動！")) {
+            try {
+                await deleteDoc(doc(db, "orders", docId));
+                logAdminAction("刪除退補紀錄", `刪除了單號: ${docId}`);
+                alert("✅ 刪除成功！");
+                loadAdjHistory();
+            } catch(e) { alert("刪除失敗"); }
+        }
+    };
 
     window.loadStudentRecords = async function() {
         document.getElementById('recordTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">讀取中...</td></tr>`;
