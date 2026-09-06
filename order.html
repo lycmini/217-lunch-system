@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* 🚀 v2.5.1: 預設背景調整為 bg-theme-4 */
+        /* 🚀 v2.6.0: 擴充背景選擇系統支援格線與點陣 */
         body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; transition: background 0.3s ease; }
         body.bg-theme-1 { background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); }
         body.bg-theme-2 { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); }
@@ -16,6 +16,9 @@
         body.bg-theme-4 { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); } /* 冷色金屬/淺藍灰 */
         body.bg-theme-5 { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); }
         body.bg-theme-6 { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); }
+        body.bg-theme-7 { background-color: #f8f9fa; background-image: linear-gradient(#e5e5ea 1px, transparent 1px), linear-gradient(90deg, #e5e5ea 1px, transparent 1px); background-size: 20px 20px; } 
+        body.bg-theme-8 { background-color: #ffffff; background-image: radial-gradient(#d2d2d7 1.5px, transparent 1.5px); background-size: 25px 25px; } 
+        body.bg-theme-9 { background-color: #f0f4f8; background-image: linear-gradient(#cce0f5 1px, transparent 1px), linear-gradient(90deg, #cce0f5 1px, transparent 1px); background-size: 30px 30px; } 
 
         .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
@@ -136,6 +139,10 @@
             <div onclick="changeBg('bg-theme-4')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
             <div onclick="changeBg('bg-theme-5')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
             <div onclick="changeBg('bg-theme-6')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            
+            <div onclick="changeBg('bg-theme-7')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background-color: #f8f9fa; background-image: linear-gradient(#e5e5ea 1px, transparent 1px), linear-gradient(90deg, #e5e5ea 1px, transparent 1px); background-size: 15px 15px; border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-8')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background-color: #ffffff; background-image: radial-gradient(#d2d2d7 1.5px, transparent 1.5px); background-size: 15px 15px; border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
+            <div onclick="changeBg('bg-theme-9')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background-color: #f0f4f8; background-image: linear-gradient(#cce0f5 1px, transparent 1px), linear-gradient(90deg, #cce0f5 1px, transparent 1px); background-size: 20px 20px; border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
         </div>
         <button class="btn btn-secondary" style="width:100%; margin-top:25px;" onclick="closeBgSelector()">完成並關閉</button>
     </div>
@@ -178,7 +185,7 @@
             <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
             <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
             <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
-            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.5.1</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.0</span></a></li>
             <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
             <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
             <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span class="material-symbols-outlined">info</span> 關於本站</a></li>
@@ -280,17 +287,31 @@
             <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
             <div style="margin-top: 15px;">
 
+                <!-- 🚀 v2.6.0 最新更新 -->
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:16px;">v2.5.1 前台修改 Bug 徹底修復與熱門推薦復原 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                    <h3 style="margin:0; font-size:16px;">v2.6.0 前台訂單無痛修改與評分清理大升級 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
+                    <li>📝 <strong>訂單無痛修改：</strong> 前台修改訂單時，不再強制全部清空重選！系統會完整載入你原本點的餐點與客製化選項，讓你可以在原有的基礎上直接加點或刪減。</li>
+                    <li>💰 <strong>繳費防呆標示：</strong> 放大並更名繳費按鈕為「我已繳費了！發送已繳費通知給後台」，避免同學誤以為按了就代表系統自動扣款。</li>
+                    <li>🧹 <strong>評分篩選與清理：</strong> 後台「餐點評分接收站」新增餐廳篩選下拉選單，並支援「一鍵刪除目前顯示評分」的強大功能，輕鬆清理過時資料。</li>
+                    <li>📋 <strong>完美複製校方表單：</strong> 修復後台「複製校方表單純文字」功能，現在點擊可精準複製出完美的統計明細格式，方便直接貼上填報。</li>
+                    <li>🔒 <strong>備案啟動強制鎖定：</strong> 負責人啟動「危機處理備案」時，系統將強制封鎖前台的常規點餐權限，確保未訂餐同學只能選擇加入統一備案。</li>
+                    <li>🎨 <strong>全新紋理背景：</strong> 背景選擇器中新增「極簡小網格、文青點陣、藍曬大格線」三款質感背景供自由切換。</li>
+                </ul>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.5.1 前台修改 Bug 徹底修復與熱門推薦復原</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>🐞 <strong>零號同學 Bug 斬殺：</strong> 修復前台從查詢頁面直接點擊「修改訂單」時，身分驗證被略過導致系統生成 0 號空單的問題。</li>
                     <li>🔥 <strong>熱門推薦回歸：</strong> 訂餐頁面頂端重新加入「歷代熱門推薦」區塊，即時運算該店最夯的 3 樣餐點直接顯示！</li>
                     <li>📖 <strong>文案深度重構：</strong> 「關於本站」全面升級為專業說明，並補齊從 9/4 起的系統變革沿革。</li>
                     <li>🎨 <strong>系統預設視覺：</strong> 將預設背景調整為更具科技與專業感的冷色金屬漸層。</li>
                 </ul>
-                
+
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
                     <h3 style="margin:0; font-size:16px; color:#555;">v2.5.0 介面排版優化與防呆除錯</h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
@@ -300,7 +321,6 @@
                     <li>👻 <strong>修復無痕模式幽靈通知：</strong> 修正了未登入狀態下開啟網頁會誤跳出「重置裝置警告」的問題。</li>
                     <li>📊 <strong>歷史明細排版優化：</strong> 在歷史分析頁面中，將「詳細訂單明細」列表移至圖表上方。</li>
                     <li>💰 <strong>對齊純現金結算邏輯：</strong> 總餘額結算完美對齊後台最新的事後退補純現金邏輯。</li>
-                    <li>🎨 <strong>個性化背景選擇：</strong> 系統新增多款低飽和度漸層背景，隨心切換。</li>
                 </ul>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -485,7 +505,8 @@
             </div>
             <div id="paymentActions" style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e5e5ea; margin:20px 0;">
                 <div id="paymentStatusUI">狀態讀取中...</div>
-                <button class="btn btn-primary" id="notifyBtn" onclick="notifyAdminPaid()" style="margin-top:15px; width:100%;">我已繳費了！發送通知</button>
+                <!-- 🚀 v2.6.0: 繳費防呆按鈕放大與更名 -->
+                <button class="btn btn-primary" id="notifyBtn" onclick="notifyAdminPaid()" style="margin-top:15px; width:100%; padding:18px; font-size:16px; font-weight:800; letter-spacing:0.5px; background-color:#111;">我已繳費了！發送已繳費通知給後台</button>
             </div>
             
             <button class="btn btn-outline" style="border-color:#0078d4; color:#0078d4;" onclick="modifyOrder()">
@@ -520,8 +541,8 @@
     window.currentViewId = 'authArea';
     window.editingOrder = null;
     window.cloudRestaurantDB = {};
+    window.preservedNote = null; // 🚀 v2.6.0: 用來暫存原本的客製化選項
 
-    // 🚀 v2.5.1: 預設背景調整為 bg-theme-4
     const savedBg = localStorage.getItem('bgTheme_217') || 'bg-theme-4';
     document.body.className = savedBg;
 
@@ -747,7 +768,7 @@
     window.showReviewPage = function() { setView('reviewPageArea'); }
     window.showUpdateLog = function() { setView('updateLogArea'); }
     
-    // 📖 v2.5.1: 關於本站（全面移除 Icon 與 Emoji）
+    // 📖 v2.6.0: 關於本站（全面移除 Icon 與 Emoji）
     window.showAboutPage = function() {
         showInfoPage(
             '關於本站',
@@ -784,7 +805,7 @@
                 <hr style="border:0; border-top:1px solid #e5e5ea; margin:16px 0;">
                 
                 <div style="text-align:right; font-size:13px; color:#555; line-height:1.6;">
-                    <div>系統版本：217 午餐訂購系統 v2.5.1</div>
+                    <div>系統版本：217 午餐訂購系統 v2.6.0</div>
                     <div>網頁開發與系統架構設計：<span style="font-weight:700; color:#111;">羅亦承</span></div>
                 </div>
             </div>
@@ -843,7 +864,7 @@
                     A：只要在 11:00 截止前：<br>
                     1. 於首頁點擊「當日狀態」。<br>
                     2. 點擊藍色按鈕<b>「修改 / 加點今日餐點」</b>。<br>
-                    3. 重新勾選想吃的所有餐點送出。<br>
+                    3. 系統會詢問是否保留原餐點，若選擇保留，可以直接在原有基礎上繼續加點。<br>
                     💡 系統會<b>自動繼承你原本已繳納的金額</b>，並在結帳明細精算出多退少補，完全無痛！</p>
 
                     <p style="margin-bottom:0;"><b>Q9：我送出後反悔不吃，可以取消訂單嗎？</b><br>
@@ -858,7 +879,7 @@
                     <p><b>Q10：我點了「我已繳費了！發送通知」，為什麼狀態還是未結清？</b><br>
                     A：該按鈕為「主動推播通知」，按下去後負責人後台會收到你已付錢的提示。但必須等<b>負責人實際收到實體現金核對無誤後</b>，後台才會手動更新為「已結清」。</p>
 
-                    <p><b>Q11：歷史明細裡的「事後補收 / 退還現金」是什麼？</b><br>
+                    <p><b>Q11：歷史明細裡的「事後補收 / 退款」是什麼？</b><br>
                     A：這是負責人處理「歷史欠款補齊或退回作廢溢繳」的純現金流動紀錄。每一筆退補都會精準加減到你的<b>「個人總帳戶餘額」</b>中。</p>
 
                     <p style="margin-bottom:0;"><b>Q12：金額若有小數點怎麼算？</b><br>
@@ -873,7 +894,7 @@
                     <p><b>Q13：如果店家臨時公休或外送沒送來怎麼辦？</b><br>
                     A：負責人會從後台啟動「危機處理機制」：<br>
                     1. <b>緊急換店</b>：舊訂單全數作廢，已繳款項自動轉入退費帳本，首頁跳出紅色廣播請大家重訂。<br>
-                    2. <b>全班統一備案</b>：統一改訂指定便當，系統自動列出全班各座號需補差額或退款明細表。</p>
+                    2. <b>全班統一備案</b>：系統將強制封鎖前台的常規點餐權限，未訂餐同學只能選擇加入統一備案，並自動計算全班各座號之多退少補明細表。</p>
 
                     <p style="margin-bottom:0;"><b>Q14：填寫餐點評分與許願池有什麼用？</b><br>
                     A：評分會即時累積至「歷代熱門排行榜」與後台大數據統計，作為後續排程依據；許願池則可指名希望哪一天訂哪一家餐廳，負責人排程時會優先考量！</p>
@@ -904,7 +925,7 @@
                 } 
             });
             let items = []; for(let k in itemCounts) items.push({ n: k, c: itemCounts[k] }); items.sort((a,b) => b.c - a.c);
-            let ih = ""; items.slice(0, 15).forEach((r, i) => ih += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><div><span style="font-weight:700; width:30px; display:inline-block;">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">${r.c} 次</div></div>`);
+            let ih = ""; items.slice(0, 10).forEach((r, i) => ih += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><div><span style="font-weight:700; width:30px; display:inline-block;">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">${r.c} 次</div></div>`);
             let rests = []; for(let k in restCounts) rests.push({ n: k, c: restCounts[k] }); rests.sort((a,b) => b.c - a.c);
             let rh = ""; rests.forEach((r, i) => rh += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><div><span style="font-weight:700; width:30px; display:inline-block;">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">${r.c} 次</div></div>`);
             document.getElementById('rankItemsContent').innerHTML = ih || "無資料"; document.getElementById('rankRestsContent').innerHTML = rh || "無資料";
@@ -1049,7 +1070,7 @@
         try {
             const setSnap = await getDoc(doc(db, "system", "settings")); 
             let st="06:00", et="11:00"; 
-            if(setSnap.exists()) { st=setSnap.data().orderStartTime; et=setSnap.data().orderEndTime; }
+            if(setSnap.exists()) { st=setSnap.data().orderStartTime || "06:00"; et=setSnap.data().orderEndTime || "11:00"; }
             const now = new Date(); const ct = String(now.getHours()).padStart(2,'0')+":"+String(now.getMinutes()).padStart(2,'0');
             
             if(ct<st || ct>et) { 
@@ -1077,8 +1098,17 @@
         } catch (e) { showLocked("連線異常"); }
     }
     
+    // 🚀 v2.6.0: 點餐鎖定攔截機制
     window.verifyStudent = async function() {
-        // 🚀 v2.5.1: 確實綁定
+        // 先檢查是否處於備案鎖定狀態
+        try {
+            const setSnap = await getDoc(doc(db, "system", "settings"));
+            if(setSnap.exists() && setSnap.data().planBLocked) {
+                alert("⚠️ 系統目前處於「緊急備案鎖定狀態」，常規點餐已關閉！\n若您尚未訂餐，請直接在首頁上方的【統一備案名單】區塊點選「額外加入統一定餐」。");
+                return;
+            }
+        } catch(e) {}
+
         pendingOrder.studentId = window.currentUserId; 
         const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + window.currentUserId));
         if(docSnap.exists() && !docSnap.data().isCancelled && !docSnap.data().isAdjustment) { alert("⚠️ 系統偵測到你今天已經點過餐囉！轉至查詢畫面。"); return checkStatusQuick(); }
@@ -1086,6 +1116,7 @@
         await buildMenuForm(currentRestaurant); 
         setView('menuArea');
     }
+
     window.checkStatusQuick = async function() {
         window.editingOrder = null; 
         const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + window.currentUserId));
@@ -1093,7 +1124,6 @@
     }
     function showLocked(m) { document.getElementById('lockedReason').innerHTML=m; setView('lockedScreen'); }
 
-    // 🚀 v2.5.1: 升級為 Async 函式，並恢復「🔥 歷代熱門推薦」功能
     async function buildMenuForm(rn) {
         document.getElementById('displayRestaurant').innerText = rn; 
         const rd = window.cloudRestaurantDB[rn] || {menu:[],options:""}; 
@@ -1102,7 +1132,6 @@
         const todayDay = new Date().getDay();
         const isWednesday = (todayDay === 3);
 
-        // 🚀 抓取歷史熱門餐點
         let topItems = [];
         try {
             const snap = await getDocs(query(collection(db, "orders"), where("restaurant", "==", rn)));
@@ -1124,7 +1153,6 @@
 
         let catIndex = 0;
 
-        // 🔥 如果有熱門餐點，強制加在菜單最上方
         if (topItems.length > 0) {
             let cid = `cat-hot`;
             nh += `<div class="cat-tab" data-target="${cid}" onclick="scrollToCat('${cid}')">🔥 熱門推薦</div>`;
@@ -1161,7 +1189,6 @@
         const firstTab = document.querySelector('.cat-tab');
         if(firstTab) firstTab.classList.add('active');
         
-        // 渲染完菜單後，恢復先前的數量顯示
         for(let n in cart) {
             if(cart[n].q > 0) {
                 document.querySelectorAll(`[data-qty-name="${n}"]`).forEach(el => el.innerText=cart[n].q);
@@ -1179,28 +1206,68 @@
         refreshCartState();
     }
 
+    // 🚀 v2.6.0: 訂單無痛修改，支援保留客製化選項！
     window.modifyOrder = async function() {
-        if(confirm("【修改/加點說明】\n您即將修改今日訂單。請注意，您必須「重新選擇」所有要吃的餐點（包含原有的與要加點的）。\n\n系統會自動保留您已繳納的費用，並於結帳時為您計算多退少補。\n\n確定要開始重新選擇嗎？")) {
-            const id = window.currentUserId;
-            const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + id));
-            if(docSnap.exists() && !docSnap.data().isCancelled && !docSnap.data().isAdjustment) {
-                window.editingOrder = docSnap.data();
+        // 先檢查是否處於備案鎖定狀態
+        try {
+            const setSnap = await getDoc(doc(db, "system", "settings"));
+            if(setSnap.exists() && setSnap.data().planBLocked) {
+                alert("⚠️ 系統目前為備案鎖定狀態，無法修改常規訂單！");
+                return;
+            }
+        } catch(e) {}
+
+        const id = window.currentUserId;
+        const docSnap = await getDoc(doc(db, "orders", todayStr + "_" + id));
+        
+        if(docSnap.exists() && !docSnap.data().isCancelled && !docSnap.data().isAdjustment) {
+            if(confirm("【修改/加點說明】\n您即將進入訂單修改模式。\n系統會自動保留您已繳納的費用，並於結帳時為您計算多退少補。\n\n要保留您「原本點的餐點與客製化選項」繼續修改嗎？\n\n🟢 按「確定」保留原餐點繼續加點\n🔴 按「取消」清空購物車全部重選")) {
                 
-                // 🚀 v2.5.1 BUG FIX: 確保修改訂單時，StudentId 被精準綁定！
+                window.editingOrder = docSnap.data();
                 pendingOrder.studentId = window.currentUserId; 
                 
-                cart = {}; 
-                document.querySelectorAll('.qty-display').forEach(el => el.innerText="0");
-                document.getElementById('cartTotal').innerText="0";
-                document.getElementById('cartFab').style.display='none';
-                document.getElementById('miniCartPanel').style.display='none';
+                // 還原購物車數量
+                cart = {};
+                let itemsStr = window.editingOrder.meal.split(", ");
+                itemsStr.forEach(s => {
+                    let match = s.match(/(.*) x(\d+)$/);
+                    if(match) {
+                        let name = match[1].trim();
+                        let q = parseInt(match[2]);
+                        
+                        let p = 0;
+                        let rd = window.cloudRestaurantDB[window.editingOrder.restaurant];
+                        if(rd && rd.menu) {
+                            rd.menu.forEach(cat => {
+                                cat.items.forEach(i => { if(i.name === name) p = i.price; });
+                            });
+                        }
+                        if (p > 0) cart[name] = {p: p, q: q};
+                    }
+                });
+
+                // 暫存原本的備註與客製化，等進入客製化頁面時還原
+                window.preservedNote = window.editingOrder.note || "";
                 
-                currentOrderStep = 'menuArea';
-                await buildMenuForm(currentRestaurant);
-                setView('menuArea');
             } else {
-                alert("找不到您的有效訂單，無法進行修改！");
+                // 清空重選模式
+                window.editingOrder = docSnap.data();
+                pendingOrder.studentId = window.currentUserId; 
+                cart = {}; 
+                window.preservedNote = null;
             }
+
+            document.querySelectorAll('.qty-display').forEach(el => el.innerText="0");
+            document.getElementById('cartTotal').innerText="0";
+            document.getElementById('cartFab').style.display='none';
+            document.getElementById('miniCartPanel').style.display='none';
+            
+            currentOrderStep = 'menuArea';
+            await buildMenuForm(currentRestaurant);
+            setView('menuArea');
+
+        } else {
+            alert("找不到您的有效訂單，無法進行修改！");
         }
     }
 
@@ -1278,6 +1345,26 @@
         }
         pendingOrder.meal = meals.join(", "); pendingOrder.basePrice = bp; document.getElementById('c_mealName').innerHTML = meals.join("<br>"); document.getElementById('c_basePrice').innerText = bp; document.getElementById('dynamicOptions').innerHTML = ch;
         
+        // 🚀 v2.6.0: 完美還原原本勾選的客製化選項
+        if(window.preservedNote) {
+            let opts = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"], input[type="radio"]');
+            opts.forEach(cb => {
+                let k = `${cb.getAttribute('data-meal')}(第${parseInt(cb.getAttribute('data-idx'))+1}份)`;
+                let noteParts = window.preservedNote.split(" | ");
+                let targetPart = noteParts.find(p => p.startsWith(k));
+                if(targetPart && targetPart.includes(cb.value)) {
+                    cb.checked = true;
+                }
+            });
+            let globalNoteMatch = window.preservedNote.match(/全單備註: ([^|]+)/);
+            if(globalNoteMatch) {
+                document.getElementById('orderNote').value = globalNoteMatch[1].trim();
+            } else {
+                document.getElementById('orderNote').value = "";
+            }
+            window.preservedNote = null; 
+        }
+
         document.getElementById('miniCartPanel').style.display = 'none';
         document.getElementById('miniCartIcon').innerText = 'expand_less';
 
@@ -1366,7 +1453,7 @@
         try { 
             await updateDoc(doc(db, "orders", todayStr + "_" + window.currentViewingId), { notifiedPaid: true }); 
             await logStudentAction("通知繳費", "點擊了我已繳費按鈕");
-            alert("已通知！"); location.reload(); 
+            alert("已成功發送繳費通知！\n請等候負責人於後台確認現金無誤。"); location.reload(); 
         } catch(e) {} 
     }
     
