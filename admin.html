@@ -27,7 +27,6 @@
         .sidebar-menu a { display: block; padding: 15px 20px; color: #333; text-decoration: none; font-size: 15px; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
         .sidebar-menu a:hover { background: #f5f5f7; color: #000; }
         
-        /* 🚀 附屬選單縮排設計 */
         .sidebar-menu .sub-item a { padding-left: 48px; color: #555; font-size: 14px; }
         .sidebar-menu .sub-item a .material-symbols-outlined { font-size: 18px; }
         .sidebar-menu .sub-item a:hover { color: #111; background: #f5f5f7; }
@@ -40,13 +39,11 @@
         h1, h2 { color: #111; margin-top:0; font-weight: 700; display:flex; align-items:center; }
         h2 { border-bottom: 1px solid #e5e5ea; padding-bottom: 12px; font-size: 18px; }
         
-        /* 🚀 全站表格自適應優化 (來自 v2.3.1) */
         .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 15px; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 14px; }
         th, td { border-bottom: 1px solid #e5e5ea; padding: 12px 10px; text-align: center; }
         th { background-color: #fafafa; color: #111; font-weight: 600; white-space: nowrap; border-top: 1px solid #e5e5ea; border-bottom: 2px solid #111; }
         
-        /* 手機版自動轉換為垂直卡片列表 */
         @media (max-width: 768px) {
             .table-responsive table { min-width: 100%; }
             .table-responsive table, .table-responsive thead, .table-responsive tbody, .table-responsive th, .table-responsive td, .table-responsive tr { display: block; }
@@ -58,7 +55,6 @@
             .table-responsive td input[type="text"], .table-responsive td input[type="number"], .table-responsive td select { margin-bottom: 0; padding: 6px; }
         }
 
-        /* 🚀 訂單即時看板專屬：卡片式網格佈局 (Card Grid) */
         .order-board-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 15px; }
         .order-card { background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; position: relative; overflow: hidden; transition: 0.2s; }
         .order-card:hover { border-color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
@@ -115,7 +111,6 @@
         .btn-quick-reset { background:#f5f5f7; color:#888; border:1px solid #d2d2d7; border-radius:6px; padding:5px 11px; font-size:13px; cursor:pointer; font-weight:600; font-family:inherit; transition:0.2s; white-space:nowrap; }
         .btn-quick-reset:hover { border-color:#111; color:#111; }
 
-        /* GUI Editor Styles */
         .cat-box { background: #fafafa; border: 1px solid #e5e5ea; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
         .item-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: center; }
 
@@ -163,7 +158,6 @@
             <li class="sub-item"><a href="javascript:void(0)" onclick="scrollToSection('planBSection'); toggleMenu();"><span class="material-symbols-outlined">emergency</span> 危機處理：啟動備案機制</a></li>
             
             <li><a href="javascript:void(0)" onclick="switchPage('page-ledger'); toggleMenu();"><span class="material-symbols-outlined">account_balance_wallet</span> 班級付款總情形</a></li>
-            <!-- 🚀 附屬縮排選單：查詢與退補 -->
             <li class="sub-item"><a href="javascript:void(0)" onclick="switchPage('page-student-records'); loadStudentRecords(); toggleMenu();"><span class="material-symbols-outlined">search</span> 查詢狀態與紀錄</a></li>
             <li class="sub-item"><a href="javascript:void(0)" onclick="switchPage('page-adjustment'); toggleMenu();"><span class="material-symbols-outlined">payments</span> 事後退補款項</a></li>
             
@@ -173,7 +167,7 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.2</span></a></li>
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.4.3</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
         </ul>
     </div>
@@ -181,8 +175,6 @@
     <div class="container">
         
         <div id="page-dashboard" class="admin-page active">
-            
-            <!-- 廣播警告區 -->
             <div class="card" id="activeBroadcastSection" style="display: none; border: 2px solid #d32f2f; background: #fff5f5; box-shadow: 0 4px 15px rgba(211, 47, 47, 0.2);">
                 <h2 style="color: #d32f2f; border-bottom: 1px solid #ffcdd2; margin-bottom: 15px; display:flex; align-items:center;">
                     <span class="material-symbols-outlined" style="margin-right:8px; font-size:24px;">campaign</span> 正在向全班廣播中！
@@ -193,7 +185,6 @@
                 </button>
             </div>
 
-            <!-- 系統核心設定 -->
             <div class="card" style="border-top: 4px solid #111;">
                 <h2><span class="material-symbols-outlined">settings</span> 系統核心設定</h2>
                 <div class="settings-grid">
@@ -214,25 +205,20 @@
                             <input type="time" id="sysEndTime" value="11:00" lang="en-GB">
                             <button class="btn btn-success" style="width:100%;" onclick="saveTimeSettings()">更新時間</button>
                         </div>
-
-                        <!-- 強制登出按鈕 -->
                         <div style="background: #fff5f5; padding: 16px; border-radius: 12px; border: 1px solid #ffcdd2;">
                             <h3 style="margin-top:0; font-size:15px; color:#d32f2f; display:flex; align-items:center;"><span class="material-symbols-outlined">phonelink_erase</span> 強制登出所有學生裝置</h3>
-                            <p style="font-size:12px; color:#d32f2f; margin:5px 0 10px 0;">按下後，所有已登入的前台裝置將會被立即登出並清除暫存（不影響後台）。</p>
                             <button class="btn btn-danger" style="width:100%; border-color:#d32f2f; color:#d32f2f;" onclick="forceLogoutAllUsers()">強制全班登出</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 通知中心 -->
             <div class="card" id="notificationCenter">
                 <h2><span class="material-symbols-outlined">notifications_active</span> 系統通知中心 (待辦事項)</h2>
                 <div id="cancelNotifs"></div>
                 <div id="paidNotifs" style="margin-top: 15px;"></div>
             </div>
             
-            <!-- 訂單即時看板 (自適應卡片版) -->
             <div class="card" id="orderBoardSection">
                 <h2><span class="material-symbols-outlined">table_chart</span> 訂單即時看板</h2>
                 <div style="background:#eaf4fc; padding:12px; border-radius:8px; margin-bottom:15px; border:1px solid #bce0fd; display:flex; align-items:center; gap:10px;">
@@ -251,7 +237,6 @@
                 <button class="btn btn-danger" style="width:100%;" onclick="clearTodayOrders()"><span class="material-symbols-outlined">delete_forever</span> 完全清除所選日期的所有訂單</button>
             </div>
 
-            <!-- 統計報表 -->
             <div class="card" id="statsSection">
                 <h2><span class="material-symbols-outlined">bar_chart</span> 統計報表與帳務中心</h2>
                 <div style="background:#eaf4fc; padding:12px; border-radius:8px; margin-bottom:15px; border:1px solid #bce0fd; display:flex; align-items:center; gap:10px;">
@@ -275,7 +260,6 @@
                 </div>
             </div>
 
-            <!-- 備案機制 -->
             <div class="card planB-box" id="planBSection">
                 <h2 style="border:none; margin-bottom:5px;"><span class="material-symbols-outlined">emergency</span> 危機處理：啟動備案機制</h2>
                 <p style="color:#555; font-size:14px; margin-top:0;">啟動後系統會根據每人原本「已繳交的金額」自動算出差額，並鎖定全班訂單為統一餐點。</p>
@@ -288,7 +272,6 @@
             </div>
         </div>
 
-        <!-- 🚀 班級付款總情形 (新增合計底欄與操作鈕) -->
         <div id="page-ledger" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">account_balance_wallet</span> 班級付款總情形</h2>
@@ -305,7 +288,7 @@
             </div>
         </div>
 
-        <!-- 🚀 新增：事後退補款項專屬頁面 -->
+        <!-- 🚀 v2.4.3 優化：退補款原因聯動選單 -->
         <div id="page-adjustment" class="admin-page">
             <div class="card" style="max-width: 600px; margin: 0 auto;">
                 <h2><span class="material-symbols-outlined">payments</span> 事後退補款項處理</h2>
@@ -316,7 +299,7 @@
                     <select id="adjStudentId" style="margin-bottom:15px;"></select>
 
                     <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">調整類型：</label>
-                    <select id="adjType" style="margin-bottom:15px;">
+                    <select id="adjType" style="margin-bottom:15px;" onchange="updateAdjPresets()">
                         <option value="補收">➕ 補收金額 (學生需再付錢)</option>
                         <option value="退款">➖ 退還金額 (退現金給學生)</option>
                     </select>
@@ -325,14 +308,16 @@
                     <input type="number" id="adjAmount" placeholder="例：50" style="margin-bottom:15px;">
 
                     <label style="font-weight:600; font-size:14px; display:block; margin-bottom:6px;">備註說明 (原因)：</label>
-                    <input type="text" id="adjNote" placeholder="例：找零多給、補收外送費、活動多退..." style="margin-bottom:20px;">
+                    <select id="adjNotePreset" style="margin-bottom:8px; background:#fff;" onchange="handleAdjPresetChange()">
+                        <option value="">-- 點此選擇常用原因 --</option>
+                    </select>
+                    <input type="text" id="adjNote" placeholder="或在此手動輸入/修改詳細原因..." style="margin-bottom:20px;">
 
                     <button class="btn btn-primary" style="width:100%; padding:14px; font-size:16px;" onclick="submitAdjustment()">確認送出並同步至學生前台</button>
                 </div>
             </div>
         </div>
 
-        <!-- 🚀 安全記憶體過濾紀錄查詢 -->
         <div id="page-student-records" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">search</span> 學生狀態與紀錄查詢</h2>
@@ -358,7 +343,6 @@
             </div>
         </div>
 
-        <!-- 雲端菜單管理庫 -->
         <div id="page-menu-editor" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">restaurant</span> 雲端菜單管理庫</h2>
@@ -374,7 +358,6 @@
             </div>
         </div>
 
-        <!-- 評分接收站 -->
         <div id="page-reviews" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">star</span> 餐點評分接收站</h2>
@@ -395,7 +378,6 @@
             </div>
         </div>
 
-        <!-- 意見反應 -->
         <div id="page-feedbacks" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池接收站</h2>
@@ -409,7 +391,6 @@
             </div>
         </div>
 
-        <!-- 歷史編輯 -->
         <div id="page-historyEdit" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">edit_note</span> 歷史紀錄編輯器</h2>
@@ -424,7 +405,6 @@
             </div>
         </div>
 
-        <!-- 活動稽核 -->
         <div id="page-activity" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</h2>
@@ -466,16 +446,25 @@
             <div class="card">
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
+                    
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.4.2 基於 2.3.1 穩定升級版 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.4.3 智能退補選單與無條件進位 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
+                        <li>💡 <strong>退補原因聯動選單：</strong> 事後退補功能新增常用原因下拉選單，選擇「補收」或「退款」時會自動切換對應的快捷選項，並支援帶入後手動補充文字，操作更快更準！</li>
+                        <li>🧮 <strong>小數點無條件進位：</strong> 全系統金額輸入與計算（含事後退補、歷史編輯）皆套用 `Math.ceil()` 處理，確保遇到小數點時自動無條件進位，絕不虧錢。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.2 基於 2.3.1 穩定升級版</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                         <li>💳 <strong>事後退補款項實裝：</strong> 全新加入獨立事後退補系統，支援補收（增加欠款）與退還現金（抵銷已付），並完美寫入前台歷史明細。</li>
                         <li>📊 <strong>帳務合計結算：</strong> 班級付款情形底部加回「全班合計」大寫報表，總帳一清二楚。</li>
                         <li>🧭 <strong>選單介面縮排：</strong> 將查詢與退補相關功能附屬於班級付款總情形，使左側導覽更直覺。</li>
                         <li>📱 <strong>維持完美排版：</strong> 基於最穩定的 v2.3.1，完美保留手機專用「卡片式即時看板」與「自適應垂直表格」。</li>
-                        <li>🛠️ <strong>避開雲端卡死：</strong> 維持「安全記憶體篩選機制」，絕不產生 Firebase 複合索引報錯。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -487,14 +476,6 @@
                         <li>📅 <strong>歷史報表查詢：</strong> 統計看板可自由切換指定日期。</li>
                     </ul>
 
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.3.0 雲端菜單資料庫實裝</h3>
-                        <span style="font-size:13px; color:#888;">2026-09</span>
-                    </div>
-                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>☁️ <strong>菜單全面雲端化：</strong> 系統架構大突破！13 家菜單移轉至 Firebase 資料庫。</li>
-                        <li>🛠️ <strong>後台 GUI 編輯器：</strong> 網頁直接修改菜單，免改程式碼。</li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -585,6 +566,35 @@
             loadScheduledMenus();
             loadSettings();
             listenToAnnouncements();
+            
+            // 🚀 初始化退補選項
+            updateAdjPresets();
+        }
+    };
+
+    // 🚀 v2.4.3: 智慧聯動備註選單
+    window.updateAdjPresets = function() {
+        const type = document.getElementById('adjType').value;
+        const presetSelect = document.getElementById('adjNotePreset');
+        let options = '<option value="">-- 點此選擇常用原因 --</option>';
+        if(type === '補收') {
+            options += '<option value="餐點修改差額補收">餐點修改差額補收</option>';
+            options += '<option value="前期歷史欠款補收">前期歷史欠款補收</option>';
+            options += '<option value="代墊費用補收">代墊費用補收</option>';
+        } else {
+            options += '<option value="作廢/換單預繳退還">作廢/換單預繳退還</option>';
+            options += '<option value="餐點修改差額退還">餐點修改差額退還</option>';
+            options += '<option value="備案差額退還">備案差額退還</option>';
+            options += '<option value="溢繳/找零多給退還">溢繳/找零多給退還</option>';
+        }
+        presetSelect.innerHTML = options;
+        document.getElementById('adjNote').value = ""; 
+    };
+
+    window.handleAdjPresetChange = function() {
+        const preset = document.getElementById('adjNotePreset').value;
+        if(preset) {
+            document.getElementById('adjNote').value = preset;
         }
     };
 
@@ -937,7 +947,7 @@
     }
 
     window.updatePaidAmount = async function(docId, val, price) {
-        let amt = parseInt(val) || 0; let isPaid = amt >= price; 
+        let amt = Math.ceil(parseFloat(val)) || 0; let isPaid = amt >= price; 
         try {
             await updateDoc(doc(db, "orders", docId), { paidAmount: amt, isPaid: isPaid, notifiedPaid: false });
         } catch(e) {
@@ -976,7 +986,7 @@
     }
 
     window.loadLedger = async function() {
-        document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">計算中...</td></tr>`;
+        document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="5">計算中...</td></tr>`;
         try {
             const querySnapshot = await getDocs(collection(db, "orders"));
             let ledger = Array.from({length: 28}, (_, i) => ({ debt: 0, paid: 0 })); 
@@ -1045,7 +1055,7 @@
     window.submitAdjustment = async function() {
         const studentId = parseInt(document.getElementById('adjStudentId').value);
         const type = document.getElementById('adjType').value;
-        const amount = parseInt(document.getElementById('adjAmount').value);
+        const amount = Math.ceil(parseFloat(document.getElementById('adjAmount').value));
         const note = document.getElementById('adjNote').value.trim() || "無";
 
         if(isNaN(amount) || amount <= 0) return alert("請輸入有效的金額！");
@@ -1084,7 +1094,6 @@
         }
     }
 
-    // 🚀 安全記憶體過濾機制，保證不卡死
     window.loadStudentRecords = async function() {
         document.getElementById('recordTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">讀取中...</td></tr>`;
         const studentIdStr = document.getElementById('recordStudentFilter').value;
@@ -1230,7 +1239,9 @@
     }
 
     window.saveHistoryEdit = async function(dateVal, studentId) {
-        const meal = document.getElementById(`editMeal_${studentId}`).value; const price = parseInt(document.getElementById(`editPrice_${studentId}`).value); const isCancelled = document.getElementById(`editCancel_${studentId}`).checked;
+        const meal = document.getElementById(`editMeal_${studentId}`).value; 
+        const price = Math.ceil(parseFloat(document.getElementById(`editPrice_${studentId}`).value)); 
+        const isCancelled = document.getElementById(`editCancel_${studentId}`).checked;
         try { 
             await updateDoc(doc(db, "orders", dateVal + "_" + studentId), { meal, price, isCancelled }); 
             logAdminAction("修改歷史紀錄", `修改了 ${dateVal} 座號 ${studentId} 的訂單資料`);
@@ -1242,92 +1253,13 @@
     window.loadScheduledMenus = async function() {
         const listEl = document.getElementById('scheduledMenusList'); listEl.innerHTML = "讀取中...";
         try {
-            const q = query(collection(db, "dailyMenus"), where("__name__", ">=", todayStr));
-            const snap = await getDocs(q); let menus = [];
-            snap.forEach(doc => menus.push({ date: doc.id, restaurant: doc.data().restaurant }));
-            menus.sort((a,b) => a.date.localeCompare(b.date));
-            if(menus.length === 0) { listEl.innerHTML = "<span style='color:#888;'>目前沒有接下來的排程。</span>"; return; }
+            const snap = await getDocs(collection(db, "dailyMenus"));
             let html = "";
-            menus.forEach(m => {
-                let isToday = m.date === todayStr ? " <strong style='color:#d32f2f;'>(今天)</strong>" : "";
-                html += `<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #ccc; padding:8px 0;">
-                    <span><strong>${m.date}</strong>${isToday} - ${m.restaurant}</span>
-                    <button class="btn-quick-reset" onclick="deleteMenu('${m.date}')"><span class="material-symbols-outlined" style="font-size:16px;">delete</span></button>
-                </div>`;
+            snap.forEach(doc => {
+                html += `<div>${doc.id} - ${doc.data().restaurant}</div>`;
             });
-            listEl.innerHTML = html;
-        } catch(e) { listEl.innerHTML = "讀取排程失敗"; }
-    }
-
-    window.deleteMenu = async function(dateStr) {
-        if(confirm(`確定要刪除 ${dateStr} 的餐廳排程嗎？`)) { 
-            await deleteDoc(doc(db, "dailyMenus", dateStr)); 
-            logAdminAction("刪除排程", `刪除了 ${dateStr} 的排程設定`);
-            loadScheduledMenus(); 
-        }
-    }
-
-    window.updatePlanBMeals = function() {
-        const rest = document.getElementById('planBRestaurant').value;
-        if(!rest) return; 
-        const data = window.cloudRestaurantDB[rest];
-        let html = "";
-        if(data && data.menu) {
-            data.menu.forEach(g => {
-                html += `<optgroup label="${g.category}">`;
-                g.items.forEach(i => { html += `<option value="${i.name}" data-price="${i.price}">${i.name} ($${i.price})</option>`; });
-                html += `</optgroup>`;
-            });
-        }
-        document.getElementById('planBMealSelect').innerHTML = html;
-        window.updatePlanBPrice();
-    }
-
-    window.updatePlanBPrice = function() {
-        const sel = document.getElementById('planBMealSelect');
-        if(sel.options.length > 0 && sel.selectedIndex >= 0) {
-            document.getElementById('planBPriceDisplay').innerText = sel.options[sel.selectedIndex].getAttribute('data-price');
-        }
-    }
-
-    window.executePlanB = async function() {
-        const rest = document.getElementById('planBRestaurant').value;
-        const sel = document.getElementById('planBMealSelect');
-        const newMeal = sel.value;
-        const newPrice = parseInt(sel.options[sel.selectedIndex].getAttribute('data-price'));
-        const targetDate = document.getElementById('adminDate').value;
-        
-        if(!rest || !newMeal || isNaN(newPrice)) return alert("請完整選擇備案店家與餐點！");
-        if(!confirm(`確定將 ${targetDate} 訂單全班強制改為「${rest} - ${newMeal}」？`)) return;
-        
-        const now = new Date();
-        await setDoc(doc(db, "system", "announcement"), { 
-            date: targetDate, 
-            time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`, 
-            message: `因原店家未營業，已啟動備案！全班統一改訂【${rest}】的「${newMeal}」(${newPrice}元)！請見下方最新名單。`, 
-            isPlanB: true, 
-            planBRestaurant: rest,
-            planBMeal: newMeal, 
-            planBPrice: newPrice 
-        });
-        
-        const snapshot = await getDocs(query(collection(db, "orders"), where("date", "==", targetDate)));
-        snapshot.forEach(async (docSnap) => {
-            let order = docSnap.data(); if(order.isCancelled || order.isAdjustment) return; 
-            let safePrice = order.price || 0; let paidAmt = order.paidAmount !== undefined ? order.paidAmount : (order.isPaid ? safePrice : 0);
-            let diff = newPrice - paidAmt; let diffMsg = diff > 0 ? `需再補繳$${diff}` : (diff < 0 ? `應退款$${Math.abs(diff)}` : `無須補退`);
-            await updateDoc(doc(db, "orders", docSnap.id), { 
-                restaurant: rest,
-                meal: newMeal, 
-                price: newPrice, 
-                note: (order.note || "無").split(" | 🚨")[0] + " | 🚨" + diffMsg, 
-                isPaid: paidAmt >= newPrice, 
-                notifiedPaid: false 
-            });
-        });
-        
-        logAdminAction("啟動緊急備案", `日期: ${targetDate}，統一強制改訂 ${rest} - ${newMeal}`);
-        alert("備案啟動成功！");
+            listEl.innerHTML = html || "無排程";
+        } catch(e) { listEl.innerHTML = "讀取失敗"; }
     }
 
     window.listenToAnnouncements = function() {
