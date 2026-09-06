@@ -39,15 +39,46 @@
         h1, h2 { color: #111; margin-top:0; font-weight: 700; display:flex; align-items:center; }
         h2 { border-bottom: 1px solid #e5e5ea; padding-bottom: 12px; font-size: 18px; }
         
+        /* 🚀 全站表格自適應優化 */
         .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 15px; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 14px; }
         th, td { border-bottom: 1px solid #e5e5ea; padding: 12px 10px; text-align: center; }
         th { background-color: #fafafa; color: #111; font-weight: 600; white-space: nowrap; border-top: 1px solid #e5e5ea; border-bottom: 2px solid #111; }
-        .unpaid { background-color: #fff; }
-        .paid { background-color: #fafafa; }
-        .partial { background-color: #fff; }
         
-        .btn { padding: 12px 16px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; color: white; margin-top:10px; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        /* 🚀 手機版自動轉換為垂直卡片列表 */
+        @media (max-width: 768px) {
+            .table-responsive table { min-width: 100%; }
+            .table-responsive table, .table-responsive thead, .table-responsive tbody, .table-responsive th, .table-responsive td, .table-responsive tr { display: block; }
+            .table-responsive thead tr { position: absolute; top: -9999px; left: -9999px; }
+            .table-responsive tr { border: 1px solid #e5e5ea; border-radius: 12px; margin-bottom: 15px; background: #fff; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+            .table-responsive td { border: none; border-bottom: 1px dashed #eee; position: relative; padding: 12px 12px 12px 40%; text-align: right; min-height: 24px; display: flex; justify-content: flex-end; align-items: flex-start; }
+            .table-responsive td:last-child { border-bottom: none; }
+            .table-responsive td::before { content: attr(data-label); position: absolute; left: 12px; top: 12px; width: 35%; padding-right: 10px; white-space: nowrap; text-align: left; font-weight: 600; color: #888; font-size: 13px; }
+            .table-responsive td input[type="text"], .table-responsive td input[type="number"], .table-responsive td select { margin-bottom: 0; padding: 6px; }
+        }
+
+        /* 🚀 訂單即時看板專屬：卡片式網格佈局 (Card Grid) */
+        .order-board-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 15px; }
+        .order-card { background: #fff; border: 1px solid #e5e5ea; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; position: relative; overflow: hidden; transition: 0.2s; }
+        .order-card:hover { border-color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .order-card.paid { border-left: 5px solid #2e7d32; background: #fdfdfd; }
+        .order-card.partial { border-left: 5px solid #ff9800; }
+        .order-card.unpaid { border-left: 5px solid #d32f2f; }
+        .order-card.mod-row { border-left: 5px solid #fbc02d; background: #fffde7; }
+
+        .oc-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #f2f2f7; padding-bottom: 10px; margin-bottom: 10px; }
+        .oc-student { font-size: 22px; font-weight: 800; color: #111; display:flex; align-items:center; gap:6px; }
+        .oc-time { font-size: 12px; color: #888; }
+        .oc-price { font-size: 18px; font-weight: 700; color: #111; text-align:right; }
+        
+        .oc-body { font-size: 15px; font-weight: 600; color: #333; line-height: 1.6; flex-grow: 1; margin-bottom: 15px; text-align: left; }
+        
+        .oc-footer { background: #fafafa; margin: 0 -16px -16px -16px; padding: 12px 16px; border-top: 1px solid #f2f2f7; display: flex; flex-direction: column; gap: 8px; }
+        .oc-pay-row { display: flex; justify-content: space-between; align-items: center; }
+        .oc-pay-input { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #555; }
+        .oc-status-row { display: flex; justify-content: space-between; align-items: flex-end; font-size: 13px; margin-top: 4px; }
+        
+        .btn { padding: 12px 16px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; color: white; margin-top:10px; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition:0.2s;}
         .btn-primary { background-color: #111; color: #fff; }
         .btn-primary:hover { background-color: #333; }
         .btn-danger { background-color: #fff; color: #111; border: 1px solid #111; }
@@ -82,12 +113,7 @@
         .admin-page { display: none; }
         .admin-page.active { display: block; }
         
-        .time-label { font-size: 12px; color: #888; display: block; margin-top: 4px; }
         .score-avg { font-size: 28px; font-weight:700; color:#111; }
-        
-        .status-paid { font-weight: 600; color: #111; display:flex; align-items:center; justify-content:center; gap:4px; }
-        .status-unpaid { font-weight: 600; color: #555; display:flex; align-items:center; justify-content:center; gap:4px; }
-        .status-partial { font-weight: 600; color: #333; display:flex; align-items:center; justify-content:center; gap:4px; }
         
         .btn-quick-pay { background:#111; color:#fff; border:none; border-radius:6px; padding:6px 12px; font-size:13px; cursor:pointer; font-weight:600; font-family:inherit; transition:0.2s; white-space:nowrap; }
         .btn-quick-pay:hover { background:#333; }
@@ -95,7 +121,6 @@
         .btn-quick-reset:hover { border-color:#111; color:#111; }
         
         .version-badge { display:inline-block; background:#111; color:white; font-size:11px; padding:2px 8px; border-radius:10px; margin-left:auto; }
-        .mod-row { background-color: #fffde7 !important; border-left: 4px solid #fbc02d; }
 
         /* GUI Editor Styles */
         .cat-box { background: #fafafa; border: 1px solid #e5e5ea; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
@@ -152,7 +177,6 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <!-- 🚀 升級：網頁更新紀錄 v2.3.1 -->
             <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.3.1</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
         </ul>
@@ -195,7 +219,6 @@
                             <button class="btn btn-success" style="width:100%;" onclick="saveTimeSettings()">更新時間</button>
                         </div>
 
-                        <!-- 🚀 v2.3.1 新增：強制登出所有前台裝置 -->
                         <div style="background: #fff5f5; padding: 16px; border-radius: 12px; border: 1px solid #ffcdd2;">
                             <h3 style="margin-top:0; font-size:15px; color:#d32f2f; display:flex; align-items:center;"><span class="material-symbols-outlined">phonelink_erase</span> 強制登出所有學生裝置</h3>
                             <p style="font-size:12px; color:#d32f2f; margin:5px 0 10px 0;">按下後，所有已登入的前台裝置將會被立即登出並清除暫存（不影響後台）。</p>
@@ -211,7 +234,6 @@
                 <div id="paidNotifs" style="margin-top: 15px;"></div>
             </div>
             
-            <!-- 整合原本的日期選擇到看板中 -->
             <div class="card" id="orderBoardSection">
                 <h2><span class="material-symbols-outlined">table_chart</span> 訂單即時看板 (支援部分付款)</h2>
                 <div style="background:#eaf4fc; padding:12px; border-radius:8px; margin-bottom:15px; border:1px solid #bce0fd; display:flex; align-items:center; gap:10px;">
@@ -221,17 +243,16 @@
                 </div>
                 
                 <p style="font-weight:600; font-size:15px;">有效訂單人數：<strong id="totalCount" style="font-size: 18px;">0</strong> 人</p>
-                <div class="table-responsive">
-                    <table>
-                        <thead><tr><th>座號</th><th>餐點</th><th>金額</th><th>操作與狀態</th></tr></thead>
-                        <tbody id="orderTableBody"><tr><td colspan="4">連線讀取中...</td></tr></tbody>
-                    </table>
+                
+                <!-- 🚀 訂單即時看板：改用 Grid Cards 版面，手機完美顯示 -->
+                <div id="orderBoardGrid" class="order-board-grid">
+                    <div style="padding: 20px; text-align: center; color: #888; width: 100%;">連線讀取中...</div>
                 </div>
+
                 <hr style="margin: 30px 0; border:0; border-top:1px solid #e5e5ea;">
                 <button class="btn btn-danger" style="width:100%;" onclick="clearTodayOrders()"><span class="material-symbols-outlined">delete_forever</span> 完全清除所選日期的所有訂單</button>
             </div>
 
-            <!-- 🚀 v2.3.1 報表增加獨立日期顯示器 -->
             <div class="card" id="statsSection">
                 <h2><span class="material-symbols-outlined">bar_chart</span> 統計報表與帳務中心</h2>
                 <div style="background:#eaf4fc; padding:12px; border-radius:8px; margin-bottom:15px; border:1px solid #bce0fd; display:flex; align-items:center; gap:10px;">
@@ -299,7 +320,7 @@
                 <div class="table-responsive">
                     <table>
                         <thead><tr><th>座號</th><th>應付總額</th><th>已繳總額</th><th>結算狀態</th></tr></thead>
-                        <tbody id="ledgerTableBody"><tr><td colspan="4">點擊重新整理載入...</td></tr></tbody>
+                        <tbody id="ledgerTableBody"><tr><td colspan="4" data-label="狀態">點擊重新整理載入...</td></tr></tbody>
                     </table>
                 </div>
                 <hr style="margin: 30px 0; border:0; border-top:1px solid #e5e5ea;">
@@ -307,7 +328,6 @@
             </div>
         </div>
 
-        <!-- 🚀 v2.3.1 新增：狀態紀錄的日期篩選 -->
         <div id="page-student-records" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">search</span> 學生狀態與紀錄查詢</h2>
@@ -327,7 +347,7 @@
                 <div class="table-responsive">
                     <table>
                         <thead><tr><th>座號</th><th>日期</th><th>餐廳/餐點</th><th>金額</th><th>狀態</th></tr></thead>
-                        <tbody id="recordTableBody"><tr><td colspan="5">讀取中...</td></tr></tbody>
+                        <tbody id="recordTableBody"><tr><td colspan="5" data-label="狀態">讀取中...</td></tr></tbody>
                     </table>
                 </div>
             </div>
@@ -347,7 +367,7 @@
                 <div class="table-responsive">
                     <table style="font-size:14px;">
                         <thead><tr><th>時間</th><th>座號</th><th>餐廳/餐點</th><th>四項給分</th><th>留言建議</th></tr></thead>
-                        <tbody id="reviewTableBody"><tr><td colspan="5">點擊讀取載入...</td></tr></tbody>
+                        <tbody id="reviewTableBody"><tr><td colspan="5" data-label="狀態">點擊讀取載入...</td></tr></tbody>
                     </table>
                 </div>
             </div>
@@ -360,7 +380,7 @@
                 <div class="table-responsive">
                     <table style="font-size:14px;">
                         <thead><tr><th>時間</th><th>座號</th><th>內容</th></tr></thead>
-                        <tbody id="feedbackTableBody"><tr><td colspan="3">點擊讀取載入...</td></tr></tbody>
+                        <tbody id="feedbackTableBody"><tr><td colspan="3" data-label="狀態">點擊讀取載入...</td></tr></tbody>
                     </table>
                 </div>
             </div>
@@ -374,7 +394,7 @@
                 <div class="table-responsive">
                     <table>
                         <thead><tr><th>座號</th><th>餐點 (直接修改)</th><th>價格</th><th>取消作廢</th><th>儲存</th></tr></thead>
-                        <tbody id="editTableBody"><tr><td colspan="5">請先選擇日期並讀取...</td></tr></tbody>
+                        <tbody id="editTableBody"><tr><td colspan="5" data-label="狀態">請先選擇日期並讀取...</td></tr></tbody>
                     </table>
                 </div>
             </div>
@@ -413,7 +433,7 @@
                 <div class="table-responsive">
                     <table>
                         <thead><tr><th>精準時間</th><th>來源</th><th>操作者</th><th>執行動作</th><th>詳細內容</th></tr></thead>
-                        <tbody id="activityTableBody"><tr><td colspan="5">點擊查詢載入...</td></tr></tbody>
+                        <tbody id="activityTableBody"><tr><td colspan="5" data-label="狀態">點擊查詢載入...</td></tr></tbody>
                     </table>
                 </div>
             </div>
@@ -424,12 +444,12 @@
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
                     
-                    <!-- v2.3.1 -->
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
                         <h3 style="margin:0; font-size:16px;">v2.3.1 報表對帳中心與雙向篩選升級 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
+                        <li>📱 <strong>全站手機介面優化：</strong> 訂單即時看板全面升級為「卡片式網格(Card Grid)」，其他表格亦導入自適應垂直列表，徹底消滅手機水平捲動的困擾！</li>
                         <li>📊 <strong>報表與帳務優化：</strong> 統計報表中心新增「歷史日期篩選器」，可隨時切換查看過去每一天的結算報表。班級付款總情形底部加入「全班合計」總金額結算。</li>
                         <li>🔍 <strong>紀錄查詢進階篩選：</strong> 學生狀態與紀錄查詢加入「日期篩選」功能，支援座號與日期雙重條件比對。</li>
                         <li>🔐 <strong>強制全班登出：</strong> 系統核心設定新增「強制登出所有前台裝置」功能，一鍵重置所有學生的登入狀態與快取。</li>
@@ -486,7 +506,6 @@
     const d = new Date();
     const todayStr = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
     
-    // 初始化各個日曆選擇器
     document.getElementById('adminDate').value = todayStr;
     document.getElementById('statsDateFilter').value = todayStr;
     document.getElementById('scheduleDate').value = todayStr;
@@ -498,7 +517,7 @@
     window.allRestaurants = [];
     window.editingRest = null; 
 
-    // 本機端舊菜單資料 (用於初次雲端化)
+    // 舊版備用上傳資料
     const legacyHardcodedDB = {
         "麵朝 (新竹食品店)": { menu: [{category:"鮮蝦雲吞拌麵",items:[{name:"鮮蝦雲吞拌麵",price:110},{name:"青醬雲吞拌麵",price:115},{name:"椒麻雲吞拌麵",price:115},{name:"蔥油雲吞拌麵",price:115},{name:"香滷雲吞拌麵",price:115},{name:"XO醬雲吞拌麵",price:115}]},{category:"港式水餃拌麵",items:[{name:"港式水餃拌麵",price:105},{name:"青醬水餃拌麵",price:110},{name:"椒麻水餃拌麵",price:110},{name:"蔥油水餃拌麵",price:110},{name:"香滷水餃拌麵",price:110},{name:"XO醬水餃拌麵",price:110}]},{category:"乾拌麵",items:[{name:"京醬肉絲拌麵",price:85},{name:"椒麻雞絲拌麵",price:85},{name:"青醬雞絲拌麵",price:85},{name:"蔥油雞絲拌麵",price:85},{name:"香滷雞絲拌麵",price:85},{name:"XO醬雞絲拌麵",price:85}]},{category:"風味湯麵",items:[{name:"羅宋番茄雞湯麵",price:130},{name:"養生清燉雞湯麵",price:130},{name:"剝皮辣椒雞湯麵",price:140},{name:"漢方肉骨茶雞湯麵",price:140},{name:"羅宋番茄湯麵",price:75},{name:"鮮蝦雲吞湯麵",price:110}]},{category:"功夫小點",items:[{name:"豬五花肉(蒜泥)",price:80},{name:"豬五花肉(椒麻)",price:80},{name:"舒肥雞(蔥油)",price:90},{name:"舒肥雞(青醬)",price:90},{name:"鮮蝦抄手(紅油)",price:100},{name:"鮮蝦抄手(白油)",price:100},{name:"港式翠玉水餃10粒",price:90}]},{category:"湯品&青菜",items:[{name:"大推烏梅汁",price:30},{name:"季節燙青菜",price:40},{name:"新竹貢丸湯",price:40},{name:"虱目魚丸湯",price:40},{name:"手工餛飩湯",price:40},{name:"羅宋番茄湯",price:50},{name:"鮮蝦雲吞湯",price:55},{name:"羅宋雲吞湯",price:80},{name:"養生清燉雞湯",price:95},{name:"剝皮辣椒雞湯",price:95},{name:"漢方肉骨茶雞湯",price:95}]}], options: `<div class="opt-section-title">🔹 麵食加量區</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="加麵" data-price="15">加麵 +$15</label><label class="custom-chip"><input type="checkbox" value="加舒肥雞" data-price="30">加舒肥雞 +$30</label></div>` },
         "湯食主義": { menu: [{category:"嫩切雞蓋飯系列",items:[{name:"嫩切雞蓋飯",price:135},{name:"嫩切雞蓋飯泡溫泉",price:155},{name:"明太子嫩切雞蓋飯",price:185},{name:"明太子嫩切雞蓋飯泡溫泉",price:205}]},{category:"豬五花蓋飯系列",items:[{name:"豬五花蓋飯",price:125},{name:"豬五花蓋飯泡溫泉",price:145},{name:"明太子豬肉蓋飯",price:175},{name:"明太子豬五花蓋飯泡溫泉",price:195},{name:"韓式泡菜豬肉蓋飯",price:145},{name:"香檸泰泰豬飯",price:150}]},{category:"牛五花蓋飯系列",items:[{name:"牛五花蓋飯",price:135},{name:"牛五花蓋飯泡溫泉",price:155},{name:"明太子牛肉蓋飯",price:185},{name:"明太子牛五花蓋飯泡溫泉",price:205},{name:"川味牛五花蓋飯",price:135}]},{category:"SPA舒肥雞胸盒飯",items:[{name:"原味檸檬舒肥雞",price:135},{name:"泰式酸辣舒肥雞",price:135},{name:"手作花椒油舒肥雞",price:135},{name:"海苔呀海苔舒肥雞",price:135},{name:"義式香料舒肥雞",price:135},{name:"墨西哥BBQ舒肥雞",price:135},{name:"手工海南醬舒肥雞",price:135},{name:"巴薩米克醋舒肥雞",price:135},{name:"蒲燒鯛魚腹蓋飯",price:145},{name:"健康蔬食盒飯(蛋奶素)",price:135}]},{category:"湯烏龍系列",items:[{name:"日式柴魚豬肉湯烏龍",price:120},{name:"日式柴魚牛肉湯烏龍",price:130},{name:"韓式泡菜豬肉湯烏龍",price:140},{name:"韓式泡菜牛肉湯烏龍",price:150},{name:"蜀味川香豬肉湯烏龍",price:140},{name:"蜀味川香牛肉湯烏龍",price:150}]},{category:"單點與加購",items:[{name:"豬五花一份",price:60},{name:"牛五花一份",price:60},{name:"舒肥雞胸肉一份",price:60},{name:"溏心蛋",price:30},{name:"溫泉蛋",price:30},{name:"胡麻高麗菜",price:55},{name:"柚香白蘿蔔",price:55},{name:"辣黃豆芽",price:40},{name:"胡麻雞胸冷麵(夏季限定)",price:110}]}], options: `<div class="opt-section-title">🔹 蓋飯/飯盒 加量升級</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="加飯" data-price="10">加飯 +$10</label><label class="custom-chip"><input type="checkbox" value="加高麗菜" data-price="20">加高麗菜 +$20</label><label class="custom-chip"><input type="checkbox" value="飯換地瓜" data-price="0">飯換地瓜</label><label class="custom-chip"><input type="checkbox" value="加地瓜" data-price="20">加地瓜 +$20</label><label class="custom-chip"><input type="checkbox" value="菜增量" data-price="35">菜增量 +$35</label><label class="custom-chip"><input type="checkbox" value="加豆腐" data-price="20">加豆腐 +$20</label><label class="custom-chip"><input type="checkbox" value="加1份雞胸肉" data-price="60">加1份雞胸肉 +$60</label><label class="custom-chip"><input type="checkbox" value="加明太子魚卵" data-price="50">加明太子魚卵 +$50</label></div><div class="opt-section-title">🔹 蛋類客製</div><div class="chip-group"><label class="custom-chip"><input type="checkbox" value="溏心蛋換溫泉蛋" data-price="0">半顆溏心蛋換溫泉蛋</label></div><div class="opt-section-title">🚫 挑食區 (不要加甚麼)</div><div class="chip-group"><label class="custom-chip exclude"><input type="checkbox" value="不青蔥" data-price="0">不青蔥</label><label class="custom-chip exclude"><input type="checkbox" value="不洋蔥" data-price="0">不洋蔥</label><label class="custom-chip exclude"><input type="checkbox" value="不辣豆芽" data-price="0">不辣豆芽</label><label class="custom-chip exclude"><input type="checkbox" value="不玉米粒" data-price="0">不玉米粒</label><label class="custom-chip exclude"><input type="checkbox" value="不七味粉" data-price="0">不七味粉</label><label class="custom-chip exclude"><input type="checkbox" value="不海苔粉" data-price="0">不海苔粉</label></div>` },
@@ -533,7 +552,6 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
             
-            // 下拉選單預設選項
             let recordFilterHtml = '<option value="all">顯示全班 (所有號碼)</option>';
             for(let i=1; i<=28; i++) recordFilterHtml += `<option value="${i}">查詢 ${i} 號</option>`;
             document.getElementById('recordStudentFilter').innerHTML = recordFilterHtml;
@@ -568,7 +586,6 @@
         }
     };
 
-    // 🚀 v2.3.1 新增：強制登出所有前台裝置
     window.forceLogoutAllUsers = async function() {
         if(!confirm("⚠️ 嚴重警告：確定要強制登出所有前台（學生端）的裝置嗎？\n同學必須重新輸入帳號密碼才能點餐。")) return;
         try {
@@ -843,11 +860,10 @@
         }
     }
 
+    // 🚀 v2.3.1: 手機版完美適配的訂單卡片看板 (Card Grid)
     let currentUnsubscribe = null; 
     window.listenToOrders = async function(dateStr) {
         if(currentUnsubscribe) currentUnsubscribe();
-        
-        // 🚀 v2.3.1 連動報表的日期選擇器
         document.getElementById('statsDateFilter').value = dateStr;
         
         let restName = "未知餐廳";
@@ -903,59 +919,72 @@
                 let rowClass = isMod ? 'mod-row' : (paidAmt >= safePrice ? 'paid' : (paidAmt > 0 ? 'partial' : 'unpaid')); 
                 
                 let statusText = '';
-                if(paidAmt >= safePrice) { statusText = `<div class="status-paid"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>已付清</div>`; }
-                else if(paidAmt > 0) { statusText = `<div class="status-partial"><span class="material-symbols-outlined" style="font-size:16px;">warning</span>差 $${safePrice - paidAmt}</div>`; }
-                else { statusText = `<div class="status-unpaid"><span class="material-symbols-outlined" style="font-size:16px;">cancel</span>未付</div>`; }
+                if(paidAmt >= safePrice) { statusText = `<div class="status-paid" style="color:#2e7d32;"><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span>已付清</div>`; }
+                else if(paidAmt > 0) { statusText = `<div class="status-partial" style="color:#e65100;"><span class="material-symbols-outlined" style="font-size:16px;">warning</span>差 $${safePrice - paidAmt}</div>`; }
+                else { statusText = `<div class="status-unpaid" style="color:#d32f2f;"><span class="material-symbols-outlined" style="font-size:16px;">cancel</span>未付</div>`; }
                 
                 let diffMatch = (order.note||"").match(/🚨([^|]+)/); 
-                if(diffMatch) statusText += `<div style="font-size:12px; margin-top:4px; color:#111;">${diffMatch[1].trim()}</div>`;
+                if(diffMatch) statusText += `<div style="font-size:12px; margin-top:2px; color:#d32f2f; font-weight:bold;">${diffMatch[1].trim()}</div>`;
                 
                 let diffText = "";
                 if (isMod) {
                     let diff = safePrice - paidAmt;
-                    if(diff > 0) diffText = `<div style="color:#d32f2f; font-weight:700; font-size:12px; margin-top:4px; background:#fff; border-radius:4px; padding:2px;">⚠️ 需補收 $${diff}</div>`;
-                    else if(diff < 0) diffText = `<div style="color:#2e7d32; font-weight:700; font-size:12px; margin-top:4px; background:#fff; border-radius:4px; padding:2px;">⚠️ 應退還 $${Math.abs(diff)}</div>`;
-                    else diffText = `<div style="color:#555; font-weight:700; font-size:12px; margin-top:4px;">✅ 帳務已平 ($0)</div>`;
+                    if(diff > 0) diffText = `<div style="color:#d32f2f; font-weight:700; font-size:12px; background:#ffcdd2; padding:2px 6px; border-radius:4px;">需補收 $${diff}</div>`;
+                    else if(diff < 0) diffText = `<div style="color:#2e7d32; font-weight:700; font-size:12px; background:#c8e6c9; padding:2px 6px; border-radius:4px;">應退還 $${Math.abs(diff)}</div>`;
+                    else diffText = `<div style="color:#111; font-weight:700; font-size:12px; background:#e0e0e0; padding:2px 6px; border-radius:4px;">帳務平 ($0)</div>`;
                 }
 
-                let inlineBadge = (order.notifiedPaid && paidAmt < safePrice) ? `<br><span class="inline-badge"><span class="material-symbols-outlined" style="font-size:14px; margin:0;">front_hand</span> 說他交錢了</span>` : '';
+                let inlineBadge = (order.notifiedPaid && paidAmt < safePrice) ? `<div class="inline-badge" style="margin:0;"><span class="material-symbols-outlined" style="font-size:14px; margin:0;">front_hand</span> 說他交了</div>` : '';
                 
                 let safeMeal = (order.meal || "未知").replace(/, /g, '<br>');
                 let mealContent = safeMeal;
                 let modBadge = "";
 
                 if (isMod) {
-                    modBadge = `<span style="background:#fbc02d; color:#000; font-size:11px; padding:2px 6px; border-radius:4px; font-weight:bold; margin-bottom:4px; display:inline-block;">修改單</span><br>`;
+                    modBadge = `<span style="background:#fbc02d; color:#000; font-size:11px; padding:2px 6px; border-radius:4px; font-weight:bold; margin-right:6px; vertical-align:middle;">修改單</span>`;
                     let prevMeal = (order.previousMeal || "無").replace(/, /g, '<br>');
-                    mealContent = `<div style="font-size:12px; color:#888; text-decoration:line-through; margin-bottom:4px;">${prevMeal}</div>
-                                   <div style="color:#d32f2f;"><span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">edit</span> 修改後:<br>${safeMeal}</div>`;
+                    mealContent = `<div style="font-size:13px; color:#888; text-decoration:line-through; margin-bottom:6px;">${prevMeal}</div>
+                                   <div style="color:#d32f2f;"><span class="material-symbols-outlined" style="font-size:14px; vertical-align:middle;">edit</span> 最新:<br>${safeMeal}</div>`;
                 }
 
-                let timeStr = order.timeString ? `<span class="time-label">${order.timeString.split(' ')[1]}</span>` : '';
-                let noteText = order.note ? `<div style="font-size:12px; color:#555; font-weight:normal; margin-top:4px;">${order.note}</div>` : '';
-                if(isMod) noteText = ""; 
+                let timeStr = order.timeString ? order.timeString.split(' ')[1] : '';
+                let noteText = order.note ? `<div style="font-size:13px; color:#555; font-weight:normal; margin-top:8px; padding:6px; background:#f5f5f7; border-radius:6px; border-left:3px solid #111;">${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
+                if(isMod && !order.note.includes("全單備註")) noteText = ""; 
+                else if(isMod) noteText = `<div style="font-size:13px; color:#555; font-weight:normal; margin-top:8px; padding:6px; background:#f5f5f7; border-radius:6px; border-left:3px solid #111;">${order.note.replace(/ \| 🚨.*/, '')}</div>`;
                 
                 let quickPayBtn = paidAmt < safePrice 
-                    ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${order.date}_${order.studentId}', ${safePrice}, ${safePrice}, '${order.studentId}')">付清</button>` 
+                    ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${order.date}_${order.studentId}', ${safePrice}, ${safePrice}, '${order.studentId}')">一鍵付清</button>` 
                     : `<button class="btn-quick-reset" onclick="updatePaidAmount('${order.date}_${order.studentId}', 0, ${safePrice}, '${order.studentId}')">歸零</button>`;
 
                 html += `
-                    <tr class="${rowClass}">
-                        <td>${modBadge}<strong>${order.studentId}</strong><br>${timeStr}</td>
-                        <td style="font-weight:600; text-align:left;">${mealContent}${noteText}</td>
-                        <td>$${safePrice}</td>
-                        <td style="min-width:160px;">
-                            <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:8px;">
-                                $<input type="number" value="${paidAmt}" style="width:65px; padding:6px; margin:0; text-align:center;" onchange="updatePaidAmount('${order.date}_${order.studentId}', this.value, ${safePrice}, '${order.studentId}')">
+                    <div class="order-card ${rowClass}">
+                        <div class="oc-header">
+                            <div class="oc-student">${modBadge}${order.studentId} 號</div>
+                            <div class="oc-price">$${safePrice}<br><span class="oc-time">${timeStr}</span></div>
+                        </div>
+                        <div class="oc-body">
+                            ${mealContent}
+                            ${noteText}
+                        </div>
+                        <div class="oc-footer">
+                            <div class="oc-pay-row">
+                                <div class="oc-pay-input">
+                                    已收 $<input type="number" value="${paidAmt}" onchange="updatePaidAmount('${order.date}_${order.studentId}', this.value, ${safePrice}, '${order.studentId}')" style="width:65px; padding:6px; margin:0; text-align:center; font-size:14px; border:1px solid #ccc; border-radius:6px;">
+                                </div>
                                 ${quickPayBtn}
                             </div>
-                            ${statusText}
-                            ${diffText}
-                            ${inlineBadge}
-                        </td>
-                    </tr>`;
+                            <div class="oc-status-row">
+                                <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
+                                    ${statusText}
+                                    ${diffText}
+                                </div>
+                                ${inlineBadge}
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
-            document.getElementById('orderTableBody').innerHTML = html || `<tr><td colspan="4" style="color:#888;">這天沒有紀錄。</td></tr>`;
+            document.getElementById('orderBoardGrid').innerHTML = html || `<div style="padding: 20px; text-align: center; color: #888; width: 100%;">這天沒有紀錄。</div>`;
         });
     }
 
@@ -997,9 +1026,8 @@
         } catch(e) {}
     }
 
-    // 🚀 v2.3.1 新增：班級付款總情形底部加入「全班合計」總金額結算
     window.loadLedger = async function() {
-        document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="4">計算中...</td></tr>`;
+        document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="4" data-label="狀態">計算中...</td></tr>`;
         try {
             const querySnapshot = await getDocs(collection(db, "orders"));
             let ledger = Array.from({length: 28}, (_, i) => ({ debt: 0, paid: 0 })); 
@@ -1034,12 +1062,11 @@
                 else finalStatus = `<span><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 結清</span>`;
 
                 html += `<tr>
-                            <td><button class="btn btn-outline" style="margin:0; padding:6px 12px; border-radius:20px; font-size:14px; border-color:#d2d2d7;" onclick="switchPage('page-student-records'); loadStudentRecords('${id}')"><span class="material-symbols-outlined" style="font-size:16px; margin:0 4px 0 0;">search</span> <strong>${id}</strong></button></td>
-                            <td style="color:#555;">$${s.debt}</td><td style="font-weight:600;">$${s.paid}</td><td>${finalStatus}</td>
+                            <td data-label="座號"><button class="btn btn-outline" style="margin:0; padding:6px 12px; border-radius:20px; font-size:14px; border-color:#d2d2d7;" onclick="switchPage('page-student-records'); loadStudentRecords('${id}')"><span class="material-symbols-outlined" style="font-size:16px; margin:0 4px 0 0;">search</span> <strong>${id}</strong></button></td>
+                            <td data-label="應付總額" style="color:#555;">$${s.debt}</td><td data-label="已繳總額" style="font-weight:600;">$${s.paid}</td><td data-label="結算狀態">${finalStatus}</td>
                          </tr>`;
             });
 
-            // 🚀 加入全班合計行
             let totalBalance = sumDebt - sumPaid;
             let totalStatus = "";
             if(totalBalance > 0) totalStatus = `<span style="color:#ffeb3b; font-weight:700;"><span class="material-symbols-outlined" style="font-size:16px;">warning</span> 總催繳 $${totalBalance}</span>`;
@@ -1047,19 +1074,18 @@
             else totalStatus = `<span><span class="material-symbols-outlined" style="font-size:16px;">check_circle</span> 完美結清</span>`;
 
             html += `<tr style="background:#111; color:#fff;">
-                        <td style="border-radius: 0 0 0 8px;"><strong>全班合計</strong></td>
-                        <td style="font-weight:700; font-size:16px;">$${sumDebt}</td>
-                        <td style="font-weight:700; font-size:16px;">$${sumPaid}</td>
-                        <td style="border-radius: 0 0 8px 0;">${totalStatus}</td>
+                        <td data-label="統計" style="border-radius: 0 0 0 8px;"><strong>全班合計</strong></td>
+                        <td data-label="總應付" style="font-weight:700; font-size:16px;">$${sumDebt}</td>
+                        <td data-label="總已繳" style="font-weight:700; font-size:16px;">$${sumPaid}</td>
+                        <td data-label="總狀態" style="border-radius: 0 0 8px 0;">${totalStatus}</td>
                      </tr>`;
 
             document.getElementById('ledgerTableBody').innerHTML = html;
         } catch(e) { }
     }
 
-    // 🚀 v2.3.1 新增：學生狀態與紀錄查詢加入「日期篩選」功能
     window.loadStudentRecords = async function(overrideId) {
-        document.getElementById('recordTableBody').innerHTML = `<tr><td colspan="5">讀取中...</td></tr>`;
+        document.getElementById('recordTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">讀取中...</td></tr>`;
         
         if (overrideId !== undefined) { 
             document.getElementById('recordStudentFilter').value = overrideId; 
@@ -1079,7 +1105,7 @@
             querySnapshot.forEach(doc => orders.push(doc.data()));
             
             orders.sort((a, b) => { if (a.studentId !== b.studentId) return a.studentId - b.studentId; return b.date.localeCompare(a.date); });
-            if (orders.length === 0) { document.getElementById('recordTableBody').innerHTML = `<tr><td colspan="5" style="color:#888;">查無符合條件的紀錄</td></tr>`; return; }
+            if (orders.length === 0) { document.getElementById('recordTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態" style="color:#888;">查無符合條件的紀錄</td></tr>`; return; }
 
             let html = "";
             orders.forEach(o => {
@@ -1099,9 +1125,9 @@
                 let safeMeal = (o.meal || "").replace(/, /g, '<br>');
 
                 html += `<tr>
-                    <td><strong>${o.studentId}</strong></td><td>${o.date}</td>
-                    <td style="font-weight:600; text-align:left;"><span style="font-size:12px; color:#c00;">[${o.restaurant||"無紀錄"}]</span><br>${safeMeal}<br><span style="font-size:12px;color:#888;font-weight:normal;">${o.note||""}</span></td>
-                    <td>$${originalPrice}</td><td style="font-weight:600;">${status}</td>
+                    <td data-label="座號"><strong>${o.studentId}</strong></td><td data-label="日期">${o.date}</td>
+                    <td data-label="餐廳/餐點" style="font-weight:600; text-align:left;"><span style="font-size:12px; color:#c00;">[${o.restaurant||"無紀錄"}]</span><br>${safeMeal}<br><span style="font-size:12px;color:#888;font-weight:normal;">${o.note||""}</span></td>
+                    <td data-label="金額">$${originalPrice}</td><td data-label="狀態" style="font-weight:600;">${status}</td>
                 </tr>`;
             });
             document.getElementById('recordTableBody').innerHTML = html;
@@ -1109,7 +1135,7 @@
     };
 
     window.loadReviews = async function() {
-        document.getElementById('reviewTableBody').innerHTML = `<tr><td colspan="5">載入中...</td></tr>`;
+        document.getElementById('reviewTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">載入中...</td></tr>`;
         try {
             const querySnapshot = await getDocs(collection(db, "reviews"));
             let reviews = []; querySnapshot.forEach(doc => reviews.push(doc.data()));
@@ -1121,10 +1147,10 @@
                 if(r.score1) { s1+=r.score1; c1++; } if(r.score2) { s2+=r.score2; c2++; }
                 if(r.score3) { s3+=r.score3; c3++; } if(r.score4) { s4+=r.score4; c4++; }
                 let scoreTxt = `好吃:${r.score1||'-'} | 速度:${r.score2||'-'} | 價格:${r.score3||'-'} | 推薦:${r.score4||'-'}`;
-                html += `<tr><td>${r.timeString.split(' ')[0]}<br>${r.timeString.split(' ')[1]}</td><td><strong>${r.studentId}</strong></td><td>[${r.restaurant||"未知"}]<br>${r.meal}</td><td style="color:#555; font-size:12px;">${scoreTxt}</td><td>${r.comment || '<span style="color:#ccc;">無</span>'}</td></tr>`;
+                html += `<tr><td data-label="時間">${r.timeString.split(' ')[0]}<br>${r.timeString.split(' ')[1]}</td><td data-label="座號"><strong>${r.studentId}</strong></td><td data-label="餐廳/餐點" style="text-align:left;">[${r.restaurant||"未知"}]<br>${r.meal}</td><td data-label="四項給分" style="color:#555; font-size:12px;">${scoreTxt}</td><td data-label="留言建議" style="text-align:left;">${r.comment || '<span style="color:#ccc;">無</span>'}</td></tr>`;
             });
 
-            document.getElementById('reviewTableBody').innerHTML = html || `<tr><td colspan="5">尚無人填寫評分</td></tr>`;
+            document.getElementById('reviewTableBody').innerHTML = html || `<tr><td colspan="5" data-label="狀態">尚無人填寫評分</td></tr>`;
             document.getElementById('reviewStatsArea').style.display = 'flex';
             document.getElementById('avgS1').innerText = c1 > 0 ? (s1/c1).toFixed(1) : '-'; document.getElementById('avgS2').innerText = c2 > 0 ? (s2/c2).toFixed(1) : '-';
             document.getElementById('avgS3').innerText = c3 > 0 ? (s3/c3).toFixed(1) : '-'; document.getElementById('avgS4').innerText = c4 > 0 ? (s4/c4).toFixed(1) : '-';
@@ -1132,7 +1158,7 @@
     }
 
     window.loadFeedbacks = async function() {
-        document.getElementById('feedbackTableBody').innerHTML = `<tr><td colspan="3">載入中...</td></tr>`;
+        document.getElementById('feedbackTableBody').innerHTML = `<tr><td colspan="3" data-label="狀態">載入中...</td></tr>`;
         try {
             const querySnapshot = await getDocs(collection(db, "feedbacks"));
             let feedbacks = []; querySnapshot.forEach(doc => feedbacks.push(doc.data()));
@@ -1140,14 +1166,14 @@
 
             let html = "";
             feedbacks.forEach(f => {
-                html += `<tr><td>${f.timeString.split(' ')[0]}<br>${f.timeString.split(' ')[1]}</td><td><strong>${f.studentId}</strong></td><td style="text-align:left; line-height:1.6;">${f.content}</td></tr>`;
+                html += `<tr><td data-label="時間">${f.timeString.split(' ')[0]}<br>${f.timeString.split(' ')[1]}</td><td data-label="座號"><strong>${f.studentId}</strong></td><td data-label="內容" style="text-align:left; line-height:1.6;">${f.content}</td></tr>`;
             });
-            document.getElementById('feedbackTableBody').innerHTML = html || `<tr><td colspan="3">尚無意見反應</td></tr>`;
+            document.getElementById('feedbackTableBody').innerHTML = html || `<tr><td colspan="3" data-label="狀態">尚無意見反應</td></tr>`;
         } catch(e) { }
     }
 
     window.loadActivityLog = async function() {
-        document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="5">載入中...</td></tr>`;
+        document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">載入中...</td></tr>`;
         try {
             const querySnapshot = await getDocs(collection(db, "prod_activities"));
             let acts = []; 
@@ -1178,19 +1204,19 @@
                     : `background:#f5f5f7; border:1px solid #e5e5ea;`;
 
                 html += `<tr>
-                    <td style="font-size:12px; color:#555;">${a.timeString}</td>
-                    <td>${sourceBadge}</td>
-                    <td><strong>${a.studentId}</strong></td>
-                    <td><span style="${actionStyle} padding:4px 10px; border-radius:12px; font-size:13px; font-weight:600; display:inline-block;">${a.action}</span></td>
-                    <td style="color:#555; text-align:left;">${a.details}</td>
+                    <td data-label="精準時間" style="font-size:12px; color:#555;">${a.timeString}</td>
+                    <td data-label="來源">${sourceBadge}</td>
+                    <td data-label="操作者"><strong>${a.studentId}</strong></td>
+                    <td data-label="執行動作"><span style="${actionStyle} padding:4px 10px; border-radius:12px; font-size:13px; font-weight:600; display:inline-block;">${a.action}</span></td>
+                    <td data-label="詳細內容" style="color:#555; text-align:left;">${a.details}</td>
                 </tr>`;
             });
-            document.getElementById('activityTableBody').innerHTML = html || `<tr><td colspan="5" style="color:#888;">尚無符合條件的活動紀錄</td></tr>`;
-        } catch(e) { document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="5" style="color:red;">讀取稽核紀錄失敗</td></tr>`; }
+            document.getElementById('activityTableBody').innerHTML = html || `<tr><td colspan="5" data-label="狀態" style="color:#888;">尚無符合條件的活動紀錄</td></tr>`;
+        } catch(e) { document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態" style="color:red;">讀取稽核紀錄失敗</td></tr>`; }
     }
 
     window.loadHistoryForEdit = async function() {
-        const dateVal = document.getElementById('editHistoryDate').value; document.getElementById('editTableBody').innerHTML = `<tr><td colspan="5">讀取中...</td></tr>`;
+        const dateVal = document.getElementById('editHistoryDate').value; document.getElementById('editTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">讀取中...</td></tr>`;
         try {
             const querySnapshot = await getDocs(query(collection(db, "orders"), where("date", "==", dateVal)));
             let arr = []; querySnapshot.forEach(doc => arr.push(doc.data())); arr.sort((a,b) => a.studentId - b.studentId);
@@ -1198,14 +1224,14 @@
             arr.forEach(o => {
                 let checked = o.isCancelled ? 'checked' : '';
                 html += `<tr>
-                    <td><strong>${o.studentId}</strong></td>
-                    <td><input type="text" id="editMeal_${o.studentId}" value="${o.meal}"></td>
-                    <td><input type="number" id="editPrice_${o.studentId}" value="${o.price}" style="width:70px;"></td>
-                    <td><input type="checkbox" id="editCancel_${o.studentId}" ${checked} style="width:20px;height:20px;accent-color:#111;">作廢</td>
-                    <td><button class="btn btn-primary" style="margin:0; padding:8px 14px;" onclick="saveHistoryEdit('${dateVal}', ${o.studentId})"><span class="material-symbols-outlined" style="font-size:16px;">save</span></button></td>
+                    <td data-label="座號"><strong>${o.studentId}</strong></td>
+                    <td data-label="餐點 (直接修改)"><input type="text" id="editMeal_${o.studentId}" value="${o.meal}"></td>
+                    <td data-label="價格"><input type="number" id="editPrice_${o.studentId}" value="${o.price}" style="width:70px;"></td>
+                    <td data-label="取消作廢"><input type="checkbox" id="editCancel_${o.studentId}" ${checked} style="width:20px;height:20px;accent-color:#111;">作廢</td>
+                    <td data-label="儲存"><button class="btn btn-primary" style="margin:0; padding:8px 14px;" onclick="saveHistoryEdit('${dateVal}', ${o.studentId})"><span class="material-symbols-outlined" style="font-size:16px;">save</span></button></td>
                 </tr>`;
             });
-            document.getElementById('editTableBody').innerHTML = html || `<tr><td colspan="5">無資料</td></tr>`;
+            document.getElementById('editTableBody').innerHTML = html || `<tr><td colspan="5" data-label="狀態">無資料</td></tr>`;
         } catch(e) { }
     }
 
