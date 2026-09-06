@@ -8,18 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <style>
         /* 🚀 完美平衡：明顯但柔和的莫蘭迪藍紫漸層 */
-        body { 
-    font-family: 'Inter', 'Noto Sans TC', sans-serif; 
-    color: #1d1d1f; 
-    margin: 0; 
-    padding: 0; 
-    min-height: 100vh;
-    background-color: #f7f8fa;
-    background-image: 
-        radial-gradient(at 10% 20%, rgba(120, 119, 198, 0.12) 0px, transparent 50%),
-        radial-gradient(at 90% 80%, rgba(56, 189, 248, 0.12) 0px, transparent 50%);
-    background-attachment: fixed;
-}
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; background: linear-gradient(135deg, #dcebfe 0%, #f1e1ff 100%); background-attachment: fixed; color: #1d1d1f; margin: 0; padding: 0; min-height: 100vh; }
+        .material-symbols-outlined { vertical-align: middle; margin-right: 4px; font-size: 20px; }
         
         .header { background-color: #111; color: white; padding: 15px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .menu-btn { font-size: 26px; background: none; border: none; color: white; cursor: pointer; padding: 0 10px; }
@@ -85,7 +75,7 @@
         .hot-section { background: #fafafa; padding: 16px; border-radius: 12px; border: 1px solid #e5e5ea; margin-bottom: 24px; }
         .hot-title { color: #111; font-weight: 700; margin-bottom: 12px; display:flex; align-items:center; }
         
-        .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
         .checkbox-item { display: flex; align-items: center; background: #fafafa; padding: 14px; border-radius: 8px; border: 1px solid #e5e5ea; cursor: pointer; font-size:15px; }
         .checkbox-item input[type="checkbox"] { width: 18px; height: 18px; margin-right: 12px; accent-color: #111; }
         input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 14px; box-sizing: border-box; border: 1px solid #d2d2d7; border-radius: 8px; font-size: 15px; font-family: inherit; outline: none; transition: 0.2s;}
@@ -124,7 +114,6 @@
 </head>
 <body>
 
-<!-- 獨立登入頁面 -->
 <div id="loginPage">
     <div class="ig-form">
         <div class="ig-title">217午餐訂購系統</div>
@@ -199,9 +188,10 @@
             <button class="btn btn-secondary" style="margin-top:10px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
+        <!-- 評分專區 (升級防呆版) -->
         <div class="card" id="reviewPageArea">
             <h2><span class="material-symbols-outlined">star</span> 餐點評分</h2>
-            <p style="color:#555; font-size:14px;">請查詢最近 7 天內的餐點，並給予評價。每個座號一天只能評論一次！</p>
+            <p style="color:#555; font-size:14px;">請查詢最近 7 天內的有效餐點並給予評價。若訂單作廢，則無法評分；重新下單後將產生全新紀錄供你評價！</p>
             <div style="font-size:15px; font-weight:600; color:#111; margin:15px 0;">目前登入座號：<span class="display-user-id user-badge"></span></div>
             <button class="btn btn-outline" style="margin-top:5px;" onclick="fetchOrdersForReview()"><span class="material-symbols-outlined">search</span> 查詢我的近期餐點</button>
             
@@ -247,7 +237,7 @@
         <div id="lockedScreen" class="card" style="text-align:center; padding: 40px 20px;">
             <span class="material-symbols-outlined" style="font-size:48px; color:#111; margin-bottom:10px; display:block;">lock</span>
             <h2 style="justify-content:center; border:none; margin-bottom:5px;">目前無法點餐</h2>
-            <p id="lockedReason" style="font-weight:600; color:#555; margin-top:0;"></p>
+            <p id="lockedReason" style="font-weight:600; color:#555; margin-top:0; line-height:1.6;"></p>
             <hr style="margin:30px 0 20px 0; border:0; border-top:1px solid #e5e5ea;">
             <p style="color:#888; font-size:14px; margin-bottom:15px;">等待開放的同時，你可以：</p>
             <div style="display:flex; gap:10px;">
@@ -306,17 +296,18 @@
             <div style="display:flex; align-items:center; gap:4px;">完成選擇 <span class="material-symbols-outlined" style="font-size:18px; margin:0;">arrow_forward</span></div>
         </div>
 
+        <!-- 客製化專區 (獨立綁定單一餐點版) -->
         <div class="card" id="customizeArea">
             <h2><span class="material-symbols-outlined">tune</span> 選擇客製化選項</h2>
             <div style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e5e5ea; margin-bottom:20px;">
-                <div style="color:#555; font-weight:600; margin-bottom:8px; font-size:14px;">已選擇餐點：</div>
+                <div style="color:#555; font-weight:600; margin-bottom:8px; font-size:14px;">已選擇餐點清單：</div>
                 <div id="c_mealName" style="font-size:15px; font-weight:700; color:#111; line-height:1.6;"></div>
                 <hr style="border:0; border-top:1px solid #e5e5ea; margin:12px 0;">
                 <div style="font-size:14px; font-weight:600;">基本價格：<span id="c_basePrice" style="font-weight:700; font-size:16px;"></span></div>
             </div>
-            <div class="checkbox-group" id="dynamicOptions"></div>
-            <label style="font-weight:600; color:#111; display:block; margin:20px 0 8px 0; font-size:15px;">📝 備註 (不要蔥、不要香菜...)：</label>
-            <input type="text" id="orderNote" placeholder="輸入特殊需求...">
+            <div id="dynamicOptions"></div>
+            <label style="font-weight:600; color:#111; display:block; margin:20px 0 8px 0; font-size:15px;">📝 全單備註 (不要蔥、不要香菜...)：</label>
+            <input type="text" id="orderNote" placeholder="輸入全單特殊需求...">
             <div style="display:flex; gap:10px; margin-top:25px;">
                 <button class="btn btn-secondary" onclick="backToMenu()">返回加點</button>
                 <button class="btn btn-primary" onclick="goToReview()">下一步</button>
@@ -381,7 +372,6 @@
     
     window.currentUserId = null;
 
-    // 🚀 只保留麵朝 (已移除八方雲集)
     const restaurantDB = {
         "麵朝 (新竹食品店)": {
             menu: [
@@ -422,7 +412,7 @@
         
         const id = parseInt(match[1], 10);
         let expectedPass = "lunch" + (410576 + id);
-        if (id === 21) expectedPass = "lunch410605";
+        if (id === 21) expectedPass = "lunch410605"; // 21號例外設定
         
         if (pass !== expectedPass) return alert("❌ 密碼錯誤！請重新輸入。");
         
@@ -464,7 +454,7 @@
     };
 
     function hideAllSections() {
-        ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'historyModal', 'reviewPageArea', 'feedbackPageArea'].forEach(id => {
+        ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'reviewPageArea', 'feedbackPageArea'].forEach(id => {
             if(document.getElementById(id)) document.getElementById(id).style.display = 'none';
         });
     }
@@ -621,6 +611,7 @@
             const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
             const limitDateStr = sevenDaysAgo.getFullYear() + "-" + String(sevenDaysAgo.getMonth()+1).padStart(2, '0') + "-" + String(sevenDaysAgo.getDate()).padStart(2, '0');
 
+            // 🚀 防呆機制：過濾掉作廢的訂單，確保只有真實成交的紀錄能評分
             querySnapshotOrders.forEach(doc => { 
                 let o = doc.data(); 
                 if(!o.isCancelled && o.date >= limitDateStr) allOrders.push(o); 
@@ -630,17 +621,19 @@
             const qReviews = query(collection(db, "reviews"), where("studentId", "==", id));
             const querySnapshotReviews = await getDocs(qReviews);
             let reviewedMap = {}; 
+            // 🚀 版本追蹤：將評分與該訂單的 timestamp 綁定
             querySnapshotReviews.forEach(doc => {
                 let r = doc.data();
-                reviewedMap[r.orderDate] = r.timeString; 
+                reviewedMap[r.orderTimestamp] = r.timeString; 
             });
 
             recentOrdersForReview = [];
             let reviewedListHtml = "";
 
             allOrders.forEach(o => {
-                if (reviewedMap[o.date]) {
-                    reviewedListHtml += `<div style="font-size:13px; color:#666; margin:4px 0; display:flex; align-items:flex-start;"><span class="material-symbols-outlined" style="font-size:16px; margin-top:2px;">check</span> <span style="flex:1;"><b>${o.date}</b> (${o.meal})<br><span style="color:#888;">評分時間：${reviewedMap[o.date]}</span></span></div>`;
+                // 如果該時間戳的訂單已經評過，顯示為已完成
+                if (reviewedMap[o.timestamp]) {
+                    reviewedListHtml += `<div style="font-size:13px; color:#666; margin:4px 0; display:flex; align-items:flex-start;"><span class="material-symbols-outlined" style="font-size:16px; margin-top:2px;">check</span> <span style="flex:1;"><b>${o.date}</b> (${o.meal})<br><span style="color:#888;">評分時間：${reviewedMap[o.timestamp]}</span></span></div>`;
                 } else {
                     recentOrdersForReview.push(o);
                 }
@@ -652,7 +645,7 @@
             }
 
             if(recentOrdersForReview.length === 0) {
-                alert("你最近 7 天內的餐點都已經評過分囉！感謝你的熱情參與。");
+                alert("你最近 7 天內的所有有效訂單都已經評過分囉！\n(註：若訂單已作廢則無法進行評分)");
                 document.getElementById('reviewFormBlock').style.display = 'none';
                 return;
             }
@@ -680,9 +673,10 @@
         const timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
         
         try {
-            const reviewDocId = `${targetOrder.date}_${targetOrder.studentId}`;
+            // 🚀 將評分與該次訂單的 timestamp 強綁定，確保重新下單後能再次評分
+            const reviewDocId = `${targetOrder.date}_${targetOrder.studentId}_${targetOrder.timestamp}`;
             await setDoc(doc(db, "reviews", reviewDocId), { 
-                studentId: targetOrder.studentId, orderDate: targetOrder.date, meal: targetOrder.meal, restaurant: restaurantName, 
+                studentId: targetOrder.studentId, orderDate: targetOrder.date, orderTimestamp: targetOrder.timestamp, meal: targetOrder.meal, restaurant: restaurantName, 
                 score1: score1 ? parseInt(score1) : null, score2: score2 ? parseInt(score2) : null, score3: score3 ? parseInt(score3) : null, score4: score4 ? parseInt(score4) : null, 
                 comment: comment.trim(), timestamp: now.getTime(), timeString: timeString 
             });
@@ -708,7 +702,8 @@
             }
 
             const menuSnap = await getDoc(doc(db, "dailyMenus", todayStr));
-            if (!menuSnap.exists()) { currentOrderStep = 'lockedScreen'; return showLocked("負責人尚未設定今日午餐。"); }
+            // 🚀 狀態顯示：當天尚未排程時明確提示
+            if (!menuSnap.exists()) { currentOrderStep = 'lockedScreen'; return showLocked("⚠️ 負責人尚未設定今日午餐<br><span style='font-size:14px; font-weight:normal; color:#555; margin-top:8px; display:inline-block;'>請等候負責人排程，或聯絡負責人處理。</span>"); }
             
             currentOrderStep = 'authArea'; document.getElementById('authArea').style.display = 'block';
             currentRestaurant = menuSnap.data().restaurant;
@@ -752,7 +747,7 @@
             });
             menuHtml += `</div>`;
         });
-        document.getElementById('categoryNav').innerHTML = navHtml; document.getElementById('fullMenuContainer').innerHTML = menuHtml; document.getElementById('dynamicOptions').innerHTML = restData.options; document.getElementById('menuArea').style.display = 'block';
+        document.getElementById('categoryNav').innerHTML = navHtml; document.getElementById('fullMenuContainer').innerHTML = menuHtml; document.getElementById('menuArea').style.display = 'block';
     }
 
     window.scrollToCategory = function(catId) { const el = document.getElementById(catId); const offsetPosition = el.getBoundingClientRect().top + window.pageYOffset - 120; window.scrollTo({ top: offsetPosition, behavior: "smooth" }); }
@@ -773,27 +768,85 @@
         if(totalQty > 0) { fab.style.display = 'flex'; document.getElementById('cartTotal').innerText = totalPrice; } else { fab.style.display = 'none'; }
     }
 
+    // 🚀 客製化引擎升級：將選項綁定單一主食
     window.goToCustomize = function() {
-        let meals = []; let basePrice = 0;
-        for(let name in cart) { if(cart[name].qty > 0) { meals.push(`${name} x${cart[name].qty}`); basePrice += cart[name].price * cart[name].qty; } }
-        pendingOrder.meal = meals.join(", "); pendingOrder.basePrice = basePrice;
-        document.getElementById('c_mealName').innerHTML = meals.join("<br>"); document.getElementById('c_basePrice').innerText = basePrice;
-        document.getElementById('menuArea').style.display = 'none'; document.getElementById('cartFab').style.display = 'none'; document.getElementById('customizeArea').style.display = 'block'; currentOrderStep = 'customizeArea'; window.scrollTo({ top: 0, behavior: "smooth" });
+        let meals = []; let basePrice = 0; let customizeHtml = "";
+        
+        for(let name in cart) { 
+            if(cart[name].qty > 0) { 
+                meals.push(`${name} x${cart[name].qty}`); 
+                basePrice += cart[name].price * cart[name].qty; 
+                
+                // 依據數量產生各自的客製化區塊
+                for(let i=0; i<cart[name].qty; i++) {
+                    customizeHtml += `<div style="margin-bottom:12px; padding:16px; background:#fff; border:1px solid #e5e5ea; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">`;
+                    customizeHtml += `<div style="font-weight:700; color:#111; margin-bottom:10px; font-size:15px; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="color:#d32f2f; font-size:18px;">restaurant</span> ${name} <span style="font-size:13px; color:#555; font-weight:600; background:#f5f5f7; padding:2px 8px; border-radius:12px;">第 ${i+1} 份</span></div>`;
+                    
+                    // 替換 name 屬性，加入 data-meal 與 data-idx 用於後續辨識
+                    let optionsHtml = (restaurantDB[currentRestaurant].options || "")
+                        .replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${name}" data-idx="${i}"`);
+                    customizeHtml += `<div class="checkbox-group" style="margin-top:0;">${optionsHtml}</div>`;
+                    customizeHtml += `</div>`;
+                }
+            } 
+        }
+        
+        pendingOrder.meal = meals.join(", "); 
+        pendingOrder.basePrice = basePrice;
+        document.getElementById('c_mealName').innerHTML = meals.join("<br>"); 
+        document.getElementById('c_basePrice').innerText = basePrice;
+        document.getElementById('dynamicOptions').innerHTML = customizeHtml; // 渲染獨立區塊
+        
+        document.getElementById('menuArea').style.display = 'none'; 
+        document.getElementById('cartFab').style.display = 'none'; 
+        document.getElementById('customizeArea').style.display = 'block'; 
+        currentOrderStep = 'customizeArea'; 
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     window.backToMenu = function() { document.getElementById('customizeArea').style.display = 'none'; document.getElementById('menuArea').style.display = 'block'; document.getElementById('cartFab').style.display = 'flex'; currentOrderStep = 'menuArea'; }
 
+    // 🚀 收集獨立綁定備註
     window.goToReview = function() {
-        let finalPrice = pendingOrder.basePrice; let notes = [];
-        const checkboxes = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach(cb => { if(cb.checked) { finalPrice += parseInt(cb.getAttribute('data-price')); notes.push(cb.value); } });
-        if(document.getElementById('orderNote').value) notes.push(document.getElementById('orderNote').value.trim());
+        let finalPrice = pendingOrder.basePrice; 
+        let notes = [];
+        let mealCustomizations = {}; // 用來分類整理各碗麵的客製化
         
-        pendingOrder.note = notes.length > 0 ? notes.join(", ") : "無"; pendingOrder.price = finalPrice; pendingOrder.date = todayStr; pendingOrder.isPaid = false; pendingOrder.notifiedPaid = false; pendingOrder.paidAmount = 0; 
-        const now = new Date(); pendingOrder.timestamp = now.getTime(); pendingOrder.timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const checkboxes = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => { 
+            if(cb.checked) { 
+                finalPrice += parseInt(cb.getAttribute('data-price')); 
+                let meal = cb.getAttribute('data-meal');
+                let idx = parseInt(cb.getAttribute('data-idx')) + 1;
+                let key = `${meal}(第${idx}份)`;
+                if(!mealCustomizations[key]) mealCustomizations[key] = [];
+                mealCustomizations[key].push(cb.value);
+            } 
+        });
+        
+        for(let key in mealCustomizations) {
+            notes.push(`${key}: ${mealCustomizations[key].join(", ")}`);
+        }
+        
+        if(document.getElementById('orderNote').value) notes.push("全單備註: " + document.getElementById('orderNote').value.trim());
+        
+        pendingOrder.note = notes.length > 0 ? notes.join(" | ") : "無"; 
+        pendingOrder.price = finalPrice; 
+        pendingOrder.date = todayStr; 
+        pendingOrder.isPaid = false; 
+        pendingOrder.notifiedPaid = false; 
+        pendingOrder.paidAmount = 0; 
+        const now = new Date(); 
+        pendingOrder.timestamp = now.getTime(); 
+        pendingOrder.timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-        document.getElementById('v_id').innerText = pendingOrder.studentId; document.getElementById('v_meal').innerHTML = pendingOrder.meal.replace(/, /g, '<br>'); document.getElementById('v_note').innerText = pendingOrder.note; document.getElementById('v_price').innerText = pendingOrder.price;
-        document.getElementById('customizeArea').style.display = 'none'; document.getElementById('reviewArea').style.display = 'block'; currentOrderStep = 'reviewArea';
+        document.getElementById('v_id').innerText = pendingOrder.studentId; 
+        document.getElementById('v_meal').innerHTML = pendingOrder.meal.replace(/, /g, '<br>'); 
+        document.getElementById('v_note').innerText = pendingOrder.note; 
+        document.getElementById('v_price').innerText = pendingOrder.price;
+        document.getElementById('customizeArea').style.display = 'none'; 
+        document.getElementById('reviewArea').style.display = 'block'; 
+        currentOrderStep = 'reviewArea';
     }
 
     window.backToCustomize = function() { document.getElementById('reviewArea').style.display = 'none'; document.getElementById('customizeArea').style.display = 'block'; currentOrderStep = 'customizeArea'; }
