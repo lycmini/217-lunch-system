@@ -188,7 +188,6 @@
             <button class="btn btn-secondary" style="margin-top:10px;" onclick="resumeOrderFlow()">返回首頁</button>
         </div>
 
-        <!-- 評分專區 (升級防呆版) -->
         <div class="card" id="reviewPageArea">
             <h2><span class="material-symbols-outlined">star</span> 餐點評分</h2>
             <p style="color:#555; font-size:14px;">請查詢最近 7 天內的有效餐點並給予評價。若訂單作廢，則無法評分；重新下單後將產生全新紀錄供你評價！</p>
@@ -317,7 +316,8 @@
         <div class="card" id="reviewArea">
             <h2><span class="material-symbols-outlined">fact_check</span> 請確認餐點內容</h2>
             <div style="background: #fafafa; padding: 16px; border-radius: 8px; border:1px solid #e5e5ea; line-height:1.8; font-size:15px;">
-                <div>座號：<strong class="display-user-id"></strong></div>
+                <!-- 🚀 Bug 修復處：補上 id="v_id" -->
+                <div>座號：<strong id="v_id" class="display-user-id"></strong></div>
                 <div>餐點：<strong id="v_meal"></strong></div>
                 <div>備註：<strong id="v_note"></strong></div>
                 <div class="price-text" style="margin-top:15px; padding-top:15px; border-top:1px solid #e5e5ea;">總額：$<span id="v_price"></span></div>
@@ -412,7 +412,7 @@
         
         const id = parseInt(match[1], 10);
         let expectedPass = "lunch" + (410576 + id);
-        if (id === 21) expectedPass = "lunch410605"; // 21號例外設定
+        if (id === 21) expectedPass = "lunch410605";
         
         if (pass !== expectedPass) return alert("❌ 密碼錯誤！請重新輸入。");
         
@@ -522,7 +522,7 @@
             <b>Q1：點餐時間有什麼限制？</b><br>A：系統預設開放時間為每日 06:00 至 11:00。超過 11:00 系統會自動上鎖。<br>
             <b>Q2：為什麼畫面顯示「目前無法點餐」？</b><br>A：可能非開放時段，或是負責人尚未設定今日餐廳。</p>
             <p><b><span class="material-symbols-outlined" style="font-size:18px;">shopping_cart</span> 關於點餐與修改</b><br>
-            <b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。<br>
+            <b>Q3：我點錯餐點或數量了，該怎麼修改？</b><br>A：在 11:00 點餐截止前，於首頁輸入座號點擊「當日狀態」，點擊「取消今日訂單」即可重新點選。<br>
             <b>Q4：我可以幫別人點餐嗎？</b><br>A：不行，系統有專屬帳號驗證，無法代點。</p>
             <p><b><span class="material-symbols-outlined" style="font-size:18px;">payments</span> 關於金錢與繳費</b><br>
             <b>Q5：現金要交給誰？如果沒繳齊怎麼辦？</b><br>A：交給班級負責人。後台支援「部分付款」，系統會自動計算欠款或溢繳金額。<br>
@@ -611,7 +611,7 @@
             const sevenDaysAgo = new Date(); sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
             const limitDateStr = sevenDaysAgo.getFullYear() + "-" + String(sevenDaysAgo.getMonth()+1).padStart(2, '0') + "-" + String(sevenDaysAgo.getDate()).padStart(2, '0');
 
-            // 🚀 防呆機制：過濾掉作廢的訂單，確保只有真實成交的紀錄能評分
+            // 🚀 防呆機制：過濾掉作廢的訂單
             querySnapshotOrders.forEach(doc => { 
                 let o = doc.data(); 
                 if(!o.isCancelled && o.date >= limitDateStr) allOrders.push(o); 
@@ -621,7 +621,7 @@
             const qReviews = query(collection(db, "reviews"), where("studentId", "==", id));
             const querySnapshotReviews = await getDocs(qReviews);
             let reviewedMap = {}; 
-            // 🚀 版本追蹤：將評分與該訂單的 timestamp 綁定
+            // 🚀 版本追蹤
             querySnapshotReviews.forEach(doc => {
                 let r = doc.data();
                 reviewedMap[r.orderTimestamp] = r.timeString; 
@@ -631,7 +631,6 @@
             let reviewedListHtml = "";
 
             allOrders.forEach(o => {
-                // 如果該時間戳的訂單已經評過，顯示為已完成
                 if (reviewedMap[o.timestamp]) {
                     reviewedListHtml += `<div style="font-size:13px; color:#666; margin:4px 0; display:flex; align-items:flex-start;"><span class="material-symbols-outlined" style="font-size:16px; margin-top:2px;">check</span> <span style="flex:1;"><b>${o.date}</b> (${o.meal})<br><span style="color:#888;">評分時間：${reviewedMap[o.timestamp]}</span></span></div>`;
                 } else {
@@ -673,7 +672,6 @@
         const timeString = now.toLocaleString('zh-TW', { hour12: false, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
         
         try {
-            // 🚀 將評分與該次訂單的 timestamp 強綁定，確保重新下單後能再次評分
             const reviewDocId = `${targetOrder.date}_${targetOrder.studentId}_${targetOrder.timestamp}`;
             await setDoc(doc(db, "reviews", reviewDocId), { 
                 studentId: targetOrder.studentId, orderDate: targetOrder.date, orderTimestamp: targetOrder.timestamp, meal: targetOrder.meal, restaurant: restaurantName, 
@@ -702,7 +700,6 @@
             }
 
             const menuSnap = await getDoc(doc(db, "dailyMenus", todayStr));
-            // 🚀 狀態顯示：當天尚未排程時明確提示
             if (!menuSnap.exists()) { currentOrderStep = 'lockedScreen'; return showLocked("⚠️ 負責人尚未設定今日午餐<br><span style='font-size:14px; font-weight:normal; color:#555; margin-top:8px; display:inline-block;'>請等候負責人排程，或聯絡負責人處理。</span>"); }
             
             currentOrderStep = 'authArea'; document.getElementById('authArea').style.display = 'block';
@@ -768,7 +765,6 @@
         if(totalQty > 0) { fab.style.display = 'flex'; document.getElementById('cartTotal').innerText = totalPrice; } else { fab.style.display = 'none'; }
     }
 
-    // 🚀 客製化引擎升級：將選項綁定單一主食
     window.goToCustomize = function() {
         let meals = []; let basePrice = 0; let customizeHtml = "";
         
@@ -777,12 +773,10 @@
                 meals.push(`${name} x${cart[name].qty}`); 
                 basePrice += cart[name].price * cart[name].qty; 
                 
-                // 依據數量產生各自的客製化區塊
                 for(let i=0; i<cart[name].qty; i++) {
                     customizeHtml += `<div style="margin-bottom:12px; padding:16px; background:#fff; border:1px solid #e5e5ea; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">`;
                     customizeHtml += `<div style="font-weight:700; color:#111; margin-bottom:10px; font-size:15px; display:flex; align-items:center; gap:6px;"><span class="material-symbols-outlined" style="color:#d32f2f; font-size:18px;">restaurant</span> ${name} <span style="font-size:13px; color:#555; font-weight:600; background:#f5f5f7; padding:2px 8px; border-radius:12px;">第 ${i+1} 份</span></div>`;
                     
-                    // 替換 name 屬性，加入 data-meal 與 data-idx 用於後續辨識
                     let optionsHtml = (restaurantDB[currentRestaurant].options || "")
                         .replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${name}" data-idx="${i}"`);
                     customizeHtml += `<div class="checkbox-group" style="margin-top:0;">${optionsHtml}</div>`;
@@ -795,7 +789,7 @@
         pendingOrder.basePrice = basePrice;
         document.getElementById('c_mealName').innerHTML = meals.join("<br>"); 
         document.getElementById('c_basePrice').innerText = basePrice;
-        document.getElementById('dynamicOptions').innerHTML = customizeHtml; // 渲染獨立區塊
+        document.getElementById('dynamicOptions').innerHTML = customizeHtml; 
         
         document.getElementById('menuArea').style.display = 'none'; 
         document.getElementById('cartFab').style.display = 'none'; 
@@ -806,11 +800,10 @@
 
     window.backToMenu = function() { document.getElementById('customizeArea').style.display = 'none'; document.getElementById('menuArea').style.display = 'block'; document.getElementById('cartFab').style.display = 'flex'; currentOrderStep = 'menuArea'; }
 
-    // 🚀 收集獨立綁定備註
     window.goToReview = function() {
         let finalPrice = pendingOrder.basePrice; 
         let notes = [];
-        let mealCustomizations = {}; // 用來分類整理各碗麵的客製化
+        let mealCustomizations = {}; 
         
         const checkboxes = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach(cb => { 
