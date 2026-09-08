@@ -140,7 +140,6 @@
             <div onclick="changeBg('bg-theme-4')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
             <div onclick="changeBg('bg-theme-5')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
             <div onclick="changeBg('bg-theme-6')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background:linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
-            
             <div onclick="changeBg('bg-theme-7')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background-color: #f8f9fa; background-image: linear-gradient(#e5e5ea 1px, transparent 1px), linear-gradient(90deg, #e5e5ea 1px, transparent 1px); background-size: 15px 15px; border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
             <div onclick="changeBg('bg-theme-8')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background-color: #ffffff; background-image: radial-gradient(#d2d2d7 1.5px, transparent 1.5px); background-size: 15px 15px; border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
             <div onclick="changeBg('bg-theme-9')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background-color: #f0f4f8; background-image: linear-gradient(#cce0f5 1px, transparent 1px), linear-gradient(90deg, #cce0f5 1px, transparent 1px); background-size: 20px 20px; border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
@@ -192,7 +191,7 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.1</span></a></li>
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.2</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
             
             <li><a href="javascript:void(0)" onclick="showBgSelector(); toggleMenu();"><span class="material-symbols-outlined">palette</span> 個性化背景選擇</a></li>
@@ -208,7 +207,7 @@
                 </h2>
                 <p id="activeBroadcastMsg" style="font-weight: 600; font-size: 15px; color: #111; line-height:1.6;"></p>
                 <div style="display:flex; gap:10px;">
-                    <button class="btn btn-danger" style="flex:1;" onclick="clearAnnouncement()">
+                    <button class="btn btn-danger" style="flex:1; border-color:#d32f2f; color:#d32f2f;" onclick="clearAnnouncement()">
                         <span class="material-symbols-outlined">cancel</span> 撤除廣播
                     </button>
                     <button class="btn btn-success" id="unlockFrontendBtn" style="flex:1; display:none;" onclick="unlockPlanB()">
@@ -288,7 +287,7 @@
                 
                 <div class="item-list">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:12px; margin-bottom:12px;">
-                        <h3 style="margin: 0; font-size:16px; display:flex; align-items:center;"><span class="material-symbols-outlined">call</span> 點餐總表 (已包含客製化)</h3>
+                        <h3 style="margin: 0; font-size:16px; display:flex; align-items:center;"><span class="material-symbols-outlined">call</span> 點餐總表</h3>
                         <button class="btn btn-school" onclick="copyForSchoolForm()"><span class="material-symbols-outlined">content_copy</span> 複製校方表單純文字</button>
                     </div>
                     <ul id="statItemCounts" style="margin:0; padding-left:20px; font-size:15px; line-height:1.6;"><li>計算中...</li></ul>
@@ -303,7 +302,7 @@
 
             <div class="card planB-box" id="planBSection">
                 <h2 style="border:none; margin-bottom:5px;"><span class="material-symbols-outlined">emergency</span> 危機處理：啟動備案機制</h2>
-                <p style="color:#555; font-size:14px; margin-top:0;">啟動後系統會根據每人原本「已繳交的金額」自動算出差額，並鎖定全班訂單為統一餐點。</p>
+                <p style="color:#555; font-size:14px; margin-top:0;">啟動後系統會根據每人原本「已繳交的金額」自動算出差額，並完全鎖定前台常規點餐！</p>
                 <label style="font-weight:600; font-size:14px; display:block; margin:15px 0 5px;">1. 選擇備案店家：</label>
                 <select id="planBRestaurant" onchange="updatePlanBMeals()"></select>
                 <label style="font-weight:600; font-size:14px; display:block; margin:15px 0 5px;">2. 選擇全班統一餐點：</label>
@@ -431,11 +430,10 @@
             </div>
         </div>
 
-        <!-- 🚀 v2.6.1: 雲端菜單視覺化編輯器 -->
         <div id="page-menu-editor" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">restaurant</span> 雲端菜單管理庫</h2>
-                <p style="color:#555; font-size:14px; margin-top:0;">全面升級全視覺化編輯！點擊按鈕即可輕鬆設定客製化選項，不再需要手動輸入任何程式碼！</p>
+                <p style="color:#555; font-size:14px; margin-top:0;">系統已全面升級為雲端圖形化菜單架構！支援直接設定客製化群組，完全免寫程式碼，儲存後即刻同步全班前台。</p>
                 <div style="background:#fafafa; padding:16px; border-radius:12px; border:1px solid #e5e5ea; margin-bottom: 20px;">
                     <label style="font-weight:600; font-size:14px; margin-bottom:8px; display:block;">選擇要編輯的餐廳：</label>
                     <select id="editRestSelect" onchange="openMenuEditor(this.value)" style="margin-bottom:0;"></select>
@@ -444,7 +442,6 @@
             </div>
         </div>
 
-        <!-- 🚀 v2.6.1: 5星評分顯示 -->
         <div id="page-reviews" class="admin-page">
             <div class="card">
                 <h2><span class="material-symbols-outlined">star</span> 餐點評分接收站</h2>
@@ -466,10 +463,10 @@
                     <div class="stat-box"><div style="font-size:13px; color:#555; font-weight:600;">價格滿意度</div><div class="score-avg" id="avgS3">-</div></div>
                     <div class="stat-box"><div style="font-size:13px; color:#555; font-weight:600;">整體推薦度</div><div class="score-avg" id="avgS4">-</div></div>
                 </div>
-                <h3 style="margin-top:30px; border-bottom:1px solid #e5e5ea; padding-bottom:10px; font-size:16px;">詳細留言紀錄 (5星制)</h3>
+                <h3 style="margin-top:30px; border-bottom:1px solid #e5e5ea; padding-bottom:10px; font-size:16px;">詳細留言紀錄</h3>
                 <div class="table-responsive">
                     <table style="font-size:14px;">
-                        <thead><tr><th>時間</th><th>座號</th><th>餐廳/餐點</th><th>四項給分</th><th>留言建議</th></tr></thead>
+                        <thead><tr><th>時間</th><th>座號</th><th>餐廳/餐點</th><th>五星評等</th><th>留言建議</th></tr></thead>
                         <tbody id="reviewTableBody"><tr><td colspan="5" data-label="狀態">點擊讀取載入...</td></tr></tbody>
                     </table>
                 </div>
@@ -545,17 +542,27 @@
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
 
-                    <!-- 🚀 v2.6.1 最新更新 -->
+                    <!-- 🚀 v2.6.2 最新更新 -->
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.6.1 視覺化編輯大躍進與五星評分系統 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.6.2 帳務連動修正與歷史評分相容優化 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
-                        <li>🎨 <strong>視覺化客製選項編輯器：</strong> 徹底移除了後台新增客製化選項需輸入程式碼的限制！現在全面改為全圖形化介面，點擊按鈕即可輕鬆新增群組、加價選項，甚至是挑食紅字標示！</li>
-                        <li>📊 <strong>訂單總表完美整合客製化：</strong> 後台的「點餐總表」升級了解析邏輯，現在同學選的「加麵、不要蔥」都會自動與餐點合併計算（如：鮮蝦雲吞拌麵 (加麵, 不要蔥) x1），叫餐再也不怕漏看！</li>
-                        <li>❌ <strong>後台強制單筆作廢與退款：</strong> 訂單即時看板新增單筆「作廢」按鈕。點擊後除註銷訂單外，系統會全自動連動在退補款中心為該同學生成一筆同金額的退款紀錄。</li>
-                        <li>⭐ <strong>五星級評分系統：</strong> 餐點評分系統由 1~10 分全面升級為直覺的 1~5 顆星星模式，舊有評分紀錄系統會自動精準轉換顯示，不怕破版。</li>
-                        <li>🔓 <strong>非訂餐時段查詢解鎖：</strong> 修改了前端鎖定邏輯，現在即使在非訂餐時段，同學依然可以登入首頁查看「當日狀態」與「歷史紀錄」。</li>
+                        <li>📊 <strong>帳務連動修正：</strong> 「統計報表與帳務中心」現在會將「事後退補款項」精準納入「目前已收」與「尚未收取」中，總金額不再產生落差。</li>
+                        <li>⭐ <strong>評分系統讀取修復：</strong> 修復了餐點評分接收站因歷史資料格式不相容導致的「讀取失敗」Bug，現在能穩定載入五星評分。</li>
+                        <li>🔍 <strong>學生狀態查詢精準化：</strong> 「學生狀態與紀錄查詢」介面的繳費狀態判定已升級，現在能正確辨識「部分繳費 (催繳)」，不再誤判為「已結清」。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.6.1 菜單圖形化編輯器與智慧統計</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
+                        <li>🛠️ <strong>圖形化菜單編輯器：</strong> 徹底移除 HTML 輸入框！現在後台新增客製化選項只需點擊按鈕與輸入欄位，系統全自動編譯轉檔，免寫程式碼。</li>
+                        <li>📊 <strong>智慧精準客製化統計：</strong> 點餐總表與「複製校方表單純文字」功能大進化！現在會全自動解析並標示出同學的客製化選項（例：貢丸意麵 (不要蔥) x1），向賣家訂餐一目了然！</li>
+                        <li>❌ <strong>後台強制作廢退款：</strong> 訂單看板新增「作廢」按鈕，負責人可一鍵取消某同學訂單，系統更會針對已繳費者全自動生成退款紀錄，帳務完美平衡。</li>
+                        <li>⭐ <strong>五星評分系統：</strong> 將原先 10 分制的餐點評分，升級為更直覺的 Google 級 5 星制介面。</li>
+                        <li>🎨 <strong>看板介面優化：</strong> 客製化備註改用醒目粉紅標籤顯示，絕對不漏看。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -563,11 +570,11 @@
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>📝 <strong>訂單無痛修改：</strong> 系統會完整載入你原本點的餐點與客製化選項，讓你可以在原有的基礎上直接加點或刪減。</li>
-                        <li>🧹 <strong>評分篩選與清理：</strong> 後台新增餐廳篩選下拉選單，並支援「一鍵刪除目前顯示評分」。</li>
-                        <li>📋 <strong>完美複製校方表單：</strong> 點擊可精準複製出完美的統計明細純文字格式，方便直接貼上填報。</li>
-                        <li>🔒 <strong>備案啟動強制鎖定：</strong> 啟動「危機處理備案」時，系統將強制封鎖前台的常規點餐權限。</li>
-                        <li>🎨 <strong>全新紋理背景：</strong> 新增「極簡小網格、文青點陣、藍曬大格線」三款質感背景供自由切換。</li>
+                        <li>📝 <strong>訂單無痛修改：</strong> 前台修改訂單時，不再強制全部清空重選！系統會完整載入你原本點的餐點與客製化選項，讓你可以在原有的基礎上直接加點或刪減。</li>
+                        <li>🧹 <strong>評分篩選與清理：</strong> 後台「餐點評分接收站」新增餐廳篩選下拉選單，並支援「一鍵刪除目前顯示評分」的強大功能，輕鬆清理過時資料。</li>
+                        <li>📋 <strong>完美複製校方表單：</strong> 修復後台「複製校方表單純文字」功能，現在點擊可精準複製出完美的統計明細格式，方便直接貼上填報。</li>
+                        <li>🔒 <strong>備案啟動強制鎖定：</strong> 負責人啟動「危機處理備案」時，系統將強制封鎖前台的常規點餐權限，確保未訂餐同學只能選擇加入統一備案。</li>
+                        <li>🎨 <strong>全新紋理背景：</strong> 背景選擇器中新增「極簡小網格、文青點陣、藍曬大格線」三款質感背景供自由切換。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -575,7 +582,7 @@
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>🚑 <strong>備案機制修復：</strong> 補回先前改版過程中意外遺失的備案菜單連動與強制換單廣播核心程式碼。</li>
+                        <li>🚑 <strong>備案機制修復：</strong> 補回先前改版過程中意外遺失的備案菜單連動與強制換單廣播核心程式碼，危機處理模組全面恢復運作。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -584,7 +591,8 @@
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                         <li>🐞 <strong>零號同學 Bug 斬殺：</strong> 修復前台從查詢頁面直接點擊「修改訂單」時，身分驗證被略過導致系統生成 0 號空單的問題。</li>
-                        <li>💰 <strong>後台溢繳精準顯示：</strong> 訂單即時看板現在能精準偵測「已付大於應付」的狀況。</li>
+                        <li>💰 <strong>後台溢繳精準顯示：</strong> 訂單即時看板現在能精準偵測「已付大於應付」的狀況，並以醒目紅字顯示「溢繳待退 $金額」。</li>
+                        <li>📈 <strong>後台即時大數據：</strong> 新增後台版「歷代熱門排行榜」，並搭載 Real-time Calculation 動態運算引擎，每次打開即刻抓取今日最新訂單自動洗牌。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -594,14 +602,6 @@
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                         <li>🧾 <strong>事後退補紀錄獨立頁面：</strong> 將退補紀錄從即時看板中移出，設立專屬管理頁面。</li>
                         <li>🎛️ <strong>看板雙模式切換：</strong> 訂單即時看板支援「卡片模式」與「表格模式」自由切換。</li>
-                    </ul>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.4.5 智慧退補款連動與完美結清</h3>
-                        <span style="font-size:13px; color:#888;">2026-09</span>
-                    </div>
-                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>🎯 <strong>事後退補邏輯重建：</strong> 功能定位精準調整為「填平歷史欠款與溢繳」，純現金結清不產生額外負債。</li>
                     </ul>
 
                 </div>
@@ -776,76 +776,6 @@
         }
     }
 
-    // 🚀 v2.6.1: 舊版 HTML 轉換為 Visual Builder Data 格式的輕量解析器
-    function parseLegacyOptionsToData(htmlString) {
-        if (!htmlString || htmlString.trim() === "") return [];
-        let data = [];
-        let tempDiv = document.createElement('div');
-        tempDiv.innerHTML = htmlString;
-        
-        let processGroup = (container, matchKeyword) => {
-            let titles = container.querySelectorAll('.opt-section-title');
-            let groups = container.querySelectorAll('.chip-group');
-            for(let i=0; i<titles.length; i++) {
-                let title = titles[i].innerText.replace('🔹 ', '').replace('🚫 ', '').trim();
-                let type = 'checkbox';
-                let choices = [];
-                if(groups[i]) {
-                    let inputs = groups[i].querySelectorAll('input');
-                    inputs.forEach(inp => {
-                        if(inp.type === 'radio') type = 'radio';
-                        let name = inp.value;
-                        let price = parseInt(inp.getAttribute('data-price') || 0);
-                        let isExclude = inp.parentElement.classList.contains('exclude');
-                        choices.push({name, price, isExclude});
-                    });
-                }
-                data.push({title, match: matchKeyword, type, choices});
-            }
-        };
-        
-        let matches = tempDiv.querySelectorAll('[data-match]');
-        matches.forEach(m => {
-            processGroup(m, m.getAttribute('data-match') || "");
-            m.remove(); 
-        });
-        processGroup(tempDiv, ""); 
-        
-        return data;
-    }
-
-    // 🚀 v2.6.1: 將 Visual Builder Data 轉回前台看得懂的 HTML
-    function generateOptionsHTMLFromData(data) {
-        if(!data || data.length === 0) return "";
-        let html = "";
-        data.forEach(g => {
-            if(!g.title && g.choices.length === 0) return; 
-            
-            let gHtml = "";
-            let icon = g.choices.some(c=>c.isExclude) ? '🚫' : '🔹';
-            gHtml += `<div class="opt-section-title">${icon} ${g.title}</div>\n<div class="chip-group">\n`;
-            
-            g.choices.forEach((c, idx) => {
-                if(!c.name) return;
-                let exClass = c.isExclude ? " exclude" : "";
-                let inputType = g.type === 'radio' ? 'radio' : 'checkbox';
-                let priceAttr = `data-price="${c.price||0}"`;
-                let nameAttr = g.type === 'radio' ? `name="grp_{idx}"` : ""; 
-                let displayPrice = c.price > 0 ? ` +$${c.price}` : ``;
-                let checkedAttr = (g.type === 'radio' && idx === 0) ? 'checked' : '';
-                gHtml += `    <label class="custom-chip${exClass}"><input type="${inputType}" ${nameAttr} value="${c.name}" ${priceAttr} ${checkedAttr}>${c.name}${displayPrice}</label>\n`;
-            });
-            gHtml += `</div>\n`;
-
-            if(g.match && g.match.trim() !== "") {
-                html += `<div data-match="${g.match.trim()}">\n${gHtml}</div>\n`;
-            } else {
-                html += gHtml;
-            }
-        });
-        return html;
-    }
-
     window.loadCloudMenus = async function() {
         try {
             const snap = await getDocs(collection(db, "restaurants"));
@@ -877,17 +807,12 @@
         if(!restName) { ws.style.display = 'none'; return; }
         ws.style.display = 'block';
         if(restName === 'new') {
-            window.editingRest = { originalName: "", name: "", options: "", optionsData: [], menu: [] };
+            window.editingRest = { originalName: "", name: "", optionGroups: [], menu: [] };
         } else {
             window.editingRest = JSON.parse(JSON.stringify(window.cloudRestaurantDB[restName]));
             window.editingRest.originalName = restName;
             window.editingRest.name = restName;
-            
-            // 🚀 v2.6.1: 如果舊餐廳只有 HTML 字串沒有 Data，自動解析轉換
-            if(!window.editingRest.optionsData && window.editingRest.options) {
-                window.editingRest.optionsData = parseLegacyOptionsToData(window.editingRest.options);
-            }
-            window.editingRest.optionsData = window.editingRest.optionsData || [];
+            if (!window.editingRest.optionGroups) window.editingRest.optionGroups = [];
         }
         renderMenuEditorUI();
     };
@@ -913,40 +838,54 @@
     window.renderMenuEditorUI = function() {
         if(!window.editingRest) return;
         let r = window.editingRest;
-        
+        if (!r.optionGroups) r.optionGroups = [];
+
         let html = `
             <label style="font-weight:600; font-size:14px; margin-bottom:8px; display:block;">🍽️ 餐廳名稱：</label>
             <input type="text" value="${r.name}" onchange="window.editingRest.name=this.value" placeholder="輸入餐廳名稱" style="font-weight:bold; font-size:18px;">
+            
+            <div style="background:#eaf4fc; padding:15px; border-radius:12px; border:1px solid #bce0fd; margin-top:20px; margin-bottom:20px;">
+                <h3 style="margin:0 0 10px 0; color:#0078d4; font-size:16px; display:flex; align-items:center;"><span class="material-symbols-outlined" style="margin-right:6px;">tune</span> 客製化選項群組 (圖形化設定)</h3>
+                <p style="font-size:13px; color:#555; margin-top:0; line-height:1.6;">不用再寫任何程式碼！請直接在這裡建立該餐廳的客製化群組，系統會全自動將其轉換為前台介面。</p>
         `;
 
-        // 🚀 v2.6.1: 視覺化客製選項編輯器
-        html += `<h3 style="margin:20px 0 10px; border-bottom:2px solid #e5e5ea; padding-bottom:5px; color:#111;">🎨 智慧客製化選項 (視覺化編輯)</h3>`;
-        
-        r.optionsData.forEach((g, gIdx) => {
-            html += `<div style="background:#f5f5f7; border:1px solid #d2d2d7; padding:15px; border-radius:8px; margin-bottom:15px;">
-                <div style="display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;">
-                    <input type="text" value="${g.title}" onchange="window.editingRest.optionsData[${gIdx}].title=this.value" placeholder="群組標題 (例如: 麵體二選一)" style="flex:2; min-width:150px; margin:0;">
-                    <input type="text" value="${g.match}" onchange="window.editingRest.optionsData[${gIdx}].match=this.value" placeholder="綁定關鍵字 (如: 麵,米粉)" style="flex:2; min-width:120px; margin:0;">
-                    <select onchange="window.editingRest.optionsData[${gIdx}].type=this.value" style="flex:1; min-width:120px; margin:0;">
-                        <option value="radio" ${g.type==='radio'?'selected':''}>單選 (Radio)</option>
-                        <option value="checkbox" ${g.type==='checkbox'?'selected':''}>複選/選填 (Checkbox)</option>
-                    </select>
-                    <button class="btn-danger" style="margin:0; padding:10px;" onclick="window.editingRest.optionsData.splice(${gIdx}, 1); renderMenuEditorUI()">刪除群組</button>
-                </div>
-                <div style="padding-left:15px; border-left:3px solid #ccc;">`;
-                
-            g.choices.forEach((c, cIdx) => {
-                html += `<div style="display:flex; gap:8px; margin-bottom:8px; align-items:center; flex-wrap:wrap;">
-                    <input type="text" value="${c.name}" onchange="window.editingRest.optionsData[${gIdx}].choices[${cIdx}].name=this.value" placeholder="選項名稱 (如: 加麵)" style="margin:0; flex:2; min-width:100px;">
-                    <input type="number" value="${c.price||0}" onchange="window.editingRest.optionsData[${gIdx}].choices[${cIdx}].price=parseInt(this.value)" placeholder="加價金額" style="margin:0; flex:1; min-width:70px;">
-                    <label style="font-size:13px; display:flex; align-items:center; gap:4px; flex:1; min-width:100px; color:#d32f2f; font-weight:600;"><input type="checkbox" ${c.isExclude?'checked':''} onchange="window.editingRest.optionsData[${gIdx}].choices[${cIdx}].isExclude=this.checked" style="width:16px;height:16px;margin:0;"> 挑食紅字標示</label>
-                    <button class="btn-outline" style="margin:0; padding:6px; color:#d32f2f; border-color:#d32f2f;" onclick="window.editingRest.optionsData[${gIdx}].choices.splice(${cIdx}, 1); renderMenuEditorUI()"><span class="material-symbols-outlined" style="margin:0;">close</span></button>
-                </div>`;
+        r.optionGroups.forEach((g, gIdx) => {
+            html += `<div style="background:#fff; border:1px solid #cce0f5; border-radius:8px; padding:15px; margin-bottom:15px;">`;
+            html += `  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:10px;">
+                         <input type="text" value="${g.title}" onchange="window.editingRest.optionGroups[${gIdx}].title=this.value" placeholder="選項標題 (例: 麵體選擇、挑食區)" style="font-weight:bold; font-size:15px; flex:1; margin:0; border:1px solid #111;">
+                         <button class="btn-outline" style="color:#d32f2f; border-color:#ffcdd2; background:#fff5f5; padding:8px 12px; margin:0;" onclick="window.editingRest.optionGroups.splice(${gIdx},1); renderMenuEditorUI()">刪除群組</button>
+                       </div>`;
+            html += `  <div style="display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap;">
+                         <div style="flex:1; min-width:150px;">
+                             <label style="font-size:12px; font-weight:600; color:#555;">選擇類型：</label>
+                             <select onchange="window.editingRest.optionGroups[${gIdx}].type=this.value" style="margin:0; padding:8px;">
+                                <option value="radio" ${g.type==='radio'?'selected':''}>單選 (Radio)</option>
+                                <option value="checkbox" ${g.type==='checkbox'?'selected':''}>複選 (Checkbox)</option>
+                             </select>
+                         </div>
+                         <div style="flex:2; min-width:200px;">
+                             <label style="font-size:12px; font-weight:600; color:#555;">觸發關鍵字 (用逗號隔開，空白代表全部套用)：</label>
+                             <input type="text" value="${g.keywords||''}" onchange="window.editingRest.optionGroups[${gIdx}].keywords=this.value" placeholder="例: 麵,米粉 (代表只有餐點名稱含麵或米粉才出現)" style="margin:0; padding:8px;">
+                         </div>
+                       </div>`;
+            html += `  <div style="background:#fafafa; padding:12px; border-radius:8px; border:1px solid #e5e5ea;">
+                         <label style="font-size:12px; font-weight:600; color:#111; margin-bottom:8px; display:block;">此群組內的選項：</label>`;
+            g.options.forEach((opt, oIdx) => {
+                html += `<div style="display:flex; gap:10px; margin-bottom:8px; align-items:center;">
+                            <span class="material-symbols-outlined" style="color:#888; font-size:16px;">drag_indicator</span>
+                            <input type="text" value="${opt.name}" onchange="window.editingRest.optionGroups[${gIdx}].options[${oIdx}].name=this.value" placeholder="選項名稱 (例: 加飯)" style="margin:0; flex:2; padding:8px;">
+                            <div style="display:flex; align-items:center; flex:1; gap:6px;">
+                                <span style="font-size:13px; font-weight:600; color:#555;">+$</span>
+                                <input type="number" value="${opt.price}" onchange="window.editingRest.optionGroups[${gIdx}].options[${oIdx}].price=parseInt(this.value)||0" placeholder="加價" style="margin:0; padding:8px; width:100%;">
+                            </div>
+                            <button class="btn-outline" style="color:#d32f2f; border:none; padding:4px;" onclick="window.editingRest.optionGroups[${gIdx}].options.splice(${oIdx},1); renderMenuEditorUI()"><span class="material-symbols-outlined">close</span></button>
+                         </div>`;
             });
-            html += `<button class="btn-outline" style="margin-top:5px; border-style:dashed; padding:6px 12px; font-size:13px;" onclick="window.editingRest.optionsData[${gIdx}].choices.push({name:'', price:0, isExclude:false}); renderMenuEditorUI()">+ 新增選項</button>`;
-            html += `</div></div>`;
+            html += `<button class="btn-school" style="margin-top:5px;" onclick="window.editingRest.optionGroups[${gIdx}].options.push({name:'', price:0}); renderMenuEditorUI()">+ 新增選項</button>`;
+            html += `  </div></div>`;
         });
-        html += `<button class="btn-secondary" style="border-style:dashed; border-color:#111; color:#111; margin-bottom:20px;" onclick="window.editingRest.optionsData.push({title:'', match:'', type:'checkbox', choices:[]}); renderMenuEditorUI()">+ 新增客製化群組</button>`;
+        html += `<button class="btn-outline" style="border-style:dashed; border-color:#0078d4; color:#0078d4; background:#fff; width:100%;" onclick="window.editingRest.optionGroups.push({title:'', type:'radio', keywords:'', options:[]}); renderMenuEditorUI()">+ 新增客製化群組</button>`;
+        html += `</div>`;
 
         html += `<h3 style="margin:20px 0 10px; border-bottom:2px solid #e5e5ea; padding-bottom:5px;">菜單分類與品項</h3>`;
         r.menu.forEach((cat, cIdx) => {
@@ -989,15 +928,41 @@
     window.saveMenuToCloud = async function() {
         let r = window.editingRest;
         if(!r.name.trim()) return alert("請輸入餐廳名稱！");
-        
-        // 將 Visual Data 轉換回前台需要的 HTML 字串
-        r.options = generateOptionsHTMLFromData(r.optionsData);
-        
+
+        if (r.optionGroups && r.optionGroups.length > 0) {
+            let compiledHTML = "";
+            r.optionGroups.forEach((g, gIdx) => {
+                let matchAttr = g.keywords && g.keywords.trim() !== "" ? ` data-match="${g.keywords.trim()}"` : "";
+                let typeStr = g.type === 'radio' ? 'radio' : 'checkbox';
+                let groupName = g.type === 'radio' ? ` name="opt_${gIdx}_{idx}"` : "";
+                
+                compiledHTML += `<div${matchAttr}>\n`;
+                compiledHTML += `    <div class="opt-section-title">🔹 ${g.title || '選項'}</div>\n`;
+                compiledHTML += `    <div class="chip-group">\n`;
+                
+                g.options.forEach((opt, oIdx) => {
+                    if(!opt.name.trim()) return;
+                    let priceAttr = ` data-price="${opt.price || 0}"`;
+                    let labelTxt = opt.price > 0 ? `${opt.name} +$${opt.price}` : opt.name;
+                    let valTxt = opt.name;
+                    let excludeCls = opt.name.includes("不要") || opt.name.includes("無") ? " exclude" : "";
+                    
+                    let checkedAttr = (g.type === 'radio' && oIdx === 0) ? " checked" : "";
+                    
+                    compiledHTML += `        <label class="custom-chip${excludeCls}"><input type="${typeStr}"${groupName} value="${valTxt}"${priceAttr}${checkedAttr}>${labelTxt}</label>\n`;
+                });
+                compiledHTML += `    </div>\n</div>\n\n`;
+            });
+            r.options = compiledHTML; 
+        } else {
+            r.options = "";
+        }
+
         try {
             if(r.originalName && r.originalName !== r.name) {
                 await deleteDoc(doc(db, "restaurants", r.originalName));
             }
-            await setDoc(doc(db, "restaurants", r.name), { name: r.name, menu: r.menu, options: r.options, optionsData: r.optionsData });
+            await setDoc(doc(db, "restaurants", r.name), { name: r.name, menu: r.menu, options: r.options, optionGroups: r.optionGroups });
             logAdminAction("編輯雲端菜單", `儲存了餐廳: ${r.name}`);
             alert("✅ 儲存成功！");
             await loadCloudMenus();
@@ -1087,6 +1052,7 @@
             });
 
             await setDoc(doc(db, "system", "settings"), { planBLocked: true }, { merge: true });
+            
             document.getElementById('unlockFrontendBtn').style.display = 'block';
             
             logAdminAction("啟動備案機制", `將 ${count} 筆訂單強制轉換為 [${rest}] ${meal}，並鎖定前台`);
@@ -1130,7 +1096,7 @@
         text += `📌 總計份數：${totalQty} 份`;
         
         navigator.clipboard.writeText(text).then(() => {
-            alert("✅ 已成功複製純文字明細！\n\n請直接至校方 Google 表單的「餐點內容」欄位中貼上即可。");
+            alert("✅ 已成功複製純文字明細！\n\n(系統已自動將同學的客製化備註精準分類加總)\n請直接至校方 Google 表單的「餐點內容」欄位中貼上即可。");
         }).catch(err => {
             alert("複製失敗，請手動框選複製或檢查瀏覽器權限：" + err);
         });
@@ -1203,7 +1169,12 @@
                 if (order.isCancelled) { 
                     canceledAlerts.push(order); 
                 } else if (order.isAdjustment) {
-                    
+                    // 🚀 v2.6.2: 連動退補款項到已收總額
+                    if (order.adjType === '補收') {
+                        collectedAmount += (order.price || 0);
+                    } else if (order.adjType === '退款') {
+                        collectedAmount -= (order.price || 0);
+                    }
                 } else {
                     activeOrders.push(order);
                     let safePrice = order.price || 0;
@@ -1211,32 +1182,26 @@
                     if (order.notifiedPaid && paidAmt < safePrice) paidAlerts.push(order);
                     totalAmount += safePrice; collectedAmount += paidAmt; 
 
-                    // 🚀 v2.6.1: 完美客製化解析，綁入點餐總表！
-                    let customMap = {};
-                    if(order.note) {
-                        order.note.split(" | ").forEach(part => {
-                            let m = part.match(/(.*)\(第(\d+)份\): (.*)/);
-                            if(m) {
-                                let baseName = m[1].trim();
-                                let optionsStr = m[3].trim();
-                                if(!customMap[baseName]) customMap[baseName] = [];
-                                customMap[baseName].push(optionsStr);
-                            }
-                        });
-                    }
-
-                    (order.meal || "").split(", ").forEach(m => {
-                        let name = m; let qty = 1; let match = m.match(/(.*) x(\d+)$/);
+                    let itemsStr = (order.meal || "").split(", ");
+                    itemsStr.forEach(m => {
+                        let name = m; let qty = 1; 
+                        let match = m.match(/(.*) x(\d+)$/);
                         if(match) { name = match[1].trim(); qty = parseInt(match[2]); }
-                        else { name = name.trim(); }
-
-                        for(let i=0; i<qty; i++) {
-                            let displayName = name;
-                            if(customMap[name] && customMap[name].length > 0) {
-                                let opt = customMap[name].shift(); 
-                                displayName = `${name} (${opt})`;
+                        
+                        if (order.note) {
+                            for(let i=1; i<=qty; i++) {
+                                let searchKey = `${name}(第${i}份):`;
+                                let noteParts = order.note.split(" | ");
+                                let foundOpt = noteParts.find(p => p.trim().startsWith(searchKey));
+                                let finalName = name;
+                                if (foundOpt) {
+                                    let optStr = foundOpt.trim().substring(searchKey.length).trim();
+                                    finalName = `${name} (${optStr})`;
+                                }
+                                itemCounts[finalName] = (itemCounts[finalName] || 0) + 1;
                             }
-                            itemCounts[displayName] = (itemCounts[displayName] || 0) + 1;
+                        } else {
+                            itemCounts[name] = (itemCounts[name] || 0) + qty;
                         }
                     });
                 }
@@ -1282,16 +1247,15 @@
                 let mealContent = order.meal.replace(/, /g, '<br>');
                 let timeStr = order.timeString ? order.timeString.split(' ')[1] : '';
                 
-                let noteTextCard = order.note ? `<div style="font-size:13px; color:#555; font-weight:normal; margin-top:8px; padding:6px; background:#f5f5f7; border-radius:6px; border-left:3px solid #111;">${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
-                let noteTextTable = order.note ? `<div style="font-size:12px; color:#999; margin-top:4px; max-width: 200px; white-space: normal;">備註: ${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
+                let noteTextCard = order.note ? `<div style="font-size:14px; color:#c2185b; font-weight:700; margin-top:8px; padding:8px; background:#fce4ec; border-radius:6px; border-left:3px solid #c2185b;">客製化: ${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
+                let noteTextTable = order.note ? `<div style="font-size:13px; color:#c2185b; font-weight:700; margin-top:6px; max-width: 250px; white-space: normal; background:#fce4ec; padding:4px 8px; border-radius:4px;">客製: ${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
                 
                 let docIdStr = order.docId;
+                let safeMealName = order.meal.replace(/'/g, "\\'");
+                
                 let quickPayBtn = paidAmt < safePrice 
                     ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${docIdStr}', ${safePrice}, ${safePrice})">付清</button>` 
                     : `<button class="btn-quick-reset" onclick="updatePaidAmount('${docIdStr}', 0, ${safePrice})">歸零</button>`;
-
-                // 🚀 v2.6.1: 單筆取消作廢按鈕
-                let cancelBtn = `<button class="btn-outline" style="border-color:#d32f2f; color:#d32f2f; padding:4px 8px; font-size:12px;" onclick="adminCancelOrder('${docIdStr}', '${order.studentId}', ${paidAmt}, '${order.meal.substring(0,10)}')"><span class="material-symbols-outlined" style="font-size:14px;">close</span>作廢</button>`;
 
                 cardHtml += `
                     <div class="order-card ${rowClass}">
@@ -1304,13 +1268,13 @@
                             ${noteTextCard}
                         </div>
                         <div class="oc-footer">
-                            <div class="oc-pay-row">
+                            <div class="oc-pay-row" style="margin-bottom:8px;">
                                 <div class="oc-pay-input">
                                     已收 $<input type="number" value="${paidAmt}" onchange="updatePaidAmount('${docIdStr}', this.value, ${safePrice})" style="width:65px; padding:6px; margin:0; text-align:center; font-size:14px; border:1px solid #ccc; border-radius:6px;">
                                 </div>
                                 <div style="display:flex; gap:6px;">
-                                    ${cancelBtn}
                                     ${quickPayBtn}
+                                    <button class="btn-quick-reset" style="color:#d32f2f; border-color:#ffcdd2; background:#fff5f5;" title="強制取消此訂單" onclick="adminCancelOrder('${docIdStr}', '${order.studentId}', ${paidAmt}, '${safeMealName}')"><span class="material-symbols-outlined" style="font-size:14px; margin:0;">delete</span></button>
                                 </div>
                             </div>
                             <div class="oc-status-row">
@@ -1337,7 +1301,7 @@
                                 <input type="number" value="${paidAmt}" onchange="updatePaidAmount('${docIdStr}', this.value, ${safePrice})" style="width:60px; padding:6px; margin:0; text-align:center; font-size:14px; border:1px solid #ccc; border-radius:6px;">
                                 ${quickPayBtn}
                                 ${statusText}
-                                ${cancelBtn}
+                                <button class="btn-quick-reset" style="color:#d32f2f; border-color:#ffcdd2; background:#fff5f5; padding:6px;" onclick="adminCancelOrder('${docIdStr}', '${order.studentId}', ${paidAmt}, '${safeMealName}')"><span class="material-symbols-outlined" style="font-size:16px; margin:0;">delete</span>作廢</button>
                             </div>
                             ${inlineBadge}
                         </td>
@@ -1351,44 +1315,50 @@
         });
     }
 
-    // 🚀 v2.6.1: 後台強制單筆作廢並自動退款
     window.adminCancelOrder = async function(docId, studentId, paidAmt, mealName) {
-        if(!confirm(`⚠️ 確定要直接作廢 ${studentId} 號的「${mealName}...」嗎？\n(若該筆已有繳費，系統會全自動連動退費紀錄！)`)) return;
-        try {
-            let docRef = doc(db, "orders", docId);
-            let snap = await getDoc(docRef);
-            if(!snap.exists()) return;
+        let confirmMsg = paidAmt > 0 
+            ? `⚠️ 確定要直接從後台「強制取消」 ${studentId} 號的這筆訂單嗎？\n\n系統偵測到該生已繳交 $${paidAmt}，作廢後系統會【自動產生一筆 $${paidAmt} 元的退款紀錄】。`
+            : `⚠️ 確定要直接從後台「強制取消」 ${studentId} 號的這筆訂單嗎？`;
             
-            let o = snap.data();
-            let newNote = "🚨 [管理員作廢] | " + (o.note || "");
-            await updateDoc(docRef, { isCancelled: true, note: newNote });
+        if(!confirm(confirmMsg)) return;
+
+        try {
+            const now = new Date();
+            const orderRef = doc(db, "orders", docId);
+            const oSnap = await getDoc(orderRef);
+            if(!oSnap.exists()) return;
+            
+            let existingNote = oSnap.data().note || "";
+            let newNote = `🚨 [後台強制取消] | ` + existingNote;
+            
+            await updateDoc(orderRef, { isCancelled: true, note: newNote });
             
             if(paidAmt > 0) {
-                let timestamp = new Date().getTime();
-                let adjData = {
+                let refundData = {
                     studentId: parseInt(studentId),
                     date: todayStr,
                     restaurant: "款項調整中心",
-                    meal: "[事後退款]",
+                    meal: `[事後退款]`,
                     price: paidAmt,
-                    paidAmount: paidAmt,
+                    paidAmount: paidAmt, 
                     isPaid: true,
                     isCancelled: false,
-                    note: `金額: $${paidAmt} | 原因: 作廢 ${mealName} 的系統自動退款`,
-                    timestamp: timestamp,
-                    timeString: new Date().toLocaleString('zh-TW', { hour12: false }),
+                    note: `金額: $${paidAmt} | 原因: 後台強制取消 ${mealName.substring(0,10)} 自動退款`,
+                    timestamp: now.getTime(),
+                    timeString: now.toLocaleString('zh-TW', { hour12: false }),
                     isAdjustment: true,
-                    adjType: "退款",
-                    targetOrderId: docId
+                    adjType: '退款',
+                    targetOrderId: docId 
                 };
-                await setDoc(doc(db, "orders", `${todayStr}_adj_${studentId}_${timestamp}`), adjData);
+                await setDoc(doc(db, "orders", `${todayStr}_adj_${studentId}_${now.getTime()}`), refundData);
             }
-            logAdminAction("管理員作廢訂單", `作廢了 ${studentId} 號的 ${mealName} (自動退款: ${paidAmt})`);
-            alert("✅ 訂單已成功作廢！\n" + (paidAmt > 0 ? "⚠️ 系統已自動於【退補款中心】建立一筆對應的退款紀錄。" : ""));
-        } catch(e) {
-            console.error(e); alert("執行失敗");
-        }
-    };
+            
+            await logAdminAction("後台強制取消訂單", `作廢了 ${studentId} 號的訂單 (${mealName})` + (paidAmt > 0 ? `，並退款 $${paidAmt}` : ""));
+            alert("✅ 訂單已成功作廢！" + (paidAmt > 0 ? `\n已連動產生 $${paidAmt} 退款紀錄，帳務完美平衡。` : ""));
+            
+            if(document.getElementById('page-ledger').classList.contains('active')) loadLedger();
+        } catch(e) { alert("取消失敗: " + e); }
+    }
 
     window.updatePaidAmount = async function(docId, val, price) {
         let amt = Math.ceil(parseFloat(val)) || 0; let isPaid = amt >= price; 
@@ -1745,12 +1715,22 @@
             let html = "";
             orders.forEach(o => {
                 let status = "";
+                let safePrice = o.price || 0;
+                let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? safePrice : 0);
+
                 if (o.isCancelled) {
-                    status = "已作廢";
+                    status = `<span style="color:#888;">已作廢</span>`;
                 } else if (o.isAdjustment) {
                     status = `<span style="color:#0078d4;">${o.adjType === '退款' ? '已退還現金' : '已收到補款'}</span>`;
                 } else {
-                    status = o.isPaid ? "已結清" : "未繳";
+                    // 🚀 v2.6.2: 修正精準判定邏輯
+                    if (paidAmt >= safePrice) {
+                        status = `<span style="color:#2e7d32;">已結清</span>`;
+                    } else if (paidAmt > 0) {
+                        status = `<span style="color:#e65100;">差 $${safePrice - paidAmt}</span>`;
+                    } else {
+                        status = `<span style="color:#d32f2f;">未繳費</span>`;
+                    }
                 }
                 
                 let mealContent = o.meal.replace(/, /g, '<br>');
@@ -1773,7 +1753,7 @@
         }
     };
 
-    // 🚀 v2.6.1: 5星評分顯示轉換邏輯
+    // 🚀 v2.6.2: 增強版相容性評分讀取
     window.loadReviews = async function() {
         document.getElementById('reviewTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">讀取中...</td></tr>`;
         const restFilter = document.getElementById('reviewRestFilter').value;
@@ -1795,27 +1775,23 @@
             
             let s1=0, c1=0, s2=0, c2=0, s3=0, c3=0, s4=0, c4=0; let html = "";
             reviews.forEach(r => {
-                // 自動換算舊版的 10 分制為 5 星制
-                let v1 = r.score1 > 5 ? Math.ceil(r.score1/2) : (r.score1 || 0);
-                let v2 = r.score2 > 5 ? Math.ceil(r.score2/2) : (r.score2 || 0);
-                let v3 = r.score3 > 5 ? Math.ceil(r.score3/2) : (r.score3 || 0);
-                let v4 = r.score4 > 5 ? Math.ceil(r.score4/2) : (r.score4 || 0);
-
-                if(v1) { s1+=v1; c1++; } if(v2) { s2+=v2; c2++; }
-                if(v3) { s3+=v3; c3++; } if(v4) { s4+=v4; c4++; }
+                let score1 = parseInt(r.score1); if(!isNaN(score1)) { s1 += score1; c1++; }
+                let score2 = parseInt(r.score2); if(!isNaN(score2)) { s2 += score2; c2++; }
+                let score3 = parseInt(r.score3); if(!isNaN(score3)) { s3 += score3; c3++; }
+                let score4 = parseInt(r.score4); if(!isNaN(score4)) { s4 += score4; c4++; }
                 
-                let scoreTxt = `
-                    <div style="margin-bottom:2px;">好吃: <span style="color:#fbc02d; font-size:16px;">${'★'.repeat(v1)}</span><span style="color:#e5e5ea; font-size:16px;">${'★'.repeat(5-v1)}</span></div>
-                    <div style="margin-bottom:2px;">速度: <span style="color:#fbc02d; font-size:16px;">${'★'.repeat(v2)}</span><span style="color:#e5e5ea; font-size:16px;">${'★'.repeat(5-v2)}</span></div>
-                    <div style="margin-bottom:2px;">價格: <span style="color:#fbc02d; font-size:16px;">${'★'.repeat(v3)}</span><span style="color:#e5e5ea; font-size:16px;">${'★'.repeat(5-v3)}</span></div>
-                    <div>推薦: <span style="color:#fbc02d; font-size:16px;">${'★'.repeat(v4)}</span><span style="color:#e5e5ea; font-size:16px;">${'★'.repeat(5-v4)}</span></div>
-                `;
+                let scoreTxt = `<span style="color:#fbc02d;">★</span> 好吃:${r.score1||'-'} | 速度:${r.score2||'-'} | 價格:${r.score3||'-'} | 推薦:${r.score4||'-'}`;
+                
+                let tsStr = r.timeString || "";
+                let tsParts = tsStr.split(' ');
+                let dDate = tsParts[0] || "未知";
+                let dTime = tsParts[1] || "";
 
                 html += `<tr>
-                    <td data-label="時間">${r.timeString.split(' ')[0]}<br>${r.timeString.split(' ')[1]}</td>
+                    <td data-label="時間">${dDate}<br>${dTime}</td>
                     <td data-label="座號"><strong>${r.studentId}</strong></td>
                     <td data-label="餐廳/餐點" style="text-align:left;">[${r.restaurant||"未知"}]<br>${r.meal}</td>
-                    <td data-label="四項給分" style="color:#555; text-align:left; line-height:1.2;">${scoreTxt}</td>
+                    <td data-label="五星評等" style="color:#555; font-size:12px;">${scoreTxt}</td>
                     <td data-label="留言建議" style="text-align:left;">${r.comment || '<span style="color:#ccc;">無</span>'}</td>
                 </tr>`;
             });
@@ -1823,15 +1799,16 @@
             
             if(reviews.length > 0) {
                 document.getElementById('reviewStatsArea').style.display = 'flex';
-                document.getElementById('avgS1').innerHTML = c1 > 0 ? `<span style="color:#fbc02d;">★</span> ${(s1/c1).toFixed(1)}` : '-'; 
-                document.getElementById('avgS2').innerHTML = c2 > 0 ? `<span style="color:#fbc02d;">★</span> ${(s2/c2).toFixed(1)}` : '-';
-                document.getElementById('avgS3').innerHTML = c3 > 0 ? `<span style="color:#fbc02d;">★</span> ${(s3/c3).toFixed(1)}` : '-'; 
-                document.getElementById('avgS4').innerHTML = c4 > 0 ? `<span style="color:#fbc02d;">★</span> ${(s4/c4).toFixed(1)}` : '-';
+                document.getElementById('avgS1').innerHTML = c1 > 0 ? (s1/c1).toFixed(1) + '<span style="color:#fbc02d; font-size:16px;">★</span>' : '-'; 
+                document.getElementById('avgS2').innerHTML = c2 > 0 ? (s2/c2).toFixed(1) + '<span style="color:#fbc02d; font-size:16px;">★</span>' : '-';
+                document.getElementById('avgS3').innerHTML = c3 > 0 ? (s3/c3).toFixed(1) + '<span style="color:#fbc02d; font-size:16px;">★</span>' : '-'; 
+                document.getElementById('avgS4').innerHTML = c4 > 0 ? (s4/c4).toFixed(1) + '<span style="color:#fbc02d; font-size:16px;">★</span>' : '-';
             } else {
                 document.getElementById('reviewStatsArea').style.display = 'none';
             }
         } catch(e) {
-            document.getElementById('reviewTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">讀取失敗</td></tr>`;
+            console.error("評分讀取錯誤:", e);
+            document.getElementById('reviewTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態" style="color:red;">讀取失敗</td></tr>`;
         }
     };
 
