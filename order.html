@@ -124,7 +124,6 @@
         
         #mainApp { display: none; }
         
-        /* 🚀 v2.6.1 五星評分 UI */
         .star-rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; gap: 5px; }
         .star-rating input { display: none; }
         .star-rating label { color: #d2d2d7; font-size: 30px; cursor: pointer; transition: color 0.2s; }
@@ -133,7 +132,6 @@
 </head>
 <body class="bg-theme-4">
 
-<!-- 背景選擇 Modal -->
 <div id="bgSelectorModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
     <div class="card" style="width:90%; max-width:400px; padding:20px;">
         <h2 style="margin-top:0; border-bottom:1px solid #e5e5ea; padding-bottom:10px;"><span class="material-symbols-outlined">palette</span> 個性化背景選擇</h2>
@@ -189,7 +187,7 @@
             <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
             <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
             <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
-            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.1</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.2</span></a></li>
             <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
             <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
             <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span class="material-symbols-outlined">info</span> 關於本站</a></li>
@@ -250,7 +248,6 @@
             <button class="btn btn-secondary" style="margin-top:15px;" onclick="gotoHome()">返回首頁</button>
         </div>
 
-        <!-- 🚀 v2.6.1: 5星評分介面 -->
         <div class="card" id="reviewPageArea">
             <h2><span class="material-symbols-outlined">star</span> 餐點評分</h2>
             <button class="btn btn-outline" style="margin-top:5px;" onclick="fetchOrdersForReview()"><span class="material-symbols-outlined">search</span> 查詢我的近期餐點</button>
@@ -319,7 +316,6 @@
             <h2 style="justify-content:center; border:none; margin-bottom:5px;">目前無法點餐</h2>
             <p id="lockedReason" style="font-weight:600; color:#555; margin-top:0; line-height:1.6;"></p>
             <div style="display:flex; gap:10px; margin-top:20px;">
-                <!-- 🚀 v2.6.1: 非點餐時段解鎖查詢功能 -->
                 <button class="btn btn-primary" style="flex:1;" onclick="checkStatusQuick()">當日狀態</button>
                 <button class="btn btn-primary" style="flex:1;" onclick="showMyHistory()">歷史紀錄</button>
             </div>
@@ -333,17 +329,27 @@
             <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
             <div style="margin-top: 15px;">
 
-                <!-- 🚀 v2.6.1 最新更新 -->
+                <!-- 🚀 v2.6.2 最新更新 -->
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:16px;">v2.6.1 圖形化客製系統與非訂單時段解鎖 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                    <h3 style="margin:0; font-size:16px;">v2.6.2 帳務連動修正與歷史評分相容優化 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
+                    <li>📊 <strong>帳務連動修正：</strong> 「統計報表與帳務中心」現在會將「事後退補款項」精準納入「目前已收」與「尚未收取」中，總金額不再產生落差。</li>
+                    <li>⭐ <strong>評分系統讀取修復：</strong> 修復了餐點評分接收站因歷史資料格式不相容導致的「讀取失敗」Bug，現在能穩定載入五星評分。</li>
+                    <li>🔍 <strong>學生狀態查詢精準化：</strong> 「學生狀態與紀錄查詢」介面的繳費狀態判定已升級，現在能正確辨識「部分繳費 (催繳)」，不再誤判為「已結清」。</li>
+                </ul>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.6.1 圖形化客製系統與非訂單時段解鎖</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>🔓 <strong>非點餐時段解鎖：</strong> 即使超過 11:00 或尚未開放點餐，同學依然可以登入系統查詢「當日狀態」與「歷史分析」，只有點餐入口會被鎖定，防呆且更方便！</li>
                     <li>🛠️ <strong>支援全新圖形化選項：</strong> 完全無縫對接後台全新的「圖形化客製群組」，不再依賴生硬的 HTML 標籤，點餐與保留原選項功能更加精準完美。</li>
                     <li>⭐ <strong>五星評分系統：</strong> 將原本輸入 1~10 分的機制，全面進化為大家最熟悉的 Google 級「五顆星 (★)」直覺點擊評分介面。</li>
                     <li>❌ <strong>後台強制作廢退款：</strong> 負責人可於後台直接作廢特定同學訂單，系統會連動自動產生退款紀錄。</li>
-                    <li>📊 <strong>智慧精準客製化統計：</strong> 後台「點餐總表」現在會全自動解析並標示出同學的客製化選項（例：貢丸意麵 (不要蔥) x1），讓負責人向賣家點餐不再混亂！</li>
+                    <li>📊 <strong>智慧精準客製化統計：</strong> 後台「點餐總表」現在會全自動解析並標示出同學的客製化選項，讓負責人向賣家點餐不再混亂！</li>
                 </ul>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -352,10 +358,10 @@
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>📝 <strong>訂單無痛修改：</strong> 前台修改訂單時，不再強制全部清空重選！系統會完整載入你原本點的餐點與客製化選項，讓你可以在原有的基礎上直接加點或刪減。</li>
-                    <li>💰 <strong>繳費防呆標示：</strong> 放大並更名繳費按鈕為「我已繳費了！發送已繳費通知給後台」，避免同學誤以為按了就代表系統自動扣款。</li>
-                    <li>🧹 <strong>評分篩選與清理：</strong> 後台「餐點評分接收站」新增餐廳篩選下拉選單，並支援「一鍵刪除目前顯示評分」的強大功能，輕鬆清理過時資料。</li>
-                    <li>📋 <strong>完美複製校方表單：</strong> 修復後台「複製校方表單純文字」功能，現在點擊可精準複製出完美的統計明細格式，方便直接貼上填報。</li>
-                    <li>🔒 <strong>備案啟動強制鎖定：</strong> 負責人啟動「危機處理備案」時，系統將強制封鎖前台的常規點餐權限，確保未訂餐同學只能選擇加入統一備案。</li>
+                    <li>💰 <strong>繳費防呆標示：</strong> 放大並更名繳費按鈕為「我已繳費了！發送已繳費通知給後台」。</li>
+                    <li>🧹 <strong>評分篩選與清理：</strong> 後台「餐點評分接收站」新增餐廳篩選下拉選單，並支援「一鍵刪除目前顯示評分」的強大功能。</li>
+                    <li>📋 <strong>完美複製校方表單：</strong> 修復後台「複製校方表單純文字」功能，現在點擊可精準複製出完美的統計明細格式。</li>
+                    <li>🔒 <strong>備案啟動強制鎖定：</strong> 負責人啟動「危機處理備案」時，系統將強制封鎖前台的常規點餐權限。</li>
                     <li>🎨 <strong>全新紋理背景：</strong> 背景選擇器中新增「極簡小網格、文青點陣、藍曬大格線」三款質感背景供自由切換。</li>
                 </ul>
 
@@ -384,54 +390,6 @@
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>🧾 <strong>事後退補紀錄獨立頁面：</strong> 將退補紀錄從即時看板中移出，設立專屬管理頁面。</li>
                     <li>🎛️ <strong>看板雙模式切換：</strong> 訂單即時看板支援「卡片模式」與「表格模式」自由切換。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.4.5 智慧退補款連動與完美結清</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>🎯 <strong>事後退補邏輯重建：</strong> 功能定位精準調整為「填平歷史欠款與溢繳」，純現金結清不產生額外負債。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.4.4 菜單全自訂排序按鈕</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>🔃 <strong>解決手機拖曳失效：</strong> 將菜單管理庫升級為「實體上移 / 下移按鈕」，分類與品項皆可輕鬆排序。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.3.0 雲端菜單資料庫實裝</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>☁️ <strong>菜單全面雲端化：</strong> 系統架構大突破！13 家菜單移轉至 Firebase 資料庫，並開放前台直接無痛修改餐點。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.2.0 歷史大數據與個人帳戶</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>📈 <strong>歷史大數據：</strong> 新增圓餅圖與折線圖分析學生的歷史花費趨勢，並建構個人總帳戶餘額機制。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.1.0 菜單總覽與評分系統</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>⭐ <strong>評分與許願池：</strong> 開放同學對歷史訂單進行給分，並能隨時許願想吃的餐廳。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.0.0 系統全新創立</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>🚀 <strong>全新出發：</strong> 正式脫離紙本與群組點餐，導入 Firebase 雲端資料庫，建立基礎前台極速點餐架構。</li>
                 </ul>
 
             </div>
@@ -486,7 +444,6 @@
             <div style="border-bottom: 1px solid #e5e5ea; padding-bottom: 25px; margin-bottom: 25px;">
                 <h2 style="border:none; justify-content:center; margin-bottom:15px;"><span class="material-symbols-outlined">restaurant</span> 我要點餐</h2>
                 <div style="font-size:15px; font-weight:600; color:#111; margin-bottom:15px;">身分認證：<span class="display-user-id user-badge"></span></div>
-                <!-- 🚀 v2.6.1: ID加入判斷供鎖定使用 -->
                 <button class="btn btn-primary" id="enterMenuBtn" onclick="verifyStudent()">點此進入菜單 <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span></button>
             </div>
             <div>
@@ -568,7 +525,6 @@
             </div>
             <div id="paymentActions" style="background:#fafafa; padding:16px; border-radius:8px; border:1px solid #e5e5ea; margin:20px 0;">
                 <div id="paymentStatusUI">狀態讀取中...</div>
-                <!-- 🚀 v2.6.1: 繳費防呆按鈕放大與更名 -->
                 <button class="btn btn-primary" id="notifyBtn" onclick="notifyAdminPaid()" style="margin-top:15px; width:100%; padding:18px; font-size:16px; font-weight:800; letter-spacing:0.5px; background-color:#111;">我已繳費了！發送已繳費通知給後台</button>
             </div>
             
@@ -635,7 +591,6 @@
     let tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
     const tmrStr = tomorrow.toISOString().split('T')[0];
 
-    // 🚀 v2.6.1: 判斷目前是否處於鎖定狀態的共用變數
     window.isSystemLocked = false; 
 
     window.onload = async function() {
@@ -827,7 +782,6 @@
         else gotoHome();
     }
 
-    // 🚀 v2.6.1: 修正回首頁時的鎖定判斷
     window.gotoHome = function() { 
         window.editingOrder = null; 
         if (window.isSystemLocked) {
@@ -884,7 +838,7 @@
                 <hr style="border:0; border-top:1px solid #e5e5ea; margin:16px 0;">
                 
                 <div style="text-align:right; font-size:13px; color:#555; line-height:1.6;">
-                    <div>系統版本：217 午餐訂購系統 v2.6.1</div>
+                    <div>系統版本：217 午餐訂購系統 v2.6.2</div>
                     <div>網頁開發與系統架構設計：<span style="font-weight:700; color:#111;">羅亦承</span></div>
                 </div>
             </div>
@@ -1145,7 +1099,6 @@
         } catch(e) { alert("傳送失敗"); }
     }
 
-    // 🚀 v2.6.1: 判斷時間與鎖定狀態，解鎖查詢權限
     async function initSystem() {
         try {
             const setSnap = await getDoc(doc(db, "system", "settings")); 
@@ -1163,7 +1116,6 @@
                 let msg = window.isSystemLocked && ct>=st && ct<=et ? "⚠️ 系統目前為「備案鎖定狀態」，常規點餐入口已關閉！<br>請至首頁查看緊急廣播內容。" : `目前非點餐時間。<br><span style="font-size:14px; font-weight:normal; color:#555;">開放時間為：${st} ~ ${et}</span>`;
                 currentOrderStep = 'lockedScreen'; 
                 showLocked(msg);
-                // 即使被鎖，也要去拉當天餐廳資料，為了讓查詢頁面有資料
                 const menuSnap = await getDoc(doc(db, "dailyMenus", todayStr));
                 if(menuSnap.exists()) currentRestaurant = menuSnap.data().restaurant;
                 return;
@@ -1390,7 +1342,6 @@
             if(cart[n].q > 0) { 
                 meals.push(`${n} x${cart[n].q}`); bp += cart[n].p * cart[n].q; 
                 
-                // 🚀 v2.6.1: 讀取圖形化選項群組 HTML
                 let tempDiv = document.createElement('div');
                 tempDiv.innerHTML = restData.options || "";
                 
@@ -1563,7 +1514,6 @@
             let sel=""; rvOrders.forEach((o,i)=>sel+=`<option value="${i}">${o.date} - [${o.restaurant||"未知"}] ${o.meal}</option>`); 
             document.getElementById('rvOrderSelect').innerHTML=sel; 
             
-            // 🚀 v2.6.1: 清空星星狀態
             document.querySelectorAll('.star-rating input').forEach(el => el.checked = false);
             document.getElementById('rvComment').value = "";
             
@@ -1571,7 +1521,6 @@
         } catch(e){} 
     };
     
-    // 🚀 v2.6.1: 讀取五星評分資料
     window.submitMealReview = async function() { 
         const o = rvOrders[document.getElementById('rvOrderSelect').value]; if(!o)return; 
         
