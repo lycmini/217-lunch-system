@@ -191,7 +191,7 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.2</span></a></li>
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.3</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
             
             <li><a href="javascript:void(0)" onclick="showBgSelector(); toggleMenu();"><span class="material-symbols-outlined">palette</span> 個性化背景選擇</a></li>
@@ -542,12 +542,21 @@
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
 
-                    <!-- 🚀 v2.6.2 最新更新 -->
+                    <!-- 🚀 v2.6.3 最新更新 -->
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.6.2 帳務連動修正與歷史評分相容優化 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <h3 style="margin:0; font-size:16px;">v2.6.3 即時看板帳務動態同步 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
+                        <li>🔄 <strong>看板帳務即時連動：</strong> 針對「事後補收 / 退款」功能進行底層引擎重構。現在當日訂單即時看板會跨越時空，自動掃描針對該日訂單的所有事後退補紀錄，並完美加總計算，保證看板顯示的金額 100% 同步！</li>
+                        <li>🏷️ <strong>退補款專屬標示：</strong> 訂單即時看板中若該筆訂單含有退補紀錄，會自動亮起專屬藍色徽章提醒負責人。</li>
+                    </ul>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.6.2 帳務連動修正與歷史評分相容優化</h3>
+                        <span style="font-size:13px; color:#888;">2026-09</span>
+                    </div>
+                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                         <li>📊 <strong>帳務連動修正：</strong> 「統計報表與帳務中心」現在會將「事後退補款項」精準納入「目前已收」與「尚未收取」中，總金額不再產生落差。</li>
                         <li>⭐ <strong>評分系統讀取修復：</strong> 修復了餐點評分接收站因歷史資料格式不相容導致的「讀取失敗」Bug，現在能穩定載入五星評分。</li>
                         <li>🔍 <strong>學生狀態查詢精準化：</strong> 「學生狀態與紀錄查詢」介面的繳費狀態判定已升級，現在能正確辨識「部分繳費 (催繳)」，不再誤判為「已結清」。</li>
@@ -1052,7 +1061,6 @@
             });
 
             await setDoc(doc(db, "system", "settings"), { planBLocked: true }, { merge: true });
-            
             document.getElementById('unlockFrontendBtn').style.display = 'block';
             
             logAdminAction("啟動備案機制", `將 ${count} 筆訂單強制轉換為 [${rest}] ${meal}，並鎖定前台`);
@@ -1159,9 +1167,25 @@
         try { const menuSnap = await getDoc(doc(db, "dailyMenus", dateStr)); if(menuSnap.exists()) restName = menuSnap.data().restaurant; } catch(e) {}
 
         const q = query(collection(db, "orders"), where("date", "==", dateStr));
-        currentUnsubscribe = onSnapshot(q, (snapshot) => {
+        currentUnsubscribe = onSnapshot(q, async (snapshot) => {
             let activeOrders = [], canceledAlerts = [], paidAlerts = [];
             let totalAmount = 0, collectedAmount = 0, itemCounts = {};
+
+            let adjMap = {};
+            try {
+                const adjQ = query(collection(db, "orders"), 
+                    where("targetOrderId", ">=", dateStr + "_"), 
+                    where("targetOrderId", "<=", dateStr + "_\uf8ff")
+                );
+                const adjSnap = await getDocs(adjQ);
+                adjSnap.forEach(doc => {
+                    let adj = doc.data();
+                    if(adj.isAdjustment) {
+                        let val = adj.adjType === '補收' ? adj.price : -adj.price;
+                        adjMap[adj.targetOrderId] = (adjMap[adj.targetOrderId] || 0) + val;
+                    }
+                });
+            } catch(e) {}
 
             snapshot.forEach((docSnap) => {
                 let order = docSnap.data();
@@ -1169,18 +1193,17 @@
                 if (order.isCancelled) { 
                     canceledAlerts.push(order); 
                 } else if (order.isAdjustment) {
-                    // 🚀 v2.6.2: 連動退補款項到已收總額
-                    if (order.adjType === '補收') {
-                        collectedAmount += (order.price || 0);
-                    } else if (order.adjType === '退款') {
-                        collectedAmount -= (order.price || 0);
-                    }
+                    
                 } else {
                     activeOrders.push(order);
                     let safePrice = order.price || 0;
-                    let paidAmt = order.paidAmount !== undefined ? order.paidAmount : (order.isPaid ? safePrice : 0);
-                    if (order.notifiedPaid && paidAmt < safePrice) paidAlerts.push(order);
-                    totalAmount += safePrice; collectedAmount += paidAmt; 
+                    let basePaid = order.paidAmount !== undefined ? order.paidAmount : (order.isPaid ? safePrice : 0);
+                    let adjSum = adjMap[order.docId] || 0;
+                    let totalPaidAmt = basePaid + adjSum;
+
+                    if (order.notifiedPaid && totalPaidAmt < safePrice) paidAlerts.push(order);
+                    totalAmount += safePrice; 
+                    collectedAmount += totalPaidAmt; 
 
                     let itemsStr = (order.meal || "").split(", ");
                     itemsStr.forEach(m => {
@@ -1223,7 +1246,9 @@
 
             activeOrders.forEach(order => {
                 let safePrice = order.price || 0;
-                let paidAmt = order.paidAmount !== undefined ? order.paidAmount : (order.isPaid ? safePrice : 0);
+                let basePaid = order.paidAmount !== undefined ? order.paidAmount : (order.isPaid ? safePrice : 0);
+                let adjSum = adjMap[order.docId] || 0;
+                let paidAmt = basePaid + adjSum; 
                 
                 let rowClass = '';
                 let statusText = '';
@@ -1250,12 +1275,14 @@
                 let noteTextCard = order.note ? `<div style="font-size:14px; color:#c2185b; font-weight:700; margin-top:8px; padding:8px; background:#fce4ec; border-radius:6px; border-left:3px solid #c2185b;">客製化: ${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
                 let noteTextTable = order.note ? `<div style="font-size:13px; color:#c2185b; font-weight:700; margin-top:6px; max-width: 250px; white-space: normal; background:#fce4ec; padding:4px 8px; border-radius:4px;">客製: ${order.note.replace(/ \| 🚨.*/, '')}</div>` : '';
                 
+                let adjBadge = adjSum !== 0 ? `<div style="font-size:12px; color:#0078d4; font-weight:700; margin-top:6px; padding:4px 8px; background:#eaf4fc; border-radius:4px; border:1px solid #bce0fd; display:inline-block;"><span class="material-symbols-outlined" style="font-size:14px; margin:0;">sync</span> 含退補紀錄: ${adjSum > 0 ? '+'+adjSum : adjSum}</div>` : '';
+
                 let docIdStr = order.docId;
                 let safeMealName = order.meal.replace(/'/g, "\\'");
                 
                 let quickPayBtn = paidAmt < safePrice 
-                    ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${docIdStr}', ${safePrice}, ${safePrice})">付清</button>` 
-                    : `<button class="btn-quick-reset" onclick="updatePaidAmount('${docIdStr}', 0, ${safePrice})">歸零</button>`;
+                    ? `<button class="btn-quick-pay" onclick="updatePaidAmount('${docIdStr}', ${safePrice}, ${safePrice}, ${adjSum})">付清</button>` 
+                    : `<button class="btn-quick-reset" onclick="updatePaidAmount('${docIdStr}', 0, ${safePrice}, ${adjSum})">歸零</button>`;
 
                 cardHtml += `
                     <div class="order-card ${rowClass}">
@@ -1266,11 +1293,12 @@
                         <div class="oc-body">
                             ${mealContent}
                             ${noteTextCard}
+                            ${adjBadge}
                         </div>
                         <div class="oc-footer">
                             <div class="oc-pay-row" style="margin-bottom:8px;">
                                 <div class="oc-pay-input">
-                                    已收 $<input type="number" value="${paidAmt}" onchange="updatePaidAmount('${docIdStr}', this.value, ${safePrice})" style="width:65px; padding:6px; margin:0; text-align:center; font-size:14px; border:1px solid #ccc; border-radius:6px;">
+                                    已收 $<input type="number" value="${paidAmt}" onchange="updatePaidAmount('${docIdStr}', this.value, ${safePrice}, ${adjSum})" style="width:65px; padding:6px; margin:0; text-align:center; font-size:14px; border:1px solid #ccc; border-radius:6px;">
                                 </div>
                                 <div style="display:flex; gap:6px;">
                                     ${quickPayBtn}
@@ -1294,11 +1322,12 @@
                         <td style="text-align:left;">
                             <div style="font-weight:600;">${mealContent}</div>
                             ${noteTextTable}
+                            ${adjBadge}
                         </td>
                         <td style="font-weight:700;">$${safePrice}</td>
                         <td>
                             <div style="display:flex; align-items:center; gap:8px; justify-content:center; flex-wrap:wrap;">
-                                <input type="number" value="${paidAmt}" onchange="updatePaidAmount('${docIdStr}', this.value, ${safePrice})" style="width:60px; padding:6px; margin:0; text-align:center; font-size:14px; border:1px solid #ccc; border-radius:6px;">
+                                <input type="number" value="${paidAmt}" onchange="updatePaidAmount('${docIdStr}', this.value, ${safePrice}, ${adjSum})" style="width:60px; padding:6px; margin:0; text-align:center; font-size:14px; border:1px solid #ccc; border-radius:6px;">
                                 ${quickPayBtn}
                                 ${statusText}
                                 <button class="btn-quick-reset" style="color:#d32f2f; border-color:#ffcdd2; background:#fff5f5; padding:6px;" onclick="adminCancelOrder('${docIdStr}', '${order.studentId}', ${paidAmt}, '${safeMealName}')"><span class="material-symbols-outlined" style="font-size:16px; margin:0;">delete</span>作廢</button>
@@ -1360,13 +1389,13 @@
         } catch(e) { alert("取消失敗: " + e); }
     }
 
-    window.updatePaidAmount = async function(docId, val, price) {
-        let amt = Math.ceil(parseFloat(val)) || 0; let isPaid = amt >= price; 
+    window.updatePaidAmount = async function(docId, val, price, adjSum = 0) {
+        let targetTotal = Math.ceil(parseFloat(val)) || 0; 
+        let newBasePaid = targetTotal - adjSum;
+        let isPaid = targetTotal >= price; 
         try {
-            await updateDoc(doc(db, "orders", docId), { paidAmount: amt, isPaid: isPaid, notifiedPaid: false });
-        } catch(e) {
-            console.error(e);
-        }
+            await updateDoc(doc(db, "orders", docId), { paidAmount: newBasePaid, isPaid: isPaid, notifiedPaid: false });
+        } catch(e) { console.error(e); }
     }
 
     window.loadHistoryRank = async function() {
@@ -1461,10 +1490,9 @@
                     let paidAmt = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? safePrice : 0);
                     
                     if (o.isAdjustment) {
-                        if (o.adjType === '退款') {
-                            ledger[sIdx].paid -= o.price; 
-                        } else {
-                            ledger[sIdx].paid += o.price; 
+                        if (o.targetOrderId === 'manual') {
+                            if (o.adjType === '退款') { ledger[sIdx].paid -= o.price; } 
+                            else { ledger[sIdx].paid += o.price; }
                         }
                     } else {
                         ledger[sIdx].debt += safePrice; 
@@ -1723,7 +1751,6 @@
                 } else if (o.isAdjustment) {
                     status = `<span style="color:#0078d4;">${o.adjType === '退款' ? '已退還現金' : '已收到補款'}</span>`;
                 } else {
-                    // 🚀 v2.6.2: 修正精準判定邏輯
                     if (paidAmt >= safePrice) {
                         status = `<span style="color:#2e7d32;">已結清</span>`;
                     } else if (paidAmt > 0) {
@@ -1753,7 +1780,6 @@
         }
     };
 
-    // 🚀 v2.6.2: 增強版相容性評分讀取
     window.loadReviews = async function() {
         document.getElementById('reviewTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">讀取中...</td></tr>`;
         const restFilter = document.getElementById('reviewRestFilter').value;
