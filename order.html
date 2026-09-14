@@ -153,7 +153,7 @@
 <div id="loginPage">
     <div class="ig-form">
         <div class="ig-title">217午餐訂購系統</div>
-        <input type="text" id="loginAccount" class="ig-input" placeholder="帳號 (例如: 21701)">
+        <input type="text" id="loginAccount" class="ig-input" placeholder="帳號 (例如: 21701) 或輸入 teacher">
         <input type="password" id="loginPassword" class="ig-input" placeholder="密碼">
         <button class="ig-btn" onclick="doLogin()">登入</button>
         <div class="ig-forgot" onclick="alert('忘記密碼？請直接聯絡負責人處理！')">忘記密碼？</div>
@@ -177,7 +177,7 @@
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">系統選單</div>
         <div class="account-status">
-            <div style="display:flex; align-items:center;"><span class="material-symbols-outlined" style="margin-right:6px;">account_circle</span> <span id="sidebarLoggedId">尚未登入</span> 號</div>
+            <div style="display:flex; align-items:center;"><span class="material-symbols-outlined" style="margin-right:6px;">account_circle</span> <span id="sidebarLoggedId">尚未登入</span></div>
             <button class="btn-logout" onclick="logout()">登出</button>
         </div>
         
@@ -187,7 +187,7 @@
             <li><a href="javascript:void(0)" onclick="showHistoryRank(); toggleMenu();"><span class="material-symbols-outlined">leaderboard</span> 歷代熱門排行榜</a></li>
             <li><a href="javascript:void(0)" onclick="showReviewPage(); toggleMenu();"><span class="material-symbols-outlined">star</span> 餐點評分</a></li>
             <li><a href="javascript:void(0)" onclick="showFeedbackPage(); toggleMenu();"><span class="material-symbols-outlined">forum</span> 意見反應 & 許願池</a></li>
-            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.4</span></a></li>
+            <li><a href="javascript:void(0)" onclick="showUpdateLog(); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.5</span></a></li>
             <li><a href="javascript:void(0)" onclick="showInfoPage('相關校規 & 服務條款', document.getElementById('tosTextContent').innerHTML); toggleMenu();"><span class="material-symbols-outlined">gavel</span> 相關校規 & 服務條款</a></li>
             <li><a href="javascript:void(0)" onclick="showFaqPage(); toggleMenu();"><span class="material-symbols-outlined">help</span> 常見問題 (FAQ)</a></li>
             <li><a href="javascript:void(0)" onclick="showAboutPage(); toggleMenu();"><span class="material-symbols-outlined">info</span> 關於本站</a></li>
@@ -329,15 +329,26 @@
             <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
             <div style="margin-top: 15px;">
 
+                <!-- 🚀 v2.6.5 最新更新 -->
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                    <h3 style="margin:0; font-size:16px;">v2.6.4 菜單批次匯入與防呆優化 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                    <h3 style="margin:0; font-size:16px;">v2.6.5 帳務引擎進化與純文字直譯菜單 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
+                    <li>🧮 <strong>帳務餘額 100% 同步：</strong> 前台歷史帳戶計算邏輯升級！現在系統會精準合併所有「退補款紀錄」，保證前台個人餘額與後台班級帳本完全一致，不再有任何落差！</li>
+                    <li>🧑‍🏫 <strong>Teacher 帳號開通：</strong> 新增 `teacher` 專屬帳號。老師可使用 `teacher` 登入前台點餐，也可登入後台系統管理。</li>
+                    <li>📝 <strong>純文字直譯菜單引擎：</strong> 前台全面對接後台全新的「純文字直譯」菜單資料庫，客製化選項編譯更精準、更快速。</li>
+                    <li>❌ <strong>一鍵強制作廢與退款：</strong> 負責人從後台強制作廢同學訂單時，系統將會全自動生成退款紀錄結平帳目。</li>
+                </ul>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
+                    <h3 style="margin:0; font-size:16px; color:#555;">v2.6.4 菜單批次匯入與防呆優化</h3>
+                    <span style="font-size:13px; color:#888;">2026-09</span>
+                </div>
+                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>📄 <strong>菜單文字批次匯入：</strong> 雲端菜單庫新增「文字批次匯入」功能，支援依照特定格式快速建立大量菜單。</li>
                     <li>🔄 <strong>即時看板號碼排序：</strong> 訂單即時看板現在支援切換為「依據座號排序 (小到大)」，方便點收與核對。</li>
                     <li>🛠️ <strong>客製化強制選取修復：</strong> 修復客製化選項被強制勾選的問題，現在系統會自動為單選群組補上「預設(無)」的選項。</li>
-                    <li>❌ <strong>後台強制取消連動退款：</strong> 延續並強化一鍵取消功能，確保作廢時若有付款，會自動精準產出退款紀錄。</li>
                 </ul>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -355,7 +366,7 @@
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
                     <li>📊 <strong>帳務連動修正：</strong> 「事後退補款項」精準納入「目前已收」與「尚未收取」中，總金額不再產生落差。</li>
                     <li>⭐ <strong>評分系統讀取修復：</strong> 修復了餐點評分接收站因歷史資料格式不相容導致的「讀取失敗」Bug。</li>
-                    <li>🔍 <strong>學生狀態查詢精準化：</strong> 「學生狀態與紀錄查詢」介面的繳費狀態判定已升級，現在能正確辨識「部分繳費 (催繳)」，不再誤判為「已結清」。</li>
+                    <li>🔍 <strong>學生狀態查詢精準化：</strong> 「學生狀態與紀錄查詢」介面的繳費狀態判定已升級，現在能正確辨識「部分繳費 (催繳)」。</li>
                 </ul>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -363,11 +374,10 @@
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>🔓 <strong>非點餐時段解鎖：</strong> 即使超過 11:00 或尚未開放點餐，同學依然可以登入系統查詢「當日狀態」與「歷史分析」，只有點餐入口會被鎖定，防呆且更方便！</li>
-                    <li>🛠️ <strong>支援全新圖形化選項：</strong> 完全無縫對接後台全新的「圖形化客製群組」，不再依賴生硬的 HTML 標籤，點餐與保留原選項功能更加精準完美。</li>
+                    <li>🔓 <strong>非點餐時段解鎖：</strong> 即使超過 11:00 或尚未開放點餐，同學依然可以登入系統查詢「當日狀態」與「歷史分析」。</li>
+                    <li>🛠️ <strong>支援全新圖形化選項：</strong> 完全無縫對接後台全新的「圖形化客製群組」，不再依賴生硬的 HTML 標籤。</li>
                     <li>⭐ <strong>五星評分系統：</strong> 將原本輸入 1~10 分的機制，全面進化為大家最熟悉的 Google 級「五顆星 (★)」直覺點擊評分介面。</li>
-                    <li>❌ <strong>後台強制作廢退款：</strong> 負責人可於後台直接作廢特定同學訂單，系統會連動自動產生退款紀錄。</li>
-                    <li>📊 <strong>智慧精準客製化統計：</strong> 後台「點餐總表」現在會全自動解析並標示出同學的客製化選項，讓負責人向賣家點餐不再混亂！</li>
+                    <li>📊 <strong>智慧精準客製化統計：</strong> 後台「點餐總表」現在會全自動解析並標示出同學的客製化選項。</li>
                 </ul>
 
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
@@ -375,39 +385,11 @@
                     <span style="font-size:13px; color:#888;">2026-09</span>
                 </div>
                 <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>📝 <strong>訂單無痛修改：</strong> 前台修改訂單時，不再強制全部清空重選！系統會完整載入你原本點的餐點與客製化選項，讓你可以在原有的基礎上直接加點或刪減。</li>
+                    <li>📝 <strong>訂單無痛修改：</strong> 前台修改訂單時，系統會完整載入你原本點的餐點與客製化選項，可以直接加點或刪減。</li>
                     <li>💰 <strong>繳費防呆標示：</strong> 放大並更名繳費按鈕為「我已繳費了！發送已繳費通知給後台」。</li>
-                    <li>🧹 <strong>評分篩選與清理：</strong> 後台「餐點評分接收站」新增餐廳篩選下拉選單，並支援「一鍵刪除目前顯示評分」的強大功能。</li>
-                    <li>📋 <strong>完美複製校方表單：</strong> 修復後台「複製校方表單純文字」功能，現在點擊可精準複製出完美的統計明細格式。</li>
-                    <li>🔒 <strong>備案啟動強制鎖定：</strong> 負責人啟動「危機處理備案」時，系統將強制封鎖前台的常規點餐權限。</li>
-                    <li>🎨 <strong>全新紋理背景：</strong> 背景選擇器中新增「極簡小網格、文青點陣、藍曬大格線」三款質感背景供自由切換。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.5.2 危機處理功能修復</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>🚑 <strong>備案機制修復：</strong> 補回先前改版過程中意外遺失的備案菜單連動與強制換單廣播核心程式碼，危機處理模組全面恢復運作。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.5.1 前台修改 Bug 徹底修復與後台優化</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>🐞 <strong>零號同學 Bug 斬殺：</strong> 修復前台從查詢頁面直接點擊「修改訂單」時，身分驗證被略過導致系統生成 0 號空單的問題。</li>
-                    <li>💰 <strong>後台溢繳精準顯示：</strong> 訂單即時看板現在能精準偵測「已付大於應付」的狀況，並以醒目紅字顯示「溢繳待退 $金額」。</li>
-                    <li>📈 <strong>後台即時大數據：</strong> 新增後台版「歷代熱門排行榜」，並搭載 Real-time Calculation 動態運算引擎。</li>
-                </ul>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                    <h3 style="margin:0; font-size:16px; color:#555;">v2.5.0 退補紀錄獨立與看板雙模式切換</h3>
-                    <span style="font-size:13px; color:#888;">2026-09</span>
-                </div>
-                <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                    <li>🧾 <strong>事後退補紀錄獨立頁面：</strong> 將退補紀錄從即時看板中移出，設立專屬管理頁面。</li>
-                    <li>🎛️ <strong>看板雙模式切換：</strong> 訂單即時看板支援「卡片模式」與「表格模式」自由切換。</li>
+                    <li>🧹 <strong>評分篩選與清理：</strong> 後台支援「一鍵刪除目前顯示評分」的強大功能。</li>
+                    <li>📋 <strong>完美複製校方表單：</strong> 修復後台「複製校方表單純文字」功能。</li>
+                    <li>🔒 <strong>備案啟動強制鎖定：</strong> 啟動「危機處理備案」時，強制封鎖前台的常規點餐權限。</li>
                 </ul>
 
             </div>
@@ -659,29 +641,41 @@
         });
     }
 
+    // 🚀 v2.6.5: 支援 teacher 帳號登入 (ID: 99)
     window.doLogin = async function() {
         const acc = document.getElementById('loginAccount').value.trim(); const pass = document.getElementById('loginPassword').value.trim();
-        const match = acc.match(/^217(0[1-9]|[1-2][0-8])$/);
-        if (!match) return alert("❌ 帳號格式錯誤！(21701~21728)");
-        const id = parseInt(match[1], 10);
-        let expectedPass = "lunch" + (410576 + id); if (id === 21) expectedPass = "lunch410605";
-        if (pass !== expectedPass) return alert("❌ 密碼錯誤！");
+        let id;
+        if (acc === 'teacher' && pass === 'teacher') {
+            id = 99;
+        } else {
+            const match = acc.match(/^217(0[1-9]|[1-2][0-8])$/);
+            if (!match) return alert("❌ 帳號格式錯誤！(21701~21728) 或輸入 teacher");
+            id = parseInt(match[1], 10);
+            let expectedPass = "lunch" + (410576 + id); if (id === 21) expectedPass = "lunch410605";
+            if (pass !== expectedPass) return alert("❌ 密碼錯誤！");
+        }
         
         localStorage.setItem('loggedInUser_217', id); 
         window.currentUserId = id;
-        await logStudentAction("登入系統", "學生登入成功");
+        await logStudentAction("登入系統", "登入成功");
         location.reload();
     };
 
     window.logout = async function() { 
         if(confirm("確定登出？")) { 
-            await logStudentAction("登出系統", "學生登出");
+            await logStudentAction("登出系統", "登出");
             localStorage.removeItem('loggedInUser_217'); 
             location.reload(); 
         } 
     };
     
-    function setupUser(id) { window.currentUserId = parseInt(id); document.getElementById('sidebarLoggedId').innerText = id; document.querySelectorAll('.display-user-id').forEach(el => el.innerText = id); }
+    // 🚀 v2.6.5: 特殊身分 teacher 的 UI 顯示
+    function setupUser(id) { 
+        window.currentUserId = parseInt(id); 
+        let displayLabel = parseInt(id) === 99 ? 'teacher' : id + ' 號';
+        document.getElementById('sidebarLoggedId').innerText = displayLabel; 
+        document.querySelectorAll('.display-user-id').forEach(el => el.innerText = displayLabel); 
+    }
     function checkToS() { if (!localStorage.getItem('tosAgreed_217')) { document.getElementById('tosModal').style.display = 'block'; document.getElementById('systemOverlay').style.display = 'block'; } else { initSystem(); } }
     window.agreeToS = function() { localStorage.setItem('tosAgreed_217', 'true'); document.getElementById('tosModal').style.display = 'none'; document.getElementById('systemOverlay').style.display = 'none'; initSystem(); };
     function hideAllSections() { ['authArea', 'menuArea', 'customizeArea', 'reviewArea', 'receiptArea', 'planBDashboard', 'lockedScreen', 'historyModal', 'infoCard', 'personalHistoryArea', 'reviewPageArea', 'feedbackPageArea', 'menuOverviewArea', 'updateLogArea'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = 'none'; }); }
@@ -856,7 +850,7 @@
                 <hr style="border:0; border-top:1px solid #e5e5ea; margin:16px 0;">
                 
                 <div style="text-align:right; font-size:13px; color:#555; line-height:1.6;">
-                    <div>系統版本：217 午餐訂購系統 v2.6.4</div>
+                    <div>系統版本：217 午餐訂購系統 v2.6.5</div>
                     <div>網頁開發與系統架構設計：<span style="font-weight:700; color:#111;">羅亦承</span></div>
                 </div>
             </div>
@@ -900,7 +894,7 @@
                     ⚠️ <b>防呆限制</b>：客製化頁面內至少需保留一項餐點，無法全部刪至 0 元；若想完全重選，請點左下角「返回加點」。</p>
 
                     <p><b>Q6：為什麼有的品項有「我要麵 / 我要米粉」，有的卻沒有？</b><br>
-                    A：本系統具備「智慧關鍵字過濾」機制，只有名稱包含「麵/米粉」的餐點才會強制跳出主食二選一；若點小菜、湯品或飯類，選麵選項會自動隱藏，絕不干擾！</p>
+                    A：本系統具備「智慧客製化」機制，會自動針對你點的餐點讀取專屬的客製化選單。沒有選項就代表該餐點不需要任何客製化，絕不干擾！</p>
 
                     <p style="margin-bottom:0;"><b>Q7：菜單上的「週三限定特餐」平常怎麼看不到？</b><br>
                     A：系統已內建星期偵測機制。凡標註週三限定的餐點，<b>僅在每週三當天會全自動解鎖上架</b>，其餘日子自動隱藏，避免誤點沒開的餐點。</p>
@@ -991,10 +985,12 @@
 
     let myPieChart = null; let myLineChart = null;
     
+    // 🚀 v2.6.5: 個人餘額算法全面翻新，完美對齊後台總帳本邏輯！
     window.showMyHistory = async function() { 
         const id = window.currentUserId; 
         setView('personalHistoryArea');
-        document.getElementById('ph_studentId').innerText = id; 
+        let displayLabel = parseInt(id) === 99 ? 'teacher' : id + ' 號';
+        document.getElementById('ph_studentId').innerText = displayLabel; 
         document.getElementById('ph_tableBody').innerHTML = '<tr><td colspan="3">讀取中...</td></tr>'; 
         document.getElementById('analyticsDashboard').style.display = 'none';
 
@@ -1026,15 +1022,15 @@
                     }
                     s = `<span style="color:#0078d4; font-weight:700;">${o.adjType === '退款' ? '已退還現金' : '已收到補款'}</span>`;
                     displayMeal = `<span style="color:#0078d4; font-weight:bold;">${o.meal}</span>`;
-                } else if (o.isCancelled) {
-                    if (paidAmt > 0) s = `<span style="color:#d32f2f; font-weight:700;">應退費 $${paidAmt}</span>`;
-                    else s = `<span style="color:#888;">已作廢</span>`;
-                    totalDebt += safePrice;
-                    totalPaid += paidAmt;
                 } else {
-                    if (paidAmt >= safePrice) s = `<span style="color:#2e7d32; font-weight:700;">已結清</span>`;
-                    else if (paidAmt > 0) s = `<span style="color:#d32f2f; font-weight:700;">已付$${paidAmt} (欠$${safePrice - paidAmt})</span>`;
-                    else s = `<span style="color:#555; font-weight:700;">未繳費</span>`;
+                    if (o.isCancelled) {
+                        if (paidAmt > 0) s = `<span style="color:#d32f2f; font-weight:700;">應退費 $${paidAmt}</span>`;
+                        else s = `<span style="color:#888;">已作廢</span>`;
+                    } else {
+                        if (paidAmt >= safePrice) s = `<span style="color:#2e7d32; font-weight:700;">已結清</span>`;
+                        else if (paidAmt > 0) s = `<span style="color:#d32f2f; font-weight:700;">已付$${paidAmt} (欠$${safePrice - paidAmt})</span>`;
+                        else s = `<span style="color:#555; font-weight:700;">未繳費</span>`;
+                    }
                     totalDebt += safePrice;
                     totalPaid += paidAmt;
                 }
@@ -1184,7 +1180,7 @@
 
     async function buildMenuForm(rn) {
         document.getElementById('displayRestaurant').innerText = rn; 
-        const rd = window.cloudRestaurantDB[rn] || {menu:[],options:""}; 
+        const rd = window.cloudRestaurantDB[rn] || {menu:[]}; 
         let nh="", mh="";
         
         const todayDay = new Date().getDay();
@@ -1351,28 +1347,22 @@
         }
     }
 
+    // 🚀 v2.6.5: 直接解析後台傳來的專屬 optionsHtml，拋棄舊版關鍵字比對機制
     window.goToCustomize = function() {
         let meals = []; let bp = 0; let ch = "";
-        const restData = window.cloudRestaurantDB[currentRestaurant] || {options:""};
+        const restData = window.cloudRestaurantDB[currentRestaurant] || {menu:[]};
         let blockCounter = 0;
         
         for(let n in cart) { 
             if(cart[n].q > 0) { 
                 meals.push(`${n} x${cart[n].q}`); bp += cart[n].p * cart[n].q; 
                 
-                let tempDiv = document.createElement('div');
-                tempDiv.innerHTML = restData.options || "";
-                
-                let matchBlocks = tempDiv.querySelectorAll('[data-match]');
-                matchBlocks.forEach(block => {
-                    let keywords = block.getAttribute('data-match').split(',');
-                    let isMatch = keywords.some(kw => n.includes(kw.trim()));
-                    if(!isMatch) {
-                        block.remove(); 
-                    }
+                let itemOptsHtml = "";
+                restData.menu.forEach(cat => {
+                    cat.items.forEach(i => {
+                        if (i.name === n) itemOptsHtml = i.optionsHtml || "";
+                    });
                 });
-                
-                let filteredOptions = tempDiv.innerHTML;
 
                 for(let i=0; i<cart[n].q; i++) {
                     let blockId = `cust_block_${blockCounter++}`;
@@ -1383,7 +1373,7 @@
                     ch += `<button onclick="removeCustItem('${n}', ${cart[n].p}, '${blockId}')" style="background:transparent; border:none; color:#d32f2f; cursor:pointer; padding:4px; display:flex; align-items:center;"><span class="material-symbols-outlined" style="font-size:20px;">delete</span></button>`;
                     ch += `</div>`;
                     
-                    let optHtml = filteredOptions.replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${n}" data-idx="${i}"`).replace(/<input type="radio"/g, `<input type="radio" data-meal="${n}" data-idx="${i}"`).replace(/\{idx\}/g, i);
+                    let optHtml = itemOptsHtml.replace(/<input type="checkbox"/g, `<input type="checkbox" data-meal="${n}" data-idx="${i}"`).replace(/<input type="radio"/g, `<input type="radio" data-meal="${n}" data-idx="${i}"`).replace(/\{idx\}/g, i);
                     
                     if(optHtml.trim() === "") {
                         ch += `<div style="color:#888; font-size:13px;">此餐點無特殊客製化選項</div></div>`;
@@ -1426,6 +1416,7 @@
         let fp = pendingOrder.basePrice; let notes = []; let cust = {};
         const opts = document.getElementById('dynamicOptions').querySelectorAll('input[type="checkbox"]:checked, input[type="radio"]:checked');
         opts.forEach(cb => { 
+            // 🚀 自動過濾預設選項，保持備註乾淨
             if(!cb.value.includes("預設")) { 
                 fp += parseInt(cb.getAttribute('data-price') || 0); 
                 let k = `${cb.getAttribute('data-meal')}(第${parseInt(cb.getAttribute('data-idx'))+1}份)`;
@@ -1439,7 +1430,10 @@
         
         pendingOrder.note = notes.length ? notes.join(" | ") : "無"; pendingOrder.price = fp; pendingOrder.date = todayStr; pendingOrder.restaurant = currentRestaurant;
         
-        document.getElementById('v_id').innerText = pendingOrder.studentId; document.getElementById('v_rest').innerText = currentRestaurant; document.getElementById('v_meal').innerHTML = pendingOrder.meal.replace(/, /g, '<br>'); document.getElementById('v_note').innerText = pendingOrder.note; document.getElementById('v_price').innerText = pendingOrder.price;
+        // 🚀 v2.6.5: Teacher 專屬標示
+        let displayId = parseInt(pendingOrder.studentId) === 99 ? 'teacher' : pendingOrder.studentId;
+
+        document.getElementById('v_id').innerText = displayId; document.getElementById('v_rest').innerText = currentRestaurant; document.getElementById('v_meal').innerHTML = pendingOrder.meal.replace(/, /g, '<br>'); document.getElementById('v_note').innerText = pendingOrder.note; document.getElementById('v_price').innerText = pendingOrder.price;
         
         if(window.editingOrder) {
             let oldP = window.editingOrder.price || 0;
@@ -1496,7 +1490,10 @@
         } catch(e) { alert("錯誤"); btn.innerHTML='確認送出訂單'; btn.disabled=false;}
     }
 
-    function showReceipt(id, m, n, p, ip, np, ts, pa) { document.getElementById('r_id').innerText = id; document.getElementById('r_meal').innerHTML = m.replace(/, /g,'<br>'); document.getElementById('r_price').innerText = p; document.getElementById('r_time').innerText = ts||""; let a = pa!==undefined?pa:(ip?p:0); const ui = document.getElementById('paymentStatusUI'); const b = document.getElementById('notifyBtn'); if(a>=p){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">check_circle</span> 已結清</h3>'; b.style.display='none';} else if(a>0){ui.innerHTML=`<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">warning</span> 已付$${a} (尚欠$${p-a})</h3>`; b.style.display='block';} else if(np){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">hourglass_empty</span> 已通知對帳中</h3>'; b.style.display='none';} else {ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">cancel</span> 尚未繳費</h3>'; b.style.display='block';} window.currentViewingId=id; currentOrderStep='receiptArea'; setView('receiptArea'); }
+    function showReceipt(id, m, n, p, ip, np, ts, pa) { 
+        let label = parseInt(id) === 99 ? 'teacher' : id;
+        document.getElementById('r_id').innerText = label; 
+        document.getElementById('r_meal').innerHTML = m.replace(/, /g,'<br>'); document.getElementById('r_price').innerText = p; document.getElementById('r_time').innerText = ts||""; let a = pa!==undefined?pa:(ip?p:0); const ui = document.getElementById('paymentStatusUI'); const b = document.getElementById('notifyBtn'); if(a>=p){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">check_circle</span> 已結清</h3>'; b.style.display='none';} else if(a>0){ui.innerHTML=`<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">warning</span> 已付$${a} (尚欠$${p-a})</h3>`; b.style.display='block';} else if(np){ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">hourglass_empty</span> 已通知對帳中</h3>'; b.style.display='none';} else {ui.innerHTML='<h3 style="color:#111; margin:0; display:flex; align-items:center;"><span class="material-symbols-outlined">cancel</span> 尚未繳費</h3>'; b.style.display='block';} window.currentViewingId=id; currentOrderStep='receiptArea'; setView('receiptArea'); }
     
     window.notifyAdminPaid = async function() { 
         try { 
@@ -1581,7 +1578,9 @@
                         let pa = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? o.price : 0);
                         let s = pa >= o.price ? `<span style="font-weight:700;">已結清</span>` : `<span style="font-weight:700;">差 $${o.price - pa}</span>`;
                         let diffMatch = o.note.match(/🚨([^|]+)/); let diffText = diffMatch ? `<br><span style="font-size:13px;">${diffMatch[1].trim()}</span>` : '';
-                        html += `<tr><td style="padding:10px;"><strong>${o.studentId}</strong></td><td style="padding:10px;">${s}${diffText}</td></tr>`;
+                        
+                        let label = parseInt(o.studentId) === 99 ? 'teacher' : o.studentId;
+                        html += `<tr><td style="padding:10px;"><strong>${label}</strong></td><td style="padding:10px;">${s}${diffText}</td></tr>`;
                     });
                     document.getElementById('pbTableBody').innerHTML = html || `<tr><td colspan="2">目前無人訂餐</td></tr>`;
                 });
