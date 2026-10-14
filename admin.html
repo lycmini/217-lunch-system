@@ -114,6 +114,16 @@
         .btn-quick-reset { background:#f5f5f7; color:#888; border:1px solid #d2d2d7; border-radius:6px; padding:5px 11px; font-size:13px; cursor:pointer; font-weight:600; font-family:inherit; transition:0.2s; white-space:nowrap; }
         .btn-quick-reset:hover { border-color:#111; color:#111; }
 
+        /* 🚀 v2.7.0 視覺化菜單管理庫專屬樣式 */
+        .mod-card { background: #fff; border: 1px solid #bce0fd; border-radius: 10px; padding: 14px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,120,212,0.04); }
+        .opt-pill { display: inline-flex; align-items: center; gap: 6px; background: #f5f5f7; border: 1px solid #d2d2d7; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin: 4px 4px 4px 0; color: #111; }
+        .opt-pill .del-pill { cursor: pointer; color: #d32f2f; font-weight: bold; font-size: 15px; line-height: 1; }
+        .mod-assign-chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 15px; border: 1px solid #ccc; font-size: 12px; font-weight: 600; cursor: pointer; user-select: none; background: #fff; color: #555; transition: 0.15s; margin: 2px; }
+        .mod-assign-chip.active { background: #0078d4; color: #fff; border-color: #0078d4; }
+        .cat-editor-card { background: #fafafa; border: 2px solid #e5e5ea; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+        .preset-btn { background: #fff; border: 1px dashed #0078d4; color: #0078d4; padding: 6px 12px; border-radius: 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: inherit; }
+        .preset-btn:hover { background: #0078d4; color: #fff; }
+
         #loginPage { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; width: 100%; padding: 20px; box-sizing: border-box; }
         .ig-form { width: 100%; max-width: 350px; display: flex; flex-direction: column; gap: 12px; background: white; padding: 40px 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.5); }
         .ig-title { font-size: 24px; font-weight: bold; text-align: center; margin-bottom: 24px; color: #111; letter-spacing: 1px;}
@@ -142,6 +152,36 @@
             <div onclick="changeBg('bg-theme-9')" style="width:60px; height:60px; border-radius:10px; cursor:pointer; background-color: #f0f4f8; background-image: linear-gradient(#cce0f5 1px, transparent 1px), linear-gradient(90deg, #cce0f5 1px, transparent 1px); background-size: 20px 20px; border:2px solid #ccc; box-shadow:0 2px 5px rgba(0,0,0,0.1);"></div>
         </div>
         <button class="btn btn-secondary" style="width:100%; margin-top:25px;" onclick="closeBgSelector()">完成並關閉</button>
+    </div>
+</div>
+
+<!-- 🚀 v2.7.0 智慧匯入 Modal -->
+<div id="smartImportModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+    <div class="card" style="width:92%; max-width:550px; padding:24px; max-height:90vh; overflow-y:auto;">
+        <h2 style="margin-top:0;"><span class="material-symbols-outlined">upload_file</span> 智慧批次貼上 / 檔案匯入菜單</h2>
+        <p style="font-size:13px; color:#555; line-height:1.6; margin-top:0;">
+            您可以直接選取電腦/手機中的 <code>.txt</code> 或 <code>.csv</code> 檔案，或是直接從 Excel、Word、Line 複製文字貼在下方！<br>
+            💡 <strong>免打特殊符號：</strong>沒有數字的那一行會自動變成「分類標題」，尾端有數字的那一行會自動拆出「品項與價格」！
+        </p>
+        <div style="background:#f5f5f7; padding:12px; border-radius:8px; margin-bottom:12px; border:1px dashed #888;">
+            <label style="font-size:13px; font-weight:700; display:block; margin-bottom:6px;">📂 方式一：直接上傳檔案 (.txt / .csv)</label>
+            <input type="file" id="menuFileInput" accept=".txt,.csv" onchange="handleMenuFileUpload(event)" style="margin:0; padding:6px; background:#fff;">
+        </div>
+        <label style="font-size:13px; font-weight:700; display:block; margin-bottom:6px;">📋 方式二：直接貼上文字內容</label>
+        <textarea id="smartImportTextarea" rows="10" style="font-family:monospace; font-size:14px; line-height:1.5;" placeholder="範例（直接貼上即可）：
+飯類便當
+排骨飯 85
+雞腿飯 $95
+滷肉飯, 40
+
+湯品與小菜
+貢丸湯 35
+燙青菜 40"></textarea>
+        <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn btn-primary" style="flex:2; margin:0;" onclick="executeSmartImport('replace')">覆蓋現有菜單</button>
+            <button class="btn btn-outline" style="flex:2; margin:0; border-color:#0078d4; color:#0078d4;" onclick="executeSmartImport('append')">附加在現有菜單後</button>
+            <button class="btn btn-secondary" style="flex:1; margin:0;" onclick="document.getElementById('smartImportModal').style.display='none'">取消</button>
+        </div>
     </div>
 </div>
 
@@ -188,7 +228,7 @@
             <li><a href="javascript:void(0)" onclick="switchPage('page-historyEdit'); toggleMenu();"><span class="material-symbols-outlined">edit_note</span> 修改歷史紀錄</a></li>
             <li><a href="javascript:void(0)" onclick="switchPage('page-activity'); toggleMenu();"><span class="material-symbols-outlined">manage_search</span> 網頁活動稽核紀錄</a></li>
             
-            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.6.5</span></a></li>
+            <li><a href="javascript:void(0)" onclick="switchPage('page-updateLog'); toggleMenu();"><span class="material-symbols-outlined">update</span> 網頁更新紀錄 <span class="version-badge">v2.7.0</span></a></li>
             <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSdUCuskqguoA6PZEAovK6J5AvWAGsLlITICvFvRArJR4P5j8Q/viewform" target="_blank" onclick="toggleMenu()"><span class="material-symbols-outlined">assignment</span> 校方外食登記表單</a></li>
             
             <li><a href="javascript:void(0)" onclick="showBgSelector(); toggleMenu();"><span class="material-symbols-outlined">palette</span> 個性化背景選擇</a></li>
@@ -431,34 +471,68 @@
             </div>
         </div>
 
-        <!-- 🚀 v2.6.5: 全新純文字直譯菜單管理庫 -->
+        <!-- 🚀 v2.7.0: 全新視覺化勾選 + 智慧貼上/檔案匯入菜單管理庫 -->
         <div id="page-menu-editor" class="admin-page">
             <div class="card">
-                <h2><span class="material-symbols-outlined">restaurant</span> 雲端菜單管理庫 (純文字高速編輯版)</h2>
-                <p style="color:#555; font-size:14px; margin-top:0;">已全面升級為「純文字匯入」模式！請直接在下方編輯區依據格式修改，系統會全自動為您編譯客製化選項！</p>
-                <div style="background:#fafafa; padding:16px; border-radius:12px; border:1px solid #e5e5ea; margin-bottom: 20px; display:flex; gap:10px;">
-                    <select id="editRestSelect" onchange="openMenuEditor(this.value)" style="margin:0; flex:1; font-weight:bold; font-size:15px;"></select>
+                <h2><span class="material-symbols-outlined">restaurant</span> 雲端菜單管理庫 (v2.7.0 直覺勾選版)</h2>
+                <p style="color:#555; font-size:14px; margin-top:0;">免記任何符號與語法！先在上方建立「客製化按鈕模組」，接著在下方菜單直接點選勾勾即可套用，還支援直接貼上 Excel/Line 文字或上傳檔案！</p>
+                
+                <div style="background:#fafafa; padding:16px; border-radius:12px; border:1px solid #e5e5ea; margin-bottom: 20px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <select id="editRestSelect" onchange="openMenuEditor(this.value)" style="margin:0; flex:2; min-width:200px; font-weight:bold; font-size:15px;"></select>
+                    <button class="btn btn-primary" style="margin:0; width:auto;" onclick="openMenuEditor('new')">+ 新增餐廳</button>
                     <button class="btn btn-danger" style="margin:0; width:auto;" onclick="deleteMenuFromCloud()"><span class="material-symbols-outlined">delete</span> 刪除餐廳</button>
                 </div>
                 
                 <div id="menuEditorWorkspace" style="display:none;">
-                    <input type="text" id="menuRestName" placeholder="輸入餐廳名稱" style="font-weight:bold; font-size:18px; margin-bottom:15px;">
-                    
-                    <div style="background:#eaf4fc; padding:15px; border-radius:12px; border:1px solid #bce0fd; margin-bottom:15px;">
-                        <h3 style="margin:0 0 10px 0; color:#0078d4; font-size:15px;">📝 菜單直譯語法說明 (複製貼上即可)</h3>
-                        <pre style="margin:0; font-size:13px; color:#333; line-height:1.6; font-family:monospace;">#飯類
-@單選: 份量 = 正常(+0), 加飯(+10), 少飯(+0)
-@複選: 加料 = 滷蛋(+15), 香腸(+20)
-排骨飯, 80
-雞腿飯, 90
->單選: 限定活動 = 送紅茶(+0), 送綠茶(+0)
-</pre>
-                        <p style="font-size:12px; color:#555; margin:8px 0 0 0;">💡 <code>#</code> 開頭為分類 / <code>@</code> 開頭會套用給該分類下「所有餐點」 / <code>&gt;</code> 開頭只套用給「正上方那一個」餐點。</p>
+                    <div style="display:flex; gap:10px; align-items:center; margin-bottom:20px; flex-wrap:wrap;">
+                        <div style="flex:1; min-width:220px;">
+                            <label style="font-size:13px; font-weight:700; color:#555; display:block; margin-bottom:4px;">🍽️ 餐廳名稱：</label>
+                            <input type="text" id="menuRestName" placeholder="例如：八方雲集、日常食飯" style="font-weight:bold; font-size:18px; margin:0; border:2px solid #111;">
+                        </div>
+                        <div style="display:flex; gap:8px; align-items:flex-end; padding-top:18px;">
+                            <button class="btn btn-outline" style="margin:0; border-color:#0078d4; color:#0078d4; background:#eaf4fc;" onclick="openSmartImportModal()">
+                                <span class="material-symbols-outlined">upload_file</span> 智慧貼上 / 檔案匯入菜單
+                            </button>
+                            <button class="btn btn-primary" style="margin:0;" onclick="saveMenuToCloud()">
+                                <span class="material-symbols-outlined">save</span> 儲存發布至雲端
+                            </button>
+                        </div>
                     </div>
-                    
-                    <textarea id="menuTextEditor" rows="20" style="font-family:monospace; font-size:14px; padding:15px; line-height:1.5; white-space:pre; border:2px solid #111; border-radius:8px;" placeholder="在此輸入菜單..."></textarea>
-                    
-                    <button class="btn btn-primary" style="font-size:16px; padding:15px; margin-top:20px;" onclick="saveMenuToCloud()">💾 儲存並發布至雲端 (自動編譯)</button>
+
+                    <!-- 第一步：客製化按鈕模組庫 -->
+                    <div style="background:#eaf4fc; padding:18px; border-radius:12px; border:1px solid #bce0fd; margin-bottom:25px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+                            <h3 style="margin:0; color:#0078d4; font-size:16px; display:flex; align-items:center;">
+                                <span class="material-symbols-outlined" style="margin-right:6px;">tune</span> 第一步：建立這家店的「客製化選項模組」
+                            </h3>
+                            <button class="btn btn-primary" style="margin:0; padding:6px 14px; font-size:13px; background:#0078d4;" onclick="addCustomModule()">+ 新增自訂模組</button>
+                        </div>
+                        <p style="font-size:13px; color:#555; margin:0 0 10px 0;">點擊下方藍字可「一鍵加入常用範本」，建立好之後，在下方分類或餐點旁直接打勾就能套用！</p>
+                        
+                        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px;">
+                            <button class="preset-btn" onclick="addPresetModule('rice')">＋ 常用：飯量調整</button>
+                            <button class="preset-btn" onclick="addPresetModule('noodle')">＋ 常用：麵體選擇(麵/米粉/冬粉)</button>
+                            <button class="preset-btn" onclick="addPresetModule('spicy')">＋ 常用：辣度選擇</button>
+                            <button class="preset-btn" onclick="addPresetModule('picky')">＋ 常用：挑食不加(蔥/蒜/香菜)</button>
+                            <button class="preset-btn" onclick="addPresetModule('addon')">＋ 常用：加料區(加蛋/加菜)</button>
+                            <button class="preset-btn" onclick="addPresetModule('drink')">＋ 常用：飲料甜度冰塊</button>
+                        </div>
+
+                        <div id="modulesContainer"></div>
+                    </div>
+
+                    <!-- 第二步：菜單分類與品項 -->
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #111; padding-bottom:10px; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                        <h3 style="margin:0; font-size:16px; display:flex; align-items:center;">
+                            <span class="material-symbols-outlined" style="margin-right:6px;">menu_book</span> 第二步：管理菜單分類與勾選客製化
+                        </h3>
+                        <button class="btn btn-outline" style="margin:0; padding:8px 14px; font-size:13px; border-color:#111;" onclick="addCategoryCard()">+ 新增一個分類</button>
+                    </div>
+
+                    <div id="categoriesContainer"></div>
+
+                    <button class="btn btn-secondary" style="border-style:dashed; border-color:#111; color:#111; margin-bottom:20px;" onclick="addCategoryCard()">+ 新增一個分類</button>
+                    <button class="btn btn-primary" style="font-size:16px; padding:16px;" onclick="saveMenuToCloud()">💾 儲存並發布至雲端</button>
                 </div>
             </div>
         </div>
@@ -514,8 +588,8 @@
                 <button class="btn btn-primary" onclick="loadHistoryForEdit()"><span class="material-symbols-outlined">search</span> 讀取當日訂單</button>
                 <div class="table-responsive">
                     <table>
-                        <thead><tr><th>座號</th><th>餐點 (直接修改)</th><th>價格</th><th>取消作廢</th><th>儲存</th></tr></thead>
-                        <tbody id="editTableBody"><tr><td colspan="5" data-label="狀態">請先選擇日期並讀取...</td></tr></tbody>
+                        <thead><tr><th>座號</th><th>餐點 (直接修改)</th><th>應付價格</th><th>已付金額</th><th>取消作廢</th><th>儲存</th></tr></thead>
+                        <tbody id="editTableBody"><tr><td colspan="6" data-label="狀態">請先選擇日期並讀取...</td></tr></tbody>
                     </table>
                 </div>
             </div>
@@ -563,67 +637,23 @@
                 <h2><span class="material-symbols-outlined">update</span> 網頁更新紀錄</h2>
                 <div style="margin-top: 15px;">
 
-                    <!-- 🚀 v2.6.5 最新更新 -->
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px;">
-                        <h3 style="margin:0; font-size:16px;">v2.6.5 帳務引擎再進化與純文字直譯菜單 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
-                        <span style="font-size:13px; color:#888;">2026-09</span>
+                        <h3 style="margin:0; font-size:16px;">v2.7.0 視覺化模組勾選菜單庫與智慧檔案匯入 <span style="background:#d32f2f;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;margin-left:6px;">最新</span></h3>
+                        <span style="font-size:13px; color:#888;">2026-10</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#333; padding-left:20px; margin-top:0;">
-                        <li>🧮 <strong>帳務報表 100% 同步：</strong> 移除了後台「班級付款總情形」計算歷史退補款的盲點條件，現在後台帳務結算與前台歷史紀錄的餘額將完全一致，不再有一毛錢的落差！</li>
-                        <li>🧑‍🏫 <strong>Teacher 帳號開通：</strong> 系統正式擴充 99 號為 `teacher` 專屬帳號。老師可同時登入前台點餐與登入後台系統管理。</li>
-                        <li>📝 <strong>純文字直譯菜單引擎：</strong> 顛覆繁瑣的建置流程！現在後台菜單庫升級為「純文字筆記本」模式，只需輸入特定符號 (@ 或 >)，系統便會全自動替您編譯專屬與全域的客製化選項！</li>
-                        <li>❌ <strong>一鍵強制作廢與退款：</strong> 訂單看板的作廢按鈕全面升級，按下後除了取消訂單外，系統會自動核算該生已付金額，並全自動生成退款紀錄結平帳目。</li>
+                        <li>🎯 <strong>零語法「客製化模組庫」與一鍵範本：</strong> 徹底淘汰文字語法與關鍵字配對！現在可一鍵新增「飯量、麵體、辣度、挑食、加料」等常用模組，並在下方分類或單一餐點直接打勾套用。</li>
+                        <li>📥 <strong>智慧無腦貼上 & 檔案上傳：</strong> 支援直接上傳 <code>.txt</code> / <code>.csv</code> 檔案，或從 Excel、Line 複製貼上菜單，無須打井字號或逗號也能自動分離品項與價格。</li>
+                        <li>✏️ <strong>歷史已付金額修正：</strong> 「修改歷史紀錄」新增「已付金額」修改欄，隨時可修正過往實收金額。</li>
                     </ul>
 
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.6.4 菜單批次匯入與防呆優化</h3>
+                        <h3 style="margin:0; font-size:16px; color:#555;">v2.6.5 帳務引擎再進化與 Teacher 帳號開通</h3>
                         <span style="font-size:13px; color:#888;">2026-09</span>
                     </div>
                     <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>📄 <strong>菜單文字批次匯入：</strong> 雲端菜單庫新增「文字批次匯入」功能，支援依照特定格式快速建立大量菜單。</li>
-                        <li>🔄 <strong>即時看板號碼排序：</strong> 訂單即時看板現在支援切換為「依據座號排序 (小到大)」，方便點收與核對。</li>
-                        <li>🛠️ <strong>客製化強制選取修復：</strong> 修復客製化選項被強制勾選的問題，現在系統會自動為單選群組補上「預設(無)」的選項。</li>
-                    </ul>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.6.3 即時看板帳務動態同步</h3>
-                        <span style="font-size:13px; color:#888;">2026-09</span>
-                    </div>
-                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>🔄 <strong>看板帳務即時連動：</strong> 訂單即時看板會跨越時空自動掃描退補紀錄並完美加總計算。</li>
-                    </ul>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.6.2 帳務連動修正與歷史評分相容優化</h3>
-                        <span style="font-size:13px; color:#888;">2026-09</span>
-                    </div>
-                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>📊 <strong>帳務連動修正：</strong> 「事後退補款項」精準納入「目前已收」與「尚未收取」中，總金額不再產生落差。</li>
-                        <li>⭐ <strong>評分系統讀取修復：</strong> 修復了餐點評分接收站因歷史資料格式不相容導致的「讀取失敗」Bug。</li>
-                        <li>🔍 <strong>學生狀態查詢精準化：</strong> 「學生狀態與紀錄查詢」介面的繳費狀態判定已升級，現在能正確辨識「部分繳費 (催繳)」。</li>
-                    </ul>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.6.1 圖形化客製系統與非訂單時段解鎖</h3>
-                        <span style="font-size:13px; color:#888;">2026-09</span>
-                    </div>
-                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>🔓 <strong>非點餐時段解鎖：</strong> 即使超過 11:00 或尚未開放點餐，同學依然可以登入系統查詢「當日狀態」與「歷史分析」。</li>
-                        <li>🛠️ <strong>支援全新圖形化選項：</strong> 完全無縫對接後台全新的「圖形化客製群組」，不再依賴生硬的 HTML 標籤。</li>
-                        <li>⭐ <strong>五星評分系統：</strong> 將原本輸入 1~10 分的機制，全面進化為大家最熟悉的 Google 級「五顆星 (★)」直覺點擊評分介面。</li>
-                        <li>📊 <strong>智慧精準客製化統計：</strong> 後台「點餐總表」現在會全自動解析並標示出同學的客製化選項。</li>
-                    </ul>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #e5e5ea; padding-bottom:8px; margin-bottom:10px; margin-top:25px;">
-                        <h3 style="margin:0; font-size:16px; color:#555;">v2.6.0 前台訂單無痛修改與評分清理大升級</h3>
-                        <span style="font-size:13px; color:#888;">2026-09</span>
-                    </div>
-                    <ul style="font-size:14px; line-height:1.8; color:#555; padding-left:20px; margin-top:0;">
-                        <li>📝 <strong>訂單無痛修改：</strong> 前台修改訂單時，系統會完整載入原本點的餐點與客製化選項，可以直接加點或刪減。</li>
-                        <li>💰 <strong>繳費防呆標示：</strong> 放大並更名繳費按鈕為「我已繳費了！發送已繳費通知給後台」。</li>
-                        <li>🧹 <strong>評分篩選與清理：</strong> 後台支援「一鍵刪除目前顯示評分」的強大功能。</li>
-                        <li>📋 <strong>完美複製校方表單：</strong> 修復後台「複製校方表單純文字」功能。</li>
-                        <li>🔒 <strong>備案啟動強制鎖定：</strong> 啟動「危機處理備案」時，強制封鎖前台的常規點餐權限。</li>
+                        <li>🧮 <strong>帳務報表 100% 同步：</strong> 前後台帳務結算與歷史紀錄餘額完全一致。</li>
+                        <li>🧑‍🏫 <strong>Teacher 帳號開通：</strong> 系統擴充 99 號為 <code>teacher</code> 專屬帳號。</li>
                     </ul>
 
                 </div>
@@ -661,16 +691,9 @@
     const savedBg = localStorage.getItem('bgTheme_217') || 'bg-theme-1';
     document.body.className = savedBg;
 
-    window.showBgSelector = function() {
-        document.getElementById('bgSelectorModal').style.display = 'flex';
-    };
-    window.closeBgSelector = function() {
-        document.getElementById('bgSelectorModal').style.display = 'none';
-    };
-    window.changeBg = function(themeClass) {
-        document.body.className = themeClass;
-        localStorage.setItem('bgTheme_217', themeClass);
-    };
+    window.showBgSelector = function() { document.getElementById('bgSelectorModal').style.display = 'flex'; };
+    window.closeBgSelector = function() { document.getElementById('bgSelectorModal').style.display = 'none'; };
+    window.changeBg = function(themeClass) { document.body.className = themeClass; localStorage.setItem('bgTheme_217', themeClass); };
 
     window.currentReportData = { restaurant: "未知餐廳", items: {}, totalAmount: 0 };
     window.cloudRestaurantDB = {};
@@ -683,7 +706,6 @@
         window.boardViewMode = mode;
         document.getElementById('btnViewCard').classList.remove('active');
         document.getElementById('btnViewTable').classList.remove('active');
-        
         if(mode === 'card') {
             document.getElementById('btnViewCard').classList.add('active');
             document.getElementById('orderBoardGrid').style.display = 'grid';
@@ -705,7 +727,6 @@
         } catch(e) { console.error("Log failed", e); }
     };
 
-    // 🚀 v2.6.5: 動態產生所有的 ID，並加入 Teacher (99)
     let idsToRender = [];
     for(let i=1; i<=28; i++) idsToRender.push(i);
     idsToRender.push(99); 
@@ -747,7 +768,6 @@
     window.doLogin = function() {
         const acc = document.getElementById('loginAccount').value.trim();
         const pass = document.getElementById('loginPassword').value.trim();
-        // 🚀 v2.6.5: 開放 teacher 也可登入後台
         if ((acc === '217admin' && pass === 'lunchadmin') || (acc === 'teacher' && pass === 'teacher')) {
             localStorage.setItem('adminLoggedIn_217', 'true');
             logAdminAction("登入系統", "管理員登入成功");
@@ -793,16 +813,17 @@
     }
 
     async function loadSettings() {
-        const configSnap = await getDoc(doc(db, "system", "settings"));
-        if (configSnap.exists()) {
-            document.getElementById('sysStartTime').value = configSnap.data().orderStartTime || "06:00";
-            document.getElementById('sysEndTime').value = configSnap.data().orderEndTime || "11:00";
-            
-            if(configSnap.data().planBLocked) {
-                document.getElementById('activeBroadcastSection').style.display = 'block';
-                document.getElementById('unlockFrontendBtn').style.display = 'block';
+        try {
+            const configSnap = await getDoc(doc(db, "system", "settings"));
+            if (configSnap.exists()) {
+                document.getElementById('sysStartTime').value = configSnap.data().orderStartTime || "06:00";
+                document.getElementById('sysEndTime').value = configSnap.data().orderEndTime || "11:00";
+                if(configSnap.data().planBLocked) {
+                    document.getElementById('activeBroadcastSection').style.display = 'block';
+                    document.getElementById('unlockFrontendBtn').style.display = 'block';
+                }
             }
-        }
+        } catch(e) { console.error("設定讀取失敗(請檢查Firebase規則):", e); }
     }
 
     window.loadCloudMenus = async function() {
@@ -820,7 +841,7 @@
             if(document.getElementById('planBRestaurant')) document.getElementById('planBRestaurant').innerHTML = restOpts;
             
             let editorOpts = "<option value='' disabled selected>請選擇要編輯的餐廳...</option>";
-            editorOpts += `<option value="new" style="font-weight:bold; color:#d32f2f;">+ 新增全新餐廳</option>`;
+            editorOpts += `<option value="new" style="font-weight:bold; color:#0078d4;">+ 新增全新餐廳</option>`;
             window.allRestaurants.forEach(r => editorOpts += `<option value="${r}">${r}</option>`);
             if(document.getElementById('editRestSelect')) document.getElementById('editRestSelect').innerHTML = editorOpts;
 
@@ -831,152 +852,394 @@
         } catch(e) { console.error("載入雲端菜單失敗", e); }
     };
 
-    // 🚀 v2.6.5: 全新的反編譯器，將 JSON 菜單變回純文字格式
+    // =========================================================================
+    // 🚀 v2.7.0 全新視覺化勾選 + 智慧貼上/檔案匯入菜單編輯器核心邏輯
+    // =========================================================================
     window.openMenuEditor = function(restName) {
         const ws = document.getElementById('menuEditorWorkspace');
         if(!restName) { ws.style.display = 'none'; return; }
         ws.style.display = 'block';
         
         if(restName === 'new') {
-            window.editingRest = { originalName: "", name: "", menu: [] };
+            window.editingRest = { originalName: "", name: "", modules: [], menu: [{ category: "主食類", modIds: [], items: [{ name: "", price: 0, modIds: [] }] }] };
             document.getElementById('menuRestName').value = "";
-            document.getElementById('menuTextEditor').value = "#主食類\n炒飯, 80\n>單選: 飯量 = 正常(+0), 加飯(+15), 少飯(+0)\n\n#湯類\n貢丸湯, 40";
         } else {
-            let r = window.cloudRestaurantDB[restName];
-            window.editingRest = { originalName: restName, name: restName, menu: r.menu || [] };
-            document.getElementById('menuRestName').value = restName;
-            
-            let text = "";
-            if(r.menu) {
-                r.menu.forEach(cat => {
-                    text += `# ${cat.category}\n`;
-                    cat.items.forEach(item => {
-                        text += `${item.name}, ${item.price}\n`;
-                        if(item.rawGroups) {
+            let r = JSON.parse(JSON.stringify(window.cloudRestaurantDB[restName] || { menu: [] }));
+            let modules = r.v27_modules || [];
+            let menu = r.menu || [];
+
+            // 向下相容：若舊餐廳沒有 v27_modules，自動從舊版 rawGroups 或 optionGroups 提取
+            if (modules.length === 0) {
+                let modMap = {};
+                if (r.optionGroups && Array.isArray(r.optionGroups)) {
+                    r.optionGroups.forEach((g, idx) => {
+                        let mId = "mod_legacy_" + idx;
+                        modules.push({ id: mId, title: g.title || "選項", type: g.type || "radio", options: g.options || [] });
+                    });
+                }
+                menu.forEach(cat => {
+                    if (!cat.modIds) cat.modIds = [];
+                    (cat.items || []).forEach(item => {
+                        if (!item.modIds) item.modIds = [];
+                        if (item.rawGroups && Array.isArray(item.rawGroups)) {
                             item.rawGroups.forEach(g => {
-                                let typeStr = g.type === 'radio' ? '單選' : '複選';
-                                let optStrs = g.options.map(o => `${o.name}(+${o.price})`).join(', ');
-                                text += `>${typeStr}: ${g.title} = ${optStrs}\n`;
+                                let key = g.title + "_" + g.type + "_" + JSON.stringify(g.options);
+                                if (!modMap[key]) {
+                                    let mId = "mod_" + Date.now() + "_" + Math.floor(Math.random()*1000);
+                                    modMap[key] = mId;
+                                    modules.push({ id: mId, title: g.title || "選項", type: g.type || "radio", options: g.options || [] });
+                                }
+                                if (!item.modIds.includes(modMap[key])) item.modIds.push(modMap[key]);
                             });
                         }
                     });
-                    text += `\n`;
                 });
             }
-            document.getElementById('menuTextEditor').value = text.trim();
+
+            menu.forEach(cat => {
+                if (!cat.modIds) cat.modIds = [];
+                (cat.items || []).forEach(item => { if (!item.modIds) item.modIds = []; });
+            });
+
+            window.editingRest = { originalName: restName, name: restName, modules: modules, menu: menu };
+            document.getElementById('menuRestName').value = restName;
+        }
+        renderV27MenuEditor();
+    };
+
+    window.renderV27MenuEditor = function() {
+        if(!window.editingRest) return;
+        let r = window.editingRest;
+
+        // 1. 渲染客製化模組庫
+        let modHtml = "";
+        if(r.modules.length === 0) {
+            modHtml = `<div style="text-align:center; padding:12px; color:#666; background:#fff; border-radius:8px; border:1px dashed #ccc; font-size:13px;">目前尚無客製化模組，請點擊上方「＋ 常用範本」或「＋ 新增自訂模組」！</div>`;
+        } else {
+            r.modules.forEach((m, mIdx) => {
+                let pillsHtml = (m.options || []).map((o, oIdx) => 
+                    `<span class="opt-pill">${o.name}${o.price > 0 ? ' +$'+o.price : ''} <span class="del-pill" onclick="removeModuleOption(${mIdx}, ${oIdx})" title="移除">×</span></span>`
+                ).join("");
+
+                modHtml += `
+                <div class="mod-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+                        <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:200px;">
+                            <span style="background:#0078d4; color:#fff; font-size:12px; font-weight:700; padding:3px 8px; border-radius:6px;">模組 ${mIdx+1}</span>
+                            <input type="text" value="${m.title}" onchange="window.editingRest.modules[${mIdx}].title=this.value; renderV27MenuEditor();" placeholder="模組名稱 (如: 麵體選擇)" style="margin:0; font-weight:700; width:180px; padding:6px 10px;">
+                            <select onchange="window.editingRest.modules[${mIdx}].type=this.value" style="margin:0; width:auto; padding:6px 10px; font-size:13px;">
+                                <option value="radio_opt" ${m.type==='radio_opt'||m.type==='radio'?'selected':''}>單選 (可不選，自動附帶預設無)</option>
+                                <option value="radio_req" ${m.type==='radio_req'?'selected':''}>單選 (必選其一，如選麵/米粉)</option>
+                                <option value="checkbox" ${m.type==='checkbox'?'selected':''}>複選 (可多選，如加料/挑食)</option>
+                            </select>
+                        </div>
+                        <button class="btn-outline" style="margin:0; padding:4px 10px; color:#d32f2f; border-color:#ffcdd2; font-size:12px;" onclick="deleteModule(${mIdx})">刪除模組</button>
+                    </div>
+                    <div style="margin-bottom:10px;">${pillsHtml || '<span style="font-size:12px; color:#888;">尚未加入選項...</span>'}</div>
+                    <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap; background:#f9f9fb; padding:8px; border-radius:8px;">
+                        <input type="text" id="newOptName_${mIdx}" placeholder="輸入選項 (如: 加大、不要蔥)" style="margin:0; width:160px; padding:6px 10px; font-size:13px;">
+                        <span style="font-size:13px; font-weight:600; color:#555;">加價 +$</span>
+                        <input type="number" id="newOptPrice_${mIdx}" value="0" style="margin:0; width:70px; padding:6px; font-size:13px; text-align:center;">
+                        <button class="btn btn-primary" style="margin:0; width:auto; padding:6px 12px; font-size:13px;" onclick="addModuleOption(${mIdx})">＋ 加入選項</button>
+                    </div>
+                </div>`;
+            });
+        }
+        document.getElementById('modulesContainer').innerHTML = modHtml;
+
+        // 2. 渲染菜單分類與品項
+        let catHtml = "";
+        r.menu.forEach((cat, cIdx) => {
+            if(!cat.modIds) cat.modIds = [];
+            let catModChips = r.modules.map(m => {
+                let isActive = cat.modIds.includes(m.id);
+                return `<span class="mod-assign-chip ${isActive ? 'active' : ''}" onclick="toggleCatModule(${cIdx}, '${m.id}')">${isActive ? '✓ ' : '+ '}${m.title}</span>`;
+            }).join("");
+
+            let itemsHtml = "";
+            (cat.items || []).forEach((item, iIdx) => {
+                if(!item.modIds) item.modIds = [];
+                let itemModChips = r.modules.map(m => {
+                    let inCat = cat.modIds.includes(m.id);
+                    let inItem = item.modIds.includes(m.id);
+                    if (inCat) {
+                        return `<span class="mod-assign-chip active" style="opacity:0.75; cursor:default;" title="已由分類統一套用">✓ ${m.title}(全類)</span>`;
+                    }
+                    return `<span class="mod-assign-chip ${inItem ? 'active' : ''}" onclick="toggleItemModule(${cIdx}, ${iIdx}, '${m.id}')">${inItem ? '✓ ' : '+ '}${m.title}</span>`;
+                }).join("");
+
+                itemsHtml += `
+                <div style="display:flex; gap:8px; align-items:center; padding:8px; background:#fff; border:1px solid #e5e5ea; border-radius:8px; margin-bottom:8px; flex-wrap:wrap;">
+                    <div style="display:flex; flex-direction:column; gap:2px;">
+                        <button style="border:none; background:#eee; cursor:pointer; font-size:10px; padding:2px 5px; border-radius:3px;" onclick="moveItem(${cIdx}, ${iIdx}, -1)">▲</button>
+                        <button style="border:none; background:#eee; cursor:pointer; font-size:10px; padding:2px 5px; border-radius:3px;" onclick="moveItem(${cIdx}, ${iIdx}, 1)">▼</button>
+                    </div>
+                    <input type="text" value="${item.name}" onchange="window.editingRest.menu[${cIdx}].items[${iIdx}].name=this.value" placeholder="品項名稱" style="margin:0; flex:2; min-width:140px; font-weight:600; padding:8px;">
+                    <div style="display:flex; align-items:center; gap:4px;">
+                        <span style="font-weight:700; color:#555;">$</span>
+                        <input type="number" value="${item.price}" onchange="window.editingRest.menu[${cIdx}].items[${iIdx}].price=parseInt(this.value)||0" style="margin:0; width:75px; font-weight:700; padding:8px; text-align:center;">
+                    </div>
+                    <div style="flex:3; min-width:180px; display:flex; flex-wrap:wrap; align-items:center;">
+                        ${itemModChips || '<span style="font-size:12px; color:#aaa;">無客製模組</span>'}
+                    </div>
+                    <button class="btn-outline" style="margin:0; padding:6px 10px; color:#d32f2f; border-color:#ffcdd2;" onclick="window.editingRest.menu[${cIdx}].items.splice(${iIdx}, 1); renderV27MenuEditor();">✕</button>
+                </div>`;
+            });
+
+            catHtml += `
+            <div class="cat-editor-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap;">
+                    <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:220px;">
+                        <button class="btn-outline" style="margin:0; padding:4px 8px;" onclick="moveCat(${cIdx}, -1)">▲</button>
+                        <button class="btn-outline" style="margin:0; padding:4px 8px;" onclick="moveCat(${cIdx}, 1)">▼</button>
+                        <input type="text" value="${cat.category}" onchange="window.editingRest.menu[${cIdx}].category=this.value" placeholder="分類名稱 (如: 湯麵系列、週三限定)" style="margin:0; font-weight:800; font-size:16px; border:1px solid #111; flex:1;">
+                    </div>
+                    <button class="btn-danger" style="margin:0; padding:6px 12px; font-size:12px;" onclick="window.editingRest.menu.splice(${cIdx}, 1); renderV27MenuEditor();">刪除此分類</button>
+                </div>
+                <div style="background:#eef6fc; padding:8px 12px; border-radius:8px; margin-bottom:12px; display:flex; align-items:center; flex-wrap:wrap; gap:6px;">
+                    <span style="font-size:12px; font-weight:700; color:#005a9e;">⚡ 整個分類統一套用客製化：</span>
+                    ${catModChips || '<span style="font-size:12px; color:#888;">請先在上方建立客製化模組</span>'}
+                </div>
+                <div>${itemsHtml}</div>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="btn-school" onclick="window.editingRest.menu[${cIdx}].items.push({name:'', price:0, modIds:[]}); renderV27MenuEditor();">＋ 新增單一品項</button>
+                    <button class="btn-school" style="color:#0078d4; border-color:#0078d4;" onclick="quickAddItemsToCat(${cIdx})">📋 批次貼上多筆品項到此分類</button>
+                </div>
+            </div>`;
+        });
+        document.getElementById('categoriesContainer').innerHTML = catHtml || `<div style="text-align:center; padding:30px; color:#888;">目前沒有任何菜單分類，請點擊「新增一個分類」或「智慧貼上 / 檔案匯入菜單」！</div>`;
+    };
+
+    window.addCustomModule = function() {
+        window.editingRest.modules.push({
+            id: "mod_" + Date.now() + "_" + Math.floor(Math.random()*1000),
+            title: "自訂選項",
+            type: "radio_opt",
+            options: []
+        });
+        renderV27MenuEditor();
+    };
+
+    window.addPresetModule = function(presetType) {
+        const presets = {
+            'rice': { title: "飯量調整", type: "radio_opt", options: [{name:"加飯", price:10}, {name:"少飯", price:0}, {name:"不要飯", price:0}] },
+            'noodle': { title: "主食選擇", type: "radio_req", options: [{name:"我要麵", price:0}, {name:"我要米粉", price:0}, {name:"我要冬粉", price:0}] },
+            'spicy': { title: "辣度選擇", type: "radio_opt", options: [{name:"微辣", price:0}, {name:"小辣", price:0}, {name:"中辣", price:0}, {name:"大辣", price:0}] },
+            'picky': { title: "挑食不加區", type: "checkbox", options: [{name:"不要蔥", price:0}, {name:"不要蒜", price:0}, {name:"不要香菜", price:0}, {name:"不要油蔥", price:0}] },
+            'addon': { title: "加料升級", type: "checkbox", options: [{name:"加滷蛋", price:15}, {name:"加荷包蛋", price:15}, {name:"加起司", price:15}, {name:"加貢丸", price:20}] },
+            'drink': { title: "甜度冰塊", type: "radio_opt", options: [{name:"正常冰全糖", price:0}, {name:"少冰半糖", price:0}, {name:"微冰微糖", price:0}, {name:"去冰無糖", price:0}] }
+        };
+        let p = presets[presetType];
+        if(!p) return;
+        window.editingRest.modules.push({
+            id: "mod_" + Date.now() + "_" + Math.floor(Math.random()*1000),
+            title: p.title,
+            type: p.type,
+            options: JSON.parse(JSON.stringify(p.options))
+        });
+        renderV27MenuEditor();
+    };
+
+    window.deleteModule = function(mIdx) {
+        let modId = window.editingRest.modules[mIdx].id;
+        window.editingRest.modules.splice(mIdx, 1);
+        window.editingRest.menu.forEach(cat => {
+            cat.modIds = (cat.modIds || []).filter(id => id !== modId);
+            (cat.items || []).forEach(it => { it.modIds = (it.modIds || []).filter(id => id !== modId); });
+        });
+        renderV27MenuEditor();
+    };
+
+    window.addModuleOption = function(mIdx) {
+        let nameEl = document.getElementById(`newOptName_${mIdx}`);
+        let priceEl = document.getElementById(`newOptPrice_${mIdx}`);
+        let name = nameEl.value.trim();
+        let price = parseInt(priceEl.value) || 0;
+        if(!name) return alert("請輸入選項名稱！");
+        window.editingRest.modules[mIdx].options.push({ name, price });
+        renderV27MenuEditor();
+    };
+
+    window.removeModuleOption = function(mIdx, oIdx) {
+        window.editingRest.modules[mIdx].options.splice(oIdx, 1);
+        renderV27MenuEditor();
+    };
+
+    window.toggleCatModule = function(cIdx, modId) {
+        let arr = window.editingRest.menu[cIdx].modIds;
+        let idx = arr.indexOf(modId);
+        if(idx >= 0) arr.splice(idx, 1);
+        else arr.push(modId);
+        renderV27MenuEditor();
+    };
+
+    window.toggleItemModule = function(cIdx, iIdx, modId) {
+        let arr = window.editingRest.menu[cIdx].items[iIdx].modIds;
+        let idx = arr.indexOf(modId);
+        if(idx >= 0) arr.splice(idx, 1);
+        else arr.push(modId);
+        renderV27MenuEditor();
+    };
+
+    window.addCategoryCard = function() {
+        window.editingRest.menu.push({ category: "新分類", modIds: [], items: [{ name: "", price: 0, modIds: [] }] });
+        renderV27MenuEditor();
+    };
+
+    window.quickAddItemsToCat = function(cIdx) {
+        let raw = prompt("請貼上要加入此分類的品項（一行一個，格式如：排骨飯 85）：");
+        if(!raw || !raw.trim()) return;
+        let parsed = parseNaturalMenuLines(raw);
+        let newItems = [];
+        parsed.forEach(c => { c.items.forEach(it => newItems.push(it)); });
+        if(newItems.length > 0) {
+            window.editingRest.menu[cIdx].items = window.editingRest.menu[cIdx].items.filter(i => i.name.trim() !== "").concat(newItems);
+            renderV27MenuEditor();
+        } else {
+            alert("未偵測到帶有價格的品項！");
         }
     };
 
-    // 🚀 v2.6.5: 解析純文字並編譯為前台可用 HTML
+    window.openSmartImportModal = function() {
+        document.getElementById('smartImportTextarea').value = "";
+        document.getElementById('menuFileInput').value = "";
+        document.getElementById('smartImportModal').style.display = 'flex';
+    };
+
+    window.handleMenuFileUpload = function(event) {
+        const file = event.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('smartImportTextarea').value = e.target.result;
+        };
+        reader.readAsText(file);
+    };
+
+    // 智慧自然語言菜單解析器：免井字號、免逗號，自動辨識分類與尾端價格
+    function parseNaturalMenuLines(text) {
+        let lines = text.split(/\r?\n/);
+        let cats = [];
+        let curCat = null;
+
+        lines.forEach(line => {
+            line = line.trim();
+            if(!line || line.startsWith('//')) return;
+
+            // 檢查尾端是否有價格 (例如: "排骨飯 80", "排骨飯 $80", "排骨飯, 80", "排骨飯 80元", "排骨飯\t80")
+            let itemMatch = line.match(/^(.+?)[\s,，\t$＄:：]+(\d+)\s*元?$/);
+            if(itemMatch && !line.startsWith('#')) {
+                let itemName = itemMatch[1].trim().replace(/^[-\*•▪]\s*/, '');
+                let itemPrice = parseInt(itemMatch[2], 10);
+                if(!curCat) {
+                    curCat = { category: "主食與餐點", modIds: [], items: [] };
+                    cats.push(curCat);
+                }
+                curCat.items.push({ name: itemName, price: itemPrice, modIds: [] });
+            } else {
+                // 沒有尾端數字，視為分類標題
+                let catName = line.replace(/^[#【\[]+|[】\]]+$/g, '').trim();
+                if(catName) {
+                    curCat = { category: catName, modIds: [], items: [] };
+                    cats.push(curCat);
+                }
+            }
+        });
+        return cats.filter(c => c.category);
+    }
+
+    window.executeSmartImport = function(mode) {
+        let text = document.getElementById('smartImportTextarea').value;
+        if(!text.trim()) return alert("請先貼上文字或上傳檔案！");
+        let parsedCats = parseNaturalMenuLines(text);
+        if(parsedCats.length === 0) return alert("解析失敗，請確認內容格式！");
+
+        if(mode === 'replace') {
+            window.editingRest.menu = parsedCats;
+        } else {
+            window.editingRest.menu = window.editingRest.menu.concat(parsedCats);
+        }
+        document.getElementById('smartImportModal').style.display = 'none';
+        renderV27MenuEditor();
+    };
+
+    window.moveCat = function(cIdx, dir) {
+        let menu = window.editingRest.menu;
+        if(cIdx + dir < 0 || cIdx + dir >= menu.length) return;
+        let temp = menu[cIdx]; menu[cIdx] = menu[cIdx + dir]; menu[cIdx + dir] = temp;
+        renderV27MenuEditor();
+    };
+
+    window.moveItem = function(cIdx, iIdx, dir) {
+        let items = window.editingRest.menu[cIdx].items;
+        if(iIdx + dir < 0 || iIdx + dir >= items.length) return;
+        let temp = items[iIdx]; items[iIdx] = items[iIdx + dir]; items[iIdx + dir] = temp;
+        renderV27MenuEditor();
+    };
+
     window.saveMenuToCloud = async function() {
         let rName = document.getElementById('menuRestName').value.trim();
         if(!rName) return alert("請輸入餐廳名稱！");
+        let r = window.editingRest;
         
-        let text = document.getElementById('menuTextEditor').value;
-        let lines = text.split('\n');
-        let menu = [];
-        let currentCat = null;
-        let currentItem = null;
-        
-        // 解析邏輯
-        for(let line of lines) {
-            line = line.trim();
-            if(!line || line.startsWith('//')) continue;
-            
-            if(line.startsWith('#')) {
-                currentCat = { category: line.substring(1).trim(), items: [], catGroups: [] };
-                menu.push(currentCat);
-                currentItem = null;
-            } 
-            else if (line.startsWith('@') && currentCat) {
-                let parsed = parseOptionGroup(line.substring(1));
-                if(parsed) currentCat.catGroups.push(parsed);
-            }
-            else if (line.startsWith('>') && currentItem) {
-                let parsed = parseOptionGroup(line.substring(1));
-                if(parsed) currentItem.rawGroups.push(parsed);
-            }
-            else if (currentCat) {
-                let parts = line.split(/[,，]/); 
-                if(parts.length >= 2) {
-                    let price = parseInt(parts.pop().trim()); // 最後一個元素是價格
-                    let name = parts.join(',').trim(); // 前面的全部是名稱 (允許品項名稱有逗號)
-                    if(!isNaN(price) && name) {
-                        currentItem = { name: name, price: price, rawGroups: [] };
-                        currentCat.items.push(currentItem);
-                    }
-                }
-            }
-        }
-        
-        // 將解析的選項群組轉換為 HTML 存入 item.optionsHtml
-        menu.forEach(cat => {
+        // 清理空品項並自動為每個品項編譯專屬 optionsHtml (100% 相容前台)
+        let modDict = {};
+        (r.modules || []).forEach(m => modDict[m.id] = m);
+
+        r.menu.forEach(cat => {
+            cat.items = (cat.items || []).filter(it => it.name && it.name.trim() !== "");
             cat.items.forEach(item => {
-                let allGroups = [...cat.catGroups, ...item.rawGroups];
+                let combinedModIds = [...new Set([...(cat.modIds || []), ...(item.modIds || [])])];
                 let compiledHTML = "";
-                
-                allGroups.forEach((g, gIdx) => {
-                    let typeStr = g.type;
-                    let groupName = g.type === 'radio' ? ` name="opt_${item.name}_{idx}_${gIdx}"` : "";
-                    
+                combinedModIds.forEach((mId, gIdx) => {
+                    let g = modDict[mId];
+                    if(!g || !g.options || g.options.length === 0) return;
+                    let isRadio = (g.type === 'radio_opt' || g.type === 'radio_req' || g.type === 'radio');
+                    let typeStr = isRadio ? 'radio' : 'checkbox';
+                    let groupName = isRadio ? ` name="opt_${item.name}_{idx}_${gIdx}"` : "";
+
                     compiledHTML += `<div>\n`;
                     compiledHTML += `    <div class="opt-section-title">🔹 ${g.title}</div>\n`;
                     compiledHTML += `    <div class="chip-group">\n`;
-                    
-                    if (g.type === 'radio') {
+
+                    if (g.type === 'radio_opt' || g.type === 'radio') {
                         compiledHTML += `        <label class="custom-chip"><input type="radio"${groupName} value="預設(無)" data-price="0" checked>預設(無)</label>\n`;
                     }
-                    
+
                     g.options.forEach((opt, oIdx) => {
                         if(!opt.name) return;
-                        let priceAttr = ` data-price="${opt.price}"`;
+                        let priceAttr = ` data-price="${opt.price || 0}"`;
                         let labelTxt = opt.price > 0 ? `${opt.name} +$${opt.price}` : opt.name;
-                        let valTxt = opt.name;
                         let excludeCls = opt.name.includes("不要") || opt.name.includes("無") ? " exclude" : "";
-                        compiledHTML += `        <label class="custom-chip${excludeCls}"><input type="${typeStr}"${groupName} value="${valTxt}"${priceAttr}>${labelTxt}</label>\n`;
+                        let reqCheck = (g.type === 'radio_req' && oIdx === 0) ? " checked" : "";
+                        compiledHTML += `        <label class="custom-chip${excludeCls}"><input type="${typeStr}"${groupName} value="${opt.name}"${priceAttr}${reqCheck}>${labelTxt}</label>\n`;
                     });
                     compiledHTML += `    </div>\n</div>\n`;
                 });
-                
-                item.optionsHtml = compiledHTML; 
+                item.optionsHtml = compiledHTML;
             });
-            delete cat.catGroups; 
         });
 
         try {
-            if(window.editingRest && window.editingRest.originalName && window.editingRest.originalName !== rName) {
-                await deleteDoc(doc(db, "restaurants", window.editingRest.originalName));
+            if(r.originalName && r.originalName !== rName) {
+                await deleteDoc(doc(db, "restaurants", r.originalName));
             }
-            await setDoc(doc(db, "restaurants", rName), { name: rName, menu: menu });
+            await setDoc(doc(db, "restaurants", rName), { 
+                name: rName, 
+                menu: r.menu,
+                v27_modules: r.modules 
+            });
             logAdminAction("編輯雲端菜單", `儲存了餐廳: ${rName}`);
-            alert("✅ 儲存成功！");
+            alert("✅ 菜單已成功編譯並發布至雲端！");
             await loadCloudMenus();
             document.getElementById('editRestSelect').value = rName;
             openMenuEditor(rName);
-        } catch(e) { alert("儲存失敗"); console.error(e); }
+        } catch(e) { alert("儲存失敗，請確認 Firebase 規則是否已更新！"); console.error(e); }
     };
-
-    function parseOptionGroup(str) {
-        let typeMatch = str.match(/^(單選|複選)[:：]\s*(.+?)\s*[=＝]\s*(.+)$/);
-        if(!typeMatch) return null;
-        let type = typeMatch[1] === '單選' ? 'radio' : 'checkbox';
-        let title = typeMatch[2].trim();
-        let optsStr = typeMatch[3].split(/[,，]/);
-        let options = [];
-        optsStr.forEach(o => {
-            let m = o.match(/(.+?)\(\+?(\d+)\)/); 
-            if(m) {
-                options.push({ name: m[1].trim(), price: parseInt(m[2]) });
-            } else {
-                options.push({ name: o.trim(), price: 0 }); 
-            }
-        });
-        return { type, title, options };
-    }
 
     window.deleteMenuFromCloud = async function() {
         let r = window.editingRest;
-        if(!r.originalName) return;
+        if(!r || !r.originalName) return alert("請先選擇要刪除的餐廳！");
         if(!confirm(`⚠️ 嚴重警告 ⚠️\n\n確定要永久刪除「${r.originalName}」嗎？\n這項操作無法復原！`)) return;
         try {
             await deleteDoc(doc(db, "restaurants", r.originalName));
@@ -1357,6 +1620,8 @@
             document.getElementById('statItemCounts').innerHTML = itemsHtml || "<li>無資料</li>";
 
             renderOrderBoardUI();
+        }, (err) => {
+            document.getElementById('orderBoardGrid').innerHTML = `<div style="padding:20px; color:#d32f2f; font-weight:bold; text-align:center; width:100%;">⚠️ Firebase 資料庫連線被拒絕！請前往 Firebase Console -> Firestore Database -> Rules，將規則改為 allow read, write: if true; 並發布！</div>`;
         });
     }
 
@@ -1414,7 +1679,71 @@
         } catch(e) { console.error(e); }
     }
 
-    // 🚀 v2.6.5: 完整計算的動態帳務總表，全面支援 99 號
+    window.loadHistoryRank = async function() {
+        document.getElementById('rankItemsContentAdmin').innerHTML = "即時資料運算中..."; 
+        document.getElementById('rankRestsContentAdmin').innerHTML = "即時資料運算中...";
+        try {
+            const snap = await getDocs(query(collection(db, "orders"))); 
+            let itemCounts = {}; let restCounts = {};
+            
+            snap.forEach(doc => { 
+                let o = doc.data(); 
+                if (!o.isCancelled && !o.isAdjustment) { 
+                    if(o.restaurant) {
+                        restCounts[o.restaurant] = (restCounts[o.restaurant] || 0) + 1; 
+                    }
+                    (o.meal || "").split(", ").forEach(m => { 
+                        let name = m; 
+                        let qty = 1; 
+                        let match = m.match(/(.*) x(\d+)$/); 
+                        if(match) { 
+                            name = match[1]; 
+                            qty = parseInt(match[2]); 
+                        } 
+                        if(name.trim() !== "") {
+                            itemCounts[name.trim()] = (itemCounts[name.trim()] || 0) + qty; 
+                        }
+                    }); 
+                } 
+            });
+            
+            let items = []; for(let k in itemCounts) items.push({ n: k, c: itemCounts[k] }); items.sort((a,b) => b.c - a.c);
+            let ih = ""; items.slice(0, 15).forEach((r, i) => ih += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><div><span style="font-weight:700; width:30px; display:inline-block;">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">${r.c} 次</div></div>`);
+            
+            let rests = []; for(let k in restCounts) rests.push({ n: k, c: restCounts[k] }); rests.sort((a,b) => b.c - a.c);
+            let rh = ""; rests.forEach((r, i) => rh += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><div><span style="font-weight:700; width:30px; display:inline-block;">#${i+1}</span> ${r.n}</div><div style="font-weight:700;">${r.c} 次</div></div>`);
+            
+            document.getElementById('rankItemsContentAdmin').innerHTML = ih || "無資料"; 
+            document.getElementById('rankRestsContentAdmin').innerHTML = rh || "無資料";
+        } catch(e) {
+            document.getElementById('rankItemsContentAdmin').innerHTML = "運算失敗";
+        }
+    }
+
+    window.switchRankAdmin = function(type) {
+        document.getElementById('rankItemsContentAdmin').style.display = type === 'items' ? 'block' : 'none';
+        document.getElementById('rankRestsContentAdmin').style.display = type === 'rests' ? 'block' : 'none';
+        document.getElementById('btnRankItemsAdmin').className = type === 'items' ? 'btn btn-primary' : 'btn btn-outline';
+        document.getElementById('btnRankRestsAdmin').className = type === 'rests' ? 'btn btn-primary' : 'btn btn-outline';
+    }
+
+    window.dismissCancel = async function(docId) { 
+        await deleteDoc(doc(db, "orders", docId)); 
+        logAdminAction("清除取消通知", `確認並清除了單號 ${docId} 的作廢通知`);
+    };
+    
+    window.clearAllOrdersAndLedger = async function() {
+        if(!confirm("⚠️ 警告：這將會刪除【所有日期】的訂單紀錄，並將班級帳務完全歸零！\n\n確定要繼續嗎？")) return;
+        if(!confirm("再次確認：資料刪除後將無法復原，真的要清除嗎？")) return;
+        try {
+            const snapshot = await getDocs(collection(db, "orders")); let count = 0;
+            snapshot.forEach(async (docSnap) => { await deleteDoc(doc(db, "orders", docSnap.id)); count++; });
+            logAdminAction("⚠️ 危險操作", `【重大警告】刪除了系統中所有 ${count} 筆歷史訂單與帳務紀錄！`);
+            alert(`✅ 已成功刪除 ${count} 筆歷史紀錄！帳務與歷史紀錄已歸零。`);
+            if (document.getElementById('page-ledger').classList.contains('active')) { loadLedger(); }
+        } catch(e) {}
+    }
+
     window.loadLedger = async function() {
         document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">計算中...</td></tr>`;
         try {
@@ -1475,7 +1804,9 @@
                      </tr>`;
 
             document.getElementById('ledgerTableBody').innerHTML = html;
-        } catch(e) {}
+        } catch(e) {
+            document.getElementById('ledgerTableBody').innerHTML = `<tr><td colspan="5" style="color:red;">讀取失敗，請檢查 Firebase 規則設定</td></tr>`;
+        }
     }
 
     window.prepareAdjustment = function(studentId) {
@@ -1695,7 +2026,9 @@
                 } else if (o.isAdjustment) {
                     status = `<span style="color:#0078d4;">${o.adjType === '退款' ? '已退還現金' : '已收到補款'}</span>`;
                 } else {
-                    if (paidAmt >= safePrice) {
+                    if (paidAmt > safePrice) {
+                        status = `<span style="color:#d32f2f;">溢繳 $${paidAmt - safePrice}</span>`;
+                    } else if (paidAmt === safePrice) {
                         status = `<span style="color:#2e7d32;">已結清</span>`;
                     } else if (paidAmt > 0) {
                         status = `<span style="color:#e65100;">差 $${safePrice - paidAmt}</span>`;
@@ -1715,7 +2048,7 @@
                     <td data-label="座號"><strong>${label}</strong></td>
                     <td data-label="日期">${o.date}</td>
                     <td data-label="餐廳/餐點" style="text-align:left;">${mealContent}</td>
-                    <td data-label="金額">$${o.price}</td>
+                    <td data-label="金額">$${o.price} (已付:$${paidAmt})</td>
                     <td data-label="狀態" style="font-weight:bold;">${status}</td>
                 </tr>`;
             });
@@ -1856,36 +2189,46 @@
         } catch(e) { document.getElementById('activityTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態" style="color:red;">讀取稽核紀錄失敗</td></tr>`; }
     }
 
+    // 🚀 v2.7.0: 支援直接修改歷史訂單的「已付金額 (paidAmount)」
     window.loadHistoryForEdit = async function() {
         const dateVal = document.getElementById('editHistoryDate').value; 
-        document.getElementById('editTableBody').innerHTML = `<tr><td colspan="5" data-label="狀態">讀取中...</td></tr>`;
+        document.getElementById('editTableBody').innerHTML = `<tr><td colspan="6" data-label="狀態">讀取中...</td></tr>`;
         try {
             const querySnapshot = await getDocs(query(collection(db, "orders"), where("date", "==", dateVal)));
-            let arr = []; querySnapshot.forEach(doc => arr.push(doc.data())); arr.sort((a,b) => a.studentId - b.studentId);
+            let arr = []; querySnapshot.forEach(doc => { if(!doc.data().isAdjustment) arr.push(doc.data()); }); arr.sort((a,b) => a.studentId - b.studentId);
             let html = "";
             arr.forEach(o => {
                 let checked = o.isCancelled ? 'checked' : '';
                 let label = o.studentId === 99 ? 'teacher' : o.studentId;
+                let paidVal = o.paidAmount !== undefined ? o.paidAmount : (o.isPaid ? o.price : 0);
                 html += `<tr>
                     <td data-label="座號"><strong>${label}</strong></td>
-                    <td data-label="餐點 (直接修改)"><input type="text" id="editMeal_${o.studentId}" value="${o.meal}"></td>
-                    <td data-label="價格"><input type="number" id="editPrice_${o.studentId}" value="${o.price}" style="width:70px;"></td>
+                    <td data-label="餐點 (直接修改)"><input type="text" id="editMeal_${o.studentId}" value="${o.meal}" style="margin:0;"></td>
+                    <td data-label="應付價格"><input type="number" id="editPrice_${o.studentId}" value="${o.price}" style="width:75px; margin:0; text-align:center;"></td>
+                    <td data-label="已付金額"><input type="number" id="editPaid_${o.studentId}" value="${paidVal}" style="width:75px; margin:0; text-align:center;"></td>
                     <td data-label="取消作廢"><input type="checkbox" id="editCancel_${o.studentId}" ${checked} style="width:20px;height:20px;accent-color:#111;">作廢</td>
                     <td data-label="儲存"><button class="btn btn-primary" style="margin:0; padding:8px 14px;" onclick="saveHistoryEdit('${dateVal}', ${o.studentId})">儲存</button></td>
                 </tr>`;
             });
-            document.getElementById('editTableBody').innerHTML = html || `<tr><td colspan="5" data-label="狀態">無資料</td></tr>`;
+            document.getElementById('editTableBody').innerHTML = html || `<tr><td colspan="6" data-label="狀態">無資料</td></tr>`;
         } catch(e) {}
     }
 
     window.saveHistoryEdit = async function(dateVal, studentId) {
         const meal = document.getElementById(`editMeal_${studentId}`).value; 
-        const price = Math.ceil(parseFloat(document.getElementById(`editPrice_${studentId}`).value)); 
+        const price = Math.ceil(parseFloat(document.getElementById(`editPrice_${studentId}`).value)) || 0; 
+        const paidAmount = Math.ceil(parseFloat(document.getElementById(`editPaid_${studentId}`).value)) || 0;
         const isCancelled = document.getElementById(`editCancel_${studentId}`).checked;
         try { 
-            await updateDoc(doc(db, "orders", dateVal + "_" + studentId), { meal, price, isCancelled }); 
+            await updateDoc(doc(db, "orders", dateVal + "_" + studentId), { 
+                meal, 
+                price, 
+                paidAmount, 
+                isPaid: paidAmount >= price, 
+                isCancelled 
+            }); 
             logAdminAction("修改歷史紀錄", `修改了 ${dateVal} 座號 ${studentId} 的訂單資料`);
-            alert("修改成功！動態排行榜已自動更新。"); 
+            alert("✅ 修改成功！帳務與動態排行榜已自動同步。"); 
         } 
         catch(e) { alert("儲存失敗"); }
     }
@@ -1899,7 +2242,7 @@
                 html += `<div>${doc.id} - ${doc.data().restaurant}</div>`;
             });
             listEl.innerHTML = html || "無排程";
-        } catch(e) { listEl.innerHTML = "讀取失敗"; }
+        } catch(e) { listEl.innerHTML = "讀取失敗 (請更新 Firebase Rules)"; }
     }
 
     window.listenToAnnouncements = function() {
